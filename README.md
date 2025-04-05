@@ -1,4 +1,4 @@
-# sdl-tray
+# sdl3-deno
 
 Deno FFI bindings for SDL3 libraries with safe wrappers.
 
