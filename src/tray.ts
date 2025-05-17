@@ -179,10 +179,6 @@ export class Tray {
     return tray as TrayPointer;
   }
 
-  static destroy(tray: TrayPointer) {
-    SDL.destroyTray(tray);
-  }
-
   /**
    * Destroys a tray object.
    *
@@ -198,15 +194,14 @@ export class Tray {
    * @from SDL_tray.h:468 void SDL_DestroyTray(SDL_Tray *tray);
    */
   destroy() {
-    Tray.destroy(this.pointer);
+    if (!this.pointer) return;
+    SDL.destroyTray(this.pointer);
     entryCb.removeTray(this.pointer);
     this.pointer = null;
   }
 
-  static setIcon(tray: TrayPointer, iconPath?: string) {
-    const icon = iconPath ? new Surface(iconPath) : null;
-    SDL.setTrayIcon(tray, icon?.pointer ?? null);
-    icon?.destroy();
+  [Symbol.dispose]() {
+    this.destroy();
   }
 
   /**
@@ -224,12 +219,11 @@ export class Tray {
    * @from SDL_tray.h:135 void SDL_SetTrayIcon(SDL_Tray *tray, SDL_Surface *icon);
    */
   setIcon(icon?: string) {
-    Tray.setIcon(this.pointer, icon);
+    const surface = icon ? new Surface(icon) : null;
+    SDL.setTrayIcon(this.pointer, surface?.pointer ?? null);
+    surface?.destroy();
   }
 
-  static setTooltip(tray: TrayPointer, tooltip?: string) {
-    SDL.setTrayTooltip(tray, cstr(tooltip));
-  }
   /**
    * Updates the system tray icon's tooltip.
    *
@@ -245,7 +239,7 @@ export class Tray {
    * @from SDL_tray.h:150 void SDL_SetTrayTooltip(SDL_Tray *tray, const char *tooltip);
    */
   setTooltip(tooltip?: string) {
-    Tray.setTooltip(this.pointer, tooltip);
+    SDL.setTrayTooltip(this.pointer, cstr(tooltip));
   }
   /**
    * Create a menu for a system tray.
@@ -271,20 +265,9 @@ export class Tray {
    * @from SDL_tray.h:174 SDL_TrayMenu * SDL_CreateTrayMenu(SDL_Tray *tray);
    */
   createMenu(): TrayMenu {
-    const menu = Tray.createMenu(this.pointer);
+    const menu = SDL.createTrayMenu(this.pointer) as MenuPointer;
     if (!menu) throw SdlError(`Failed to create menu`);
     return TrayMenu.of(menu);
-  }
-  static createMenu(tray: TrayPointer): MenuPointer {
-    return SDL.createTrayMenu(tray) as MenuPointer;
-  }
-
-  static createSubmenu(entry: EntryPointer): MenuPointer {
-    return SDL.createTraySubmenu(entry) as MenuPointer;
-  }
-
-  static getMenu(tray: TrayPointer): MenuPointer {
-    return SDL.getTrayMenu(tray) as MenuPointer;
   }
 
   /**
@@ -311,82 +294,7 @@ export class Tray {
    * @from SDL_tray.h:222 SDL_TrayMenu * SDL_GetTrayMenu(SDL_Tray *tray);
    */
   get menu(): TrayMenu {
-    return TrayMenu.of(Tray.getMenu(this.pointer));
-  }
-
-  static getSubmenu(entry: EntryPointer): MenuPointer {
-    return SDL.getTraySubmenu(entry) as MenuPointer;
-  }
-
-  static getEntries(menu: MenuPointer): EntryPointer[] {
-    const a = SDL.getTrayEntries(menu, null);
-    if (!a) return [];
-
-    const entries: EntryPointer[] = [];
-    const d = ptr_view(a);
-    let i = 0;
-    while (true) {
-      // FIXME: suppose pointer size is 8 bytes
-      const p = d.getBigUint64(i);
-      if (p === 0n) {
-        break;
-      }
-      i += 8;
-      entries.push(Deno.UnsafePointer.create(p) as EntryPointer);
-    }
-
-    return entries;
-  }
-
-  static removeEntry(entry: EntryPointer) {
-    SDL.removeTrayEntry(entry);
-  }
-
-  static insertEntryAt(
-    menu: MenuPointer,
-    pos: number,
-    label: string | undefined,
-    flag: number,
-  ): EntryPointer {
-    return SDL.insertTrayEntryAt(menu, pos, cstr(label), flag) as EntryPointer;
-  }
-
-  static setEntryLabel(entry: EntryPointer, label: string) {
-    SDL.setTrayEntryLabel(entry, cstr(label));
-  }
-
-  static getEntryLabel(entry: EntryPointer): string {
-    const label = SDL.getTrayEntryLabel(entry);
-    return label ? read_cstr(label) : "";
-  }
-
-  static setEntryChecked(entry: EntryPointer, checked: boolean) {
-    SDL.setTrayEntryChecked(entry, checked);
-  }
-  static getEntryChecked(entry: EntryPointer): boolean {
-    return SDL.getTrayEntryChecked(entry);
-  }
-  static setEntryEnabled(entry: EntryPointer, enabled: boolean) {
-    SDL.setTrayEntryEnabled(entry, enabled);
-  }
-  static getEntryEnabled(entry: EntryPointer): boolean {
-    return SDL.getTrayEntryEnabled(entry);
-  }
-
-  static setEntryCallback(
-    entry: EntryPointer,
-    callback: TrayEntryCallback,
-    userdata: Deno.PointerValue = null,
-  ): TrayEntryUnsafeCallback {
-    const c = new Deno.UnsafeCallback(
-      CB.SDL_TrayCallback,
-      callback as (
-        userdata: Deno.PointerValue,
-        entry: Deno.PointerValue,
-      ) => void,
-    );
-    SDL.setTrayEntryCallback(entry, c.pointer, userdata);
-    return c;
+    return TrayMenu.of(SDL.getTrayMenu(this.pointer) as MenuPointer);
   }
 
   /**
@@ -412,24 +320,15 @@ export class Tray {
     callback: TrayEntryCallback,
     userdata: Deno.PointerValue = null,
   ) {
-    const c = Tray.setEntryCallback(entry, callback, userdata);
+    const c = new Deno.UnsafeCallback(
+      CB.SDL_TrayCallback,
+      callback as (
+        userdata: Deno.PointerValue,
+        entry: Deno.PointerValue,
+      ) => void,
+    );
+    SDL.setTrayEntryCallback(entry, c.pointer, userdata);
     entryCb.addCallback(this.pointer, entry, c);
-  }
-
-  static clickEntry(entry: EntryPointer) {
-    SDL.clickTrayEntry(entry);
-  }
-
-  static getEntryParent(entry: EntryPointer): MenuPointer {
-    return SDL.getTrayEntryParent(entry) as MenuPointer;
-  }
-
-  static getMenuParentEntry(menu: MenuPointer): EntryPointer {
-    return SDL.getTrayMenuParentEntry(menu) as EntryPointer;
-  }
-
-  static getMenuParentTray(menu: MenuPointer): TrayPointer {
-    return SDL.getTrayMenuParentTray(menu) as TrayPointer;
   }
 
   static update() {
@@ -441,19 +340,12 @@ export class Tray {
  * An opaque handle representing an entry on a system tray object.
  */
 export class TrayEntry {
-  pointer: EntryPointer;
-
-  constructor(pointer: EntryPointer) {
-    this.pointer = pointer;
-  }
+  constructor(public pointer: EntryPointer) {}
 
   static of(pointer: EntryPointer): TrayEntry {
     return new TrayEntry(pointer);
   }
 
-  static getParentMenu(entry: EntryPointer): MenuPointer {
-    return Tray.getEntryParent(entry);
-  }
   /**
    * Gets the menu containing a certain tray entry.
    *
@@ -469,11 +361,7 @@ export class TrayEntry {
    * @from SDL_tray.h:483 SDL_TrayMenu * SDL_GetTrayEntryParent(SDL_TrayEntry *entry);
    */
   get parentMenu(): TrayMenu {
-    return TrayMenu.of(TrayEntry.getParentMenu(this.pointer));
-  }
-
-  static createSubmenu(menu: EntryPointer): MenuPointer {
-    return Tray.createSubmenu(menu);
+    return TrayMenu.of(SDL.getTrayEntryParent(this.pointer) as MenuPointer);
   }
 
   /**
@@ -500,13 +388,9 @@ export class TrayEntry {
    * @from SDL_tray.h:198 SDL_TrayMenu * SDL_CreateTraySubmenu(SDL_TrayEntry *entry);
    */
   createSubmenu(): TrayMenu {
-    const menu = TrayEntry.createSubmenu(this.pointer);
+    const menu = SDL.createTraySubmenu(this.pointer) as MenuPointer;
     if (!menu) throw SdlError(`Failed to create sub menu`);
     return new TrayMenu(menu);
-  }
-
-  static getSubmenu(menu: EntryPointer): MenuPointer {
-    return Tray.getSubmenu(menu);
   }
 
   /**
@@ -533,11 +417,7 @@ export class TrayEntry {
    * @from SDL_tray.h:246 SDL_TrayMenu * SDL_GetTraySubmenu(SDL_TrayEntry *entry);
    */
   get submenu(): TrayMenu {
-    return TrayMenu.of(TrayEntry.getSubmenu(this.pointer));
-  }
-
-  static remove(entry: EntryPointer) {
-    Tray.removeEntry(entry);
+    return TrayMenu.of(SDL.getTraySubmenu(this.pointer) as MenuPointer);
   }
 
   /**
@@ -554,13 +434,9 @@ export class TrayEntry {
    * @from SDL_tray.h:281 void SDL_RemoveTrayEntry(SDL_TrayEntry *entry);
    */
   remove() {
-    TrayEntry.remove(this.pointer);
+    SDL.removeTrayEntry(this.pointer);
     entryCb.removeEntry(this.pointer);
     this.pointer = null;
-  }
-
-  static setLabel(entry: EntryPointer, label: string) {
-    Tray.setEntryLabel(entry, label);
   }
 
   /**
@@ -585,11 +461,9 @@ export class TrayEntry {
    * @from SDL_tray.h:331 void SDL_SetTrayEntryLabel(SDL_TrayEntry *entry, const char *label);
    */
   setLabel(label: string) {
-    TrayEntry.setLabel(this.pointer, label);
+    SDL.setTrayEntryLabel(this.pointer, cstr(label));
   }
-  static getLabel(entry: EntryPointer): string {
-    return Tray.getEntryLabel(entry);
-  }
+
   /**
    * Gets the label of an entry.
    *
@@ -608,12 +482,9 @@ export class TrayEntry {
    *
    * @from SDL_tray.h:350 const char * SDL_GetTrayEntryLabel(SDL_TrayEntry *entry);
    */
-  get label(): string {
-    return TrayEntry.getLabel(this.pointer);
-  }
-
-  static setChecked(entry: EntryPointer, checked: boolean = true) {
-    Tray.setEntryChecked(entry, checked);
+  get label(): string | null {
+    const label = SDL.getTrayEntryLabel(this.pointer);
+    return label ? read_cstr(label) : null;
   }
 
   /**
@@ -635,10 +506,7 @@ export class TrayEntry {
    * @from SDL_tray.h:369 void SDL_SetTrayEntryChecked(SDL_TrayEntry *entry, bool checked);
    */
   setChecked(checked: boolean = true) {
-    TrayEntry.setChecked(this.pointer, checked);
-  }
-  static getChecked(entry: EntryPointer): boolean {
-    return Tray.getEntryChecked(entry);
+    SDL.setTrayEntryChecked(this.pointer, checked);
   }
 
   /**
@@ -660,12 +528,9 @@ export class TrayEntry {
    * @from SDL_tray.h:388 bool SDL_GetTrayEntryChecked(SDL_TrayEntry *entry);
    */
   get checked(): boolean {
-    return TrayEntry.getChecked(this.pointer);
+    return SDL.getTrayEntryChecked(this.pointer);
   }
 
-  static setEnabled(entry: EntryPointer, enabled: boolean = true) {
-    Tray.setEntryEnabled(entry, enabled);
-  }
   /**
    * Sets whether or not an entry is enabled.
    *
@@ -684,10 +549,7 @@ export class TrayEntry {
    * @from SDL_tray.h:405 void SDL_SetTrayEntryEnabled(SDL_TrayEntry *entry, bool enabled);
    */
   setEnabled(enabled: boolean = true) {
-    TrayEntry.setEnabled(this.pointer, enabled);
-  }
-  static getEnabled(entry: EntryPointer): boolean {
-    return Tray.getEntryEnabled(entry);
+    SDL.setTrayEntryEnabled(this.pointer, enabled);
   }
   /**
    * Gets whether or not an entry is enabled.
@@ -706,15 +568,7 @@ export class TrayEntry {
    * @from SDL_tray.h:422 bool SDL_GetTrayEntryEnabled(SDL_TrayEntry *entry);
    */
   get enabled(): boolean {
-    return TrayEntry.getEnabled(this.pointer);
-  }
-
-  static setCallback(
-    entry: EntryPointer,
-    callback: TrayEntryCallback,
-    userdata: Deno.PointerValue = null,
-  ): TrayEntryUnsafeCallback {
-    return Tray.setEntryCallback(entry, callback, userdata);
+    return SDL.getTrayEntryEnabled(this.pointer);
   }
 
   /**
@@ -742,10 +596,6 @@ export class TrayEntry {
     tray.setEntryCallback(this.pointer, callback, userdata);
   }
 
-  static click(entry: EntryPointer) {
-    Tray.clickEntry(entry);
-  }
-
   /**
    * Simulate a click on a tray entry.
    *
@@ -757,7 +607,7 @@ export class TrayEntry {
    * @from SDL_tray.h:452 void SDL_ClickTrayEntry(SDL_TrayEntry *entry);
    */
   click() {
-    TrayEntry.click(this.pointer);
+    SDL.clickTrayEntry(this.pointer);
   }
 }
 
@@ -765,11 +615,7 @@ export class TrayEntry {
  * An opaque handle representing a menu/submenu on a system tray object.
  */
 export class TrayMenu {
-  pointer: MenuPointer;
-
-  constructor(pointer: MenuPointer) {
-    this.pointer = pointer;
-  }
+  constructor(public pointer: MenuPointer) {}
 
   createSubmenu(tray: Tray, entries?: TrayEntryOption[]) {
     if (!entries || entries.length === 0) return;
@@ -839,10 +685,6 @@ export class TrayMenu {
     return new TrayMenu(pointer);
   }
 
-  getParentTray(): TrayPointer {
-    return Tray.getMenuParentTray(this.pointer);
-  }
-
   /**
    * Gets the tray for which this menu is the first-level menu, if the current
    * menu isn't a submenu.
@@ -863,11 +705,7 @@ export class TrayMenu {
    * @from SDL_tray.h:523 SDL_Tray * SDL_GetTrayMenuParentTray(SDL_TrayMenu *menu);
    */
   get parentTray(): TrayPointer {
-    return Tray.getMenuParentTray(this.pointer);
-  }
-
-  static getParentEntry(menu: MenuPointer): EntryPointer {
-    return Tray.getMenuParentEntry(menu);
+    return SDL.getTrayMenuParentTray(this.pointer) as TrayPointer;
   }
 
   /**
@@ -890,11 +728,9 @@ export class TrayMenu {
    * @from SDL_tray.h:503 SDL_TrayEntry * SDL_GetTrayMenuParentEntry(SDL_TrayMenu *menu);
    */
   get parentEntry(): TrayEntry {
-    return TrayEntry.of(TrayMenu.getParentEntry(this.pointer));
-  }
-
-  static getEntries(menu: MenuPointer): EntryPointer[] {
-    return Tray.getEntries(menu);
+    return TrayEntry.of(
+      SDL.getTrayMenuParentEntry(this.pointer) as EntryPointer,
+    );
   }
 
   /**
@@ -915,16 +751,22 @@ export class TrayMenu {
    * @from SDL_tray.h:266 const SDL_TrayEntry ** SDL_GetTrayEntries(SDL_TrayMenu *menu, int *count);
    */
   get entries(): TrayEntry[] {
-    return TrayMenu.getEntries(this.pointer).map(TrayEntry.of);
-  }
+    const a = SDL.getTrayEntries(this.pointer, null);
+    if (!a) return [];
 
-  static insertEntryAt(
-    menu: MenuPointer,
-    pos: number,
-    label: string | undefined,
-    flag: number,
-  ): EntryPointer {
-    return Tray.insertEntryAt(menu, pos, label, flag);
+    const entries: TrayEntry[] = [];
+    const d = ptr_view(a);
+    let i = 0;
+    while (true) {
+      // FIXME: suppose pointer size is 8 bytes
+      const p = d.getPointer(i);
+      if (p === null) {
+        break;
+      }
+      i += 8;
+      entries.push(TrayEntry.of(p as EntryPointer));
+    }
+    return entries;
   }
 
   /**
@@ -960,7 +802,12 @@ export class TrayMenu {
     flags: number,
   ): TrayEntry {
     return TrayEntry.of(
-      TrayMenu.insertEntryAt(this.pointer, pos, label, flags),
+      SDL.insertTrayEntryAt(
+        this.pointer,
+        pos,
+        cstr(label),
+        flags,
+      ) as EntryPointer,
     );
   }
 
