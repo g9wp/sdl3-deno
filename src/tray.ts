@@ -839,7 +839,7 @@ export class TrayMenu {
     return new TrayMenu(pointer);
   }
 
-  getParentTray(): Deno.PointerValue {
+  getParentTray(): TrayPointer {
     return Tray.getMenuParentTray(this.pointer);
   }
 

@@ -59,7 +59,11 @@ import { Buf } from "@g9wp/ptr/buf";
 import { toDataView } from "@g9wp/ptr";
 import { Surface } from "./surface.ts";
 
-import type { RendererPointer, SurfacePointer, WindowPointer } from "./pointer_type.ts";
+import type {
+  RendererPointer,
+  SurfacePointer,
+  WindowPointer,
+} from "./pointer_type.ts";
 
 export class RenderDriver {
   /**
@@ -296,7 +300,7 @@ export class Render {
    *
    * @from SDL_render.h:331 SDL_Renderer * SDL_CreateSoftwareRenderer(SDL_Surface *surface);
    */
-  createSoftware(surface: Deno.PointerValue): Render {
+  createSoftware(surface: SurfacePointer): Render {
     const r = SDL.createSoftwareRenderer(surface) as RendererPointer;
     if (!r) throw SdlError("createSoftwareRenderer");
     return new Render(r);
@@ -588,7 +592,7 @@ export class Render {
    *
    * @from SDL_render.h:583 SDL_Texture * SDL_CreateTextureFromSurface(SDL_Renderer *renderer, SDL_Surface *surface);
    */
-  createTextureFromSurface(surface: Deno.PointerValue): Texture {
+  createTextureFromSurface(surface: SurfacePointer): Texture {
     const r = SDL.createTextureFromSurface(this.pointer, surface);
     if (!r) throw SdlError("createTextureFromSurface");
     return new Texture(r);
@@ -1030,7 +1034,9 @@ export class Render {
    *
    * @from SDL_render.h:1556 bool SDL_ConvertEventToRenderCoordinates(SDL_Renderer *renderer, SDL_Event *event);
    */
-  convertEventToRenderCoordinates(event: Deno.PointerValue): boolean {
+  convertEventToRenderCoordinates(
+    event: Deno.PointerValue<"SDL_Event">,
+  ): boolean {
     return SDL.convertEventToRenderCoordinates(this.pointer, event);
   }
 

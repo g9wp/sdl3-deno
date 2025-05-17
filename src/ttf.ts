@@ -23,7 +23,7 @@ import {
 } from "../gen/structs/SDL_ttf.ts";
 import { free } from "../gen/sdl/stdinc.ts";
 
-import type { SurfacePointer } from "./pointer_type.ts";
+import type { RendererPointer, SurfacePointer } from "./pointer_type.ts";
 type FontPointer = Deno.PointerValue<"TTF_Font">;
 type TextPointer = Deno.PointerValue<"TTF_Text">;
 type TextEnginePointer = Deno.PointerValue<"TTF_TextEngine">;
@@ -2027,7 +2027,7 @@ export class Font {
 }
 
 export class TextEngine {
-  constructor(public pointer: Deno.PointerObject) {}
+  constructor(public pointer: TextEnginePointer) {}
 
   /**
    * Create a text object from UTF-8 text and a text engine.
@@ -2056,7 +2056,7 @@ export class TextEngine {
       font.pointer,
       cstr(text),
       0n,
-    );
+    ) as TextPointer;
     if (!pointer) throw SdlError("createText");
     return new Text(pointer);
   }
@@ -2079,7 +2079,7 @@ export class SurfaceTextEngine extends TextEngine {
    * @from SDL_ttf.h:1746 TTF_TextEngine * TTF_CreateSurfaceTextEngine(void);
    */
   static create(): SurfaceTextEngine {
-    const pointer = TTF.createSurfaceTextEngine();
+    const pointer = TTF.createSurfaceTextEngine() as TextEnginePointer;
     if (!pointer) throw SdlError("createSurfaceTextEngine");
     return new SurfaceTextEngine(pointer);
   }
@@ -2126,8 +2126,8 @@ export class RendererTextEngine extends TextEngine {
    *
    * @from SDL_ttf.h:1807 TTF_TextEngine * TTF_CreateRendererTextEngine(SDL_Renderer *renderer);
    */
-  static create(renderer: Deno.PointerValue): RendererTextEngine {
-    const pointer = TTF.createRendererTextEngine(renderer);
+  static create(renderer: RendererPointer): RendererTextEngine {
+    const pointer = TTF.createRendererTextEngine(renderer) as TextEnginePointer;
     if (!pointer) throw SdlError("createRendererTextEngine");
     return new RendererTextEngine(pointer);
   }
@@ -2159,7 +2159,9 @@ export class RendererTextEngine extends TextEngine {
    * @from SDL_ttf.h:1833 TTF_TextEngine * TTF_CreateRendererTextEngineWithProperties(SDL_PropertiesID props);
    */
   static createWithProperties(props: number): RendererTextEngine {
-    const pointer = TTF.createRendererTextEngineWithProperties(props);
+    const pointer = TTF.createRendererTextEngineWithProperties(
+      props,
+    ) as TextEnginePointer;
     if (!pointer) throw SdlError("createRendererTextEngineWithProperties");
     return new RendererTextEngine(pointer);
   }
@@ -2207,8 +2209,8 @@ export class GpuTextEngine extends TextEngine {
    *
    * @from SDL_ttf.h:1898 TTF_TextEngine * TTF_CreateGPUTextEngine(SDL_GPUDevice *device);
    */
-  static create(device: Deno.PointerValue): GpuTextEngine {
-    const pointer = TTF.createGpuTextEngine(device);
+  static create(device: Deno.PointerValue<"SDL_GPUDevice">): GpuTextEngine {
+    const pointer = TTF.createGpuTextEngine(device) as TextEnginePointer;
     if (!pointer) throw SdlError("createGpuTextEngine");
     return new GpuTextEngine(pointer);
   }
@@ -2240,7 +2242,9 @@ export class GpuTextEngine extends TextEngine {
    * @from SDL_ttf.h:1924 TTF_TextEngine * TTF_CreateGPUTextEngineWithProperties(SDL_PropertiesID props);
    */
   createWithProperties(props: number): GpuTextEngine {
-    const pointer = TTF.createRendererTextEngineWithProperties(props);
+    const pointer = TTF.createRendererTextEngineWithProperties(
+      props,
+    ) as TextEnginePointer;
     if (!pointer) throw SdlError("createRendererTextEngineWithProperties");
     return new GpuTextEngine(pointer);
   }
@@ -2312,7 +2316,7 @@ export class GpuTextEngine extends TextEngine {
 }
 
 export class Text {
-  constructor(public pointer: Deno.PointerValue) {}
+  constructor(public pointer: TextPointer) {}
 
   /**
    * Draw text to an SDL surface.
@@ -2401,8 +2405,10 @@ export class Text {
    *
    * @from SDL_ttf.h:1976 TTF_GPUAtlasDrawSequence * TTF_GetGPUTextDrawData(TTF_Text *text);
    */
-  get gpuDrawData(): Deno.PointerValue {
-    return TTF.getGpuTextDrawData(this.pointer);
+  get gpuDrawData(): Deno.PointerValue<"TTF_GPUAtlasDrawSequence"> {
+    return TTF.getGpuTextDrawData(this.pointer) as Deno.PointerValue<
+      "TTF_GPUAtlasDrawSequence"
+    >;
   }
 
   /**
@@ -2463,7 +2469,7 @@ export class Text {
    * @from SDL_ttf.h:2111 TTF_TextEngine * TTF_GetTextEngine(TTF_Text *text);
    */
   get engine(): TextEngine {
-    const r = TTF.getTextEngine(this.pointer);
+    const r = TTF.getTextEngine(this.pointer) as TextEnginePointer;
     if (!r) throw SdlError("getTextEngine");
     return new TextEngine(r);
   }
