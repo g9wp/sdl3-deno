@@ -23,7 +23,11 @@ import {
 } from "../gen/structs/SDL_ttf.ts";
 import { free } from "../gen/sdl/stdinc.ts";
 
-import type { RendererPointer, SurfacePointer } from "./pointer_type.ts";
+import type {
+  IoStreamPointer,
+  RendererPointer,
+  SurfacePointer
+} from "./pointer_type.ts";
 type FontPointer = Deno.PointerValue<"TTF_Font">;
 type TextPointer = Deno.PointerValue<"TTF_Text">;
 type TextEnginePointer = Deno.PointerValue<"TTF_TextEngine">;
@@ -174,7 +178,7 @@ export class Font {
    * @from SDL_ttf.h:179 TTF_Font * TTF_OpenFontIO(SDL_IOStream *src, bool closeio, float ptsize);
    */
   static openIo(
-    src: Deno.PointerValue<"SDL_IOStream">,
+    src: IoStreamPointer,
     closeio: boolean,
     ptsize: number,
   ): Font {
@@ -232,6 +236,41 @@ export class Font {
     const fontPointer = TTF.openFontWithProperties(props) as FontPointer;
     if (fontPointer === null) throw SdlError("openFont");
     return new Font(fontPointer);
+  }
+
+
+  /**
+   * Dispose of a previously-created font.
+   *
+   * Call this when done with a font. This function will free any resources
+   * associated with it. It is safe to call this function on NULL, for example
+   * on the result of a failed call to TTF_OpenFont().
+   *
+   * The font is not valid after being passed to this function. String pointers
+   * from functions that return information on this font, such as
+   * TTF_GetFontFamilyName() and TTF_GetFontStyleName(), are no longer valid
+   * after this call, as well.
+   *
+   * @param font the font to dispose of.
+   *
+   * @threadsafety This function should not be called while any other thread is
+   *               using the font.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa TTF_OpenFont
+   * @sa TTF_OpenFontIO
+   *
+   * @from SDL_ttf.h:2777 void TTF_CloseFont(TTF_Font *font);
+   */
+  close() {
+    if (!this.pointer) return;
+    TTF.closeFont(this.pointer);
+    this.pointer = null;
+  }
+
+  [Symbol.dispose]() {
+    this.close();
   }
 
   /**
