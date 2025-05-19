@@ -153,7 +153,8 @@ export class Render {
     window_flags: bigint,
   ): {
     window: Window;
-    renderer: Render;
+    render: Render;
+    [Symbol.dispose](): void;
   } {
     const b = Buf.of(BigUint64Array, 2);
     if (
@@ -167,9 +168,14 @@ export class Render {
       )
     ) throw SdlError("createWindowAndRenderer");
     const c = b.cursor;
+
     return {
       window: new Window(c.ptr! as WindowPointer),
-      renderer: new Render(c.ptr! as RendererPointer),
+      render: new Render(c.ptr! as RendererPointer),
+      [Symbol.dispose] () {
+        this.render.destroy();
+        this.window.destroy();
+      }
     };
   }
 
@@ -2176,7 +2182,13 @@ export class Render {
    * @from SDL_render.h:2407 void SDL_DestroyRenderer(SDL_Renderer *renderer);
    */
   destroy() {
+    if (this.pointer == null) return;
     SDL.destroyRenderer(this.pointer);
+    this.pointer = null;
+  }
+
+  [Symbol.dispose]() {
+    this.destroy();
   }
 
   /**

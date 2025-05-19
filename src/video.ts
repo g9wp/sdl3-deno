@@ -2785,7 +2785,13 @@ export class Window {
    * @from SDL_video.h:2812 void SDL_DestroyWindow(SDL_Window *window);
    */
   destroy() {
+    if (!this.pointer) return;
     SDL.destroyWindow(this.pointer);
+    this.pointer = null;
+  }
+
+  [Symbol.dispose]() {
+    this.destroy();
   }
 }
 

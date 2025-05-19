@@ -243,6 +243,7 @@ export class Surface {
    * @from SDL_surface.h:212 void SDL_DestroySurface(SDL_Surface *surface);
    */
   destroy() {
+    if (!this.pointer) return;
     destroySurface(this.pointer);
     this.pointer = null;
   }

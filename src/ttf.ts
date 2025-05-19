@@ -2142,8 +2142,15 @@ export class SurfaceTextEngine extends TextEngine {
    * @from SDL_ttf.h:1789 void TTF_DestroySurfaceTextEngine(TTF_TextEngine *engine);
    */
   destroy() {
+    if (!this.pointer) return;
     TTF.destroySurfaceTextEngine(this.pointer);
+    this.pointer = null;
   }
+
+  [Symbol.dispose]() {
+    this.destroy();
+  }
+
 }
 
 export class RendererTextEngine extends TextEngine {
@@ -2224,7 +2231,13 @@ export class RendererTextEngine extends TextEngine {
    * @from SDL_ttf.h:1879 void TTF_DestroyRendererTextEngine(TTF_TextEngine *engine);
    */
   destroy() {
+    if (!this.pointer) return;
     TTF.destroyRendererTextEngine(this.pointer);
+    this.pointer = null;
+  }
+
+  [Symbol.dispose]() {
+    this.destroy();
   }
 }
 
@@ -2307,9 +2320,14 @@ export class GpuTextEngine extends TextEngine {
    * @from SDL_ttf.h:1994 void TTF_DestroyGPUTextEngine(TTF_TextEngine *engine);
    */
   destroy() {
-    return TTF.destroyGpuTextEngine(this.pointer);
+    if (!this.pointer) return;
+    TTF.destroyGpuTextEngine(this.pointer);
+    this.pointer = null;
   }
 
+  [Symbol.dispose]() {
+    this.destroy();
+  }
   /**
    * Sets the winding order of the vertices returned by TTF_GetGPUTextDrawData
    * for a particular GPU text engine.
@@ -2356,6 +2374,10 @@ export class GpuTextEngine extends TextEngine {
 
 export class Text {
   constructor(public pointer: TextPointer) {}
+
+  [Symbol.dispose]() {
+    this.destroy();
+  }
 
   /**
    * Draw text to an SDL surface.
@@ -3302,6 +3324,7 @@ export class Text {
    * @from SDL_ttf.h:2753 void TTF_DestroyText(TTF_Text *text);
    */
   destroy() {
+    if (!this.pointer) return;
     TTF.destroyText(this.pointer);
     this.pointer = null;
   }
