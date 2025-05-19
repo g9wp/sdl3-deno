@@ -5,6 +5,8 @@ export { IMG };
 // import * as TTF from "../gen/TTF.ts";
 // export { TTF }
 
+export { SdlContext } from "./sdl.ts";
+
 export { Tray } from "./tray.ts";
 
 import * as Dialog from "./dialog.ts";
