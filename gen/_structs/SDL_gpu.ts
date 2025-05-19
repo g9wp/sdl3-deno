@@ -304,6 +304,7 @@
 */
 
 import * as _ from "@denosaurs/byte-type";
+import {SDL_FColor} from "./SDL_pixels.ts";
 
 
 /**

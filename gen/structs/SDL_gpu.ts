@@ -305,6 +305,7 @@
 
 import * as _ from "../_utils.ts";
 import * as _b from "../_structs/SDL_gpu.ts";
+import {FColor} from "./SDL_pixels.ts";
 
 
 /**
@@ -540,6 +541,9 @@ export interface GPUBlitRegion {
 
 export function read_GPUBlitRegion(dt: DataView): GPUBlitRegion {
   const t = _b.SDL_GPUBlitRegion.read(dt);
+  return _read_GPUBlitRegion(t);
+}
+function _read_GPUBlitRegion(t: ReturnType<typeof _b.SDL_GPUBlitRegion.read>): GPUBlitRegion {
   return {
     texture: Deno.UnsafePointer.create(t.texture), /** SDL_GPUTexture * */
     mip_level: t.mip_level, /** Uint32 */
@@ -552,7 +556,10 @@ export function read_GPUBlitRegion(dt: DataView): GPUBlitRegion {
 }
 
 export function write_GPUBlitRegion(t: GPUBlitRegion, dt: DataView) {
-  _b.SDL_GPUBlitRegion.write({
+  _b.SDL_GPUBlitRegion.write(_write_GPUBlitRegion(t), dt);
+}
+export function _write_GPUBlitRegion(t: GPUBlitRegion): ReturnType<typeof _b.SDL_GPUBlitRegion.read> {
+  return {
     texture: Deno.UnsafePointer.value(t.texture), /** SDL_GPUTexture * */
     mip_level: t.mip_level, /** Uint32 */
     layer_or_depth_plane: t.layer_or_depth_plane, /** Uint32 */
@@ -560,7 +567,7 @@ export function write_GPUBlitRegion(t: GPUBlitRegion, dt: DataView) {
     y: t.y, /** Uint32 */
     w: t.w, /** Uint32 */
     h: t.h, /** Uint32 */
-  }, dt);
+  };
 }
 
 
@@ -942,6 +949,10 @@ export interface GPUVertexInputState {
 
 export function read_GPUVertexInputState(dt: DataView): GPUVertexInputState {
   const t = _b.SDL_GPUVertexInputState.read(dt);
+  return _read_GPUVertexInputState(t);
+}
+
+function _read_GPUVertexInputState(t: ReturnType<typeof _b.SDL_GPUVertexInputState.read>): GPUVertexInputState {
   return {
     vertex_buffer_descriptions: Deno.UnsafePointer.create(t.vertex_buffer_descriptions), /** const SDL_GPUVertexBufferDescription * */
     num_vertex_buffers: t.num_vertex_buffers, /** Uint32 */
@@ -951,12 +962,16 @@ export function read_GPUVertexInputState(dt: DataView): GPUVertexInputState {
 }
 
 export function write_GPUVertexInputState(t: GPUVertexInputState, dt: DataView) {
-  _b.SDL_GPUVertexInputState.write({
+  _b.SDL_GPUVertexInputState.write(_write_GPUVertexInputState(t), dt);
+}
+
+function _write_GPUVertexInputState(t: GPUVertexInputState): ReturnType<typeof _b.SDL_GPUVertexInputState.read> {
+  return {
     vertex_buffer_descriptions: Deno.UnsafePointer.value(t.vertex_buffer_descriptions), /** const SDL_GPUVertexBufferDescription * */
     num_vertex_buffers: t.num_vertex_buffers, /** Uint32 */
     vertex_attributes: Deno.UnsafePointer.value(t.vertex_attributes), /** const SDL_GPUVertexAttribute * */
     num_vertex_attributes: t.num_vertex_attributes, /** Uint32 */
-  }, dt);
+  }
 }
 
 
@@ -1455,6 +1470,9 @@ export interface GPUGraphicsPipelineTargetInfo {
 
 export function read_GPUGraphicsPipelineTargetInfo(dt: DataView): GPUGraphicsPipelineTargetInfo {
   const t = _b.SDL_GPUGraphicsPipelineTargetInfo.read(dt);
+  return _read_GPUGraphicsPipelineTargetInfo(t);
+}
+function _read_GPUGraphicsPipelineTargetInfo(t: ReturnType<typeof _b.SDL_GPUGraphicsPipelineTargetInfo.read>): GPUGraphicsPipelineTargetInfo {
   return {
     color_target_descriptions: Deno.UnsafePointer.create(t.color_target_descriptions), /** const SDL_GPUColorTargetDescription * */
     num_color_targets: t.num_color_targets, /** Uint32 */
@@ -1467,7 +1485,10 @@ export function read_GPUGraphicsPipelineTargetInfo(dt: DataView): GPUGraphicsPip
 }
 
 export function write_GPUGraphicsPipelineTargetInfo(t: GPUGraphicsPipelineTargetInfo, dt: DataView) {
-  _b.SDL_GPUGraphicsPipelineTargetInfo.write({
+  _b.SDL_GPUGraphicsPipelineTargetInfo.write(_write_GPUGraphicsPipelineTargetInfo(t), dt);
+}
+export function _write_GPUGraphicsPipelineTargetInfo(t: GPUGraphicsPipelineTargetInfo): ReturnType<typeof _b.SDL_GPUGraphicsPipelineTargetInfo.read> {
+  return {
     color_target_descriptions: Deno.UnsafePointer.value(t.color_target_descriptions), /** const SDL_GPUColorTargetDescription * */
     num_color_targets: t.num_color_targets, /** Uint32 */
     depth_stencil_format: t.depth_stencil_format, /** SDL_GPUTextureFormat */
@@ -1475,7 +1496,7 @@ export function write_GPUGraphicsPipelineTargetInfo(t: GPUGraphicsPipelineTarget
     padding1: t.padding1, /** Uint8 */
     padding2: t.padding2, /** Uint8 */
     padding3: t.padding3, /** Uint8 */
-  }, dt);
+  };
 }
 
 
@@ -1512,12 +1533,12 @@ export function read_GPUGraphicsPipelineCreateInfo(dt: DataView): GPUGraphicsPip
   return {
     vertex_shader: Deno.UnsafePointer.create(t.vertex_shader), /** SDL_GPUShader * */
     fragment_shader: Deno.UnsafePointer.create(t.fragment_shader), /** SDL_GPUShader * */
-    vertex_input_state: t.vertex_input_state, /** SDL_GPUVertexInputState */
+    vertex_input_state: _read_GPUVertexInputState(t.vertex_input_state), /** SDL_GPUVertexInputState */
     primitive_type: t.primitive_type, /** SDL_GPUPrimitiveType */
     rasterizer_state: t.rasterizer_state, /** SDL_GPURasterizerState */
     multisample_state: t.multisample_state, /** SDL_GPUMultisampleState */
     depth_stencil_state: t.depth_stencil_state, /** SDL_GPUDepthStencilState */
-    target_info: t.target_info, /** SDL_GPUGraphicsPipelineTargetInfo */
+    target_info: _read_GPUGraphicsPipelineTargetInfo(t.target_info), /** SDL_GPUGraphicsPipelineTargetInfo */
     props: t.props, /** SDL_PropertiesID */
   };
 }
@@ -1526,12 +1547,12 @@ export function write_GPUGraphicsPipelineCreateInfo(t: GPUGraphicsPipelineCreate
   _b.SDL_GPUGraphicsPipelineCreateInfo.write({
     vertex_shader: Deno.UnsafePointer.value(t.vertex_shader), /** SDL_GPUShader * */
     fragment_shader: Deno.UnsafePointer.value(t.fragment_shader), /** SDL_GPUShader * */
-    vertex_input_state: t.vertex_input_state, /** SDL_GPUVertexInputState */
+    vertex_input_state: _write_GPUVertexInputState(t.vertex_input_state), /** SDL_GPUVertexInputState */
     primitive_type: t.primitive_type, /** SDL_GPUPrimitiveType */
     rasterizer_state: t.rasterizer_state, /** SDL_GPURasterizerState */
     multisample_state: t.multisample_state, /** SDL_GPUMultisampleState */
     depth_stencil_state: t.depth_stencil_state, /** SDL_GPUDepthStencilState */
-    target_info: t.target_info, /** SDL_GPUGraphicsPipelineTargetInfo */
+    target_info: _write_GPUGraphicsPipelineTargetInfo(t.target_info), /** SDL_GPUGraphicsPipelineTargetInfo */
     props: t.props, /** SDL_PropertiesID */
   }, dt);
 }
@@ -1811,8 +1832,8 @@ export interface GPUBlitInfo {
 export function read_GPUBlitInfo(dt: DataView): GPUBlitInfo {
   const t = _b.SDL_GPUBlitInfo.read(dt);
   return {
-    source: t.source, /** SDL_GPUBlitRegion */
-    destination: t.destination, /** SDL_GPUBlitRegion */
+    source: _read_GPUBlitRegion(t.source), /** SDL_GPUBlitRegion */
+    destination: _read_GPUBlitRegion(t.destination), /** SDL_GPUBlitRegion */
     load_op: t.load_op, /** SDL_GPULoadOp */
     clear_color: t.clear_color, /** SDL_FColor */
     flip_mode: t.flip_mode, /** SDL_FlipMode */
@@ -1826,8 +1847,8 @@ export function read_GPUBlitInfo(dt: DataView): GPUBlitInfo {
 
 export function write_GPUBlitInfo(t: GPUBlitInfo, dt: DataView) {
   _b.SDL_GPUBlitInfo.write({
-    source: t.source, /** SDL_GPUBlitRegion */
-    destination: t.destination, /** SDL_GPUBlitRegion */
+    source: _write_GPUBlitRegion(t.source), /** SDL_GPUBlitRegion */
+    destination: _write_GPUBlitRegion(t.destination), /** SDL_GPUBlitRegion */
     load_op: t.load_op, /** SDL_GPULoadOp */
     clear_color: t.clear_color, /** SDL_FColor */
     flip_mode: t.flip_mode, /** SDL_FlipMode */
