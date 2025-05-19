@@ -95,27 +95,32 @@ import * as _ from "@denosaurs/byte-type";
  */
 export const SDL_GamepadBinding = new _.Struct({
   input_type: _.u32, /* SDL_GamepadBindingType */
-    union
-  button: _.i32, /* int */
-        struct
-  axis: _.i32, /* int */
-  axis_min: _.i32, /* int */
-  axis_max: _.i32, /* int */
-        } axis;
-        struct
-  hat: _.i32, /* int */
-  hat_mask: _.i32, /* int */
-        } hat;
-    } input;
+  // input: {
+  //   button: _.i32, /* int */
+  //
+  //   axis: {
+  //         axis: _.i32, /* int */
+  //         axis_min: _.i32, /* int */
+  //         axis_max: _.i32, /* int */
+  //   },
+  //
+  //   hat: {
+  //     hat: _.i32, /* int */
+  //     hat_mask: _.i32, /* int */
+  //   }
+  // },
+  input: new _.ArrayType(_.i32, 3),
   output_type: _.u32, /* SDL_GamepadBindingType */
-    union
-  button: _.u32, /* SDL_GamepadButton */
-        struct
-  axis: _.u32, /* SDL_GamepadAxis */
-  axis_min: _.i32, /* int */
-  axis_max: _.i32, /* int */
-        } axis;
-    } output;
+  // output: {
+  //   button: _.i32, /* int */
+  //
+  //   axis: {
+  //     axis: _.i32, /* int */
+  //     axis_min: _.i32, /* int */
+  //     axis_max: _.i32, /* int */
+  //   },
+  // },
+  output: new _.ArrayType(_.i32, 3),
 });
 
 

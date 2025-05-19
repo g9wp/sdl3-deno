@@ -75,7 +75,7 @@
 
 import * as _ from "../_utils.ts";
 import * as _b from "../_structs/SDL_gamepad.ts";
-
+import * as _e from "../enums/SDL_gamepad.ts";
 
 /**
  * A mapping between one joystick input to a gamepad control.
@@ -95,83 +95,96 @@ import * as _b from "../_structs/SDL_gamepad.ts";
  * @from SDL_gamepad.h:261
  */
 export interface GamepadBinding {
-  input_type: number; /* SDL_GamepadBindingType */
-    union
+  input: GamepadBindingInput;
+  output: GamepadBindingOutput;
+}
+
+export type GamepadBindingInput = GamepadBindingOutput | GamepadBindingHat;
+export type GamepadBindingOutput = GamepadBindingButton | GamepadBindingAxis;
+
+interface GamepadBindingType {
+  type: _e.SDL_GamepadBindingType; /** SDL_GamepadBindingType */
+}
+interface GamepadBindingButton extends GamepadBindingType {
+  type: _e.SDL_GamepadBindingType.BUTTON;
   button: number; /* int */
-        struct
-  axis: number; /* int */
+}
+interface GamepadBindingAxis extends GamepadBindingType {
+  type: _e.SDL_GamepadBindingType.AXIS;
+  axis: _e.SDL_GamepadAxis; /* SDL_GamepadAxis */
   axis_min: number; /* int */
   axis_max: number; /* int */
-        } axis;
-        struct
+}
+interface GamepadBindingHat extends GamepadBindingType {
+  type: _e.SDL_GamepadBindingType.HAT;
   hat: number; /* int */
   hat_mask: number; /* int */
-        } hat;
-    } input;
-  output_type: number; /* SDL_GamepadBindingType */
-    union
-  button: number; /* SDL_GamepadButton */
-        struct
-  axis: number; /* SDL_GamepadAxis */
-  axis_min: number; /* int */
-  axis_max: number; /* int */
-        } axis;
-    } output;
 }
 
 export function read_GamepadBinding(dt: DataView): GamepadBinding {
   const t = _b.SDL_GamepadBinding.read(dt);
+  const input: any = {};
+  input.type = t.input_type; /** SDL_GamepadBindingType */
+  switch (t.input_type) {
+    case _e.SDL_GamepadBindingType.BUTTON:
+      input.button = t.input[0]; /** int */
+      break;
+    case _e.SDL_GamepadBindingType.AXIS:
+      input.axis = t.input[0]; /** int */
+      input.axis_min = t.input[1]; /** int */
+      input.axis_max = t.input[2]; /** int */
+      break;
+    case _e.SDL_GamepadBindingType.HAT:
+      input.hat = t.input[0]; /** int */
+      input.hat_mask = t.input[1]; /** int */
+      break;
+    default:
+      throw new Error("Unknown input type");
+  }
+  const output: any = {};
+  output.type = t.output_type; /** SDL_GamepadBindingType */
+  switch (t.output_type) {
+    case _e.SDL_GamepadBindingType.BUTTON:
+      output.button = t.output[0]; /** int */
+      break;
+    case _e.SDL_GamepadBindingType.AXIS:
+      output.axis = t.output[0]; /** int */
+      output.axis_min = t.output[1]; /** int */
+      output.axis_max = t.output[2]; /** int */
+      break;
+    default:
+      throw new Error("Unknown output type");
+  }
+
   return {
-    input_type: t.input_type, /** SDL_GamepadBindingType */
-    union
-    button: t.button, /** int */
-        struct
-    axis: t.axis, /** int */
-    axis_min: t.axis_min, /** int */
-    axis_max: t.axis_max, /** int */
-        } axis;
-        struct
-    hat: t.hat, /** int */
-    hat_mask: t.hat_mask, /** int */
-        } hat;
-    } input;
-    output_type: t.output_type, /** SDL_GamepadBindingType */
-    union
-    button: t.button, /** SDL_GamepadButton */
-        struct
-    axis: t.axis, /** SDL_GamepadAxis */
-    axis_min: t.axis_min, /** int */
-    axis_max: t.axis_max, /** int */
-        } axis;
-    } output;
-  };
+    input: input as GamepadBindingInput,
+    output: output as GamepadBindingOutput,
+  } as GamepadBinding;
 }
 
 export function write_GamepadBinding(t: GamepadBinding, dt: DataView) {
+  function writeInput(input: GamepadBindingInput): number[] {
+    const r = [0, 0, 0];
+    switch (input.type) {
+      case _e.SDL_GamepadBindingType.BUTTON:
+        r[0] = input.button; /** int */
+        break;
+      case _e.SDL_GamepadBindingType.AXIS:
+        r[0] = input.axis; /** int */
+        r[1] = input.axis_min; /** int */
+        r[2] = input.axis_max; /** int */
+        break;
+      case _e.SDL_GamepadBindingType.HAT:
+        r[0] = input.hat; /** int */
+        r[1] = input.hat_mask; /** int */
+        break;
+    }
+    return r;
+  }
   _b.SDL_GamepadBinding.write({
-    input_type: t.input_type, /** SDL_GamepadBindingType */
-    union
-    button: t.button, /** int */
-        struct
-    axis: t.axis, /** int */
-    axis_min: t.axis_min, /** int */
-    axis_max: t.axis_max, /** int */
-        } axis;
-        struct
-    hat: t.hat, /** int */
-    hat_mask: t.hat_mask, /** int */
-        } hat;
-    } input;
-    output_type: t.output_type, /** SDL_GamepadBindingType */
-    union
-    button: t.button, /** SDL_GamepadButton */
-        struct
-    axis: t.axis, /** SDL_GamepadAxis */
-    axis_min: t.axis_min, /** int */
-    axis_max: t.axis_max, /** int */
-        } axis;
-    } output;
+    input_type: t.input.type, /** SDL_GamepadBindingType */
+    input: writeInput(t.input),
+    output_type: t.output.type, /** SDL_GamepadBindingType */
+    output: writeInput(t.output),
   }, dt);
 }
-
-
