@@ -1,5 +1,7 @@
 import * as _ from "../_utils.ts";
 import * as _b from "../_structs/SDL_textengine.ts";
+import { Rect } from "./SDL_rect.ts";
+import { FColor } from "./SDL_pixels.ts";
 
 
 /**

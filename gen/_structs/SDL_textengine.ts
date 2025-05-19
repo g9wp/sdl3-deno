@@ -1,4 +1,6 @@
 import * as _ from "@denosaurs/byte-type";
+import { SDL_Rect } from "./SDL_rect.ts";
+import { SDL_FColor } from "./SDL_pixels.ts";
 
 
 /**

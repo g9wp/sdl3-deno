@@ -33,6 +33,7 @@
 import * as _ from "@denosaurs/byte-type";
 import { SDL_Rect } from "./SDL_rect.ts";
 
+
 /**
  * Text created with TTF_CreateText()
  *
