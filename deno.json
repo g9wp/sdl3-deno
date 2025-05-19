@@ -1,6 +1,6 @@
 {
   "name": "@sdl3/sdl3-deno",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "license": "MIT",
   "exports": {
     ".": "./src/mod.ts",
@@ -15,12 +15,12 @@
     "./SDL": "./gen/SDL.ts",
     "./IMG": "./gen/IMG.ts",
     "./TTF": "./gen/TTF.ts",
+    "./structs": "./gen/structs/mod.ts",
+    "./enums": "./gen/enums/mod.ts",
     "./callbacks": "./gen/callbacks/mod.ts"
   },
   "publish": {
     "exclude": [
-      "./gen/_structs/SDL_gamepad.ts",
-      "./gen/structs/SDL_gamepad.ts",
       "./gen/macros",
       "*.test.ts"
     ]
