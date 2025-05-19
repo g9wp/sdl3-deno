@@ -74,6 +74,67 @@ export class Event extends EventUnion {
     return new DataView(this.#buffer.buffer);
   }
 
+
+  /**
+   * Asynchronously iterate over events at a specified interval.
+   *
+   * This method provides an asynchronous generator that yields events from the
+   * event queue at a configurable interval. It is designed to simplify event
+   * handling in applications, allowing for efficient polling of events without
+   * blocking the main thread.
+   *
+   * The `interval` parameter specifies the time in milliseconds between each
+   * iteration. By default, it is set to approximately 60 iterations per second
+   * (1000 / 60 ms). If provided, the `onIdle` callback will be invoked when no
+   * events are available during an iteration.
+   *
+   * The iterator stops yielding events if a `QUIT` event is encountered, ensuring
+   * that the application can gracefully handle shutdown requests.
+   *
+   * @example
+   * ```ts
+   * for await (const event of Event.iter(1000 / 60, drawFrame)) {
+   *     if (event.type === EventType.QUIT) {
+   *         console.log("Quit event received, shutting down...");
+   *         break;
+   *     }
+   *     // Handle other event types
+   * }
+   * ```
+   *
+   * @param interval The interval in milliseconds between iterations. Defaults to
+   *                 1000 / 60 (~60 FPS).
+   * @param onIdle An optional callback to invoke when no events are available.
+   * @yields The next event from the event queue.
+   */
+  async* iter(
+      interval: number = 1000 / 60,
+      onIdle?: () => void,
+  ): AsyncGenerator<Event> {
+    let nextFrame = Date.now() + interval;
+    while (true) {
+      while (this.poll()) {
+        const quit = this.type === EventType.QUIT;
+        yield this;
+        if (quit) return;
+      }
+
+      if (onIdle) onIdle();
+
+      const now = Date.now();
+      const remaining = nextFrame - now;
+      nextFrame += interval;
+      await new Promise((resolve) => setTimeout(resolve, remaining > 0 ? remaining : 0));
+    }
+  }
+
+  static iter(
+      interval: number = 1000 / 60,
+      onIdle?: () => void) : AsyncGenerator<Event> {
+    return new Event().iter(interval, onIdle);
+  }
+
+
   /**
    * Poll for currently pending events.
    *
