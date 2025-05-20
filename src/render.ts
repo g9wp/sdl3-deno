@@ -3154,7 +3154,7 @@ export class Texture {
    * @from SDL_render.h:1315 void SDL_UnlockTexture(SDL_Texture *texture);
    */
   unlock() {
-    return SDL.unlockTexture(this.pointer);
+    SDL.unlockTexture(this.pointer);
   }
 
   /**

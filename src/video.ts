@@ -712,7 +712,7 @@ export class Window {
    *
    * @from SDL_video.h:977 bool SDL_SetWindowFullscreenMode(SDL_Window *window, const SDL_DisplayMode *mode);
    */
-  setFullscreenMode(mode: DisplayModePtr) {
+  setFullscreenMode(mode: DisplayModePtr): boolean {
     return SDL.setWindowFullscreenMode(this.pointer, mode.pointer);
   }
 
@@ -2529,7 +2529,7 @@ export class Window {
    *
    * @from SDL_video.h:2517 bool SDL_SetWindowMouseRect(SDL_Window *window, const SDL_Rect *rect);
    */
-  setMouseRect(rect: _r.Rect) {
+  setMouseRect(rect: _r.Rect): boolean {
     const buf = new Uint32Array(4);
     _r.write_Rect(rect, new DataView(buf.buffer));
     return SDL.setWindowMouseRect(this.pointer, Deno.UnsafePointer.of(buf));
@@ -3028,7 +3028,7 @@ export class GL {
    * @from SDL_video.h:3017 void SDL_GL_ResetAttributes(void);
    */
   static resetAttributes() {
-    return SDL.glResetAttributes;
+    SDL.glResetAttributes();
   }
 
   /**

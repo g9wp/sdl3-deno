@@ -85,7 +85,7 @@ export function openFile(
     default_location?: string;
     allow_many?: boolean;
   } | FileCallback,
-) {
+): void {
   if (typeof options === "function") {
     return openFile({ callback: options });
   }
@@ -160,7 +160,7 @@ export function saveFile(
     filters?: FileFilter[];
     default_location?: string;
   } | FileCallback,
-) {
+): void {
   if (typeof options === "function") {
     return saveFile({ callback: options });
   }
@@ -229,7 +229,7 @@ export function openFolder(
     default_location?: string;
     allow_many?: boolean;
   } | FileCallback,
-) {
+): void {
   if (typeof options === "function") {
     return openFolder({ callback: options });
   }
@@ -300,7 +300,7 @@ export function withProperties(
     userdata?: Deno.PointerValue;
     props: number;
   },
-) {
+): void {
   const { callback, userdata, props, type } = options;
 
   SDL.showFileDialogWithProperties(

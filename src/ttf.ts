@@ -324,7 +324,7 @@ export class Font {
    *
    * @from SDL_ttf.h:279 SDL_PropertiesID TTF_GetFontProperties(TTF_Font *font);
    */
-  get properties() {
+  get properties(): number {
     return TTF.getFontProperties(this.pointer);
   }
 
@@ -2346,7 +2346,7 @@ export class GpuTextEngine extends TextEngine {
    * @from SDL_ttf.h:2023 void TTF_SetGPUTextEngineWinding(TTF_TextEngine *engine, TTF_GPUTextEngineWinding winding);
    */
   setWinding(winding: TTF.GPU_TEXTENGINE_WINDING) {
-    return TTF.setGpuTextEngineWinding(this.pointer, winding);
+    TTF.setGpuTextEngineWinding(this.pointer, winding);
   }
 
   /**
