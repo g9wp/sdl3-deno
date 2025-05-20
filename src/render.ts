@@ -65,6 +65,11 @@ import type {
   WindowPointer,
 } from "./pointer_type.ts";
 
+/**
+ * The `RenderDriver` class provides methods to interact with SDL's 2D rendering drivers.
+ * Rendering drivers are responsible for managing rendering and texture operations on a specific display.
+ * This class allows querying the available rendering drivers and retrieving their details.
+ */
 export class RenderDriver {
   /**
    * Get the number of 2D rendering drivers available for the current display.
@@ -121,6 +126,11 @@ export class RenderDriver {
   }
 }
 
+/**
+ * A structure representing rendering state
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
 export class Render {
   constructor(public pointer: RendererPointer) {}
 
@@ -172,10 +182,10 @@ export class Render {
     return {
       window: new Window(c.ptr! as WindowPointer),
       render: new Render(c.ptr! as RendererPointer),
-      [Symbol.dispose] () {
+      [Symbol.dispose]() {
         this.render.destroy();
         this.window.destroy();
-      }
+      },
     };
   }
 
@@ -2419,6 +2429,16 @@ export class Render {
   }
 }
 
+/**
+ * An efficient driver-specific representation of pixel data
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa SDL_CreateTexture
+ * @sa SDL_CreateTextureFromSurface
+ * @sa SDL_CreateTextureWithProperties
+ * @sa SDL_DestroyTexture
+ */
 export class Texture {
   constructor(public pointer: Deno.PointerObject) {}
 

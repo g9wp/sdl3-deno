@@ -45,6 +45,17 @@ import * as SDL from "../gen/sdl/events.ts";
  *
  * @example
  * ```ts
+ * for await (const event of Event.iter(frameInterval, () => {
+ *     // update game state, draw the current frame
+ *   })
+ * ) {
+ *   // decide what to do with this event.
+ *   if (event.type === EventType.QUIT) {
+ *     handleQuitEvent(event.quit);
+ *   }
+ * }
+ * ```
+ * ```ts
  * setInterval(() => {
  *     const event = new Event();
  *     while (event.poll()) {  // poll until all events are handled!
@@ -73,7 +84,6 @@ export class Event extends EventUnion {
   override get dt(): DataView {
     return new DataView(this.#buffer.buffer);
   }
-
 
   /**
    * Asynchronously iterate over events at a specified interval.
@@ -107,9 +117,9 @@ export class Event extends EventUnion {
    * @param onIdle An optional callback to invoke when no events are available.
    * @yields The next event from the event queue.
    */
-  async* iter(
-      interval: number = 1000 / 60,
-      onIdle?: () => void,
+  async *iter(
+    interval: number = 1000 / 60,
+    onIdle?: () => void,
   ): AsyncGenerator<Event> {
     let nextFrame = Date.now() + interval;
     while (true) {
@@ -124,16 +134,18 @@ export class Event extends EventUnion {
       const now = Date.now();
       const remaining = nextFrame - now;
       nextFrame += interval;
-      await new Promise((resolve) => setTimeout(resolve, remaining > 0 ? remaining : 0));
+      await new Promise((resolve) =>
+        setTimeout(resolve, remaining > 0 ? remaining : 0)
+      );
     }
   }
 
   static iter(
-      interval: number = 1000 / 60,
-      onIdle?: () => void) : AsyncGenerator<Event> {
+    interval: number = 1000 / 60,
+    onIdle?: () => void,
+  ): AsyncGenerator<Event> {
     return new Event().iter(interval, onIdle);
   }
-
 
   /**
    * Poll for currently pending events.

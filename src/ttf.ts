@@ -26,12 +26,22 @@ import { free } from "../gen/sdl/stdinc.ts";
 import type {
   IoStreamPointer,
   RendererPointer,
-  SurfacePointer
+  SurfacePointer,
 } from "./pointer_type.ts";
 type FontPointer = Deno.PointerValue<"TTF_Font">;
 type TextPointer = Deno.PointerValue<"TTF_Text">;
 type TextEnginePointer = Deno.PointerValue<"TTF_TextEngine">;
 
+/**
+ * Context for managing SDL_ttf library initialization and state.
+ *
+ * This class handles the initialization and cleanup of the SDL_ttf library.
+ * It follows a reference counting pattern where each successful initialization
+ * must be paired with a quit call. The library will only actually deinitialize
+ * when the quit count matches the initialization count.
+ *
+ * @since SDL_ttf 3.0.0
+ */
 export class TtfContext {
   #inited: boolean = false;
 
@@ -119,6 +129,19 @@ export class TtfContext {
   }
 }
 
+/**
+ * A font object for rendering text.
+ *
+ * This class represents a loaded font that can be used for text rendering operations.
+ * It provides methods for querying font metrics, rendering text to surfaces, and
+ * managing font properties like style, size, and direction.
+ *
+ * Font instances are created using static factory methods like `Font.open()` and
+ * must be properly disposed of using `close()` or the `[Symbol.dispose]()` method
+ * when no longer needed.
+ *
+ * @since SDL_ttf 3.0.0
+ */
 export class Font {
   constructor(public pointer: FontPointer) {}
 
@@ -237,7 +260,6 @@ export class Font {
     if (fontPointer === null) throw SdlError("openFont");
     return new Font(fontPointer);
   }
-
 
   /**
    * Dispose of a previously-created font.
@@ -2065,6 +2087,15 @@ export class Font {
   }
 }
 
+/**
+ * A text engine for rendering text with SDL_ttf.
+ *
+ * This class provides the base functionality for text rendering engines.
+ * Specific implementations are provided by subclasses like SurfaceTextEngine,
+ * RendererTextEngine, and GpuTextEngine.
+ *
+ * @since This class is available since SDL_ttf 3.0.0.
+ */
 export class TextEngine {
   constructor(public pointer: TextEnginePointer) {}
 
@@ -2150,7 +2181,6 @@ export class SurfaceTextEngine extends TextEngine {
   [Symbol.dispose]() {
     this.destroy();
   }
-
 }
 
 export class RendererTextEngine extends TextEngine {
@@ -2372,6 +2402,14 @@ export class GpuTextEngine extends TextEngine {
   }
 }
 
+/**
+ * A text object for rendering text with SDL_ttf.
+ *
+ * This class provides functionality for rendering and manipulating text using
+ * a text engine. It allows for text shaping, styling, and layout control.
+ *
+ * @since This class is available since SDL_ttf 3.0.0.
+ */
 export class Text {
   constructor(public pointer: TextPointer) {}
 

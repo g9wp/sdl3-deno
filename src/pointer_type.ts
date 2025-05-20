@@ -1,3 +1,15 @@
+/**
+ * SDL pointer types for Deno FFI.
+ *
+ * These types represent pointers to various SDL structures that can be passed
+ * between Deno and native SDL code via FFI (Foreign Function Interface).
+ *
+ * Each type is parameterized with the corresponding SDL structure name as a
+ * type-level string literal for better type safety and documentation.
+ *
+ * @module
+ */
+
 export type RendererPointer = Deno.PointerValue<"SDL_Renderer">;
 export type SurfacePointer = Deno.PointerValue<"SDL_Surface">;
 export type WindowPointer = Deno.PointerValue<"SDL_Window">;

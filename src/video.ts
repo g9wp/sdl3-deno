@@ -58,15 +58,39 @@ export { DisplayOrientation };
 import { cstr, read_cstr, SdlError } from "./_utils.ts";
 
 import type { SurfacePointer, WindowPointer } from "./pointer_type.ts";
+type DisplayModePointer = Deno.PointerObject<"SDL_DisplayMode">;
 
+/**
+ * The structure that defines a display mode.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetFullscreenDisplayModes
+ * @sa SDL_GetDesktopDisplayMode
+ * @sa SDL_GetCurrentDisplayMode
+ * @sa SDL_SetWindowFullscreenMode
+ * @sa SDL_GetWindowFullscreenMode
+ */
 export class DisplayModePtr {
-  constructor(public pointer: Deno.PointerObject) {}
+  constructor(public pointer: DisplayModePointer) {}
 
   get detail(): _.DisplayMode {
     return _.read_DisplayMode(UnsafeDataView(this.pointer, 40));
   }
 }
 
+/**
+ * The VideoDriver class provides static methods to interact with SDL's video drivers.
+ *
+ * This includes functionality to:
+ * - Get the number of available video drivers
+ * - Get names of specific video drivers
+ * - Get the name of the currently initialized video driver
+ *
+ * Video drivers are low-level system interfaces that handle window creation and management.
+ *
+ * @since SDL 3.2.0
+ */
 export class VideoDriver {
   /**
    * Get the number of video drivers compiled into SDL.
@@ -148,6 +172,20 @@ export function systemTheme(): SDL.SYSTEM_THEME {
   return SDL.getSystemTheme() as SDL.SYSTEM_THEME;
 }
 
+/**
+ * The Display class represents a connected display device.
+ *
+ * This provides functionality to:
+ * - Get display properties and information
+ * - Query display modes and resolutions
+ * - Get display bounds and usable area
+ * - Get display orientation and scaling
+ *
+ * Each display has a unique ID that remains constant while connected.
+ * Displays can be enumerated and queried using static methods.
+ *
+ * @since SDL 3.2.0
+ */
 export class Display {
   /**
    * This is a unique ID for a display for the time it is connected to the
@@ -438,7 +476,7 @@ export class Display {
     while (true) {
       const mode = p.ptr;
       if (!mode) break;
-      r.push(new DisplayModePtr(mode));
+      r.push(new DisplayModePtr(mode as DisplayModePointer));
     }
     free(modes);
     return r;
@@ -519,7 +557,7 @@ export class Display {
   get desktopDisplayMode(): DisplayModePtr {
     const r = SDL.getDesktopDisplayMode(this.id);
     if (!r) throw SdlError("getDesktopDisplayMode");
-    return new DisplayModePtr(r);
+    return new DisplayModePtr(r as DisplayModePointer);
   }
 
   /**
@@ -546,7 +584,7 @@ export class Display {
   get currentDisplayMode(): DisplayModePtr {
     const r = SDL.getDesktopDisplayMode(this.id);
     if (!r) throw SdlError("getDesktopDisplayMode");
-    return new DisplayModePtr(r);
+    return new DisplayModePtr(r as DisplayModePointer);
   }
 
   /**
@@ -599,6 +637,13 @@ export class Display {
   }
 }
 
+/**
+ * The struct used as an opaque handle to a window.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa SDL_CreateWindow
+ */
 export class Window {
   constructor(public pointer: WindowPointer) {
   }
@@ -735,7 +780,7 @@ export class Window {
   get fullscreenMode(): DisplayModePtr {
     const r = SDL.getWindowFullscreenMode(this.pointer);
     if (!r) throw SdlError("getWindowFullscreenMode");
-    return new DisplayModePtr(r);
+    return new DisplayModePtr(r as DisplayModePointer);
   }
 
   /**

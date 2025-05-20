@@ -1,8 +1,35 @@
+/**
+ * This module provides bindings and utilities for initializing and managing the SDL3 library within a Deno environment.
+ * It exposes the `SdlContext` class, which encapsulates the lifecycle of the SDL library, including initialization,
+ * subsystem management, and cleanup. Additionally, it re-exports common SDL constants such as `INIT` for convenience.
+ *
+ * Primary Exports:
+ * - `SdlContext`: A class for managing SDL initialization and lifecycle.
+ * - `INIT`: Constants for subsystem initialization flags.
+ *
+ * Usage:
+ * To use this module, create an instance of `SdlContext` with the desired initialization flags. The context ensures
+ * proper initialization and cleanup of SDL subsystems. Use the provided methods to manage subsystems dynamically.
+ *
+ * Example:
+ * ```ts
+ * const sdl = new SdlContext(SdlContext.INIT.VIDEO | SdlContext.INIT.AUDIO);
+ * // Use SDL functionality
+ * sdl.quit();
+ * ```
+ * @module
+ */
+
 import * as SDL from "../gen/sdl/init.ts";
 import { SdlError } from "./_utils.ts";
 
-export { INIT } from "../gen/SDL.ts";
+export { INIT } from "../gen/sdl/init.ts";
 
+/**
+ * The `SdlContext` class manages the initialization and lifecycle of the SDL library.
+ * It ensures that SDL is initialized only once and provides methods for managing subsystems.
+ * The class also supports automatic cleanup using the `Symbol.dispose` method.
+ */
 export class SdlContext {
   static #inited: boolean = false;
 
