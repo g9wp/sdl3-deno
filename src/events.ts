@@ -31,9 +31,72 @@
  */
 
 import { EventType, EventUnion } from "../gen/events.ts";
+import * as SDL from "../gen/sdl/events.ts";
+import type { WindowPointer } from "./pointer_type.ts";
+import { callbacks as CB } from "../gen/callbacks/SDL_events.ts";
+import { Buf, UnsafeDataView } from "@g9wp/ptr";
+import { SdlError } from "./_utils.ts";
+
 export { EventType };
 
-import * as SDL from "../gen/sdl/events.ts";
+export const SizeOfSdlEvent = 128;
+
+type EventPointer = Deno.PointerValue<"SDL_Event">;
+
+type EventFilter = (
+  userdata: Deno.PointerValue,
+  event: EventPointer,
+) => boolean;
+
+type EventFilterUnsafeCallback = Deno.UnsafeCallback<typeof CB.SDL_EventFilter>;
+
+function createCb(filter: EventFilter): EventFilterUnsafeCallback {
+  return new Deno.UnsafeCallback(
+    CB.SDL_EventFilter,
+    (userdata: Deno.PointerValue, event: Deno.PointerValue): boolean => {
+      return filter(userdata, event as EventPointer);
+    },
+  );
+}
+
+const eventWatchers = {
+  map: new Array<{
+    filter: EventFilter;
+    userdata: Deno.PointerValue;
+    callback: EventFilterUnsafeCallback;
+  }>(),
+
+  add(
+    filter: EventFilter,
+    userdata: Deno.PointerValue,
+    callback: EventFilterUnsafeCallback,
+  ) {
+    this.map.push({ filter, userdata, callback });
+  },
+
+  get(
+    filter: EventFilter,
+    userdata: Deno.PointerValue,
+  ): EventFilterUnsafeCallback | null {
+    return this.map.find((i) => i.filter === filter && i.userdata === userdata)
+      ?.callback ?? null;
+  },
+
+  remove(
+    filter: EventFilter,
+    userdata: Deno.PointerValue,
+  ): EventFilterUnsafeCallback | null {
+    const index = this.map.findIndex((i) =>
+      i.filter === filter && i.userdata === userdata
+    );
+    if (index !== -1) {
+      const r = this.map[index].callback;
+      this.map.splice(index, 1);
+      return r;
+    }
+    return null;
+  },
+};
 
 /**
  * Represents an SDL event with methods to poll, push, and access various event types.
@@ -71,9 +134,15 @@ import * as SDL from "../gen/sdl/events.ts";
  * ```
  */
 export class Event extends EventUnion {
-  #buffer: Uint8Array = new Uint8Array(128);
-  get pointer(): Deno.PointerObject {
-    return Deno.UnsafePointer.of(this.#buffer)!;
+  #buffer: Uint8Array = new Uint8Array(SizeOfSdlEvent);
+
+  constructor(public nonOwnedPointer: EventPointer = null) {
+    super();
+  }
+
+  get pointer(): Deno.PointerObject<"SDL_Event"> {
+    return this.nonOwnedPointer ??
+      Deno.UnsafePointer.of(this.#buffer)! as Deno.PointerObject<"SDL_Event">;
   }
 
   type: number =
@@ -82,7 +151,9 @@ export class Event extends EventUnion {
   //timestamp: bigint = 0n; /**< Uint64: In nanoseconds, populated using SDL_GetTicksNS() */
 
   override get dt(): DataView {
-    return new DataView(this.#buffer.buffer);
+    return this.nonOwnedPointer
+      ? UnsafeDataView(this.nonOwnedPointer, SizeOfSdlEvent)
+      : new DataView(this.#buffer.buffer);
   }
 
   /**
@@ -329,5 +400,502 @@ export class Event extends EventUnion {
    */
   override push(): boolean {
     return SDL.pushEvent(this.pointer);
+  }
+
+  /**
+   * Check the event queue for messages and optionally return them.
+   *
+   * `action` may be any of the following:
+   *
+   * - `SDL_ADDEVENT`: up to `numevents` events will be added to the back of the
+   *   event queue.
+   * - `SDL_PEEKEVENT`: `numevents` events at the front of the event queue,
+   *   within the specified minimum and maximum type, will be returned to the
+   *   caller and will _not_ be removed from the queue. If you pass NULL for
+   *   `events`, then `numevents` is ignored and the total number of matching
+   *   events will be returned.
+   * - `SDL_GETEVENT`: up to `numevents` events at the front of the event queue,
+   *   within the specified minimum and maximum type, will be returned to the
+   *   caller and will be removed from the queue.
+   *
+   * You may have to call SDL_PumpEvents() before calling this function.
+   * Otherwise, the events may not be ready to be filtered when you call
+   * SDL_PeepEvents().
+   *
+   * @param events destination buffer for the retrieved events, may be NULL to
+   *               leave the events in the queue and return the number of events
+   *               that would have been stored.
+   * @param numevents if action is SDL_ADDEVENT, the number of events to add
+   *                  back to the event queue; if action is SDL_PEEKEVENT or
+   *                  SDL_GETEVENT, the maximum number of events to retrieve.
+   * @param action action to take; see [Remarks](#remarks) for details.
+   * @param minType minimum value of the event type to be considered;
+   *                SDL_EVENT_FIRST is a safe choice.
+   * @param maxType maximum value of the event type to be considered;
+   *                SDL_EVENT_LAST is a safe choice.
+   * @returns the number of events actually stored or -1 on failure; call
+   *          SDL_GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_PollEvent
+   * @sa SDL_PumpEvents
+   * @sa SDL_PushEvent
+   *
+   * @from SDL_events.h:1128 int SDL_PeepEvents(SDL_Event *events, int numevents, SDL_EventAction action, Uint32 minType, Uint32 maxType);
+   */
+  static peep(
+    events: EventArray | number,
+    action: SDL.SDL_EventAction,
+    minType: number,
+    maxType: number,
+  ): number {
+    if (typeof events === "number") {
+      const r = SDL.peepEvents(null, events, action, minType, maxType);
+      if (r === -1) throw SdlError("peepEvents");
+      return r;
+    }
+
+    const r = SDL.peepEvents(
+      Deno.UnsafePointer.of(events.buf),
+      events.maxEvents,
+      action,
+      minType,
+      maxType,
+    );
+    if (r === -1) throw SdlError("peepEvents");
+    if (action !== SDL.SDL_EventAction.ADDEVENT) {
+      events.numEvents = r;
+    }
+    return r;
+  }
+
+  /**
+   * Check for the existence of a certain event type in the event queue.
+   *
+   * If you need to check for a range of event types, use SDL_HasEvents()
+   * instead.
+   *
+   * @param type the type of event to be queried; see SDL_EventType for details.
+   * @returns true if events matching `type` are present, or false if events
+   *          matching `type` are not present.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_HasEvents
+   *
+   * @from SDL_events.h:1147 bool SDL_HasEvent(Uint32 type);
+   */
+  static has(type: number): boolean {
+    return SDL.hasEvent(type);
+  }
+
+  /**
+   * Check for the existence of certain event types in the event queue.
+   *
+   * If you need to check for a single event type, use SDL_HasEvent() instead.
+   *
+   * @param minType the low end of event type to be queried, inclusive; see
+   *                SDL_EventType for details.
+   * @param maxType the high end of event type to be queried, inclusive; see
+   *                SDL_EventType for details.
+   * @returns true if events with type >= `minType` and <= `maxType` are
+   *          present, or false if not.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_HasEvents
+   *
+   * @from SDL_events.h:1168 bool SDL_HasEvents(Uint32 minType, Uint32 maxType);
+   */
+  static hasRange(minType: number, maxType: number): boolean {
+    return SDL.hasEvents(minType, maxType);
+  }
+
+  /**
+   * Clear events of a specific type from the event queue.
+   *
+   * This will unconditionally remove any events from the queue that match
+   * `type`. If you need to remove a range of event types, use SDL_FlushEvents()
+   * instead.
+   *
+   * It's also normal to just ignore events you don't care about in your event
+   * loop without calling this function.
+   *
+   * This function only affects currently queued events. If you want to make
+   * sure that all pending OS events are flushed, you can call SDL_PumpEvents()
+   * on the main thread immediately before the flush call.
+   *
+   * If you have user events with custom data that needs to be freed, you should
+   * use SDL_PeepEvents() to remove and clean up those events before calling
+   * this function.
+   *
+   * @param type the type of event to be cleared; see SDL_EventType for details.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_FlushEvents
+   *
+   * @from SDL_events.h:1196 void SDL_FlushEvent(Uint32 type);
+   */
+  flush(type: number) {
+    SDL.flushEvent(type);
+  }
+
+  /**
+   * Clear events of a range of types from the event queue.
+   *
+   * This will unconditionally remove any events from the queue that are in the
+   * range of `minType` to `maxType`, inclusive. If you need to remove a single
+   * event type, use SDL_FlushEvent() instead.
+   *
+   * It's also normal to just ignore events you don't care about in your event
+   * loop without calling this function.
+   *
+   * This function only affects currently queued events. If you want to make
+   * sure that all pending OS events are flushed, you can call SDL_PumpEvents()
+   * on the main thread immediately before the flush call.
+   *
+   * @param minType the low end of event type to be cleared, inclusive; see
+   *                SDL_EventType for details.
+   * @param maxType the high end of event type to be cleared, inclusive; see
+   *                SDL_EventType for details.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_FlushEvent
+   *
+   * @from SDL_events.h:1223 void SDL_FlushEvents(Uint32 minType, Uint32 maxType);
+   */
+  flushRange(minType: number, maxType: number) {
+    SDL.flushEvents(minType, maxType);
+  }
+
+  /**
+   * Set up a filter to process all events before they are added to the internal
+   * event queue.
+   *
+   * If you just want to see events without modifying them or preventing them
+   * from being queued, you should use SDL_AddEventWatch() instead.
+   *
+   * If the filter function returns true when called, then the event will be
+   * added to the internal queue. If it returns false, then the event will be
+   * dropped from the queue, but the internal state will still be updated. This
+   * allows selective filtering of dynamically arriving events.
+   *
+   * **WARNING**: Be very careful of what you do in the event filter function,
+   * as it may run in a different thread!
+   *
+   * On platforms that support it, if the quit event is generated by an
+   * interrupt signal (e.g. pressing Ctrl-C), it will be delivered to the
+   * application at the next event poll.
+   *
+   * Note: Disabled events never make it to the event filter function; see
+   * SDL_SetEventEnabled().
+   *
+   * Note: Events pushed onto the queue with SDL_PushEvent() get passed through
+   * the event filter, but events pushed onto the queue with SDL_PeepEvents() do
+   * not.
+   *
+   * @param filter an SDL_EventFilter function to call when an event happens.
+   * @param userdata a pointer that is passed to `filter`.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_AddEventWatch
+   * @sa SDL_SetEventEnabled
+   * @sa SDL_GetEventFilter
+   * @sa SDL_PeepEvents
+   * @sa SDL_PushEvent
+   *
+   * @from SDL_events.h:1419 void SDL_SetEventFilter(SDL_EventFilter filter, void *userdata);
+   */
+  static setFilter(filter: EventFilter, userdata: Deno.PointerValue) {
+    const cb = createCb(filter);
+    SDL.setEventFilter(cb.pointer, userdata);
+    eventWatchers.add(filter, userdata, cb);
+  }
+  static setFilterRaw(filter: Deno.PointerValue, userdata: Deno.PointerValue) {
+    SDL.setEventFilter(filter, userdata);
+  }
+
+  /**
+   * Query the current event filter.
+   *
+   * This function can be used to "chain" filters, by saving the existing filter
+   * before replacing it with a function that will call that saved filter.
+   *
+   * @param filter the current callback function will be stored here.
+   * @param userdata the pointer that is passed to the current event filter will
+   *                 be stored here.
+   * @returns true on success or false if there is no event filter set.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_SetEventFilter
+   *
+   * @from SDL_events.h:1438 bool SDL_GetEventFilter(SDL_EventFilter *filter, void **userdata);
+   */
+  static getFilter():
+    | { filter: EventFilter; userdata: Deno.PointerValue }
+    | null {
+    const raw = Event.getFilterRaw();
+    if (!raw) return null;
+    const { filter, userdata } = raw;
+
+    const f = eventWatchers.map.find((e) =>
+      e.callback.pointer as Deno.PointerValue === filter &&
+      e.userdata === userdata
+    );
+    if (!f) return null;
+    return { filter: f.filter, userdata: f.userdata };
+  }
+  static getFilterRaw():
+      | { filter: Deno.PointerValue; userdata: Deno.PointerValue }
+      | null {
+    const b = Buf.of(BigUint64Array, 2);
+    if (!SDL.getEventFilter(b.pointer, b.pointerOf(1))) return null;
+    const filter = b.pv;
+    const userdata = b.pvOf(1);
+    return { filter, userdata };
+  }
+
+  /**
+   * Add a callback to be triggered when an event is added to the event queue.
+   *
+   * `filter` will be called when an event happens, and its return value is
+   * ignored.
+   *
+   * **WARNING**: Be very careful of what you do in the event filter function,
+   * as it may run in a different thread!
+   *
+   * If the quit event is generated by a signal (e.g. SIGINT), it will bypass
+   * the internal queue and be delivered to the watch callback immediately, and
+   * arrive at the next event poll.
+   *
+   * Note: the callback is called for events posted by the user through
+   * SDL_PushEvent(), but not for disabled events, nor for events by a filter
+   * callback set with SDL_SetEventFilter(), nor for events posted by the user
+   * through SDL_PeepEvents().
+   *
+   * @param filter an SDL_EventFilter function to call when an event happens.
+   * @param userdata a pointer that is passed to `filter`.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_RemoveEventWatch
+   * @sa SDL_SetEventFilter
+   *
+   * @from SDL_events.h:1470 bool SDL_AddEventWatch(SDL_EventFilter filter, void *userdata);
+   */
+  static addWatch(filter: EventFilter, userdata: Deno.PointerValue) {
+    const watcher = createCb(filter);
+    if (!SDL.addEventWatch(watcher.pointer, userdata)) {
+      watcher.close();
+      throw SdlError("addEventWatch");
+    }
+    eventWatchers.add(filter, userdata, watcher);
+  }
+
+  /**
+   * Remove an event watch callback added with SDL_AddEventWatch().
+   *
+   * This function takes the same input as SDL_AddEventWatch() to identify and
+   * delete the corresponding callback.
+   *
+   * @param filter the function originally passed to SDL_AddEventWatch().
+   * @param userdata the pointer originally passed to SDL_AddEventWatch().
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_AddEventWatch
+   *
+   * @from SDL_events.h:1487 void SDL_RemoveEventWatch(SDL_EventFilter filter, void *userdata);
+   */
+  static removeWatch(filter: EventFilter, userdata: Deno.PointerValue) {
+    const watcher = eventWatchers.remove(filter, userdata);
+    if (!watcher) return;
+    SDL.removeEventWatch(watcher.pointer, userdata);
+  }
+
+  /**
+   * Run a specific filter function on the current event queue, removing any
+   * events for which the filter returns false.
+   *
+   * See SDL_SetEventFilter() for more information. Unlike SDL_SetEventFilter(),
+   * this function does not change the filter permanently, it only uses the
+   * supplied filter until this function returns.
+   *
+   * @param filter the SDL_EventFilter function to call when an event happens.
+   * @param userdata a pointer that is passed to `filter`.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_GetEventFilter
+   * @sa SDL_SetEventFilter
+   *
+   * @from SDL_events.h:1507 void SDL_FilterEvents(SDL_EventFilter filter, void *userdata);
+   */
+  static filter(filter: EventFilter, userdata: Deno.PointerValue) {
+    const cb = createCb(filter);
+    SDL.filterEvents(cb.pointer, userdata);
+    cb.close();
+  }
+
+  /**
+   * Set the state of processing events by type.
+   *
+   * @param type the type of event; see SDL_EventType for details.
+   * @param enabled whether to process the event or not.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_EventEnabled
+   *
+   * @from SDL_events.h:1521 void SDL_SetEventEnabled(Uint32 type, bool enabled);
+   */
+  static setEnabled(type: number, enabled: boolean) {
+    SDL.setEventEnabled(type, enabled);
+  }
+
+  /**
+   * Query the state of processing events by type.
+   *
+   * @param type the type of event; see SDL_EventType for details.
+   * @returns true if the event is being processed, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_SetEventEnabled
+   *
+   * @from SDL_events.h:1535 bool SDL_EventEnabled(Uint32 type);
+   */
+  static isEnabled(type: number): boolean {
+    return SDL.eventEnabled(type);
+  }
+
+  /**
+   * Allocate a set of user-defined events, and return the beginning event
+   * number for that set of events.
+   *
+   * @param numevents the number of events to be allocated.
+   * @returns the beginning event number, or 0 if numevents is invalid or if
+   *          there are not enough user-defined events left.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_PushEvent
+   *
+   * @from SDL_events.h:1551 Uint32 SDL_RegisterEvents(int numevents);
+   */
+  static register(numevents: number): number {
+    const r = SDL.registerEvents(numevents);
+    if (r === 0) {
+      throw new Error(
+        "numevents is invalid or there are not enough user-defined events left",
+      );
+    }
+    return r;
+  }
+
+  /**
+   * Get window associated with an event.
+   *
+   * @param event an event containing a `windowID`.
+   * @returns the associated window on success or NULL if there is none.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_PollEvent
+   * @sa SDL_WaitEvent
+   * @sa SDL_WaitEventTimeout
+   *
+   * @from SDL_events.h:1567 SDL_Window * SDL_GetWindowFromEvent(const SDL_Event *event);
+   */
+  get windowPointer(): WindowPointer {
+    return SDL.getWindowFromEvent(this.pointer) as WindowPointer;
+  }
+}
+
+export class EventArray extends EventUnion {
+  buf: Uint8Array;
+  numEvents = 0;
+
+  constructor(public maxEvents: number) {
+    super();
+    this.buf = new Uint8Array(this.maxEvents * SizeOfSdlEvent);
+  }
+  override push(): void {
+    if (this.numEvents >= this.maxEvents) {
+      throw new Error("PeepEvents buffer full");
+    }
+    this.numEvents++;
+  }
+  override get dt(): DataView {
+    if (this.numEvents >= this.maxEvents) {
+      throw new Error("PeepEvents buffer full");
+    }
+    return new DataView(
+      this.buf.buffer,
+      this.numEvents * SizeOfSdlEvent,
+      SizeOfSdlEvent,
+    );
+  }
+
+  get(index: number, f: (event: EventUnion) => void) {
+    if (index >= this.numEvents) {
+      throw new Error("PeepEvents index out of range");
+    }
+    const t = this.numEvents;
+    this.numEvents = index;
+    try {
+      f(this);
+    } finally {
+      this.numEvents = t;
+    }
+  }
+
+  fold(f: (event: EventUnion, i: number) => boolean) {
+    const n = this.numEvents;
+    try {
+      for (let i = 0; i < n; ++i) {
+        this.numEvents = i;
+        if (!f(this, i)) {
+          break;
+        }
+      }
+    } finally {
+      this.numEvents = n;
+    }
   }
 }
