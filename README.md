@@ -19,9 +19,9 @@ Deno FFI bindings for SDL3 libraries with TypeScript wrappers.
 ## Installation
 
 1. `deno add jsr:@sdl3/sdl3-deno` or Clone the repository
-2. Install [SDL3 runtime libraries](https://github.com/libsdl-org/SDL/releases) and set the `DENO_SDL3_PATH` environment variable (or install them into the `./sdl3` directory) [`gen/_util.ts`]
+2. Install [SDL3 runtime libraries](https://github.com/libsdl-org) and set the `DENO_SDL3_PATH` environment variable (or install them into the `./sdl3` directory) [`gen/_util.ts`]
 
-It's recommended to use an environment file: https://docs.deno.com/runtime/reference/env_variables/
+It's recommended to use an environment file [`deno run -A --env-file=.env example.ts`](https://docs.deno.com/runtime/reference/env_variables/)
 
 ```.env
 DENO_SDL3_PATH=/path/to/sdl3
@@ -47,7 +47,7 @@ import * as MessageBox from "@sdl3/sdl3-deno/messagebox";
 import { Event, EventType } from "@sdl3/sdl3-deno/events";
 
 // some modules are not yet published - you can use them directly from source by cloning the repository
-import * as structs from './gen/structs/mod.ts';
+import * as macros from './gen/macros/mod.ts';
 
 ```
 
@@ -194,12 +194,10 @@ The wrappers can be found at the `src` directory.
 - `@sdl3/sdl3-deno/ttf` provides font or text renderer
 
 ## Credits Or Inspiration
-
-- SDL3 Development Team - https://github.com/libsdl-org/SDL
-- [littledivy/deno_sdl2](https://github.com/littledivy/deno_sdl2) SDL2 Deno bindings inspiration
-- [smack0007/SDL_ts](https://github.com/smack0007/SDL_ts) Similar project for SDL2
-- [maia-s/sdl3-sys-rs](https://github.com/maia-s/sdl3-sys-rs) A Rust crate for SDL3 bindings
-
+- [SDL Development Team](https://github.com/libsdl-org) for providing the SDL C libraries
+- [littledivy/deno_sdl2](https://github.com/littledivy/deno_sdl2) for inspiration on building Deno bindings
+- [maia-s/sdl3-sys-rs](https://github.com/maia-s/sdl3-sys-rs) for inspiration on parsing SDL C header files
+- [smack0007/SDL_ts](https://github.com/smack0007/SDL_ts) as a similar SDL2 project
 
 ## Contributing
 
