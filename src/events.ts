@@ -850,6 +850,7 @@ export class Event extends EventUnion {
 export class EventArray extends EventUnion {
   buf: Uint8Array;
   numEvents = 0;
+  type: number = -1;
 
   constructor(public maxEvents: number) {
     super();
