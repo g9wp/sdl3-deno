@@ -9,6 +9,8 @@ export { SdlContext } from "./sdl.ts";
 
 export { Tray } from "./tray.ts";
 
+export { Surface } from "./surface.ts";
+
 import * as Dialog from "./dialog.ts";
 export { Dialog };
 

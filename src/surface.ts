@@ -274,4 +274,8 @@ export class Surface {
     destroySurface(this.pointer);
     this.pointer = null;
   }
+
+  [Symbol.dispose]() {
+    this.destroy();
+  }
 }
