@@ -64,6 +64,7 @@ import type {
   SurfacePointer,
   WindowPointer,
 } from "./pointer_type.ts";
+type TexturePointer = Deno.PointerValue<"SDL_Texture">;
 
 /**
  * The `RenderDriver` class provides methods to interact with SDL's 2D rendering drivers.
@@ -577,7 +578,7 @@ export class Render {
   ): Texture {
     const r = SDL.createTexture(this.pointer, format, access, w, h);
     if (!r) throw SdlError("createTexture");
-    return new Texture(r);
+    return new Texture(r as TexturePointer);
   }
 
   /**
@@ -611,7 +612,7 @@ export class Render {
   createTextureFromSurface(surface: SurfacePointer): Texture {
     const r = SDL.createTextureFromSurface(this.pointer, surface);
     if (!r) throw SdlError("createTextureFromSurface");
-    return new Texture(r);
+    return new Texture(r as TexturePointer);
   }
 
   /**
@@ -729,7 +730,7 @@ export class Render {
   createTextureWithProperties(props: number): Texture {
     const r = SDL.createTextureWithProperties(this.pointer, props);
     if (!r) throw SdlError("createTextureWithProperties");
-    return new Texture(r);
+    return new Texture(r as TexturePointer);
   }
 
   /**
@@ -783,7 +784,7 @@ export class Render {
   get target(): Texture {
     const r = SDL.getRenderTarget(this.pointer);
     if (r === null) throw SdlError("getRenderTarget");
-    return new Texture(r);
+    return new Texture(r as TexturePointer);
   }
 
   /**
@@ -2440,7 +2441,7 @@ export class Render {
  * @sa SDL_DestroyTexture
  */
 export class Texture {
-  constructor(public pointer: Deno.PointerObject) {}
+  constructor(public pointer: TexturePointer) {}
 
   /**
    * Get the properties associated with a texture.
@@ -3195,6 +3196,12 @@ export class Texture {
    * @from SDL_render.h:2391 void SDL_DestroyTexture(SDL_Texture *texture);
    */
   destroy() {
+    if (!this.pointer) return;
     SDL.destroyTexture(this.pointer);
+    this.pointer = null;
+  }
+
+  [Symbol.dispose]() {
+    this.destroy();
   }
 }
