@@ -54,7 +54,7 @@ import { type Vertex, write_Vertex } from "../gen/structs/SDL_render.ts";
 import * as _r from "../gen/structs/SDL_rect.ts";
 import { Window } from "./video.ts";
 import { cstr, read_cstr, SdlError } from "./_utils.ts";
-import { writeFPoint, writeFRect, writeRect } from "./rect.ts";
+import { type Size, writeFPoint, writeFRect, writeRect } from "./rect.ts";
 import {
   Buf,
   f32 as _f32,
@@ -500,7 +500,7 @@ export class Render {
    *
    * @from SDL_render.h:507 bool SDL_GetRenderOutputSize(SDL_Renderer *renderer, int *w, int *h);
    */
-  get outputSize(): { w: number; h: number } {
+  get outputSize(): Size {
     if (!SDL.getRenderOutputSize(this.pointer, _i32.p0, _i32.p1)) {
       throw SdlError("getRenderOutputSize");
     }
@@ -530,7 +530,7 @@ export class Render {
    *
    * @from SDL_render.h:530 bool SDL_GetCurrentRenderOutputSize(SDL_Renderer *renderer, int *w, int *h);
    */
-  get currentOutputSize(): { w: number; h: number } {
+  get currentOutputSize(): Size {
     if (!SDL.getCurrentRenderOutputSize(this.pointer, _i32.p0, _i32.p1)) {
       throw SdlError("getCurrentRenderOutputSize");
     }
@@ -940,17 +940,17 @@ export class Render {
   coordinatesFromWindow(
     window_x: number,
     window_y: number,
-  ): { x: number; y: number } {
+  ): _r.FPoint {
     if (
       !SDL.renderCoordinatesFromWindow(
         this.pointer,
         window_x,
         window_y,
-        _i32.p0,
-        _i32.p1,
+        _f32.p0,
+        _f32.p1,
       )
     ) throw SdlError("renderCoordinatesFromWindow");
-    return { x: _i32.v0, y: _i32.v1 };
+    return { x: _f32.v0, y: _f32.v1 };
   }
 
   /**
@@ -986,7 +986,7 @@ export class Render {
   coordinatesToWindow(
     x: number,
     y: number,
-  ): { window_x: number; window_y: number } {
+  ): _r.FPoint {
     if (
       !SDL.renderCoordinatesToWindow(
         this.pointer,
@@ -996,7 +996,7 @@ export class Render {
         _f32.p1,
       )
     ) throw SdlError("renderCoordinatesToWindow");
-    return { window_x: _f32.v0, window_y: _f32.v1 };
+    return { x: _f32.v0, y: _f32.v1 };
   }
 
   /**
@@ -2546,7 +2546,7 @@ export class Texture {
    *
    * @from SDL_render.h:864 bool SDL_GetTextureSize(SDL_Texture *texture, float *w, float *h);
    */
-  get size(): { w: number; h: number } {
+  get size(): Size {
     const w = new Float32Array(1);
     const h = new Float32Array(1);
     if (
