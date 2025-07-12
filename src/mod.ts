@@ -23,6 +23,6 @@ export { openUrl } from "./misc.ts";
 
 export { Render, RenderDriver, Texture } from "./render.ts";
 
-export { DisplayModePtr, VideoDriver, Window } from "./video.ts";
+export { Display, DisplayModePtr, VideoDriver, Window } from "./video.ts";
 
 export { Properties, PropertyType } from "./properties.ts";

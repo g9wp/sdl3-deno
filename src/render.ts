@@ -61,6 +61,7 @@ import {
   i32 as _i32,
   ptr as _ptr,
   toDataView,
+  u32 as _u32,
   u8 as _u8,
 } from "@g9wp/ptr";
 import { Surface } from "./surface.ts";
@@ -773,9 +774,9 @@ export class Render {
    *
    * @from SDL_render.h:1359 SDL_Texture * SDL_GetRenderTarget(SDL_Renderer *renderer);
    */
-  get target(): Texture {
+  get target(): Texture | null {
     const r = SDL.getRenderTarget(this.pointer);
-    if (r === null) throw SdlError("getRenderTarget");
+    if (r === null) return null;
     return new Texture(r as TexturePointer);
   }
 
@@ -2841,11 +2842,10 @@ export class Texture {
    * @from SDL_render.h:1087 bool SDL_GetTextureBlendMode(SDL_Texture *texture, SDL_BlendMode *blendMode);
    */
   get blendMode(): number {
-    const blendMode = new Int32Array(1);
     if (
-      !SDL.getTextureBlendMode(this.pointer, Deno.UnsafePointer.of(blendMode))
+      !SDL.getTextureBlendMode(this.pointer, _u32.p0)
     ) throw SdlError("getTextureBlendMode");
-    return blendMode[0];
+    return _u32.v0;
   }
 
   /**
@@ -2889,11 +2889,10 @@ export class Texture {
    * @from SDL_render.h:1123 bool SDL_GetTextureScaleMode(SDL_Texture *texture, SDL_ScaleMode *scaleMode);
    */
   get scaleMode(): number {
-    const scaleMode = new Int32Array(1);
     if (
-      !SDL.getTextureScaleMode(this.pointer, Deno.UnsafePointer.of(scaleMode))
+      !SDL.getTextureScaleMode(this.pointer, _i32.p0)
     ) throw SdlError("getTextureScaleMode");
-    return scaleMode[0];
+    return _i32.v0;
   }
 
   /**

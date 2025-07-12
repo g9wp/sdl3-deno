@@ -48,11 +48,19 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
-import { Cursor, toDataView, UnsafeDataView } from "@g9wp/ptr";
+import {
+  Cursor,
+  f32 as _f32,
+  i32 as _i32,
+  u32 as _u32,
+  u64 as _u64,
+  UnsafeDataView,
+} from "@g9wp/ptr";
 import * as SDL from "../gen/sdl/video.ts";
 import { free } from "../gen/sdl/stdinc.ts";
 import * as _r from "../gen/structs/SDL_rect.ts";
 import * as _ from "../gen/structs/SDL_video.ts";
+import type { Size } from "./rect.ts";
 import { SDL_DisplayOrientation as DisplayOrientation } from "../gen/enums/SDL_video.ts";
 export { DisplayOrientation };
 import { cstr, read_cstr, SdlError } from "./_utils.ts";
@@ -220,7 +228,7 @@ export class Display {
    *
    * @from SDL_video.h:585 SDL_DisplayID * SDL_GetDisplays(int *count);
    */
-  get displays(): Display[] {
+  static get list(): Display[] {
     const displays = SDL.getDisplays(null);
     if (!displays) throw SdlError("getDisplays");
     const p = Cursor.Unsafe(displays);
@@ -332,10 +340,9 @@ export class Display {
    * @from SDL_video.h:665 bool SDL_GetDisplayBounds(SDL_DisplayID displayID, SDL_Rect *rect);
    */
   get bounds(): _r.Rect {
-    const buf = new Int32Array(4);
-    const r = SDL.getDisplayBounds(this.id, Deno.UnsafePointer.of(buf));
+    const r = SDL.getDisplayBounds(this.id, _i32.p0);
     if (!r) throw SdlError("getDisplayBounds");
-    return _r.read_Rect(toDataView(buf));
+    return _r.read_Rect(_i32.dataView);
   }
 
   /**
@@ -366,10 +373,9 @@ export class Display {
    */
 
   get usableBounds(): _r.Rect {
-    const buf = new Int32Array(4);
-    const r = SDL.getDisplayUsableBounds(this.id, Deno.UnsafePointer.of(buf));
+    const r = SDL.getDisplayUsableBounds(this.id, _i32.p0);
     if (!r) throw SdlError("getDisplayUsableBounds");
-    return _r.read_Rect(toDataView(buf));
+    return _r.read_Rect(_i32.dataView);
   }
 
   /**
@@ -604,9 +610,8 @@ export class Display {
    * @from SDL_video.h:865 SDL_DisplayID SDL_GetDisplayForPoint(const SDL_Point *point);
    */
   static forPoint(point: _r.Point): Display {
-    const buf = new Uint32Array(4);
-    _r.write_Point(point, toDataView(buf));
-    const r = SDL.getDisplayForPoint(Deno.UnsafePointer.of(buf));
+    _r.write_Point(point, _i32.dataView);
+    const r = SDL.getDisplayForPoint(_i32.p0);
     if (r === 0) throw SdlError("getDisplayForPoint");
     return new Display(r);
   }
@@ -629,9 +634,8 @@ export class Display {
    * @from SDL_video.h:882 SDL_DisplayID SDL_GetDisplayForRect(const SDL_Rect *rect);
    */
   static forRect(rect: _r.Rect): Display {
-    const buf = new Uint32Array(4);
-    _r.write_Rect(rect, toDataView(buf));
-    const r = SDL.getDisplayForRect(Deno.UnsafePointer.of(buf));
+    _r.write_Rect(rect, _i32.dataView);
+    const r = SDL.getDisplayForRect(_i32.p0);
     if (r === 0) throw SdlError("getDisplayForRect");
     return new Display(r);
   }
@@ -799,10 +803,9 @@ export class Window {
    * @from SDL_video.h:1008 void * SDL_GetWindowICCProfile(SDL_Window *window, size_t *size);
    */
   get IccProfile(): { data: Deno.PointerObject; size: bigint } {
-    const buf = new BigUint64Array(1);
-    const r = SDL.getWindowIccProfile(this.pointer, Deno.UnsafePointer.of(buf));
+    const r = SDL.getWindowIccProfile(this.pointer, _u64.p0);
     if (!r) throw SdlError("getWindowIccProfile");
-    return { data: r, size: buf[0] };
+    return { data: r, size: _u64.v0 };
   }
 
   /**
@@ -839,7 +842,7 @@ export class Window {
    *
    * @from SDL_video.h:1038 SDL_Window ** SDL_GetWindows(int *count);
    */
-  static get windows(): Window[] {
+  static get list(): Window[] {
     const windows = SDL.getWindows(null) as WindowPointer;
     if (!windows) throw SdlError("getWindows");
     const p = Cursor.Unsafe(windows);
@@ -1523,16 +1526,14 @@ export class Window {
    * @from SDL_video.h:1694 bool SDL_GetWindowPosition(SDL_Window *window, int *x, int *y);
    */
   get position(): { x: number; y: number } {
-    const x = new Int32Array(1);
-    const y = new Int32Array(1);
     if (
       !SDL.getWindowPosition(
         this.pointer,
-        Deno.UnsafePointer.of(x),
-        Deno.UnsafePointer.of(y),
+        _i32.p0,
+        _i32.p1,
       )
     ) throw SdlError("getWindowPosition");
-    return { x: x[0], y: y[0] };
+    return { x: _i32.v0, y: _i32.v1 };
   }
 
   /**
@@ -1572,7 +1573,7 @@ export class Window {
    *
    * @from SDL_video.h:1731 bool SDL_SetWindowSize(SDL_Window *window, int w, int h);
    */
-  setSize(w: number, h: number): boolean {
+  setSize({ w, h }: Size): boolean {
     return SDL.setWindowSize(this.pointer, w, h);
   }
 
@@ -1599,17 +1600,15 @@ export class Window {
    *
    * @from SDL_video.h:1754 bool SDL_GetWindowSize(SDL_Window *window, int *w, int *h);
    */
-  get size(): { w: number; h: number } {
-    const w = new Int32Array(1);
-    const h = new Int32Array(1);
+  get size(): Size {
     if (
       !SDL.getWindowSize(
         this.pointer,
-        Deno.UnsafePointer.of(w),
-        Deno.UnsafePointer.of(h),
+        _i32.p0,
+        _i32.p0,
       )
     ) throw SdlError("getWindowSize");
-    return { w: w[0], h: h[0] };
+    return { w: _i32.v0, h: _i32.v1 };
   }
 
   /**
@@ -1635,11 +1634,10 @@ export class Window {
    * @from SDL_video.h:1776 bool SDL_GetWindowSafeArea(SDL_Window *window, SDL_Rect *rect);
    */
   safeArea(): _r.Rect {
-    const buf = new Uint32Array(4);
-    if (!SDL.getWindowSafeArea(this.pointer, Deno.UnsafePointer.of(buf))) {
+    if (!SDL.getWindowSafeArea(this.pointer, _u32.p0)) {
       throw SdlError("getWindowSafeArea");
     }
-    return _r.read_Rect(toDataView(buf));
+    return _r.read_Rect(_u32.dataView);
   }
 
   /**
@@ -1707,16 +1705,14 @@ export class Window {
    * @from SDL_video.h:1836 bool SDL_GetWindowAspectRatio(SDL_Window *window, float *min_aspect, float *max_aspect);
    */
   get aspectRatio(): { min_aspect: number; max_aspect: number } {
-    const min_aspect = new Float32Array(1);
-    const max_aspect = new Float32Array(1);
     if (
       !SDL.getWindowAspectRatio(
         this.pointer,
-        Deno.UnsafePointer.of(min_aspect),
-        Deno.UnsafePointer.of(max_aspect),
+        _f32.p0,
+        _f32.p1,
       )
     ) throw SdlError("getWindowAspectRatio");
-    return { min_aspect: min_aspect[0], max_aspect: max_aspect[0] };
+    return { min_aspect: _f32.v0, max_aspect: _f32.v1 };
   }
 
   /**
@@ -1762,24 +1758,20 @@ export class Window {
     bottom: number;
     right: number;
   } {
-    const top = new Int32Array(1);
-    const left = new Int32Array(1);
-    const bottom = new Int32Array(1);
-    const right = new Int32Array(1);
     if (
       !SDL.getWindowBordersSize(
         this.pointer,
-        Deno.UnsafePointer.of(top),
-        Deno.UnsafePointer.of(left),
-        Deno.UnsafePointer.of(bottom),
-        Deno.UnsafePointer.of(right),
+        _i32.p0,
+        _i32.p1,
+        _i32.p2,
+        _i32.p3,
       )
     ) throw SdlError("getWindowBordersSize");
     return {
-      top: top[0],
-      left: left[0],
-      bottom: bottom[0],
-      right: right[0],
+      top: _i32.v0,
+      left: _i32.v1,
+      bottom: _i32.v2,
+      right: _i32.v3,
     };
   }
   /**
@@ -1802,17 +1794,15 @@ export class Window {
    *
    * @from SDL_video.h:1893 bool SDL_GetWindowSizeInPixels(SDL_Window *window, int *w, int *h);
    */
-  get sizeInPixels(): { w: number; h: number } {
-    const w = new Int32Array(1);
-    const h = new Int32Array(1);
+  get sizeInPixels(): Size {
     if (
       !SDL.getWindowSizeInPixels(
         this.pointer,
-        Deno.UnsafePointer.of(w),
-        Deno.UnsafePointer.of(h),
+        _i32.p0,
+        _i32.p1,
       )
     ) throw SdlError("getWindowSizeInPixels");
-    return { w: w[0], h: h[0] };
+    return { w: _i32.v0, h: _i32.v1 };
   }
   /**
    * Set the minimum size of a window's client area.
@@ -1856,17 +1846,15 @@ export class Window {
    *
    * @from SDL_video.h:1931 bool SDL_GetWindowMinimumSize(SDL_Window *window, int *w, int *h);
    */
-  get minimumSize(): { w: number; h: number } {
-    const w = new Int32Array(1);
-    const h = new Int32Array(1);
+  get minimumSize(): Size {
     if (
       !SDL.getWindowMinimumSize(
         this.pointer,
-        Deno.UnsafePointer.of(w),
-        Deno.UnsafePointer.of(h),
+        _i32.p0,
+        _i32.p1,
       )
     ) throw SdlError("getWindowMinimumSize");
-    return { w: w[0], h: h[0] };
+    return { w: _i32.v0, h: _i32.v1 };
   }
 
   /**
@@ -1911,17 +1899,15 @@ export class Window {
    *
    * @from SDL_video.h:1969 bool SDL_GetWindowMaximumSize(SDL_Window *window, int *w, int *h);
    */
-  get maximumSize(): { w: number; h: number } {
-    const w = new Int32Array(1);
-    const h = new Int32Array(1);
+  get maximumSize(): Size {
     if (
       !SDL.getWindowMaximumSize(
         this.pointer,
-        Deno.UnsafePointer.of(w),
-        Deno.UnsafePointer.of(h),
+        _i32.p0,
+        _i32.p1,
       )
     ) throw SdlError("getWindowMaximumSize");
-    return { w: w[0], h: h[0] };
+    return { w: _i32.v0, h: _i32.v1 };
   }
 
   /**
@@ -2339,11 +2325,10 @@ export class Window {
    * @from SDL_video.h:2330 bool SDL_GetWindowSurfaceVSync(SDL_Window *window, int *vsync);
    */
   get surfaceVSync(): number {
-    const vsync = new Int32Array(1);
     if (
-      !SDL.getWindowSurfaceVSync(this.pointer, Deno.UnsafePointer.of(vsync))
+      !SDL.getWindowSurfaceVSync(this.pointer, _i32.p0)
     ) throw SdlError("getWindowSurfaceVSync");
-    return vsync[0];
+    return _i32.v0;
   }
 
   /**
@@ -2575,9 +2560,8 @@ export class Window {
    * @from SDL_video.h:2517 bool SDL_SetWindowMouseRect(SDL_Window *window, const SDL_Rect *rect);
    */
   setMouseRect(rect: _r.Rect): boolean {
-    const buf = new Uint32Array(4);
-    _r.write_Rect(rect, new DataView(buf.buffer));
-    return SDL.setWindowMouseRect(this.pointer, Deno.UnsafePointer.of(buf));
+    _r.write_Rect(rect, _i32.dataView);
+    return SDL.setWindowMouseRect(this.pointer, _i32.p0);
   }
 
   /**
