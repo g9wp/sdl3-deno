@@ -134,7 +134,7 @@ const eventWatchers = {
  * ```
  */
 export class Event extends EventUnion {
-  #buffer: Uint8Array = new Uint8Array(SizeOfSdlEvent);
+  #buffer: Uint8Array<ArrayBuffer> = new Uint8Array(SizeOfSdlEvent);
 
   constructor(public nonOwnedPointer: EventPointer = null) {
     super();
@@ -665,8 +665,8 @@ export class Event extends EventUnion {
     return { filter: f.filter, userdata: f.userdata };
   }
   static getFilterRaw():
-      | { filter: Deno.PointerValue; userdata: Deno.PointerValue }
-      | null {
+    | { filter: Deno.PointerValue; userdata: Deno.PointerValue }
+    | null {
     const b = Buf.of(BigUint64Array, 2);
     if (!SDL.getEventFilter(b.pointer, b.pointerOf(1))) return null;
     const filter = b.pv;
@@ -848,7 +848,7 @@ export class Event extends EventUnion {
 }
 
 export class EventArray extends EventUnion {
-  buf: Uint8Array;
+  buf: Uint8Array<ArrayBuffer>;
   numEvents = 0;
   type: number = -1;
 

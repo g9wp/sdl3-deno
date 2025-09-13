@@ -3368,7 +3368,7 @@ export class Text {
   }
 }
 
-export function sdl_color(color: Color): Uint8Array {
+export function sdl_color(color: Color): Uint8Array<ArrayBuffer> {
   const b = new Uint8Array(4);
   write_Color(color, new DataView(b.buffer));
   return b;

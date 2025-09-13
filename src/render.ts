@@ -1984,7 +1984,7 @@ export class Render {
   geometry(
     texture: Texture | null,
     vertices: Vertex[],
-    indices: Int32Array | null,
+    indices: Int32Array<ArrayBuffer> | null,
   ): boolean {
     const vertexBuf = Buf.of(Float32Array, vertices.length * 8);
     vertices.forEach((vertex, i) => {
@@ -2035,11 +2035,11 @@ export class Render {
    */
   geometryRaw(
     texture: Texture | null,
-    xy: Float32Array,
+    xy: Float32Array<ArrayBuffer>,
     xy_stride: number,
-    color: Float32Array | null,
+    color: Float32Array<ArrayBuffer> | null,
     color_stride: number,
-    uv: Float32Array | null,
+    uv: Float32Array<ArrayBuffer> | null,
     uv_stride: number,
     num_vertices: number,
     indices: ArrayBuffer | null,

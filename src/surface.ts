@@ -172,7 +172,7 @@ export class Surface {
    *
    * @from SDL_image.h:231 SDL_Surface * IMG_Load_IO(SDL_IOStream *src, bool closeio);
    */
-  static loadMem(buffer: Uint8Array): Surface {
+  static loadMem(buffer: Uint8Array<ArrayBuffer>): Surface {
     const io = SDL.ioFromConstMem(
       Deno.UnsafePointer.of(buffer),
       BigInt(buffer.length),
@@ -242,7 +242,10 @@ export class Surface {
    *
    * @from SDL_image.h:132 SDL_Surface * IMG_LoadTyped_IO(SDL_IOStream *src, bool closeio, const char *type);
    */
-  static loadMemTyped(buffer: Uint8Array, fmt_hint: string): Surface {
+  static loadMemTyped(
+    buffer: Uint8Array<ArrayBuffer>,
+    fmt_hint: string,
+  ): Surface {
     const io = SDL.ioFromConstMem(
       Deno.UnsafePointer.of(buffer),
       BigInt(buffer.length),
