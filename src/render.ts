@@ -2716,7 +2716,7 @@ export class Texture {
    *
    * @from SDL_render.h:990 bool SDL_SetTextureAlphaMod(SDL_Texture *texture, Uint8 alpha);
    */
-  settAlphaMod(alpha: number): boolean {
+  setAlphaMod(alpha: number): boolean {
     return SDL.setTextureAlphaMod(this.pointer, alpha);
   }
 
