@@ -1191,7 +1191,7 @@ SDL_UpdateTexture: {
  * @sa SDL_UpdateNVTexture
  * @sa SDL_UpdateTexture
  *
- * @from SDL_render.h:1189 bool SDL_UpdateYUVTexture(SDL_Texture *texture,                                                 const SDL_Rect *rect,                                                 const Uint8 *Yplane, int Ypitch,                                                 const Uint8 *Uplane, int Upitch,                                                 const Uint8 *Vplane, int Vpitch);
+ * @from SDL_render.h:1189 bool SDL_UpdateYUVTexture(SDL_Texture *texture, const SDL_Rect *rect, const Uint8 *Yplane, int Ypitch, const Uint8 *Uplane, int Upitch, const Uint8 *Vplane, int Vpitch);
  */
 SDL_UpdateYUVTexture: {
       parameters: ["pointer", "pointer", "pointer", "i32", "pointer", "i32", "pointer", "i32"],
@@ -1225,7 +1225,7 @@ SDL_UpdateYUVTexture: {
  * @sa SDL_UpdateTexture
  * @sa SDL_UpdateYUVTexture
  *
- * @from SDL_render.h:1221 bool SDL_UpdateNVTexture(SDL_Texture *texture,                                                 const SDL_Rect *rect,                                                 const Uint8 *Yplane, int Ypitch,                                                 const Uint8 *UVplane, int UVpitch);
+ * @from SDL_render.h:1221 bool SDL_UpdateNVTexture(SDL_Texture *texture, const SDL_Rect *rect, const Uint8 *Yplane, int Ypitch, const Uint8 *UVplane, int UVpitch);
  */
 SDL_UpdateNVTexture: {
       parameters: ["pointer", "pointer", "pointer", "i32", "pointer", "i32"],
@@ -1263,7 +1263,7 @@ SDL_UpdateNVTexture: {
  * @sa SDL_LockTextureToSurface
  * @sa SDL_UnlockTexture
  *
- * @from SDL_render.h:1256 bool SDL_LockTexture(SDL_Texture *texture,                                            const SDL_Rect *rect,                                            void **pixels, int *pitch);
+ * @from SDL_render.h:1256 bool SDL_LockTexture(SDL_Texture *texture, const SDL_Rect *rect, void **pixels, int *pitch);
  */
 SDL_LockTexture: {
       parameters: ["pointer", "pointer", "pointer", "pointer"],
@@ -2373,7 +2373,7 @@ SDL_RenderTexture: {
  *
  * @sa SDL_RenderTexture
  *
- * @from SDL_render.h:2140 bool SDL_RenderTextureRotated(SDL_Renderer *renderer, SDL_Texture *texture,                                                     const SDL_FRect *srcrect, const SDL_FRect *dstrect,                                                     double angle, const SDL_FPoint *center,                                                     SDL_FlipMode flip);
+ * @from SDL_render.h:2140 bool SDL_RenderTextureRotated(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect, double angle, const SDL_FPoint *center, SDL_FlipMode flip);
  */
 SDL_RenderTextureRotated: {
       parameters: ["pointer", "pointer", "pointer", "pointer", "f64", "pointer", "u32"],
@@ -2407,7 +2407,7 @@ SDL_RenderTextureRotated: {
  *
  * @sa SDL_RenderTexture
  *
- * @from SDL_render.h:2171 bool SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture,                                                     const SDL_FRect *srcrect, const SDL_FPoint *origin,                                                     const SDL_FPoint *right, const SDL_FPoint *down);
+ * @from SDL_render.h:2171 bool SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);
  */
 SDL_RenderTextureAffine: {
       parameters: ["pointer", "pointer", "pointer", "pointer", "pointer", "pointer"],
@@ -2510,7 +2510,7 @@ SDL_RenderTexture9Grid: {
  *
  * @sa SDL_RenderGeometryRaw
  *
- * @from SDL_render.h:2258 bool SDL_RenderGeometry(SDL_Renderer *renderer,                                               SDL_Texture *texture,                                               const SDL_Vertex *vertices, int num_vertices,                                               const int *indices, int num_indices);
+ * @from SDL_render.h:2258 bool SDL_RenderGeometry(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_Vertex *vertices, int num_vertices, const int *indices, int num_indices);
  */
 SDL_RenderGeometry: {
       parameters: ["pointer", "pointer", "pointer", "i32", "pointer", "i32"],
@@ -2545,7 +2545,7 @@ SDL_RenderGeometry: {
  *
  * @sa SDL_RenderGeometry
  *
- * @from SDL_render.h:2290 bool SDL_RenderGeometryRaw(SDL_Renderer *renderer,                                               SDL_Texture *texture,                                               const float *xy, int xy_stride,                                               const SDL_FColor *color, int color_stride,                                               const float *uv, int uv_stride,                                               int num_vertices,                                               const void *indices, int num_indices, int size_indices);
+ * @from SDL_render.h:2290 bool SDL_RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const SDL_FColor *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices);
  */
 SDL_RenderGeometryRaw: {
       parameters: ["pointer", "pointer", "pointer", "i32", "pointer", "i32", "pointer", "i32", "i32", "pointer", "i32", "i32"],

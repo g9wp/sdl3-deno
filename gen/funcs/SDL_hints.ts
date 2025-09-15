@@ -233,7 +233,7 @@ SDL_AddHintCallback: {
  *
  * @sa SDL_AddHintCallback
  *
- * @from SDL_hints.h:4475 void SDL_RemoveHintCallback(const char *name,                                                     SDL_HintCallback callback,                                                     void *userdata);
+ * @from SDL_hints.h:4475 void SDL_RemoveHintCallback(const char *name, SDL_HintCallback callback, void *userdata);
  */
 SDL_RemoveHintCallback: {
       parameters: ["pointer", "function", "pointer"],

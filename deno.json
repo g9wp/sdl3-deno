@@ -20,10 +20,7 @@
     "./callbacks": "./gen/callbacks/mod.ts"
   },
   "publish": {
-    "exclude": [
-      "./gen/macros",
-      "*.test.ts"
-    ]
+    "exclude": ["./gen/macros", "*.test.ts"]
   },
   "imports": {
     "@denosaurs/byte-type": "jsr:@denosaurs/byte-type@^0.4.1",

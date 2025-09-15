@@ -543,7 +543,7 @@ export const waitCondition = lib.symbols.SDL_WaitCondition;
  * @sa SDL_SignalCondition
  * @sa SDL_WaitCondition
  *
- * @from SDL_mutex.h:915 bool SDL_WaitConditionTimeout(SDL_Condition *cond,                                                SDL_Mutex *mutex, Sint32 timeoutMS);
+ * @from SDL_mutex.h:915 bool SDL_WaitConditionTimeout(SDL_Condition *cond, SDL_Mutex *mutex, Sint32 timeoutMS);
  */
 export const waitConditionTimeout = lib.symbols.SDL_WaitConditionTimeout;
 

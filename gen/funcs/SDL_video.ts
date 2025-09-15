@@ -3063,7 +3063,7 @@ SDL_GL_GetCurrentWindow: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_video.h:3197 void SDL_EGL_SetAttributeCallbacks(SDL_EGLAttribArrayCallback platformAttribCallback,                                                               SDL_EGLIntArrayCallback surfaceAttribCallback,                                                               SDL_EGLIntArrayCallback contextAttribCallback, void *userdata);
+ * @from SDL_video.h:3197 void SDL_EGL_SetAttributeCallbacks(SDL_EGLAttribArrayCallback platformAttribCallback, SDL_EGLIntArrayCallback surfaceAttribCallback, SDL_EGLIntArrayCallback contextAttribCallback, void *userdata);
  */
 SDL_EGL_SetAttributeCallbacks: {
       parameters: ["function", "function", "function", "pointer"],
