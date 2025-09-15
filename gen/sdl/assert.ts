@@ -84,7 +84,7 @@ export {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_assert.h:314 SDL_AssertState SDL_ReportAssertion(SDL_AssertData *data,                                                            const char *func,                                                            const char *file, int line) SDL_ANALYZER_NORETURN;
+ * @from SDL_assert.h:314 SDL_AssertState SDL_ReportAssertion(SDL_AssertData *data, const char *func, const char *file, int line) SDL_ANALYZER_NORETURN;
  */
 export const reportAssertion = lib.symbols.SDL_ReportAssertion;
 

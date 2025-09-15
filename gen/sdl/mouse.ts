@@ -268,7 +268,7 @@ export const getRelativeMouseState = lib.symbols.SDL_GetRelativeMouseState;
  *
  * @sa SDL_WarpMouseGlobal
  *
- * @from SDL_mouse.h:355 void SDL_WarpMouseInWindow(SDL_Window *window,                                                   float x, float y);
+ * @from SDL_mouse.h:355 void SDL_WarpMouseInWindow(SDL_Window *window, float x, float y);
  */
 export const warpMouseInWindow = lib.symbols.SDL_WarpMouseInWindow;
 
@@ -438,7 +438,7 @@ export const captureMouse = lib.symbols.SDL_CaptureMouse;
  * @sa SDL_DestroyCursor
  * @sa SDL_SetCursor
  *
- * @from SDL_mouse.h:516 SDL_Cursor * SDL_CreateCursor(const Uint8 *data,                                                     const Uint8 *mask,                                                     int w, int h, int hot_x,                                                     int hot_y);
+ * @from SDL_mouse.h:516 SDL_Cursor * SDL_CreateCursor(const Uint8 *data, const Uint8 *mask, int w, int h, int hot_x, int hot_y);
  */
 export const createCursor = lib.symbols.SDL_CreateCursor;
 
@@ -470,7 +470,7 @@ export const createCursor = lib.symbols.SDL_CreateCursor;
  * @sa SDL_DestroyCursor
  * @sa SDL_SetCursor
  *
- * @from SDL_mouse.h:549 SDL_Cursor * SDL_CreateColorCursor(SDL_Surface *surface,                                                          int hot_x,                                                          int hot_y);
+ * @from SDL_mouse.h:549 SDL_Cursor * SDL_CreateColorCursor(SDL_Surface *surface, int hot_x, int hot_y);
  */
 export const createColorCursor = lib.symbols.SDL_CreateColorCursor;
 

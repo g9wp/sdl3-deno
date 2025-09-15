@@ -32,6 +32,7 @@
 
 import * as _ from "../_utils.ts";
 import * as _b from "../_structs/SDL_ttf.ts";
+import { Rect } from "./SDL_rect.ts";
 
 
 /**

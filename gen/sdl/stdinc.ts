@@ -189,7 +189,7 @@ export const free = lib.symbols.SDL_free;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:1502 void SDL_GetOriginalMemoryFunctions(SDL_malloc_func *malloc_func,                                                            SDL_calloc_func *calloc_func,                                                            SDL_realloc_func *realloc_func,                                                            SDL_free_func *free_func);
+ * @from SDL_stdinc.h:1502 void SDL_GetOriginalMemoryFunctions(SDL_malloc_func *malloc_func, SDL_calloc_func *calloc_func, SDL_realloc_func *realloc_func, SDL_free_func *free_func);
  */
 export const getOriginalMemoryFunctions = lib.symbols.SDL_GetOriginalMemoryFunctions;
 
@@ -210,7 +210,7 @@ export const getOriginalMemoryFunctions = lib.symbols.SDL_GetOriginalMemoryFunct
  * @sa SDL_SetMemoryFunctions
  * @sa SDL_GetOriginalMemoryFunctions
  *
- * @from SDL_stdinc.h:1524 void SDL_GetMemoryFunctions(SDL_malloc_func *malloc_func,                                                    SDL_calloc_func *calloc_func,                                                    SDL_realloc_func *realloc_func,                                                    SDL_free_func *free_func);
+ * @from SDL_stdinc.h:1524 void SDL_GetMemoryFunctions(SDL_malloc_func *malloc_func, SDL_calloc_func *calloc_func, SDL_realloc_func *realloc_func, SDL_free_func *free_func);
  */
 export const getMemoryFunctions = lib.symbols.SDL_GetMemoryFunctions;
 
@@ -240,7 +240,7 @@ export const getMemoryFunctions = lib.symbols.SDL_GetMemoryFunctions;
  * @sa SDL_GetMemoryFunctions
  * @sa SDL_GetOriginalMemoryFunctions
  *
- * @from SDL_stdinc.h:1555 bool SDL_SetMemoryFunctions(SDL_malloc_func malloc_func,                                                            SDL_calloc_func calloc_func,                                                            SDL_realloc_func realloc_func,                                                            SDL_free_func free_func);
+ * @from SDL_stdinc.h:1555 bool SDL_SetMemoryFunctions(SDL_malloc_func malloc_func, SDL_calloc_func calloc_func, SDL_realloc_func realloc_func, SDL_free_func free_func);
  */
 export const setMemoryFunctions = lib.symbols.SDL_SetMemoryFunctions;
 
@@ -4324,7 +4324,7 @@ export const tanf = lib.symbols.SDL_tanf;
  * @sa SDL_iconv_close
  * @sa SDL_iconv
  *
- * @from SDL_stdinc.h:5890 char * SDL_iconv_string(const char *tocode,                                               const char *fromcode,                                               const char *inbuf,                                               size_t inbytesleft);
+ * @from SDL_stdinc.h:5890 char * SDL_iconv_string(const char *tocode, const char *fromcode, const char *inbuf, size_t inbytesleft);
  */
 export const iconvString = lib.symbols.SDL_iconv_string;
 

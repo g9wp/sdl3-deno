@@ -119,7 +119,7 @@ export const symbols = {
  * @sa SDL_SetTextureBlendMode
  * @sa SDL_GetTextureBlendMode
  *
- * @from SDL_blendmode.h:188 SDL_BlendMode SDL_ComposeCustomBlendMode(SDL_BlendFactor srcColorFactor,                                                                 SDL_BlendFactor dstColorFactor,                                                                 SDL_BlendOperation colorOperation,                                                                 SDL_BlendFactor srcAlphaFactor,                                                                 SDL_BlendFactor dstAlphaFactor,                                                                 SDL_BlendOperation alphaOperation);
+ * @from SDL_blendmode.h:188 SDL_BlendMode SDL_ComposeCustomBlendMode(SDL_BlendFactor srcColorFactor, SDL_BlendFactor dstColorFactor, SDL_BlendOperation colorOperation, SDL_BlendFactor srcAlphaFactor, SDL_BlendFactor dstAlphaFactor, SDL_BlendOperation alphaOperation);
  */
 SDL_ComposeCustomBlendMode: {
       parameters: ["u32", "u32", "u32", "u32", "u32", "u32"],

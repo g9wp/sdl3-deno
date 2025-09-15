@@ -208,7 +208,7 @@ export const addHintCallback = lib.symbols.SDL_AddHintCallback;
  *
  * @sa SDL_AddHintCallback
  *
- * @from SDL_hints.h:4475 void SDL_RemoveHintCallback(const char *name,                                                     SDL_HintCallback callback,                                                     void *userdata);
+ * @from SDL_hints.h:4475 void SDL_RemoveHintCallback(const char *name, SDL_HintCallback callback, void *userdata);
  */
 export const removeHintCallback = lib.symbols.SDL_RemoveHintCallback;
 
