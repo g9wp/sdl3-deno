@@ -99,7 +99,7 @@ export class RenderDriver {
    *
    * @from SDL_render.h:164 int SDL_GetNumRenderDrivers(void);
    */
-  static getNumRenderDrivers(): number {
+  static getNum(): number {
     return SDL.getNumRenderDrivers();
   }
 
@@ -127,7 +127,7 @@ export class RenderDriver {
    *
    * @from SDL_render.h:188 const char * SDL_GetRenderDriver(int index);
    */
-  getRenderDriver(index: number): string {
+  static get(index: number): string {
     const r = SDL.getRenderDriver(index);
     if (!r) throw SdlError("getRenderDriver");
     return read_cstr(r);
