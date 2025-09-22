@@ -39,6 +39,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   MESSAGEBOX as MESSAGEBOX,
@@ -82,7 +84,11 @@ export {
  *
  * @from SDL_messagebox.h:174 bool SDL_ShowMessageBox(const SDL_MessageBoxData *messageboxdata, int *buttonid);
  */
-export const showMessageBox = lib.symbols.SDL_ShowMessageBox;
+export function showMessageBox(messageboxdata: Deno.PointerValue<"SDL_MessageBoxData">): number {
+  if(!lib.symbols.SDL_ShowMessageBox(messageboxdata, _p.i32.p0))
+    throw new Error(`SDL_ShowMessageBox: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.i32.v0;
+}
 
 /**
  * Display a simple modal message box.
@@ -126,5 +132,12 @@ export const showMessageBox = lib.symbols.SDL_ShowMessageBox;
  *
  * @from SDL_messagebox.h:216 bool SDL_ShowSimpleMessageBox(SDL_MessageBoxFlags flags, const char *title, const char *message, SDL_Window *window);
  */
-export const showSimpleMessageBox = lib.symbols.SDL_ShowSimpleMessageBox;
+export function showSimpleMessageBox(
+    flags: number,
+    title: string,
+    message: string,
+    window: Deno.PointerValue<"SDL_Window">,
+): boolean {
+  return lib.symbols.SDL_ShowSimpleMessageBox(flags, _p.toCstr(title), _p.toCstr(message), window);
+}
 

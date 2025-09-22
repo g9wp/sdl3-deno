@@ -80,3 +80,36 @@ SDL_EGLAttribArrayCallback: {
     },
 
 } as const;
+
+
+/**
+ * EGL platform attribute initialization callback.
+ *
+ * This is called when SDL is attempting to create an EGL context, to let the
+ * app add extra attributes to its eglGetPlatformDisplay() call.
+ *
+ * The callback should return a pointer to an EGL attribute array terminated
+ * with `EGL_NONE`. If this function returns NULL, the SDL_CreateWindow
+ * process will fail gracefully.
+ *
+ * The returned pointer should be allocated with SDL_malloc() and will be
+ * passed to SDL_free().
+ *
+ * The arrays returned by each callback will be appended to the existing
+ * attribute arrays defined by SDL.
+ *
+ * @param userdata an app-controlled pointer that is passed to the callback.
+ * @returns a newly-allocated array of attributes, terminated with `EGL_NONE`.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa SDL_EGL_SetAttributeCallbacks
+ *
+ * @from SDL_video.h:376 typedef SDL_EGLAttrib *(*SDL_EGLAttribArrayCallback)(void *userdata);
+ */
+export function EGLAttribArrayCallback(cb: (
+    userdata: Deno.PointerValue, 
+  ) => Deno.PointerValue) {
+  return new Deno.UnsafeCallback(callbacks.SDL_EGLAttribArrayCallback, cb);
+}
+

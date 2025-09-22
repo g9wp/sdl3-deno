@@ -93,3 +93,31 @@ SDL_LogOutputFunction: {
     },
 
 } as const;
+
+
+/**
+ * The prototype for the log output callback function.
+ *
+ * This function is called by SDL when there is new text to be logged. A mutex
+ * is held so that this function is never called by more than one thread at
+ * once.
+ *
+ * @param userdata what was passed as `userdata` to
+ *                 SDL_SetLogOutputFunction().
+ * @param category the category of the message.
+ * @param priority the priority of the message.
+ * @param message the message being output.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @from SDL_log.h:482 typedef void (*SDL_LogOutputFunction)(void *userdata, int category, SDL_LogPriority priority, const char *message);
+ */
+export function LogOutputFunction(cb: (
+    userdata: Deno.PointerValue, 
+    category: number, 
+    priority: number, 
+    message: Deno.PointerValue, 
+  ) => void) {
+  return new Deno.UnsafeCallback(callbacks.SDL_LogOutputFunction, cb);
+}
+

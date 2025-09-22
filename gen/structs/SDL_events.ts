@@ -280,7 +280,7 @@ export interface TextEditingEvent {
   reserved: number; /* Uint32 */
   timestamp: bigint; /**< Uint64 : In nanoseconds, populated using SDL_GetTicksNS() */
   windowID: number; /**< SDL_WindowID : The window with keyboard focus, if any */
-  text: string; /**< const char * : The editing text */
+  text: Deno.PointerValue; /**< const char * : The editing text */
   start: number; /**< Sint32 : The start cursor of selected editing text, or -1 if not set */
   length: number; /**< Sint32 : The length of selected editing text, or -1 if not set */
 }
@@ -384,7 +384,7 @@ export interface TextInputEvent {
   reserved: number; /* Uint32 */
   timestamp: bigint; /**< Uint64 : In nanoseconds, populated using SDL_GetTicksNS() */
   windowID: number; /**< SDL_WindowID : The window with keyboard focus, if any */
-  text: string; /**< const char * : The input text, UTF-8 encoded */
+  text: Deno.PointerValue; /**< const char * : The input text, UTF-8 encoded */
 }
 
 export function read_TextInputEvent(dt: DataView): TextInputEvent {
@@ -1584,8 +1584,8 @@ export interface DropEvent {
   windowID: number; /**< SDL_WindowID : The window that was dropped on, if any */
   x: number; /**< float : X coordinate, relative to window (not on begin) */
   y: number; /**< float : Y coordinate, relative to window (not on begin) */
-  source: string; /**< const char * : The source app that sent this drop event, or NULL if that isn't available */
-  data: string; /**< const char * : The text for SDL_EVENT_DROP_TEXT and the file name for SDL_EVENT_DROP_FILE, NULL for other events */
+  source: Deno.PointerValue; /**< const char * : The source app that sent this drop event, or NULL if that isn't available */
+  data: Deno.PointerValue; /**< const char * : The text for SDL_EVENT_DROP_TEXT and the file name for SDL_EVENT_DROP_FILE, NULL for other events */
 }
 
 export function read_DropEvent(dt: DataView): DropEvent {

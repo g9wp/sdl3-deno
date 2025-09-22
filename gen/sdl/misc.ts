@@ -28,6 +28,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 /**
  * Open a URL/URI in the browser or other appropriate external application.
@@ -60,5 +62,7 @@ import { lib } from "./lib.ts";
  *
  * @from SDL_misc.h:69 bool SDL_OpenURL(const char *url);
  */
-export const openUrl = lib.symbols.SDL_OpenURL;
+export function openUrl(url: string): boolean {
+  return lib.symbols.SDL_OpenURL(_p.toCstr(url));
+}
 

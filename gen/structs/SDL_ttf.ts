@@ -141,7 +141,7 @@ export interface SubString {
   length: number; /**< int : The byte length starting at the offset */
   line_index: number; /**< int : The index of the line that contains this substring */
   cluster_index: number; /**< int : The internal cluster index, used for quickly iterating */
-  rect: Rect; /**< SDL_Rect : The rectangle, relative to the top left of the text, containing the substring */
+  rect: { x: number; y: number; w: number; h: number; }; /**< SDL_Rect : The rectangle, relative to the top left of the text, containing the substring */
 }
 
 export function read_SubString(dt: DataView): SubString {

@@ -54,6 +54,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 /**
  * Dynamically load a shared object.
@@ -71,7 +73,9 @@ import { lib } from "./lib.ts";
  *
  * @from SDL_loadso.h:92 SDL_SharedObject * SDL_LoadObject(const char *sofile);
  */
-export const loadObject = lib.symbols.SDL_LoadObject;
+export function loadObject(sofile: string): Deno.PointerValue<"SDL_SharedObject"> {
+  return lib.symbols.SDL_LoadObject(_p.toCstr(sofile)) as Deno.PointerValue<"SDL_SharedObject">;
+}
 
 /**
  * Look up the address of the named function in a shared object.
@@ -101,7 +105,9 @@ export const loadObject = lib.symbols.SDL_LoadObject;
  *
  * @from SDL_loadso.h:120 SDL_FunctionPointer SDL_LoadFunction(SDL_SharedObject *handle, const char *name);
  */
-export const loadFunction = lib.symbols.SDL_LoadFunction;
+export function loadFunction(handle: Deno.PointerValue<"SDL_SharedObject">, name: string): Deno.PointerValue {
+  return lib.symbols.SDL_LoadFunction(handle, _p.toCstr(name));
+}
 
 /**
  * Unload a shared object from memory.
@@ -119,5 +125,7 @@ export const loadFunction = lib.symbols.SDL_LoadFunction;
  *
  * @from SDL_loadso.h:136 void SDL_UnloadObject(SDL_SharedObject *handle);
  */
-export const unloadObject = lib.symbols.SDL_UnloadObject;
+export function unloadObject(handle: Deno.PointerValue<"SDL_SharedObject">): void {
+  return lib.symbols.SDL_UnloadObject(handle);
+}
 

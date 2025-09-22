@@ -37,6 +37,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   SDL_PowerState as POWERSTATE,
@@ -76,5 +78,9 @@ export {
  *
  * @from SDL_power.h:97 SDL_PowerState SDL_GetPowerInfo(int *seconds, int *percent);
  */
-export const getPowerInfo = lib.symbols.SDL_GetPowerInfo;
+export function getPowerInfo(): { seconds: number; percent: number } {
+  if(!lib.symbols.SDL_GetPowerInfo(_p.i32.p0, _p.i32.p1))
+    throw new Error(`SDL_GetPowerInfo: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { seconds: _p.i32.v0, percent: _p.i32.v1 };
+}
 

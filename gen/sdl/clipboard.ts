@@ -76,6 +76,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 /**
  * Put UTF-8 text into the clipboard.
@@ -93,12 +95,14 @@ import { lib } from "./lib.ts";
  *
  * @from SDL_clipboard.h:103 bool SDL_SetClipboardText(const char *text);
  */
-export const setClipboardText = lib.symbols.SDL_SetClipboardText;
+export function setClipboardText(text: string): boolean {
+  return lib.symbols.SDL_SetClipboardText(_p.toCstr(text));
+}
 
 /**
  * Get UTF-8 text from the clipboard.
  *
- * This functions returns an empty string if there was not enough memory left
+ * This function returns an empty string if there is not enough memory left
  * for a copy of the clipboard's content.
  *
  * @returns the clipboard text on success or an empty string on failure; call
@@ -114,7 +118,9 @@ export const setClipboardText = lib.symbols.SDL_SetClipboardText;
  *
  * @from SDL_clipboard.h:122 char * SDL_GetClipboardText(void);
  */
-export const getClipboardText = lib.symbols.SDL_GetClipboardText;
+export function getClipboardText(): string {
+  return _p.getCstr2(lib.symbols.SDL_GetClipboardText());
+}
 
 /**
  * Query whether the clipboard exists and contains a non-empty text string.
@@ -130,7 +136,9 @@ export const getClipboardText = lib.symbols.SDL_GetClipboardText;
  *
  * @from SDL_clipboard.h:136 bool SDL_HasClipboardText(void);
  */
-export const hasClipboardText = lib.symbols.SDL_HasClipboardText;
+export function hasClipboardText(): boolean {
+  return lib.symbols.SDL_HasClipboardText();
+}
 
 /**
  * Put UTF-8 text into the primary selection.
@@ -148,12 +156,14 @@ export const hasClipboardText = lib.symbols.SDL_HasClipboardText;
  *
  * @from SDL_clipboard.h:152 bool SDL_SetPrimarySelectionText(const char *text);
  */
-export const setPrimarySelectionText = lib.symbols.SDL_SetPrimarySelectionText;
+export function setPrimarySelectionText(text: string): boolean {
+  return lib.symbols.SDL_SetPrimarySelectionText(_p.toCstr(text));
+}
 
 /**
  * Get UTF-8 text from the primary selection.
  *
- * This functions returns an empty string if there was not enough memory left
+ * This function returns an empty string if there is not enough memory left
  * for a copy of the primary selection's content.
  *
  * @returns the primary selection text on success or an empty string on
@@ -169,7 +179,9 @@ export const setPrimarySelectionText = lib.symbols.SDL_SetPrimarySelectionText;
  *
  * @from SDL_clipboard.h:171 char * SDL_GetPrimarySelectionText(void);
  */
-export const getPrimarySelectionText = lib.symbols.SDL_GetPrimarySelectionText;
+export function getPrimarySelectionText(): string {
+  return _p.getCstr2(lib.symbols.SDL_GetPrimarySelectionText());
+}
 
 /**
  * Query whether the primary selection exists and contains a non-empty text
@@ -186,7 +198,9 @@ export const getPrimarySelectionText = lib.symbols.SDL_GetPrimarySelectionText;
  *
  * @from SDL_clipboard.h:186 bool SDL_HasPrimarySelectionText(void);
  */
-export const hasPrimarySelectionText = lib.symbols.SDL_HasPrimarySelectionText;
+export function hasPrimarySelectionText(): boolean {
+  return lib.symbols.SDL_HasPrimarySelectionText();
+}
 
 /**
  * Offer clipboard data to the OS.
@@ -197,7 +211,7 @@ export const hasPrimarySelectionText = lib.symbols.SDL_HasPrimarySelectionText;
  * respond with the data for the requested mime-type.
  *
  * The size of text data does not include any terminator, and the text does
- * not need to be null terminated (e.g. you can directly copy a portion of a
+ * not need to be null-terminated (e.g., you can directly copy a portion of a
  * document).
  *
  * @param callback a function pointer to the function that provides the
@@ -205,7 +219,7 @@ export const hasPrimarySelectionText = lib.symbols.SDL_HasPrimarySelectionText;
  * @param cleanup a function pointer to the function that cleans up the
  *                clipboard data.
  * @param userdata an opaque pointer that will be forwarded to the callbacks.
- * @param mime_types a list of mime-types that are being offered.
+ * @param mime_types a list of mime-types that are being offered. SDL copies the given list.
  * @param num_mime_types the number of mime-types in the mime_types list.
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
@@ -220,7 +234,15 @@ export const hasPrimarySelectionText = lib.symbols.SDL_HasPrimarySelectionText;
  *
  * @from SDL_clipboard.h:254 bool SDL_SetClipboardData(SDL_ClipboardDataCallback callback, SDL_ClipboardCleanupCallback cleanup, void *userdata, const char **mime_types, size_t num_mime_types);
  */
-export const setClipboardData = lib.symbols.SDL_SetClipboardData;
+export function setClipboardData(
+    callback: Deno.PointerValue,
+    cleanup: Deno.PointerValue,
+    userdata: Deno.PointerValue,
+    mime_types: Deno.PointerValue,
+    num_mime_types: bigint,
+): boolean {
+  return lib.symbols.SDL_SetClipboardData(callback, cleanup, userdata, mime_types, num_mime_types);
+}
 
 /**
  * Clear the clipboard data.
@@ -236,13 +258,15 @@ export const setClipboardData = lib.symbols.SDL_SetClipboardData;
  *
  * @from SDL_clipboard.h:268 bool SDL_ClearClipboardData(void);
  */
-export const clearClipboardData = lib.symbols.SDL_ClearClipboardData;
+export function clearClipboardData(): boolean {
+  return lib.symbols.SDL_ClearClipboardData();
+}
 
 /**
- * Get the data from clipboard for a given mime type.
+ * Get the data from the clipboard for a given mime type.
  *
  * The size of text data does not include the terminator, but the text is
- * guaranteed to be null terminated.
+ * guaranteed to be null-terminated.
  *
  * @param mime_type the mime type to read from the clipboard.
  * @param size a pointer filled in with the length of the returned data.
@@ -259,13 +283,17 @@ export const clearClipboardData = lib.symbols.SDL_ClearClipboardData;
  *
  * @from SDL_clipboard.h:289 void * SDL_GetClipboardData(const char *mime_type, size_t *size);
  */
-export const getClipboardData = lib.symbols.SDL_GetClipboardData;
+export function getClipboardData(mime_type: string): { size: bigint; ret: Deno.PointerValue } {
+  const ret = lib.symbols.SDL_GetClipboardData(_p.toCstr(mime_type), _p.u64.p0) as Deno.PointerValue;
+  if(!ret) throw new Error(`SDL_GetClipboardData: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { size: _p.u64.v0, ret };
+}
 
 /**
  * Query whether there is data in the clipboard for the provided mime type.
  *
- * @param mime_type the mime type to check for data for.
- * @returns true if there exists data in clipboard for the provided mime type,
+ * @param mime_type the mime type to check for data.
+ * @returns true if data exists in the clipboard for the provided mime type,
  *          false if it does not.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -277,14 +305,16 @@ export const getClipboardData = lib.symbols.SDL_GetClipboardData;
  *
  * @from SDL_clipboard.h:305 bool SDL_HasClipboardData(const char *mime_type);
  */
-export const hasClipboardData = lib.symbols.SDL_HasClipboardData;
+export function hasClipboardData(mime_type: string): boolean {
+  return lib.symbols.SDL_HasClipboardData(_p.toCstr(mime_type));
+}
 
 /**
  * Retrieve the list of mime types available in the clipboard.
  *
  * @param num_mime_types a pointer filled with the number of mime types, may
  *                       be NULL.
- * @returns a null terminated array of strings with mime types, or NULL on
+ * @returns a null-terminated array of strings with mime types, or NULL on
  *          failure; call SDL_GetError() for more information. This should be
  *          freed with SDL_free() when it is no longer needed.
  *
@@ -296,5 +326,9 @@ export const hasClipboardData = lib.symbols.SDL_HasClipboardData;
  *
  * @from SDL_clipboard.h:322 char ** SDL_GetClipboardMimeTypes(size_t *num_mime_types);
  */
-export const getClipboardMimeTypes = lib.symbols.SDL_GetClipboardMimeTypes;
+export function getClipboardMimeTypes(): { num_mime_types: bigint; ret: Deno.PointerValue } {
+  const ret = lib.symbols.SDL_GetClipboardMimeTypes(_p.u64.p0) as Deno.PointerValue;
+  if(!ret) throw new Error(`SDL_GetClipboardMimeTypes: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { num_mime_types: _p.u64.v0, ret };
+}
 

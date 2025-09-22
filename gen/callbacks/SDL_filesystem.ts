@@ -76,3 +76,39 @@ SDL_EnumerateDirectoryCallback: {
     },
 
 } as const;
+
+
+/**
+ * Callback for directory enumeration.
+ *
+ * Enumeration of directory entries will continue until either all entries
+ * have been provided to the callback, or the callback has requested a stop
+ * through its return value.
+ *
+ * Returning SDL_ENUM_CONTINUE will let enumeration proceed, calling the
+ * callback with further entries. SDL_ENUM_SUCCESS and SDL_ENUM_FAILURE will
+ * terminate the enumeration early, and dictate the return value of the
+ * enumeration function itself.
+ *
+ * `dirname` is guaranteed to end with a path separator ('\\' on Windows, '/'
+ * on most other platforms).
+ *
+ * @param userdata an app-controlled pointer that is passed to the callback.
+ * @param dirname the directory that is being enumerated.
+ * @param fname the next entry in the enumeration.
+ * @returns how the enumeration should proceed.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa SDL_EnumerateDirectory
+ *
+ * @from SDL_filesystem.h:327 typedef SDL_EnumerationResult (*SDL_EnumerateDirectoryCallback)(void *userdata, const char *dirname, const char *fname);
+ */
+export function EnumerateDirectoryCallback(cb: (
+    userdata: Deno.PointerValue, 
+    dirname: Deno.PointerValue, 
+    fname: Deno.PointerValue, 
+  ) => number) {
+  return new Deno.UnsafeCallback(callbacks.SDL_EnumerateDirectoryCallback, cb);
+}
+

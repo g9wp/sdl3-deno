@@ -36,6 +36,8 @@ freely, subject to the following restrictions:
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   SDL_DateFormat as DATE_FORMAT,
@@ -61,7 +63,9 @@ export {
  *
  * @from SDL_time.h:110 bool SDL_GetDateTimeLocalePreferences(SDL_DateFormat *dateFormat, SDL_TimeFormat *timeFormat);
  */
-export const getDateTimeLocalePreferences = lib.symbols.SDL_GetDateTimeLocalePreferences;
+export function getDateTimeLocalePreferences(dateFormat: Deno.PointerValue<"SDL_DateFormat">, timeFormat: Deno.PointerValue<"SDL_TimeFormat">): boolean {
+  return lib.symbols.SDL_GetDateTimeLocalePreferences(dateFormat, timeFormat);
+}
 
 /**
  * Gets the current value of the system realtime clock in nanoseconds since
@@ -75,7 +79,9 @@ export const getDateTimeLocalePreferences = lib.symbols.SDL_GetDateTimeLocalePre
  *
  * @from SDL_time.h:122 bool SDL_GetCurrentTime(SDL_Time *ticks);
  */
-export const getCurrentTime = lib.symbols.SDL_GetCurrentTime;
+export function getCurrentTime(ticks: Deno.PointerValue<"SDL_Time">): boolean {
+  return lib.symbols.SDL_GetCurrentTime(ticks);
+}
 
 /**
  * Converts an SDL_Time in nanoseconds since the epoch to a calendar time in
@@ -93,7 +99,9 @@ export const getCurrentTime = lib.symbols.SDL_GetCurrentTime;
  *
  * @from SDL_time.h:138 bool SDL_TimeToDateTime(SDL_Time ticks, SDL_DateTime *dt, bool localTime);
  */
-export const timeToDateTime = lib.symbols.SDL_TimeToDateTime;
+export function timeToDateTime(ticks: bigint, dt: Deno.PointerValue<"SDL_DateTime">, localTime: boolean): boolean {
+  return lib.symbols.SDL_TimeToDateTime(ticks, dt, localTime);
+}
 
 /**
  * Converts a calendar time to an SDL_Time in nanoseconds since the epoch.
@@ -110,7 +118,9 @@ export const timeToDateTime = lib.symbols.SDL_TimeToDateTime;
  *
  * @from SDL_time.h:153 bool SDL_DateTimeToTime(const SDL_DateTime *dt, SDL_Time *ticks);
  */
-export const dateTimeToTime = lib.symbols.SDL_DateTimeToTime;
+export function dateTimeToTime(dt: Deno.PointerValue<"SDL_DateTime">, ticks: Deno.PointerValue<"SDL_Time">): boolean {
+  return lib.symbols.SDL_DateTimeToTime(dt, ticks);
+}
 
 /**
  * Converts an SDL time into a Windows FILETIME (100-nanosecond intervals
@@ -128,7 +138,10 @@ export const dateTimeToTime = lib.symbols.SDL_DateTimeToTime;
  *
  * @from SDL_time.h:169 void SDL_TimeToWindows(SDL_Time ticks, Uint32 *dwLowDateTime, Uint32 *dwHighDateTime);
  */
-export const timeToWindows = lib.symbols.SDL_TimeToWindows;
+export function timeToWindows(ticks: bigint): { dwLowDateTime: number; dwHighDateTime: number } {
+  lib.symbols.SDL_TimeToWindows(ticks, _p.u32.p0, _p.u32.p1);
+  return {dwLowDateTime: _p.u32.v0, dwHighDateTime: _p.u32.v1};
+}
 
 /**
  * Converts a Windows FILETIME (100-nanosecond intervals since January 1,
@@ -145,7 +158,9 @@ export const timeToWindows = lib.symbols.SDL_TimeToWindows;
  *
  * @from SDL_time.h:184 SDL_Time SDL_TimeFromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime);
  */
-export const timeFromWindows = lib.symbols.SDL_TimeFromWindows;
+export function timeFromWindows(dwLowDateTime: number, dwHighDateTime: number): bigint {
+  return lib.symbols.SDL_TimeFromWindows(dwLowDateTime, dwHighDateTime);
+}
 
 /**
  * Get the number of days in a month for a given year.
@@ -159,7 +174,9 @@ export const timeFromWindows = lib.symbols.SDL_TimeFromWindows;
  *
  * @from SDL_time.h:196 int SDL_GetDaysInMonth(int year, int month);
  */
-export const getDaysInMonth = lib.symbols.SDL_GetDaysInMonth;
+export function getDaysInMonth(year: number, month: number): number {
+  return lib.symbols.SDL_GetDaysInMonth(year, month);
+}
 
 /**
  * Get the day of year for a calendar date.
@@ -174,7 +191,9 @@ export const getDaysInMonth = lib.symbols.SDL_GetDaysInMonth;
  *
  * @from SDL_time.h:209 int SDL_GetDayOfYear(int year, int month, int day);
  */
-export const getDayOfYear = lib.symbols.SDL_GetDayOfYear;
+export function getDayOfYear(year: number, month: number, day: number): number {
+  return lib.symbols.SDL_GetDayOfYear(year, month, day);
+}
 
 /**
  * Get the day of week for a calendar date.
@@ -189,5 +208,7 @@ export const getDayOfYear = lib.symbols.SDL_GetDayOfYear;
  *
  * @from SDL_time.h:222 int SDL_GetDayOfWeek(int year, int month, int day);
  */
-export const getDayOfWeek = lib.symbols.SDL_GetDayOfWeek;
+export function getDayOfWeek(year: number, month: number, day: number): number {
+  return lib.symbols.SDL_GetDayOfWeek(year, month, day);
+}
 

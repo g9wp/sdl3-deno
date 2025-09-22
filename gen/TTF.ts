@@ -23,6 +23,9 @@ export {
 
 /*--- SDL_ttf ---*/
 
+import * as _p from "@g9wp/ptr";
+
+
 export {
   TTF as SDL_TTF,
   PROP_FONT_CREATE as PROP_FONT_CREATE,
@@ -50,7 +53,9 @@ export {
  *
  * @from SDL_ttf.h:73 int TTF_Version(void);
  */
-export const version = lib.symbols.TTF_Version;
+export function version(): number {
+  return lib.symbols.TTF_Version();
+}
 
 /**
  * Query the version of the FreeType library in use.
@@ -69,7 +74,10 @@ export const version = lib.symbols.TTF_Version;
  *
  * @from SDL_ttf.h:90 void TTF_GetFreeTypeVersion(int *major, int *minor, int *patch);
  */
-export const getFreeTypeVersion = lib.symbols.TTF_GetFreeTypeVersion;
+export function getFreeTypeVersion(): { major: number; minor: number; patch: number } {
+  lib.symbols.TTF_GetFreeTypeVersion(_p.i32.p0, _p.i32.p1, _p.i32.p2);
+  return {major: _p.i32.v0, minor: _p.i32.v1, patch: _p.i32.v2};
+}
 
 /**
  * Query the version of the HarfBuzz library in use.
@@ -86,7 +94,10 @@ export const getFreeTypeVersion = lib.symbols.TTF_GetFreeTypeVersion;
  *
  * @from SDL_ttf.h:105 void TTF_GetHarfBuzzVersion(int *major, int *minor, int *patch);
  */
-export const getHarfBuzzVersion = lib.symbols.TTF_GetHarfBuzzVersion;
+export function getHarfBuzzVersion(): { major: number; minor: number; patch: number } {
+  lib.symbols.TTF_GetHarfBuzzVersion(_p.i32.p0, _p.i32.p1, _p.i32.p2);
+  return {major: _p.i32.v0, minor: _p.i32.v1, patch: _p.i32.v2};
+}
 
 /**
  * Initialize SDL_ttf.
@@ -106,7 +117,9 @@ export const getHarfBuzzVersion = lib.symbols.TTF_GetHarfBuzzVersion;
  *
  * @from SDL_ttf.h:130 bool TTF_Init(void);
  */
-export const init = lib.symbols.TTF_Init;
+export function init(): boolean {
+  return lib.symbols.TTF_Init();
+}
 
 /**
  * Create a font from a file, using a specified point size.
@@ -130,7 +143,9 @@ export const init = lib.symbols.TTF_Init;
  *
  * @from SDL_ttf.h:152 TTF_Font * TTF_OpenFont(const char *file, float ptsize);
  */
-export const openFont = lib.symbols.TTF_OpenFont;
+export function openFont(file: string, ptsize: number): Deno.PointerValue<"TTF_Font"> {
+  return lib.symbols.TTF_OpenFont(_p.toCstr(file), ptsize) as Deno.PointerValue<"TTF_Font">;
+}
 
 /**
  * Create a font from an SDL_IOStream, using a specified point size.
@@ -159,7 +174,9 @@ export const openFont = lib.symbols.TTF_OpenFont;
  *
  * @from SDL_ttf.h:179 TTF_Font * TTF_OpenFontIO(SDL_IOStream *src, bool closeio, float ptsize);
  */
-export const openFontIo = lib.symbols.TTF_OpenFontIO;
+export function openFontIo(src: Deno.PointerValue<"SDL_IOStream">, closeio: boolean, ptsize: number): Deno.PointerValue<"TTF_Font"> {
+  return lib.symbols.TTF_OpenFontIO(src, closeio, ptsize) as Deno.PointerValue<"TTF_Font">;
+}
 
 /**
  * Create a font with the specified properties.
@@ -206,7 +223,9 @@ export const openFontIo = lib.symbols.TTF_OpenFontIO;
  *
  * @from SDL_ttf.h:224 TTF_Font * TTF_OpenFontWithProperties(SDL_PropertiesID props);
  */
-export const openFontWithProperties = lib.symbols.TTF_OpenFontWithProperties;
+export function openFontWithProperties(props: number): Deno.PointerValue<"TTF_Font"> {
+  return lib.symbols.TTF_OpenFontWithProperties(props) as Deno.PointerValue<"TTF_Font">;
+}
 
 /**
  * Create a copy of an existing font.
@@ -229,7 +248,9 @@ export const openFontWithProperties = lib.symbols.TTF_OpenFontWithProperties;
  *
  * @from SDL_ttf.h:255 TTF_Font * TTF_CopyFont(TTF_Font *existing_font);
  */
-export const copyFont = lib.symbols.TTF_CopyFont;
+export function copyFont(existing_font: Deno.PointerValue<"TTF_Font">): Deno.PointerValue<"TTF_Font"> {
+  return lib.symbols.TTF_CopyFont(existing_font) as Deno.PointerValue<"TTF_Font">;
+}
 
 /**
  * Get the properties associated with a font.
@@ -255,7 +276,9 @@ export const copyFont = lib.symbols.TTF_CopyFont;
  *
  * @from SDL_ttf.h:279 SDL_PropertiesID TTF_GetFontProperties(TTF_Font *font);
  */
-export const getFontProperties = lib.symbols.TTF_GetFontProperties;
+export function getFontProperties(font: Deno.PointerValue<"TTF_Font">): number {
+  return lib.symbols.TTF_GetFontProperties(font);
+}
 
 /**
  * Get the font generation.
@@ -274,7 +297,9 @@ export const getFontProperties = lib.symbols.TTF_GetFontProperties;
  *
  * @from SDL_ttf.h:300 Uint32 TTF_GetFontGeneration(TTF_Font *font);
  */
-export const getFontGeneration = lib.symbols.TTF_GetFontGeneration;
+export function getFontGeneration(font: Deno.PointerValue<"TTF_Font">): number {
+  return lib.symbols.TTF_GetFontGeneration(font);
+}
 
 /**
  * Add a fallback font.
@@ -301,7 +326,9 @@ export const getFontGeneration = lib.symbols.TTF_GetFontGeneration;
  *
  * @from SDL_ttf.h:325 bool TTF_AddFallbackFont(TTF_Font *font, TTF_Font *fallback);
  */
-export const addFallbackFont = lib.symbols.TTF_AddFallbackFont;
+export function addFallbackFont(font: Deno.PointerValue<"TTF_Font">, fallback: Deno.PointerValue<"TTF_Font">): boolean {
+  return lib.symbols.TTF_AddFallbackFont(font, fallback);
+}
 
 /**
  * Remove a fallback font.
@@ -321,7 +348,9 @@ export const addFallbackFont = lib.symbols.TTF_AddFallbackFont;
  *
  * @from SDL_ttf.h:343 void TTF_RemoveFallbackFont(TTF_Font *font, TTF_Font *fallback);
  */
-export const removeFallbackFont = lib.symbols.TTF_RemoveFallbackFont;
+export function removeFallbackFont(font: Deno.PointerValue<"TTF_Font">, fallback: Deno.PointerValue<"TTF_Font">): void {
+  return lib.symbols.TTF_RemoveFallbackFont(font, fallback);
+}
 
 /**
  * Remove all fallback fonts.
@@ -340,7 +369,9 @@ export const removeFallbackFont = lib.symbols.TTF_RemoveFallbackFont;
  *
  * @from SDL_ttf.h:360 void TTF_ClearFallbackFonts(TTF_Font *font);
  */
-export const clearFallbackFonts = lib.symbols.TTF_ClearFallbackFonts;
+export function clearFallbackFonts(font: Deno.PointerValue<"TTF_Font">): void {
+  return lib.symbols.TTF_ClearFallbackFonts(font);
+}
 
 /**
  * Set a font's size dynamically.
@@ -362,7 +393,9 @@ export const clearFallbackFonts = lib.symbols.TTF_ClearFallbackFonts;
  *
  * @from SDL_ttf.h:380 bool TTF_SetFontSize(TTF_Font *font, float ptsize);
  */
-export const setFontSize = lib.symbols.TTF_SetFontSize;
+export function setFontSize(font: Deno.PointerValue<"TTF_Font">, ptsize: number): boolean {
+  return lib.symbols.TTF_SetFontSize(font, ptsize);
+}
 
 /**
  * Set font size dynamically with target resolutions, in dots per inch.
@@ -387,7 +420,14 @@ export const setFontSize = lib.symbols.TTF_SetFontSize;
  *
  * @from SDL_ttf.h:403 bool TTF_SetFontSizeDPI(TTF_Font *font, float ptsize, int hdpi, int vdpi);
  */
-export const setFontSizeDpi = lib.symbols.TTF_SetFontSizeDPI;
+export function setFontSizeDpi(
+    font: Deno.PointerValue<"TTF_Font">,
+    ptsize: number,
+    hdpi: number,
+    vdpi: number,
+): boolean {
+  return lib.symbols.TTF_SetFontSizeDPI(font, ptsize, hdpi, vdpi);
+}
 
 /**
  * Get the size of a font.
@@ -406,7 +446,9 @@ export const setFontSizeDpi = lib.symbols.TTF_SetFontSizeDPI;
  *
  * @from SDL_ttf.h:420 float TTF_GetFontSize(TTF_Font *font);
  */
-export const getFontSize = lib.symbols.TTF_GetFontSize;
+export function getFontSize(font: Deno.PointerValue<"TTF_Font">): number {
+  return lib.symbols.TTF_GetFontSize(font);
+}
 
 /**
  * Get font target resolutions, in dots per inch.
@@ -426,7 +468,11 @@ export const getFontSize = lib.symbols.TTF_GetFontSize;
  *
  * @from SDL_ttf.h:438 bool TTF_GetFontDPI(TTF_Font *font, int *hdpi, int *vdpi);
  */
-export const getFontDpi = lib.symbols.TTF_GetFontDPI;
+export function getFontDpi(font: Deno.PointerValue<"TTF_Font">): { hdpi: number; vdpi: number } {
+  if(!lib.symbols.TTF_GetFontDPI(font, _p.i32.p0, _p.i32.p1))
+    throw new Error(`TTF_GetFontDPI: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { hdpi: _p.i32.v0, vdpi: _p.i32.v1 };
+}
 
 /**
  * Set a font's current style.
@@ -454,7 +500,9 @@ export const getFontDpi = lib.symbols.TTF_GetFontDPI;
  *
  * @from SDL_ttf.h:484 void TTF_SetFontStyle(TTF_Font *font, TTF_FontStyleFlags style);
  */
-export const setFontStyle = lib.symbols.TTF_SetFontStyle;
+export function setFontStyle(font: Deno.PointerValue<"TTF_Font">, style: number): void {
+  return lib.symbols.TTF_SetFontStyle(font, style);
+}
 
 /**
  * Query a font's current style.
@@ -478,7 +526,9 @@ export const setFontStyle = lib.symbols.TTF_SetFontStyle;
  *
  * @from SDL_ttf.h:506 TTF_FontStyleFlags TTF_GetFontStyle(const TTF_Font *font);
  */
-export const getFontStyle = lib.symbols.TTF_GetFontStyle;
+export function getFontStyle(font: Deno.PointerValue<"TTF_Font">): number {
+  return lib.symbols.TTF_GetFontStyle(font);
+}
 
 /**
  * Set a font's current outline.
@@ -504,7 +554,9 @@ export const getFontStyle = lib.symbols.TTF_GetFontStyle;
  *
  * @from SDL_ttf.h:530 bool TTF_SetFontOutline(TTF_Font *font, int outline);
  */
-export const setFontOutline = lib.symbols.TTF_SetFontOutline;
+export function setFontOutline(font: Deno.PointerValue<"TTF_Font">, outline: number): boolean {
+  return lib.symbols.TTF_SetFontOutline(font, outline);
+}
 
 /**
  * Query a font's current outline.
@@ -520,7 +572,9 @@ export const setFontOutline = lib.symbols.TTF_SetFontOutline;
  *
  * @from SDL_ttf.h:544 int TTF_GetFontOutline(const TTF_Font *font);
  */
-export const getFontOutline = lib.symbols.TTF_GetFontOutline;
+export function getFontOutline(font: Deno.PointerValue<"TTF_Font">): number {
+  return lib.symbols.TTF_GetFontOutline(font);
+}
 
 /**
  * Set a font's current hinter setting.
@@ -548,7 +602,9 @@ export const getFontOutline = lib.symbols.TTF_GetFontOutline;
  *
  * @from SDL_ttf.h:592 void TTF_SetFontHinting(TTF_Font *font, TTF_HintingFlags hinting);
  */
-export const setFontHinting = lib.symbols.TTF_SetFontHinting;
+export function setFontHinting(font: Deno.PointerValue<"TTF_Font">, hinting: number): void {
+  return lib.symbols.TTF_SetFontHinting(font, hinting);
+}
 
 /**
  * Query the number of faces of a font.
@@ -562,7 +618,9 @@ export const setFontHinting = lib.symbols.TTF_SetFontHinting;
  *
  * @from SDL_ttf.h:604 int TTF_GetNumFontFaces(const TTF_Font *font);
  */
-export const getNumFontFaces = lib.symbols.TTF_GetNumFontFaces;
+export function getNumFontFaces(font: Deno.PointerValue<"TTF_Font">): number {
+  return lib.symbols.TTF_GetNumFontFaces(font);
+}
 
 /**
  * Query a font's current FreeType hinter setting.
@@ -587,7 +645,9 @@ export const getNumFontFaces = lib.symbols.TTF_GetNumFontFaces;
  *
  * @from SDL_ttf.h:627 TTF_HintingFlags TTF_GetFontHinting(const TTF_Font *font);
  */
-export const getFontHinting = lib.symbols.TTF_GetFontHinting;
+export function getFontHinting(font: Deno.PointerValue<"TTF_Font">): number {
+  return lib.symbols.TTF_GetFontHinting(font);
+}
 
 /**
  * Enable Signed Distance Field rendering for a font.
@@ -615,7 +675,9 @@ export const getFontHinting = lib.symbols.TTF_GetFontHinting;
  *
  * @from SDL_ttf.h:653 bool TTF_SetFontSDF(TTF_Font *font, bool enabled);
  */
-export const setFontSdf = lib.symbols.TTF_SetFontSDF;
+export function setFontSdf(font: Deno.PointerValue<"TTF_Font">, enabled: boolean): boolean {
+  return lib.symbols.TTF_SetFontSDF(font, enabled);
+}
 
 /**
  * Query whether Signed Distance Field rendering is enabled for a font.
@@ -631,7 +693,9 @@ export const setFontSdf = lib.symbols.TTF_SetFontSDF;
  *
  * @from SDL_ttf.h:667 bool TTF_GetFontSDF(const TTF_Font *font);
  */
-export const getFontSdf = lib.symbols.TTF_GetFontSDF;
+export function getFontSdf(font: Deno.PointerValue<"TTF_Font">): boolean {
+  return lib.symbols.TTF_GetFontSDF(font);
+}
 
 /**
  * Query a font's weight, in terms of the lightness/heaviness of the strokes.
@@ -646,7 +710,9 @@ export const getFontSdf = lib.symbols.TTF_GetFontSDF;
  *
  * @from SDL_ttf.h:680 int TTF_GetFontWeight(const TTF_Font *font);
  */
-export const getFontWeight = lib.symbols.TTF_GetFontWeight;
+export function getFontWeight(font: Deno.PointerValue<"TTF_Font">): number {
+  return lib.symbols.TTF_GetFontWeight(font);
+}
 
 /**
  * Set a font's current wrap alignment option.
@@ -665,7 +731,9 @@ export const getFontWeight = lib.symbols.TTF_GetFontWeight;
  *
  * @from SDL_ttf.h:721 void TTF_SetFontWrapAlignment(TTF_Font *font, TTF_HorizontalAlignment align);
  */
-export const setFontWrapAlignment = lib.symbols.TTF_SetFontWrapAlignment;
+export function setFontWrapAlignment(font: Deno.PointerValue<"TTF_Font">, align: number): void {
+  return lib.symbols.TTF_SetFontWrapAlignment(font, align);
+}
 
 /**
  * Query a font's current wrap alignment option.
@@ -681,7 +749,9 @@ export const setFontWrapAlignment = lib.symbols.TTF_SetFontWrapAlignment;
  *
  * @from SDL_ttf.h:735 TTF_HorizontalAlignment TTF_GetFontWrapAlignment(const TTF_Font *font);
  */
-export const getFontWrapAlignment = lib.symbols.TTF_GetFontWrapAlignment;
+export function getFontWrapAlignment(font: Deno.PointerValue<"TTF_Font">): number {
+  return lib.symbols.TTF_GetFontWrapAlignment(font);
+}
 
 /**
  * Query the total height of a font.
@@ -697,7 +767,9 @@ export const getFontWrapAlignment = lib.symbols.TTF_GetFontWrapAlignment;
  *
  * @from SDL_ttf.h:749 int TTF_GetFontHeight(const TTF_Font *font);
  */
-export const getFontHeight = lib.symbols.TTF_GetFontHeight;
+export function getFontHeight(font: Deno.PointerValue<"TTF_Font">): number {
+  return lib.symbols.TTF_GetFontHeight(font);
+}
 
 /**
  * Query the offset from the baseline to the top of a font.
@@ -713,7 +785,9 @@ export const getFontHeight = lib.symbols.TTF_GetFontHeight;
  *
  * @from SDL_ttf.h:763 int TTF_GetFontAscent(const TTF_Font *font);
  */
-export const getFontAscent = lib.symbols.TTF_GetFontAscent;
+export function getFontAscent(font: Deno.PointerValue<"TTF_Font">): number {
+  return lib.symbols.TTF_GetFontAscent(font);
+}
 
 /**
  * Query the offset from the baseline to the bottom of a font.
@@ -729,7 +803,9 @@ export const getFontAscent = lib.symbols.TTF_GetFontAscent;
  *
  * @from SDL_ttf.h:777 int TTF_GetFontDescent(const TTF_Font *font);
  */
-export const getFontDescent = lib.symbols.TTF_GetFontDescent;
+export function getFontDescent(font: Deno.PointerValue<"TTF_Font">): number {
+  return lib.symbols.TTF_GetFontDescent(font);
+}
 
 /**
  * Set the spacing between lines of text for a font.
@@ -748,7 +824,9 @@ export const getFontDescent = lib.symbols.TTF_GetFontDescent;
  *
  * @from SDL_ttf.h:794 void TTF_SetFontLineSkip(TTF_Font *font, int lineskip);
  */
-export const setFontLineSkip = lib.symbols.TTF_SetFontLineSkip;
+export function setFontLineSkip(font: Deno.PointerValue<"TTF_Font">, lineskip: number): void {
+  return lib.symbols.TTF_SetFontLineSkip(font, lineskip);
+}
 
 /**
  * Query the spacing between lines of text for a font.
@@ -764,7 +842,9 @@ export const setFontLineSkip = lib.symbols.TTF_SetFontLineSkip;
  *
  * @from SDL_ttf.h:808 int TTF_GetFontLineSkip(const TTF_Font *font);
  */
-export const getFontLineSkip = lib.symbols.TTF_GetFontLineSkip;
+export function getFontLineSkip(font: Deno.PointerValue<"TTF_Font">): number {
+  return lib.symbols.TTF_GetFontLineSkip(font);
+}
 
 /**
  * Set if kerning is enabled for a font.
@@ -788,7 +868,9 @@ export const getFontLineSkip = lib.symbols.TTF_GetFontLineSkip;
  *
  * @from SDL_ttf.h:830 void TTF_SetFontKerning(TTF_Font *font, bool enabled);
  */
-export const setFontKerning = lib.symbols.TTF_SetFontKerning;
+export function setFontKerning(font: Deno.PointerValue<"TTF_Font">, enabled: boolean): void {
+  return lib.symbols.TTF_SetFontKerning(font, enabled);
+}
 
 /**
  * Query whether or not kerning is enabled for a font.
@@ -804,7 +886,9 @@ export const setFontKerning = lib.symbols.TTF_SetFontKerning;
  *
  * @from SDL_ttf.h:844 bool TTF_GetFontKerning(const TTF_Font *font);
  */
-export const getFontKerning = lib.symbols.TTF_GetFontKerning;
+export function getFontKerning(font: Deno.PointerValue<"TTF_Font">): boolean {
+  return lib.symbols.TTF_GetFontKerning(font);
+}
 
 /**
  * Query whether a font is fixed-width.
@@ -824,7 +908,9 @@ export const getFontKerning = lib.symbols.TTF_GetFontKerning;
  *
  * @from SDL_ttf.h:862 bool TTF_FontIsFixedWidth(const TTF_Font *font);
  */
-export const fontIsFixedWidth = lib.symbols.TTF_FontIsFixedWidth;
+export function fontIsFixedWidth(font: Deno.PointerValue<"TTF_Font">): boolean {
+  return lib.symbols.TTF_FontIsFixedWidth(font);
+}
 
 /**
  * Query whether a font is scalable or not.
@@ -842,7 +928,9 @@ export const fontIsFixedWidth = lib.symbols.TTF_FontIsFixedWidth;
  *
  * @from SDL_ttf.h:878 bool TTF_FontIsScalable(const TTF_Font *font);
  */
-export const fontIsScalable = lib.symbols.TTF_FontIsScalable;
+export function fontIsScalable(font: Deno.PointerValue<"TTF_Font">): boolean {
+  return lib.symbols.TTF_FontIsScalable(font);
+}
 
 /**
  * Query a font's family name.
@@ -862,7 +950,9 @@ export const fontIsScalable = lib.symbols.TTF_FontIsScalable;
  *
  * @from SDL_ttf.h:896 const char * TTF_GetFontFamilyName(const TTF_Font *font);
  */
-export const getFontFamilyName = lib.symbols.TTF_GetFontFamilyName;
+export function getFontFamilyName(font: Deno.PointerValue<"TTF_Font">): string {
+  return _p.getCstr2(lib.symbols.TTF_GetFontFamilyName(font));
+}
 
 /**
  * Query a font's style name.
@@ -882,7 +972,9 @@ export const getFontFamilyName = lib.symbols.TTF_GetFontFamilyName;
  *
  * @from SDL_ttf.h:914 const char * TTF_GetFontStyleName(const TTF_Font *font);
  */
-export const getFontStyleName = lib.symbols.TTF_GetFontStyleName;
+export function getFontStyleName(font: Deno.PointerValue<"TTF_Font">): string {
+  return _p.getCstr2(lib.symbols.TTF_GetFontStyleName(font));
+}
 
 /**
  * Set the direction to be used for text shaping by a font.
@@ -904,7 +996,9 @@ export const getFontStyleName = lib.symbols.TTF_GetFontStyleName;
  *
  * @from SDL_ttf.h:954 bool TTF_SetFontDirection(TTF_Font *font, TTF_Direction direction);
  */
-export const setFontDirection = lib.symbols.TTF_SetFontDirection;
+export function setFontDirection(font: Deno.PointerValue<"TTF_Font">, direction: number): boolean {
+  return lib.symbols.TTF_SetFontDirection(font, direction);
+}
 
 /**
  * Get the direction to be used for text shaping by a font.
@@ -921,7 +1015,9 @@ export const setFontDirection = lib.symbols.TTF_SetFontDirection;
  *
  * @from SDL_ttf.h:969 TTF_Direction TTF_GetFontDirection(TTF_Font *font);
  */
-export const getFontDirection = lib.symbols.TTF_GetFontDirection;
+export function getFontDirection(font: Deno.PointerValue<"TTF_Font">): number {
+  return lib.symbols.TTF_GetFontDirection(font);
+}
 
 /**
  * Convert from a 4 character string to a 32-bit tag.
@@ -937,7 +1033,9 @@ export const getFontDirection = lib.symbols.TTF_GetFontDirection;
  *
  * @from SDL_ttf.h:983 Uint32 TTF_StringToTag(const char *string);
  */
-export const stringToTag = lib.symbols.TTF_StringToTag;
+export function stringToTag(string: string): number {
+  return lib.symbols.TTF_StringToTag(_p.toCstr(string));
+}
 
 /**
  * Convert from a 32-bit tag to a 4 character string.
@@ -956,7 +1054,10 @@ export const stringToTag = lib.symbols.TTF_StringToTag;
  *
  * @from SDL_ttf.h:1000 void TTF_TagToString(Uint32 tag, char *string, size_t size);
  */
-export const tagToString = lib.symbols.TTF_TagToString;
+export function tagToString(tag: number, size: bigint): string {
+  lib.symbols.TTF_TagToString(tag, _p.cstr.p0, size);
+  return _p.cstr.v0;
+}
 
 /**
  * Set the script to be used for text shaping by a font.
@@ -981,7 +1082,9 @@ export const tagToString = lib.symbols.TTF_TagToString;
  *
  * @from SDL_ttf.h:1023 bool TTF_SetFontScript(TTF_Font *font, Uint32 script);
  */
-export const setFontScript = lib.symbols.TTF_SetFontScript;
+export function setFontScript(font: Deno.PointerValue<"TTF_Font">, script: number): boolean {
+  return lib.symbols.TTF_SetFontScript(font, script);
+}
 
 /**
  * Get the script used for text shaping a font.
@@ -1000,7 +1103,9 @@ export const setFontScript = lib.symbols.TTF_SetFontScript;
  *
  * @from SDL_ttf.h:1040 Uint32 TTF_GetFontScript(TTF_Font *font);
  */
-export const getFontScript = lib.symbols.TTF_GetFontScript;
+export function getFontScript(font: Deno.PointerValue<"TTF_Font">): number {
+  return lib.symbols.TTF_GetFontScript(font);
+}
 
 /**
  * Get the script used by a 32-bit codepoint.
@@ -1019,7 +1124,9 @@ export const getFontScript = lib.symbols.TTF_GetFontScript;
  *
  * @from SDL_ttf.h:1057 Uint32 TTF_GetGlyphScript(Uint32 ch);
  */
-export const getGlyphScript = lib.symbols.TTF_GetGlyphScript;
+export function getGlyphScript(ch: number): number {
+  return lib.symbols.TTF_GetGlyphScript(ch);
+}
 
 /**
  * Set language to be used for text shaping by a font.
@@ -1042,7 +1149,9 @@ export const getGlyphScript = lib.symbols.TTF_GetGlyphScript;
  *
  * @from SDL_ttf.h:1078 bool TTF_SetFontLanguage(TTF_Font *font, const char *language_bcp47);
  */
-export const setFontLanguage = lib.symbols.TTF_SetFontLanguage;
+export function setFontLanguage(font: Deno.PointerValue<"TTF_Font">, language_bcp47: string): boolean {
+  return lib.symbols.TTF_SetFontLanguage(font, _p.toCstr(language_bcp47));
+}
 
 /**
  * Check whether a glyph is provided by the font for a UNICODE codepoint.
@@ -1058,7 +1167,9 @@ export const setFontLanguage = lib.symbols.TTF_SetFontLanguage;
  *
  * @from SDL_ttf.h:1092 bool TTF_FontHasGlyph(TTF_Font *font, Uint32 ch);
  */
-export const fontHasGlyph = lib.symbols.TTF_FontHasGlyph;
+export function fontHasGlyph(font: Deno.PointerValue<"TTF_Font">, ch: number): boolean {
+  return lib.symbols.TTF_FontHasGlyph(font, ch);
+}
 
 /**
  * Get the pixel image for a UNICODE codepoint.
@@ -1077,7 +1188,9 @@ export const fontHasGlyph = lib.symbols.TTF_FontHasGlyph;
  *
  * @from SDL_ttf.h:1122 SDL_Surface * TTF_GetGlyphImage(TTF_Font *font, Uint32 ch, TTF_ImageType *image_type);
  */
-export const getGlyphImage = lib.symbols.TTF_GetGlyphImage;
+export function getGlyphImage(font: Deno.PointerValue<"TTF_Font">, ch: number, image_type: Deno.PointerValue<"TTF_ImageType">): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.TTF_GetGlyphImage(font, ch, image_type) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Get the pixel image for a character index.
@@ -1099,7 +1212,9 @@ export const getGlyphImage = lib.symbols.TTF_GetGlyphImage;
  *
  * @from SDL_ttf.h:1142 SDL_Surface * TTF_GetGlyphImageForIndex(TTF_Font *font, Uint32 glyph_index, TTF_ImageType *image_type);
  */
-export const getGlyphImageForIndex = lib.symbols.TTF_GetGlyphImageForIndex;
+export function getGlyphImageForIndex(font: Deno.PointerValue<"TTF_Font">, glyph_index: number, image_type: Deno.PointerValue<"TTF_ImageType">): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.TTF_GetGlyphImageForIndex(font, glyph_index, image_type) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Query the metrics (dimensions) of a font's glyph for a UNICODE codepoint.
@@ -1132,7 +1247,11 @@ export const getGlyphImageForIndex = lib.symbols.TTF_GetGlyphImageForIndex;
  *
  * @from SDL_ttf.h:1173 bool TTF_GetGlyphMetrics(TTF_Font *font, Uint32 ch, int *minx, int *maxx, int *miny, int *maxy, int *advance);
  */
-export const getGlyphMetrics = lib.symbols.TTF_GetGlyphMetrics;
+export function getGlyphMetrics(font: Deno.PointerValue<"TTF_Font">, ch: number): { minx: number; maxx: number; miny: number; maxy: number; advance: number } {
+  if(!lib.symbols.TTF_GetGlyphMetrics(font, ch, _p.i32.p0, _p.i32.p1, _p.i32.p2, _p.i32.p3, _p.i32.p4))
+    throw new Error(`TTF_GetGlyphMetrics: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { minx: _p.i32.v0, maxx: _p.i32.v1, miny: _p.i32.v2, maxy: _p.i32.v3, advance: _p.i32.v4 };
+}
 
 /**
  * Query the kerning size between the glyphs of two UNICODE codepoints.
@@ -1152,7 +1271,11 @@ export const getGlyphMetrics = lib.symbols.TTF_GetGlyphMetrics;
  *
  * @from SDL_ttf.h:1191 bool TTF_GetGlyphKerning(TTF_Font *font, Uint32 previous_ch, Uint32 ch, int *kerning);
  */
-export const getGlyphKerning = lib.symbols.TTF_GetGlyphKerning;
+export function getGlyphKerning(font: Deno.PointerValue<"TTF_Font">, previous_ch: number, ch: number): number {
+  if(!lib.symbols.TTF_GetGlyphKerning(font, previous_ch, ch, _p.i32.p0))
+    throw new Error(`TTF_GetGlyphKerning: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.i32.v0;
+}
 
 /**
  * Calculate the dimensions of a rendered string of UTF-8 text.
@@ -1176,7 +1299,11 @@ export const getGlyphKerning = lib.symbols.TTF_GetGlyphKerning;
  *
  * @from SDL_ttf.h:1213 bool TTF_GetStringSize(TTF_Font *font, const char *text, size_t length, int *w, int *h);
  */
-export const getStringSize = lib.symbols.TTF_GetStringSize;
+export function getStringSize(font: Deno.PointerValue<"TTF_Font">, text: string, length: bigint): { w: number; h: number } {
+  if(!lib.symbols.TTF_GetStringSize(font, _p.toCstr(text), length, _p.i32.p0, _p.i32.p1))
+    throw new Error(`TTF_GetStringSize: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { w: _p.i32.v0, h: _p.i32.v1 };
+}
 
 /**
  * Calculate the dimensions of a rendered string of UTF-8 text.
@@ -1206,7 +1333,16 @@ export const getStringSize = lib.symbols.TTF_GetStringSize;
  *
  * @from SDL_ttf.h:1241 bool TTF_GetStringSizeWrapped(TTF_Font *font, const char *text, size_t length, int wrap_width, int *w, int *h);
  */
-export const getStringSizeWrapped = lib.symbols.TTF_GetStringSizeWrapped;
+export function getStringSizeWrapped(
+    font: Deno.PointerValue<"TTF_Font">,
+    text: string,
+    length: bigint,
+    wrap_width: number,
+): { w: number; h: number } {
+  if(!lib.symbols.TTF_GetStringSizeWrapped(font, _p.toCstr(text), length, wrap_width, _p.i32.p0, _p.i32.p1))
+    throw new Error(`TTF_GetStringSizeWrapped: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { w: _p.i32.v0, h: _p.i32.v1 };
+}
 
 /**
  * Calculate how much of a UTF-8 string will fit in a given width.
@@ -1236,7 +1372,16 @@ export const getStringSizeWrapped = lib.symbols.TTF_GetStringSizeWrapped;
  *
  * @from SDL_ttf.h:1269 bool TTF_MeasureString(TTF_Font *font, const char *text, size_t length, int max_width, int *measured_width, size_t *measured_length);
  */
-export const measureString = lib.symbols.TTF_MeasureString;
+export function measureString(
+    font: Deno.PointerValue<"TTF_Font">,
+    text: string,
+    length: bigint,
+    max_width: number,
+): { measured_width: number; measured_length: bigint } {
+  if(!lib.symbols.TTF_MeasureString(font, _p.toCstr(text), length, max_width, _p.i32.p0, _p.u64.p0))
+    throw new Error(`TTF_MeasureString: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { measured_width: _p.i32.v0, measured_length: _p.u64.v0 };
+}
 
 /**
  * Render UTF-8 text at fast quality to a new 8-bit surface.
@@ -1275,7 +1420,14 @@ export const measureString = lib.symbols.TTF_MeasureString;
  *
  * @from SDL_ttf.h:1306 SDL_Surface * TTF_RenderText_Solid(TTF_Font *font, const char *text, size_t length, SDL_Color fg);
  */
-export const renderTextSolid = lib.symbols.TTF_RenderText_Solid;
+export function renderTextSolid(
+    font: Deno.PointerValue<"TTF_Font">,
+    text: string,
+    length: bigint,
+    fg: { r: number; g: number; b: number; a: number; },
+): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.TTF_RenderText_Solid(font, _p.toCstr(text), length, fg) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Render word-wrapped UTF-8 text at fast quality to a new 8-bit surface.
@@ -1313,7 +1465,15 @@ export const renderTextSolid = lib.symbols.TTF_RenderText_Solid;
  *
  * @from SDL_ttf.h:1342 SDL_Surface * TTF_RenderText_Solid_Wrapped(TTF_Font *font, const char *text, size_t length, SDL_Color fg, int wrapLength);
  */
-export const renderTextSolidWrapped = lib.symbols.TTF_RenderText_Solid_Wrapped;
+export function renderTextSolidWrapped(
+    font: Deno.PointerValue<"TTF_Font">,
+    text: string,
+    length: bigint,
+    fg: { r: number; g: number; b: number; a: number; },
+    wrapLength: number,
+): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.TTF_RenderText_Solid_Wrapped(font, _p.toCstr(text), length, fg, wrapLength) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Render a single 32-bit glyph at fast quality to a new 8-bit surface.
@@ -1344,7 +1504,9 @@ export const renderTextSolidWrapped = lib.symbols.TTF_RenderText_Solid_Wrapped;
  *
  * @from SDL_ttf.h:1371 SDL_Surface * TTF_RenderGlyph_Solid(TTF_Font *font, Uint32 ch, SDL_Color fg);
  */
-export const renderGlyphSolid = lib.symbols.TTF_RenderGlyph_Solid;
+export function renderGlyphSolid(font: Deno.PointerValue<"TTF_Font">, ch: number, fg: { r: number; g: number; b: number; a: number; }): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.TTF_RenderGlyph_Solid(font, ch, fg) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Render UTF-8 text at high quality to a new 8-bit surface.
@@ -1384,7 +1546,15 @@ export const renderGlyphSolid = lib.symbols.TTF_RenderGlyph_Solid;
  *
  * @from SDL_ttf.h:1409 SDL_Surface * TTF_RenderText_Shaded(TTF_Font *font, const char *text, size_t length, SDL_Color fg, SDL_Color bg);
  */
-export const renderTextShaded = lib.symbols.TTF_RenderText_Shaded;
+export function renderTextShaded(
+    font: Deno.PointerValue<"TTF_Font">,
+    text: string,
+    length: bigint,
+    fg: { r: number; g: number; b: number; a: number; },
+    bg: { r: number; g: number; b: number; a: number; },
+): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.TTF_RenderText_Shaded(font, _p.toCstr(text), length, fg, bg) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Render word-wrapped UTF-8 text at high quality to a new 8-bit surface.
@@ -1424,7 +1594,16 @@ export const renderTextShaded = lib.symbols.TTF_RenderText_Shaded;
  *
  * @from SDL_ttf.h:1447 SDL_Surface * TTF_RenderText_Shaded_Wrapped(TTF_Font *font, const char *text, size_t length, SDL_Color fg, SDL_Color bg, int wrap_width);
  */
-export const renderTextShadedWrapped = lib.symbols.TTF_RenderText_Shaded_Wrapped;
+export function renderTextShadedWrapped(
+    font: Deno.PointerValue<"TTF_Font">,
+    text: string,
+    length: bigint,
+    fg: { r: number; g: number; b: number; a: number; },
+    bg: { r: number; g: number; b: number; a: number; },
+    wrap_width: number,
+): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.TTF_RenderText_Shaded_Wrapped(font, _p.toCstr(text), length, fg, bg, wrap_width) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Render a single UNICODE codepoint at high quality to a new 8-bit surface.
@@ -1457,7 +1636,14 @@ export const renderTextShadedWrapped = lib.symbols.TTF_RenderText_Shaded_Wrapped
  *
  * @from SDL_ttf.h:1478 SDL_Surface * TTF_RenderGlyph_Shaded(TTF_Font *font, Uint32 ch, SDL_Color fg, SDL_Color bg);
  */
-export const renderGlyphShaded = lib.symbols.TTF_RenderGlyph_Shaded;
+export function renderGlyphShaded(
+    font: Deno.PointerValue<"TTF_Font">,
+    ch: number,
+    fg: { r: number; g: number; b: number; a: number; },
+    bg: { r: number; g: number; b: number; a: number; },
+): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.TTF_RenderGlyph_Shaded(font, ch, fg, bg) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Render UTF-8 text at high quality to a new ARGB surface.
@@ -1495,7 +1681,14 @@ export const renderGlyphShaded = lib.symbols.TTF_RenderGlyph_Shaded;
  *
  * @from SDL_ttf.h:1514 SDL_Surface * TTF_RenderText_Blended(TTF_Font *font, const char *text, size_t length, SDL_Color fg);
  */
-export const renderTextBlended = lib.symbols.TTF_RenderText_Blended;
+export function renderTextBlended(
+    font: Deno.PointerValue<"TTF_Font">,
+    text: string,
+    length: bigint,
+    fg: { r: number; g: number; b: number; a: number; },
+): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.TTF_RenderText_Blended(font, _p.toCstr(text), length, fg) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Render word-wrapped UTF-8 text at high quality to a new ARGB surface.
@@ -1533,7 +1726,15 @@ export const renderTextBlended = lib.symbols.TTF_RenderText_Blended;
  *
  * @from SDL_ttf.h:1550 SDL_Surface * TTF_RenderText_Blended_Wrapped(TTF_Font *font, const char *text, size_t length, SDL_Color fg, int wrap_width);
  */
-export const renderTextBlendedWrapped = lib.symbols.TTF_RenderText_Blended_Wrapped;
+export function renderTextBlendedWrapped(
+    font: Deno.PointerValue<"TTF_Font">,
+    text: string,
+    length: bigint,
+    fg: { r: number; g: number; b: number; a: number; },
+    wrap_width: number,
+): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.TTF_RenderText_Blended_Wrapped(font, _p.toCstr(text), length, fg, wrap_width) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Render a single UNICODE codepoint at high quality to a new ARGB surface.
@@ -1564,7 +1765,9 @@ export const renderTextBlendedWrapped = lib.symbols.TTF_RenderText_Blended_Wrapp
  *
  * @from SDL_ttf.h:1579 SDL_Surface * TTF_RenderGlyph_Blended(TTF_Font *font, Uint32 ch, SDL_Color fg);
  */
-export const renderGlyphBlended = lib.symbols.TTF_RenderGlyph_Blended;
+export function renderGlyphBlended(font: Deno.PointerValue<"TTF_Font">, ch: number, fg: { r: number; g: number; b: number; a: number; }): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.TTF_RenderGlyph_Blended(font, ch, fg) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Render UTF-8 text at LCD subpixel quality to a new ARGB surface.
@@ -1603,7 +1806,15 @@ export const renderGlyphBlended = lib.symbols.TTF_RenderGlyph_Blended;
  *
  * @from SDL_ttf.h:1616 SDL_Surface * TTF_RenderText_LCD(TTF_Font *font, const char *text, size_t length, SDL_Color fg, SDL_Color bg);
  */
-export const renderTextLcd = lib.symbols.TTF_RenderText_LCD;
+export function renderTextLcd(
+    font: Deno.PointerValue<"TTF_Font">,
+    text: string,
+    length: bigint,
+    fg: { r: number; g: number; b: number; a: number; },
+    bg: { r: number; g: number; b: number; a: number; },
+): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.TTF_RenderText_LCD(font, _p.toCstr(text), length, fg, bg) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Render word-wrapped UTF-8 text at LCD subpixel quality to a new ARGB
@@ -1643,7 +1854,16 @@ export const renderTextLcd = lib.symbols.TTF_RenderText_LCD;
  *
  * @from SDL_ttf.h:1654 SDL_Surface * TTF_RenderText_LCD_Wrapped(TTF_Font *font, const char *text, size_t length, SDL_Color fg, SDL_Color bg, int wrap_width);
  */
-export const renderTextLcdWrapped = lib.symbols.TTF_RenderText_LCD_Wrapped;
+export function renderTextLcdWrapped(
+    font: Deno.PointerValue<"TTF_Font">,
+    text: string,
+    length: bigint,
+    fg: { r: number; g: number; b: number; a: number; },
+    bg: { r: number; g: number; b: number; a: number; },
+    wrap_width: number,
+): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.TTF_RenderText_LCD_Wrapped(font, _p.toCstr(text), length, fg, bg, wrap_width) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Render a single UNICODE codepoint at LCD subpixel quality to a new ARGB
@@ -1676,7 +1896,14 @@ export const renderTextLcdWrapped = lib.symbols.TTF_RenderText_LCD_Wrapped;
  *
  * @from SDL_ttf.h:1685 SDL_Surface * TTF_RenderGlyph_LCD(TTF_Font *font, Uint32 ch, SDL_Color fg, SDL_Color bg);
  */
-export const renderGlyphLcd = lib.symbols.TTF_RenderGlyph_LCD;
+export function renderGlyphLcd(
+    font: Deno.PointerValue<"TTF_Font">,
+    ch: number,
+    fg: { r: number; g: number; b: number; a: number; },
+    bg: { r: number; g: number; b: number; a: number; },
+): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.TTF_RenderGlyph_LCD(font, ch, fg, bg) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Create a text engine for drawing text on SDL surfaces.
@@ -1693,7 +1920,9 @@ export const renderGlyphLcd = lib.symbols.TTF_RenderGlyph_LCD;
  *
  * @from SDL_ttf.h:1746 TTF_TextEngine * TTF_CreateSurfaceTextEngine(void);
  */
-export const createSurfaceTextEngine = lib.symbols.TTF_CreateSurfaceTextEngine;
+export function createSurfaceTextEngine(): Deno.PointerValue<"TTF_TextEngine"> {
+  return lib.symbols.TTF_CreateSurfaceTextEngine() as Deno.PointerValue<"TTF_TextEngine">;
+}
 
 /**
  * Draw text to an SDL surface.
@@ -1720,7 +1949,14 @@ export const createSurfaceTextEngine = lib.symbols.TTF_CreateSurfaceTextEngine;
  *
  * @from SDL_ttf.h:1771 bool TTF_DrawSurfaceText(TTF_Text *text, int x, int y, SDL_Surface *surface);
  */
-export const drawSurfaceText = lib.symbols.TTF_DrawSurfaceText;
+export function drawSurfaceText(
+    text: Deno.PointerValue<"TTF_Text">,
+    x: number,
+    y: number,
+    surface: Deno.PointerValue<"SDL_Surface">,
+): boolean {
+  return lib.symbols.TTF_DrawSurfaceText(text, x, y, surface);
+}
 
 /**
  * Destroy a text engine created for drawing text on SDL surfaces.
@@ -1740,7 +1976,9 @@ export const drawSurfaceText = lib.symbols.TTF_DrawSurfaceText;
  *
  * @from SDL_ttf.h:1789 void TTF_DestroySurfaceTextEngine(TTF_TextEngine *engine);
  */
-export const destroySurfaceTextEngine = lib.symbols.TTF_DestroySurfaceTextEngine;
+export function destroySurfaceTextEngine(engine: Deno.PointerValue<"TTF_TextEngine">): void {
+  return lib.symbols.TTF_DestroySurfaceTextEngine(engine);
+}
 
 /**
  * Create a text engine for drawing text on an SDL renderer.
@@ -1760,7 +1998,9 @@ export const destroySurfaceTextEngine = lib.symbols.TTF_DestroySurfaceTextEngine
  *
  * @from SDL_ttf.h:1807 TTF_TextEngine * TTF_CreateRendererTextEngine(SDL_Renderer *renderer);
  */
-export const createRendererTextEngine = lib.symbols.TTF_CreateRendererTextEngine;
+export function createRendererTextEngine(renderer: Deno.PointerValue<"SDL_Renderer">): Deno.PointerValue<"TTF_TextEngine"> {
+  return lib.symbols.TTF_CreateRendererTextEngine(renderer) as Deno.PointerValue<"TTF_TextEngine">;
+}
 
 /**
  * Create a text engine for drawing text on an SDL renderer, with the
@@ -1788,7 +2028,9 @@ export const createRendererTextEngine = lib.symbols.TTF_CreateRendererTextEngine
  *
  * @from SDL_ttf.h:1833 TTF_TextEngine * TTF_CreateRendererTextEngineWithProperties(SDL_PropertiesID props);
  */
-export const createRendererTextEngineWithProperties = lib.symbols.TTF_CreateRendererTextEngineWithProperties;
+export function createRendererTextEngineWithProperties(props: number): Deno.PointerValue<"TTF_TextEngine"> {
+  return lib.symbols.TTF_CreateRendererTextEngineWithProperties(props) as Deno.PointerValue<"TTF_TextEngine">;
+}
 
 /**
  * Draw text to an SDL renderer.
@@ -1815,7 +2057,9 @@ export const createRendererTextEngineWithProperties = lib.symbols.TTF_CreateRend
  *
  * @from SDL_ttf.h:1861 bool TTF_DrawRendererText(TTF_Text *text, float x, float y);
  */
-export const drawRendererText = lib.symbols.TTF_DrawRendererText;
+export function drawRendererText(text: Deno.PointerValue<"TTF_Text">, x: number, y: number): boolean {
+  return lib.symbols.TTF_DrawRendererText(text, x, y);
+}
 
 /**
  * Destroy a text engine created for drawing text on an SDL renderer.
@@ -1835,7 +2079,9 @@ export const drawRendererText = lib.symbols.TTF_DrawRendererText;
  *
  * @from SDL_ttf.h:1879 void TTF_DestroyRendererTextEngine(TTF_TextEngine *engine);
  */
-export const destroyRendererTextEngine = lib.symbols.TTF_DestroyRendererTextEngine;
+export function destroyRendererTextEngine(engine: Deno.PointerValue<"TTF_TextEngine">): void {
+  return lib.symbols.TTF_DestroyRendererTextEngine(engine);
+}
 
 /**
  * Create a text engine for drawing text with the SDL GPU API.
@@ -1856,7 +2102,9 @@ export const destroyRendererTextEngine = lib.symbols.TTF_DestroyRendererTextEngi
  *
  * @from SDL_ttf.h:1898 TTF_TextEngine * TTF_CreateGPUTextEngine(SDL_GPUDevice *device);
  */
-export const createGpuTextEngine = lib.symbols.TTF_CreateGPUTextEngine;
+export function createGpuTextEngine(device: Deno.PointerValue<"SDL_GPUDevice">): Deno.PointerValue<"TTF_TextEngine"> {
+  return lib.symbols.TTF_CreateGPUTextEngine(device) as Deno.PointerValue<"TTF_TextEngine">;
+}
 
 /**
  * Create a text engine for drawing text with the SDL GPU API, with the
@@ -1884,7 +2132,9 @@ export const createGpuTextEngine = lib.symbols.TTF_CreateGPUTextEngine;
  *
  * @from SDL_ttf.h:1924 TTF_TextEngine * TTF_CreateGPUTextEngineWithProperties(SDL_PropertiesID props);
  */
-export const createGpuTextEngineWithProperties = lib.symbols.TTF_CreateGPUTextEngineWithProperties;
+export function createGpuTextEngineWithProperties(props: number): Deno.PointerValue<"TTF_TextEngine"> {
+  return lib.symbols.TTF_CreateGPUTextEngineWithProperties(props) as Deno.PointerValue<"TTF_TextEngine">;
+}
 
 /**
  * Get the geometry data needed for drawing the text.
@@ -1915,7 +2165,9 @@ export const createGpuTextEngineWithProperties = lib.symbols.TTF_CreateGPUTextEn
  *
  * @from SDL_ttf.h:1976 TTF_GPUAtlasDrawSequence * TTF_GetGPUTextDrawData(TTF_Text *text);
  */
-export const getGpuTextDrawData = lib.symbols.TTF_GetGPUTextDrawData;
+export function getGpuTextDrawData(text: Deno.PointerValue<"TTF_Text">): Deno.PointerValue<"TTF_GPUAtlasDrawSequence"> {
+  return lib.symbols.TTF_GetGPUTextDrawData(text) as Deno.PointerValue<"TTF_GPUAtlasDrawSequence">;
+}
 
 /**
  * Destroy a text engine created for drawing text with the SDL GPU API.
@@ -1935,7 +2187,9 @@ export const getGpuTextDrawData = lib.symbols.TTF_GetGPUTextDrawData;
  *
  * @from SDL_ttf.h:1994 void TTF_DestroyGPUTextEngine(TTF_TextEngine *engine);
  */
-export const destroyGpuTextEngine = lib.symbols.TTF_DestroyGPUTextEngine;
+export function destroyGpuTextEngine(engine: Deno.PointerValue<"TTF_TextEngine">): void {
+  return lib.symbols.TTF_DestroyGPUTextEngine(engine);
+}
 
 /**
  * Sets the winding order of the vertices returned by TTF_GetGPUTextDrawData
@@ -1954,7 +2208,9 @@ export const destroyGpuTextEngine = lib.symbols.TTF_DestroyGPUTextEngine;
  *
  * @from SDL_ttf.h:2023 void TTF_SetGPUTextEngineWinding(TTF_TextEngine *engine, TTF_GPUTextEngineWinding winding);
  */
-export const setGpuTextEngineWinding = lib.symbols.TTF_SetGPUTextEngineWinding;
+export function setGpuTextEngineWinding(engine: Deno.PointerValue<"TTF_TextEngine">, winding: number): void {
+  return lib.symbols.TTF_SetGPUTextEngineWinding(engine, winding);
+}
 
 /**
  * Get the winding order of the vertices returned by TTF_GetGPUTextDrawData
@@ -1974,7 +2230,9 @@ export const setGpuTextEngineWinding = lib.symbols.TTF_SetGPUTextEngineWinding;
  *
  * @from SDL_ttf.h:2041 TTF_GPUTextEngineWinding TTF_GetGPUTextEngineWinding(const TTF_TextEngine *engine);
  */
-export const getGpuTextEngineWinding = lib.symbols.TTF_GetGPUTextEngineWinding;
+export function getGpuTextEngineWinding(engine: Deno.PointerValue<"TTF_TextEngine">): number {
+  return lib.symbols.TTF_GetGPUTextEngineWinding(engine);
+}
 
 /**
  * Create a text object from UTF-8 text and a text engine.
@@ -1997,7 +2255,14 @@ export const getGpuTextEngineWinding = lib.symbols.TTF_GetGPUTextEngineWinding;
  *
  * @from SDL_ttf.h:2062 TTF_Text * TTF_CreateText(TTF_TextEngine *engine, TTF_Font *font, const char *text, size_t length);
  */
-export const createText = lib.symbols.TTF_CreateText;
+export function createText(
+    engine: Deno.PointerValue<"TTF_TextEngine">,
+    font: Deno.PointerValue<"TTF_Font">,
+    text: string,
+    length: bigint,
+): Deno.PointerValue<"TTF_Text"> {
+  return lib.symbols.TTF_CreateText(engine, font, _p.toCstr(text), length) as Deno.PointerValue<"TTF_Text">;
+}
 
 /**
  * Get the properties associated with a text object.
@@ -2013,7 +2278,9 @@ export const createText = lib.symbols.TTF_CreateText;
  *
  * @from SDL_ttf.h:2076 SDL_PropertiesID TTF_GetTextProperties(TTF_Text *text);
  */
-export const getTextProperties = lib.symbols.TTF_GetTextProperties;
+export function getTextProperties(text: Deno.PointerValue<"TTF_Text">): number {
+  return lib.symbols.TTF_GetTextProperties(text);
+}
 
 /**
  * Set the text engine used by a text object.
@@ -2034,7 +2301,9 @@ export const getTextProperties = lib.symbols.TTF_GetTextProperties;
  *
  * @from SDL_ttf.h:2095 bool TTF_SetTextEngine(TTF_Text *text, TTF_TextEngine *engine);
  */
-export const setTextEngine = lib.symbols.TTF_SetTextEngine;
+export function setTextEngine(text: Deno.PointerValue<"TTF_Text">, engine: Deno.PointerValue<"TTF_TextEngine">): boolean {
+  return lib.symbols.TTF_SetTextEngine(text, engine);
+}
 
 /**
  * Get the text engine used by a text object.
@@ -2052,7 +2321,9 @@ export const setTextEngine = lib.symbols.TTF_SetTextEngine;
  *
  * @from SDL_ttf.h:2111 TTF_TextEngine * TTF_GetTextEngine(TTF_Text *text);
  */
-export const getTextEngine = lib.symbols.TTF_GetTextEngine;
+export function getTextEngine(text: Deno.PointerValue<"TTF_Text">): Deno.PointerValue<"TTF_TextEngine"> {
+  return lib.symbols.TTF_GetTextEngine(text) as Deno.PointerValue<"TTF_TextEngine">;
+}
 
 /**
  * Set the font used by a text object.
@@ -2077,7 +2348,9 @@ export const getTextEngine = lib.symbols.TTF_GetTextEngine;
  *
  * @from SDL_ttf.h:2134 bool TTF_SetTextFont(TTF_Text *text, TTF_Font *font);
  */
-export const setTextFont = lib.symbols.TTF_SetTextFont;
+export function setTextFont(text: Deno.PointerValue<"TTF_Text">, font: Deno.PointerValue<"TTF_Font">): boolean {
+  return lib.symbols.TTF_SetTextFont(text, font);
+}
 
 /**
  * Get the font used by a text object.
@@ -2095,7 +2368,9 @@ export const setTextFont = lib.symbols.TTF_SetTextFont;
  *
  * @from SDL_ttf.h:2150 TTF_Font * TTF_GetTextFont(TTF_Text *text);
  */
-export const getTextFont = lib.symbols.TTF_GetTextFont;
+export function getTextFont(text: Deno.PointerValue<"TTF_Text">): Deno.PointerValue<"TTF_Font"> {
+  return lib.symbols.TTF_GetTextFont(text) as Deno.PointerValue<"TTF_Font">;
+}
 
 /**
  * Set the direction to be used for text shaping a text object.
@@ -2115,7 +2390,9 @@ export const getTextFont = lib.symbols.TTF_GetTextFont;
  *
  * @from SDL_ttf.h:2168 bool TTF_SetTextDirection(TTF_Text *text, TTF_Direction direction);
  */
-export const setTextDirection = lib.symbols.TTF_SetTextDirection;
+export function setTextDirection(text: Deno.PointerValue<"TTF_Text">, direction: number): boolean {
+  return lib.symbols.TTF_SetTextDirection(text, direction);
+}
 
 /**
  * Get the direction to be used for text shaping a text object.
@@ -2132,7 +2409,9 @@ export const setTextDirection = lib.symbols.TTF_SetTextDirection;
  *
  * @from SDL_ttf.h:2183 TTF_Direction TTF_GetTextDirection(TTF_Text *text);
  */
-export const getTextDirection = lib.symbols.TTF_GetTextDirection;
+export function getTextDirection(text: Deno.PointerValue<"TTF_Text">): number {
+  return lib.symbols.TTF_GetTextDirection(text);
+}
 
 /**
  * Set the script to be used for text shaping a text object.
@@ -2155,7 +2434,9 @@ export const getTextDirection = lib.symbols.TTF_GetTextDirection;
  *
  * @from SDL_ttf.h:2204 bool TTF_SetTextScript(TTF_Text *text, Uint32 script);
  */
-export const setTextScript = lib.symbols.TTF_SetTextScript;
+export function setTextScript(text: Deno.PointerValue<"TTF_Text">, script: number): boolean {
+  return lib.symbols.TTF_SetTextScript(text, script);
+}
 
 /**
  * Get the script used for text shaping a text object.
@@ -2177,7 +2458,9 @@ export const setTextScript = lib.symbols.TTF_SetTextScript;
  *
  * @from SDL_ttf.h:2224 Uint32 TTF_GetTextScript(TTF_Text *text);
  */
-export const getTextScript = lib.symbols.TTF_GetTextScript;
+export function getTextScript(text: Deno.PointerValue<"TTF_Text">): number {
+  return lib.symbols.TTF_GetTextScript(text);
+}
 
 /**
  * Set the color of a text object.
@@ -2202,7 +2485,15 @@ export const getTextScript = lib.symbols.TTF_GetTextScript;
  *
  * @from SDL_ttf.h:2247 bool TTF_SetTextColor(TTF_Text *text, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
  */
-export const setTextColor = lib.symbols.TTF_SetTextColor;
+export function setTextColor(
+    text: Deno.PointerValue<"TTF_Text">,
+    r: number,
+    g: number,
+    b: number,
+    a: number,
+): boolean {
+  return lib.symbols.TTF_SetTextColor(text, r, g, b, a);
+}
 
 /**
  * Set the color of a text object.
@@ -2227,7 +2518,15 @@ export const setTextColor = lib.symbols.TTF_SetTextColor;
  *
  * @from SDL_ttf.h:2270 bool TTF_SetTextColorFloat(TTF_Text *text, float r, float g, float b, float a);
  */
-export const setTextColorFloat = lib.symbols.TTF_SetTextColorFloat;
+export function setTextColorFloat(
+    text: Deno.PointerValue<"TTF_Text">,
+    r: number,
+    g: number,
+    b: number,
+    a: number,
+): boolean {
+  return lib.symbols.TTF_SetTextColorFloat(text, r, g, b, a);
+}
 
 /**
  * Get the color of a text object.
@@ -2254,7 +2553,11 @@ export const setTextColorFloat = lib.symbols.TTF_SetTextColorFloat;
  *
  * @from SDL_ttf.h:2295 bool TTF_GetTextColor(TTF_Text *text, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);
  */
-export const getTextColor = lib.symbols.TTF_GetTextColor;
+export function getTextColor(text: Deno.PointerValue<"TTF_Text">): { r: number; g: number; b: number; a: number } {
+  if(!lib.symbols.TTF_GetTextColor(text, _p.u8.p0, _p.u8.p1, _p.u8.p2, _p.u8.p3))
+    throw new Error(`TTF_GetTextColor: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { r: _p.u8.v0, g: _p.u8.v1, b: _p.u8.v2, a: _p.u8.v3 };
+}
 
 /**
  * Get the color of a text object.
@@ -2281,7 +2584,11 @@ export const getTextColor = lib.symbols.TTF_GetTextColor;
  *
  * @from SDL_ttf.h:2320 bool TTF_GetTextColorFloat(TTF_Text *text, float *r, float *g, float *b, float *a);
  */
-export const getTextColorFloat = lib.symbols.TTF_GetTextColorFloat;
+export function getTextColorFloat(text: Deno.PointerValue<"TTF_Text">): { r: number; g: number; b: number; a: number } {
+  if(!lib.symbols.TTF_GetTextColorFloat(text, _p.f32.p0, _p.f32.p1, _p.f32.p2, _p.f32.p3))
+    throw new Error(`TTF_GetTextColorFloat: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { r: _p.f32.v0, g: _p.f32.v1, b: _p.f32.v2, a: _p.f32.v3 };
+}
 
 /**
  * Set the position of a text object.
@@ -2304,7 +2611,9 @@ export const getTextColorFloat = lib.symbols.TTF_GetTextColorFloat;
  *
  * @from SDL_ttf.h:2341 bool TTF_SetTextPosition(TTF_Text *text, int x, int y);
  */
-export const setTextPosition = lib.symbols.TTF_SetTextPosition;
+export function setTextPosition(text: Deno.PointerValue<"TTF_Text">, x: number, y: number): boolean {
+  return lib.symbols.TTF_SetTextPosition(text, x, y);
+}
 
 /**
  * Get the position of a text object.
@@ -2324,7 +2633,11 @@ export const setTextPosition = lib.symbols.TTF_SetTextPosition;
  *
  * @from SDL_ttf.h:2359 bool TTF_GetTextPosition(TTF_Text *text, int *x, int *y);
  */
-export const getTextPosition = lib.symbols.TTF_GetTextPosition;
+export function getTextPosition(text: Deno.PointerValue<"TTF_Text">): { x: number; y: number } {
+  if(!lib.symbols.TTF_GetTextPosition(text, _p.i32.p0, _p.i32.p1))
+    throw new Error(`TTF_GetTextPosition: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { x: _p.i32.v0, y: _p.i32.v1 };
+}
 
 /**
  * Set whether wrapping is enabled on a text object.
@@ -2346,7 +2659,9 @@ export const getTextPosition = lib.symbols.TTF_GetTextPosition;
  *
  * @from SDL_ttf.h:2379 bool TTF_SetTextWrapWidth(TTF_Text *text, int wrap_width);
  */
-export const setTextWrapWidth = lib.symbols.TTF_SetTextWrapWidth;
+export function setTextWrapWidth(text: Deno.PointerValue<"TTF_Text">, wrap_width: number): boolean {
+  return lib.symbols.TTF_SetTextWrapWidth(text, wrap_width);
+}
 
 /**
  * Get whether wrapping is enabled on a text object.
@@ -2366,7 +2681,11 @@ export const setTextWrapWidth = lib.symbols.TTF_SetTextWrapWidth;
  *
  * @from SDL_ttf.h:2397 bool TTF_GetTextWrapWidth(TTF_Text *text, int *wrap_width);
  */
-export const getTextWrapWidth = lib.symbols.TTF_GetTextWrapWidth;
+export function getTextWrapWidth(text: Deno.PointerValue<"TTF_Text">): number {
+  if(!lib.symbols.TTF_GetTextWrapWidth(text, _p.i32.p0))
+    throw new Error(`TTF_GetTextWrapWidth: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.i32.v0;
+}
 
 /**
  * Set whether whitespace should be visible when wrapping a text object.
@@ -2393,7 +2712,9 @@ export const getTextWrapWidth = lib.symbols.TTF_GetTextWrapWidth;
  *
  * @from SDL_ttf.h:2422 bool TTF_SetTextWrapWhitespaceVisible(TTF_Text *text, bool visible);
  */
-export const setTextWrapWhitespaceVisible = lib.symbols.TTF_SetTextWrapWhitespaceVisible;
+export function setTextWrapWhitespaceVisible(text: Deno.PointerValue<"TTF_Text">, visible: boolean): boolean {
+  return lib.symbols.TTF_SetTextWrapWhitespaceVisible(text, visible);
+}
 
 /**
  * Return whether whitespace is shown when wrapping a text object.
@@ -2411,7 +2732,9 @@ export const setTextWrapWhitespaceVisible = lib.symbols.TTF_SetTextWrapWhitespac
  *
  * @from SDL_ttf.h:2438 bool TTF_TextWrapWhitespaceVisible(TTF_Text *text);
  */
-export const textWrapWhitespaceVisible = lib.symbols.TTF_TextWrapWhitespaceVisible;
+export function textWrapWhitespaceVisible(text: Deno.PointerValue<"TTF_Text">): boolean {
+  return lib.symbols.TTF_TextWrapWhitespaceVisible(text);
+}
 
 /**
  * Set the UTF-8 text used by a text object.
@@ -2436,7 +2759,9 @@ export const textWrapWhitespaceVisible = lib.symbols.TTF_TextWrapWhitespaceVisib
  *
  * @from SDL_ttf.h:2461 bool TTF_SetTextString(TTF_Text *text, const char *string, size_t length);
  */
-export const setTextString = lib.symbols.TTF_SetTextString;
+export function setTextString(text: Deno.PointerValue<"TTF_Text">, string: string, length: bigint): boolean {
+  return lib.symbols.TTF_SetTextString(text, _p.toCstr(string), length);
+}
 
 /**
  * Insert UTF-8 text into a text object.
@@ -2465,7 +2790,14 @@ export const setTextString = lib.symbols.TTF_SetTextString;
  *
  * @from SDL_ttf.h:2488 bool TTF_InsertTextString(TTF_Text *text, int offset, const char *string, size_t length);
  */
-export const insertTextString = lib.symbols.TTF_InsertTextString;
+export function insertTextString(
+    text: Deno.PointerValue<"TTF_Text">,
+    offset: number,
+    string: string,
+    length: bigint,
+): boolean {
+  return lib.symbols.TTF_InsertTextString(text, offset, _p.toCstr(string), length);
+}
 
 /**
  * Append UTF-8 text to a text object.
@@ -2490,7 +2822,9 @@ export const insertTextString = lib.symbols.TTF_InsertTextString;
  *
  * @from SDL_ttf.h:2511 bool TTF_AppendTextString(TTF_Text *text, const char *string, size_t length);
  */
-export const appendTextString = lib.symbols.TTF_AppendTextString;
+export function appendTextString(text: Deno.PointerValue<"TTF_Text">, string: string, length: bigint): boolean {
+  return lib.symbols.TTF_AppendTextString(text, _p.toCstr(string), length);
+}
 
 /**
  * Delete UTF-8 text from a text object.
@@ -2518,7 +2852,9 @@ export const appendTextString = lib.symbols.TTF_AppendTextString;
  *
  * @from SDL_ttf.h:2537 bool TTF_DeleteTextString(TTF_Text *text, int offset, int length);
  */
-export const deleteTextString = lib.symbols.TTF_DeleteTextString;
+export function deleteTextString(text: Deno.PointerValue<"TTF_Text">, offset: number, length: number): boolean {
+  return lib.symbols.TTF_DeleteTextString(text, offset, length);
+}
 
 /**
  * Get the size of a text object.
@@ -2541,7 +2877,11 @@ export const deleteTextString = lib.symbols.TTF_DeleteTextString;
  *
  * @from SDL_ttf.h:2558 bool TTF_GetTextSize(TTF_Text *text, int *w, int *h);
  */
-export const getTextSize = lib.symbols.TTF_GetTextSize;
+export function getTextSize(text: Deno.PointerValue<"TTF_Text">): { w: number; h: number } {
+  if(!lib.symbols.TTF_GetTextSize(text, _p.i32.p0, _p.i32.p1))
+    throw new Error(`TTF_GetTextSize: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { w: _p.i32.v0, h: _p.i32.v1 };
+}
 
 /**
  * Get the substring of a text object that surrounds a text offset.
@@ -2566,7 +2906,9 @@ export const getTextSize = lib.symbols.TTF_GetTextSize;
  *
  * @from SDL_ttf.h:2618 bool TTF_GetTextSubString(TTF_Text *text, int offset, TTF_SubString *substring);
  */
-export const getTextSubString = lib.symbols.TTF_GetTextSubString;
+export function getTextSubString(text: Deno.PointerValue<"TTF_Text">, offset: number, substring: Deno.PointerValue<"TTF_SubString">): boolean {
+  return lib.symbols.TTF_GetTextSubString(text, offset, substring);
+}
 
 /**
  * Get the substring of a text object that contains the given line.
@@ -2591,7 +2933,9 @@ export const getTextSubString = lib.symbols.TTF_GetTextSubString;
  *
  * @from SDL_ttf.h:2641 bool TTF_GetTextSubStringForLine(TTF_Text *text, int line, TTF_SubString *substring);
  */
-export const getTextSubStringForLine = lib.symbols.TTF_GetTextSubStringForLine;
+export function getTextSubStringForLine(text: Deno.PointerValue<"TTF_Text">, line: number, substring: Deno.PointerValue<"TTF_SubString">): boolean {
+  return lib.symbols.TTF_GetTextSubStringForLine(text, line, substring);
+}
 
 /**
  * Get the substrings of a text object that contain a range of text.
@@ -2614,7 +2958,11 @@ export const getTextSubStringForLine = lib.symbols.TTF_GetTextSubStringForLine;
  *
  * @from SDL_ttf.h:2662 TTF_SubString ** TTF_GetTextSubStringsForRange(TTF_Text *text, int offset, int length, int *count);
  */
-export const getTextSubStringsForRange = lib.symbols.TTF_GetTextSubStringsForRange;
+export function getTextSubStringsForRange(text: Deno.PointerValue<"TTF_Text">, offset: number, length: number): { count: number; ret: Deno.PointerValue } {
+  const ret = lib.symbols.TTF_GetTextSubStringsForRange(text, offset, length, _p.i32.p0) as Deno.PointerValue;
+  if(!ret) throw new Error(`TTF_GetTextSubStringsForRange: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { count: _p.i32.v0, ret };
+}
 
 /**
  * Get the portion of a text string that is closest to a point.
@@ -2638,7 +2986,14 @@ export const getTextSubStringsForRange = lib.symbols.TTF_GetTextSubStringsForRan
  *
  * @from SDL_ttf.h:2684 bool TTF_GetTextSubStringForPoint(TTF_Text *text, int x, int y, TTF_SubString *substring);
  */
-export const getTextSubStringForPoint = lib.symbols.TTF_GetTextSubStringForPoint;
+export function getTextSubStringForPoint(
+    text: Deno.PointerValue<"TTF_Text">,
+    x: number,
+    y: number,
+    substring: Deno.PointerValue<"TTF_SubString">,
+): boolean {
+  return lib.symbols.TTF_GetTextSubStringForPoint(text, x, y, substring);
+}
 
 /**
  * Get the previous substring in a text object
@@ -2658,7 +3013,9 @@ export const getTextSubStringForPoint = lib.symbols.TTF_GetTextSubStringForPoint
  *
  * @from SDL_ttf.h:2702 bool TTF_GetPreviousTextSubString(TTF_Text *text, const TTF_SubString *substring, TTF_SubString *previous);
  */
-export const getPreviousTextSubString = lib.symbols.TTF_GetPreviousTextSubString;
+export function getPreviousTextSubString(text: Deno.PointerValue<"TTF_Text">, substring: Deno.PointerValue<"TTF_SubString">, previous: Deno.PointerValue<"TTF_SubString">): boolean {
+  return lib.symbols.TTF_GetPreviousTextSubString(text, substring, previous);
+}
 
 /**
  * Get the next substring in a text object
@@ -2679,7 +3036,9 @@ export const getPreviousTextSubString = lib.symbols.TTF_GetPreviousTextSubString
  *
  * @from SDL_ttf.h:2721 bool TTF_GetNextTextSubString(TTF_Text *text, const TTF_SubString *substring, TTF_SubString *next);
  */
-export const getNextTextSubString = lib.symbols.TTF_GetNextTextSubString;
+export function getNextTextSubString(text: Deno.PointerValue<"TTF_Text">, substring: Deno.PointerValue<"TTF_SubString">, next: Deno.PointerValue<"TTF_SubString">): boolean {
+  return lib.symbols.TTF_GetNextTextSubString(text, substring, next);
+}
 
 /**
  * Update the layout of a text object.
@@ -2699,7 +3058,9 @@ export const getNextTextSubString = lib.symbols.TTF_GetNextTextSubString;
  *
  * @from SDL_ttf.h:2739 bool TTF_UpdateText(TTF_Text *text);
  */
-export const updateText = lib.symbols.TTF_UpdateText;
+export function updateText(text: Deno.PointerValue<"TTF_Text">): boolean {
+  return lib.symbols.TTF_UpdateText(text);
+}
 
 /**
  * Destroy a text object created by a text engine.
@@ -2715,7 +3076,9 @@ export const updateText = lib.symbols.TTF_UpdateText;
  *
  * @from SDL_ttf.h:2753 void TTF_DestroyText(TTF_Text *text);
  */
-export const destroyText = lib.symbols.TTF_DestroyText;
+export function destroyText(text: Deno.PointerValue<"TTF_Text">): void {
+  return lib.symbols.TTF_DestroyText(text);
+}
 
 /**
  * Dispose of a previously-created font.
@@ -2741,7 +3104,9 @@ export const destroyText = lib.symbols.TTF_DestroyText;
  *
  * @from SDL_ttf.h:2777 void TTF_CloseFont(TTF_Font *font);
  */
-export const closeFont = lib.symbols.TTF_CloseFont;
+export function closeFont(font: Deno.PointerValue<"TTF_Font">): void {
+  return lib.symbols.TTF_CloseFont(font);
+}
 
 /**
  * Deinitialize SDL_ttf.
@@ -2765,7 +3130,9 @@ export const closeFont = lib.symbols.TTF_CloseFont;
  *
  * @from SDL_ttf.h:2799 void TTF_Quit(void);
  */
-export const quit = lib.symbols.TTF_Quit;
+export function quit(): void {
+  return lib.symbols.TTF_Quit();
+}
 
 /**
  * Check if SDL_ttf is initialized.
@@ -2791,5 +3158,7 @@ export const quit = lib.symbols.TTF_Quit;
  *
  * @from SDL_ttf.h:2823 int TTF_WasInit(void);
  */
-export const wasInit = lib.symbols.TTF_WasInit;
+export function wasInit(): number {
+  return lib.symbols.TTF_WasInit();
+}
 

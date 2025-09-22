@@ -89,7 +89,7 @@ export const SDL_CameraSpec = new _.Struct({
   width: _.i32, /**< int : Frame width */
   height: _.i32, /**< int : Frame height */
   framerate_numerator: _.i32, /**< int : Frame rate numerator ((num / denom) == FPS, (denom / num) == duration in seconds) */
-  framerate_denominator: _.i32, /**< int : Frame rate demoninator ((num / denom) == FPS, (denom / num) == duration in seconds) */
+  framerate_denominator: _.i32, /**< int : Frame rate denominator ((num / denom) == FPS, (denom / num) == duration in seconds) */
 });
 
 

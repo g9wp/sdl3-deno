@@ -34,6 +34,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 /**
  * Report the user's preferred locale.
@@ -78,5 +80,9 @@ import { lib } from "./lib.ts";
  *
  * @from SDL_locale.h:106 SDL_Locale ** SDL_GetPreferredLocales(int *count);
  */
-export const getPreferredLocales = lib.symbols.SDL_GetPreferredLocales;
+export function getPreferredLocales(): { count: number; ret: Deno.PointerValue } {
+  const ret = lib.symbols.SDL_GetPreferredLocales(_p.i32.p0) as Deno.PointerValue;
+  if(!ret) throw new Error(`SDL_GetPreferredLocales: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { count: _p.i32.v0, ret };
+}
 

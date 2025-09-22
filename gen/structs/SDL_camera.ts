@@ -90,7 +90,7 @@ export interface CameraSpec {
   width: number; /**< int : Frame width */
   height: number; /**< int : Frame height */
   framerate_numerator: number; /**< int : Frame rate numerator ((num / denom) == FPS, (denom / num) == duration in seconds) */
-  framerate_denominator: number; /**< int : Frame rate demoninator ((num / denom) == FPS, (denom / num) == duration in seconds) */
+  framerate_denominator: number; /**< int : Frame rate denominator ((num / denom) == FPS, (denom / num) == duration in seconds) */
 }
 
 export function read_CameraSpec(dt: DataView): CameraSpec {

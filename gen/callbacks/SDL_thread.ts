@@ -59,3 +59,24 @@ SDL_TLSDestructorCallback: {
     },
 
 } as const;
+
+
+/**
+ * The callback used to cleanup data passed to SDL_SetTLS.
+ *
+ * This is called when a thread exits, to allow an app to free any resources.
+ *
+ * @param value a pointer previously handed to SDL_SetTLS.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa SDL_SetTLS
+ *
+ * @from SDL_thread.h:528 typedef void (*SDL_TLSDestructorCallback)(void *value);
+ */
+export function TLSDestructorCallback(cb: (
+    value: Deno.PointerValue, 
+  ) => void) {
+  return new Deno.UnsafeCallback(callbacks.SDL_TLSDestructorCallback, cb);
+}
+

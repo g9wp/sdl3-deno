@@ -48,6 +48,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 /**
  * Set an error indicating that memory allocation failed.
@@ -62,7 +64,9 @@ import { lib } from "./lib.ts";
  *
  * @from SDL_error.h:120 bool SDL_OutOfMemory(void);
  */
-export const outOfMemory = lib.symbols.SDL_OutOfMemory;
+export function outOfMemory(): boolean {
+  return lib.symbols.SDL_OutOfMemory();
+}
 
 /**
  * Retrieve a message about the last error that occurred on the current
@@ -101,7 +105,9 @@ export const outOfMemory = lib.symbols.SDL_OutOfMemory;
  *
  * @from SDL_error.h:157 const char * SDL_GetError(void);
  */
-export const getError = lib.symbols.SDL_GetError;
+export function getError(): string {
+  return _p.getCstr2(lib.symbols.SDL_GetError());
+}
 
 /**
  * Clear any previous error message for this thread.
@@ -117,5 +123,7 @@ export const getError = lib.symbols.SDL_GetError;
  *
  * @from SDL_error.h:171 bool SDL_ClearError(void);
  */
-export const clearError = lib.symbols.SDL_ClearError;
+export function clearError(): boolean {
+  return lib.symbols.SDL_ClearError();
+}
 

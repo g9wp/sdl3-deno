@@ -44,6 +44,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   SDL_Folder as FOLDER,
@@ -92,7 +94,9 @@ export {
  *
  * @from SDL_filesystem.h:95 const char * SDL_GetBasePath(void);
  */
-export const getBasePath = lib.symbols.SDL_GetBasePath;
+export function getBasePath(): string {
+  return _p.getCstr2(lib.symbols.SDL_GetBasePath());
+}
 
 /**
  * Get the user-and-app-specific path where files can be written.
@@ -149,7 +153,9 @@ export const getBasePath = lib.symbols.SDL_GetBasePath;
  *
  * @from SDL_filesystem.h:150 char * SDL_GetPrefPath(const char *org, const char *app);
  */
-export const getPrefPath = lib.symbols.SDL_GetPrefPath;
+export function getPrefPath(org: string, app: string): string {
+  return _p.getCstr2(lib.symbols.SDL_GetPrefPath(_p.toCstr(org), _p.toCstr(app)));
+}
 
 /**
  * Finds the most suitable user folder for a specific purpose.
@@ -176,7 +182,9 @@ export const getPrefPath = lib.symbols.SDL_GetPrefPath;
  *
  * @from SDL_filesystem.h:220 const char * SDL_GetUserFolder(SDL_Folder folder);
  */
-export const getUserFolder = lib.symbols.SDL_GetUserFolder;
+export function getUserFolder(folder: number): string {
+  return _p.getCstr2(lib.symbols.SDL_GetUserFolder(folder));
+}
 
 /**
  * Create a directory, and any missing parent directories.
@@ -194,7 +202,9 @@ export const getUserFolder = lib.symbols.SDL_GetUserFolder;
  *
  * @from SDL_filesystem.h:287 bool SDL_CreateDirectory(const char *path);
  */
-export const createDirectory = lib.symbols.SDL_CreateDirectory;
+export function createDirectory(path: string): boolean {
+  return lib.symbols.SDL_CreateDirectory(_p.toCstr(path));
+}
 
 /**
  * Enumerate a directory through a callback function.
@@ -219,7 +229,9 @@ export const createDirectory = lib.symbols.SDL_CreateDirectory;
  *
  * @from SDL_filesystem.h:350 bool SDL_EnumerateDirectory(const char *path, SDL_EnumerateDirectoryCallback callback, void *userdata);
  */
-export const enumerateDirectory = lib.symbols.SDL_EnumerateDirectory;
+export function enumerateDirectory(path: string, callback: Deno.PointerValue, userdata: Deno.PointerValue): boolean {
+  return lib.symbols.SDL_EnumerateDirectory(_p.toCstr(path), callback, userdata);
+}
 
 /**
  * Remove a file or an empty directory.
@@ -235,7 +247,9 @@ export const enumerateDirectory = lib.symbols.SDL_EnumerateDirectory;
  *
  * @from SDL_filesystem.h:364 bool SDL_RemovePath(const char *path);
  */
-export const removePath = lib.symbols.SDL_RemovePath;
+export function removePath(path: string): boolean {
+  return lib.symbols.SDL_RemovePath(_p.toCstr(path));
+}
 
 /**
  * Rename a file or directory.
@@ -260,7 +274,9 @@ export const removePath = lib.symbols.SDL_RemovePath;
  *
  * @from SDL_filesystem.h:387 bool SDL_RenamePath(const char *oldpath, const char *newpath);
  */
-export const renamePath = lib.symbols.SDL_RenamePath;
+export function renamePath(oldpath: string, newpath: string): boolean {
+  return lib.symbols.SDL_RenamePath(_p.toCstr(oldpath), _p.toCstr(newpath));
+}
 
 /**
  * Copy a file.
@@ -302,7 +318,9 @@ export const renamePath = lib.symbols.SDL_RenamePath;
  *
  * @from SDL_filesystem.h:427 bool SDL_CopyFile(const char *oldpath, const char *newpath);
  */
-export const copyFile = lib.symbols.SDL_CopyFile;
+export function copyFile(oldpath: string, newpath: string): boolean {
+  return lib.symbols.SDL_CopyFile(_p.toCstr(oldpath), _p.toCstr(newpath));
+}
 
 /**
  * Get information about a filesystem path.
@@ -317,7 +335,9 @@ export const copyFile = lib.symbols.SDL_CopyFile;
  *
  * @from SDL_filesystem.h:440 bool SDL_GetPathInfo(const char *path, SDL_PathInfo *info);
  */
-export const getPathInfo = lib.symbols.SDL_GetPathInfo;
+export function getPathInfo(path: string, info: Deno.PointerValue<"SDL_PathInfo">): boolean {
+  return lib.symbols.SDL_GetPathInfo(_p.toCstr(path), info);
+}
 
 /**
  * Enumerate a directory tree, filtered by pattern, and return a list.
@@ -352,7 +372,11 @@ export const getPathInfo = lib.symbols.SDL_GetPathInfo;
  *
  * @from SDL_filesystem.h:473 char ** SDL_GlobDirectory(const char *path, const char *pattern, SDL_GlobFlags flags, int *count);
  */
-export const globDirectory = lib.symbols.SDL_GlobDirectory;
+export function globDirectory(path: string, pattern: string, flags: number): { count: number; ret: Deno.PointerValue } {
+  const ret = lib.symbols.SDL_GlobDirectory(_p.toCstr(path), _p.toCstr(pattern), flags, _p.i32.p0) as Deno.PointerValue;
+  if(!ret) throw new Error(`SDL_GlobDirectory: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { count: _p.i32.v0, ret };
+}
 
 /**
  * Get what the system believes is the "current working directory."
@@ -375,5 +399,7 @@ export const globDirectory = lib.symbols.SDL_GlobDirectory;
  *
  * @from SDL_filesystem.h:494 char * SDL_GetCurrentDirectory(void);
  */
-export const getCurrentDirectory = lib.symbols.SDL_GetCurrentDirectory;
+export function getCurrentDirectory(): string {
+  return _p.getCstr2(lib.symbols.SDL_GetCurrentDirectory());
+}
 

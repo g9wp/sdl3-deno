@@ -14,7 +14,6 @@ export * from "./SDL_iostream.ts";
 export * from "./SDL_joystick.ts";
 export * from "./SDL_locale.ts";
 export * from "./SDL_messagebox.ts";
-export * from "./SDL_mutex.ts";
 export * from "./SDL_pixels.ts";
 export * from "./SDL_rect.ts";
 export * from "./SDL_render.ts";

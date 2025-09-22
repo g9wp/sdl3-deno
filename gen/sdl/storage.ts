@@ -243,6 +243,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 /**
  * Opens up a read-only container for the application's filesystem.
@@ -261,7 +263,9 @@ import { lib } from "./lib.ts";
  *
  * @from SDL_storage.h:348 SDL_Storage * SDL_OpenTitleStorage(const char *override, SDL_PropertiesID props);
  */
-export const openTitleStorage = lib.symbols.SDL_OpenTitleStorage;
+export function openTitleStorage(override: string, props: number): Deno.PointerValue<"SDL_Storage"> {
+  return lib.symbols.SDL_OpenTitleStorage(_p.toCstr(override), props) as Deno.PointerValue<"SDL_Storage">;
+}
 
 /**
  * Opens up a container for a user's unique read/write filesystem.
@@ -289,7 +293,9 @@ export const openTitleStorage = lib.symbols.SDL_OpenTitleStorage;
  *
  * @from SDL_storage.h:374 SDL_Storage * SDL_OpenUserStorage(const char *org, const char *app, SDL_PropertiesID props);
  */
-export const openUserStorage = lib.symbols.SDL_OpenUserStorage;
+export function openUserStorage(org: string, app: string, props: number): Deno.PointerValue<"SDL_Storage"> {
+  return lib.symbols.SDL_OpenUserStorage(_p.toCstr(org), _p.toCstr(app), props) as Deno.PointerValue<"SDL_Storage">;
+}
 
 /**
  * Opens up a container for local filesystem storage.
@@ -315,7 +321,9 @@ export const openUserStorage = lib.symbols.SDL_OpenUserStorage;
  *
  * @from SDL_storage.h:398 SDL_Storage * SDL_OpenFileStorage(const char *path);
  */
-export const openFileStorage = lib.symbols.SDL_OpenFileStorage;
+export function openFileStorage(path: string): Deno.PointerValue<"SDL_Storage"> {
+  return lib.symbols.SDL_OpenFileStorage(_p.toCstr(path)) as Deno.PointerValue<"SDL_Storage">;
+}
 
 /**
  * Opens up a container using a client-provided storage interface.
@@ -346,7 +354,9 @@ export const openFileStorage = lib.symbols.SDL_OpenFileStorage;
  *
  * @from SDL_storage.h:427 SDL_Storage * SDL_OpenStorage(const SDL_StorageInterface *iface, void *userdata);
  */
-export const openStorage = lib.symbols.SDL_OpenStorage;
+export function openStorage(iface: Deno.PointerValue<"SDL_StorageInterface">, userdata: Deno.PointerValue): Deno.PointerValue<"SDL_Storage"> {
+  return lib.symbols.SDL_OpenStorage(iface, userdata) as Deno.PointerValue<"SDL_Storage">;
+}
 
 /**
  * Closes and frees a storage container.
@@ -366,7 +376,9 @@ export const openStorage = lib.symbols.SDL_OpenStorage;
  *
  * @from SDL_storage.h:445 bool SDL_CloseStorage(SDL_Storage *storage);
  */
-export const closeStorage = lib.symbols.SDL_CloseStorage;
+export function closeStorage(storage: Deno.PointerValue<"SDL_Storage">): boolean {
+  return lib.symbols.SDL_CloseStorage(storage);
+}
 
 /**
  * Checks if the storage container is ready to use.
@@ -383,7 +395,9 @@ export const closeStorage = lib.symbols.SDL_CloseStorage;
  *
  * @from SDL_storage.h:460 bool SDL_StorageReady(SDL_Storage *storage);
  */
-export const storageReady = lib.symbols.SDL_StorageReady;
+export function storageReady(storage: Deno.PointerValue<"SDL_Storage">): boolean {
+  return lib.symbols.SDL_StorageReady(storage);
+}
 
 /**
  * Query the size of a file within a storage container.
@@ -401,7 +415,11 @@ export const storageReady = lib.symbols.SDL_StorageReady;
  *
  * @from SDL_storage.h:476 bool SDL_GetStorageFileSize(SDL_Storage *storage, const char *path, Uint64 *length);
  */
-export const getStorageFileSize = lib.symbols.SDL_GetStorageFileSize;
+export function getStorageFileSize(storage: Deno.PointerValue<"SDL_Storage">, path: string): bigint {
+  if(!lib.symbols.SDL_GetStorageFileSize(storage, _p.toCstr(path), _p.u64.p0))
+    throw new Error(`SDL_GetStorageFileSize: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.u64.v0;
+}
 
 /**
  * Synchronously read a file from a storage container into a client-provided
@@ -426,7 +444,14 @@ export const getStorageFileSize = lib.symbols.SDL_GetStorageFileSize;
  *
  * @from SDL_storage.h:499 bool SDL_ReadStorageFile(SDL_Storage *storage, const char *path, void *destination, Uint64 length);
  */
-export const readStorageFile = lib.symbols.SDL_ReadStorageFile;
+export function readStorageFile(
+    storage: Deno.PointerValue<"SDL_Storage">,
+    path: string,
+    destination: Deno.PointerValue,
+    length: bigint,
+): boolean {
+  return lib.symbols.SDL_ReadStorageFile(storage, _p.toCstr(path), destination, length);
+}
 
 /**
  * Synchronously write a file from client memory into a storage container.
@@ -446,7 +471,14 @@ export const readStorageFile = lib.symbols.SDL_ReadStorageFile;
  *
  * @from SDL_storage.h:517 bool SDL_WriteStorageFile(SDL_Storage *storage, const char *path, const void *source, Uint64 length);
  */
-export const writeStorageFile = lib.symbols.SDL_WriteStorageFile;
+export function writeStorageFile(
+    storage: Deno.PointerValue<"SDL_Storage">,
+    path: string,
+    source: Deno.PointerValue,
+    length: bigint,
+): boolean {
+  return lib.symbols.SDL_WriteStorageFile(storage, _p.toCstr(path), source, length);
+}
 
 /**
  * Create a directory in a writable storage container.
@@ -462,7 +494,9 @@ export const writeStorageFile = lib.symbols.SDL_WriteStorageFile;
  *
  * @from SDL_storage.h:531 bool SDL_CreateStorageDirectory(SDL_Storage *storage, const char *path);
  */
-export const createStorageDirectory = lib.symbols.SDL_CreateStorageDirectory;
+export function createStorageDirectory(storage: Deno.PointerValue<"SDL_Storage">, path: string): boolean {
+  return lib.symbols.SDL_CreateStorageDirectory(storage, _p.toCstr(path));
+}
 
 /**
  * Enumerate a directory in a storage container through a callback function.
@@ -493,7 +527,14 @@ export const createStorageDirectory = lib.symbols.SDL_CreateStorageDirectory;
  *
  * @from SDL_storage.h:560 bool SDL_EnumerateStorageDirectory(SDL_Storage *storage, const char *path, SDL_EnumerateDirectoryCallback callback, void *userdata);
  */
-export const enumerateStorageDirectory = lib.symbols.SDL_EnumerateStorageDirectory;
+export function enumerateStorageDirectory(
+    storage: Deno.PointerValue<"SDL_Storage">,
+    path: string,
+    callback: Deno.PointerValue,
+    userdata: Deno.PointerValue,
+): boolean {
+  return lib.symbols.SDL_EnumerateStorageDirectory(storage, _p.toCstr(path), callback, userdata);
+}
 
 /**
  * Remove a file or an empty directory in a writable storage container.
@@ -509,7 +550,9 @@ export const enumerateStorageDirectory = lib.symbols.SDL_EnumerateStorageDirecto
  *
  * @from SDL_storage.h:574 bool SDL_RemoveStoragePath(SDL_Storage *storage, const char *path);
  */
-export const removeStoragePath = lib.symbols.SDL_RemoveStoragePath;
+export function removeStoragePath(storage: Deno.PointerValue<"SDL_Storage">, path: string): boolean {
+  return lib.symbols.SDL_RemoveStoragePath(storage, _p.toCstr(path));
+}
 
 /**
  * Rename a file or directory in a writable storage container.
@@ -526,7 +569,9 @@ export const removeStoragePath = lib.symbols.SDL_RemoveStoragePath;
  *
  * @from SDL_storage.h:589 bool SDL_RenameStoragePath(SDL_Storage *storage, const char *oldpath, const char *newpath);
  */
-export const renameStoragePath = lib.symbols.SDL_RenameStoragePath;
+export function renameStoragePath(storage: Deno.PointerValue<"SDL_Storage">, oldpath: string, newpath: string): boolean {
+  return lib.symbols.SDL_RenameStoragePath(storage, _p.toCstr(oldpath), _p.toCstr(newpath));
+}
 
 /**
  * Copy a file in a writable storage container.
@@ -543,7 +588,9 @@ export const renameStoragePath = lib.symbols.SDL_RenameStoragePath;
  *
  * @from SDL_storage.h:604 bool SDL_CopyStorageFile(SDL_Storage *storage, const char *oldpath, const char *newpath);
  */
-export const copyStorageFile = lib.symbols.SDL_CopyStorageFile;
+export function copyStorageFile(storage: Deno.PointerValue<"SDL_Storage">, oldpath: string, newpath: string): boolean {
+  return lib.symbols.SDL_CopyStorageFile(storage, _p.toCstr(oldpath), _p.toCstr(newpath));
+}
 
 /**
  * Get information about a filesystem path in a storage container.
@@ -561,7 +608,9 @@ export const copyStorageFile = lib.symbols.SDL_CopyStorageFile;
  *
  * @from SDL_storage.h:620 bool SDL_GetStoragePathInfo(SDL_Storage *storage, const char *path, SDL_PathInfo *info);
  */
-export const getStoragePathInfo = lib.symbols.SDL_GetStoragePathInfo;
+export function getStoragePathInfo(storage: Deno.PointerValue<"SDL_Storage">, path: string, info: Deno.PointerValue<"SDL_PathInfo">): boolean {
+  return lib.symbols.SDL_GetStoragePathInfo(storage, _p.toCstr(path), info);
+}
 
 /**
  * Queries the remaining space in a storage container.
@@ -576,7 +625,9 @@ export const getStoragePathInfo = lib.symbols.SDL_GetStoragePathInfo;
  *
  * @from SDL_storage.h:633 Uint64 SDL_GetStorageSpaceRemaining(SDL_Storage *storage);
  */
-export const getStorageSpaceRemaining = lib.symbols.SDL_GetStorageSpaceRemaining;
+export function getStorageSpaceRemaining(storage: Deno.PointerValue<"SDL_Storage">): bigint {
+  return lib.symbols.SDL_GetStorageSpaceRemaining(storage);
+}
 
 /**
  * Enumerate a directory tree, filtered by pattern, and return a list.
@@ -618,5 +669,14 @@ export const getStorageSpaceRemaining = lib.symbols.SDL_GetStorageSpaceRemaining
  *
  * @from SDL_storage.h:673 char ** SDL_GlobStorageDirectory(SDL_Storage *storage, const char *path, const char *pattern, SDL_GlobFlags flags, int *count);
  */
-export const globStorageDirectory = lib.symbols.SDL_GlobStorageDirectory;
+export function globStorageDirectory(
+    storage: Deno.PointerValue<"SDL_Storage">,
+    path: string,
+    pattern: string,
+    flags: number,
+): { count: number; ret: Deno.PointerValue } {
+  const ret = lib.symbols.SDL_GlobStorageDirectory(storage, _p.toCstr(path), _p.toCstr(pattern), flags, _p.i32.p0) as Deno.PointerValue;
+  if(!ret) throw new Error(`SDL_GlobStorageDirectory: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { count: _p.i32.v0, ret };
+}
 

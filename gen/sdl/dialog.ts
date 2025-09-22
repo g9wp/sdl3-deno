@@ -37,6 +37,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   PROP_FILE_DIALOG as PROP_FILE_DIALOG,
@@ -94,7 +96,17 @@ export {
  *
  * @from SDL_dialog.h:163 void SDL_ShowOpenFileDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const SDL_DialogFileFilter *filters, int nfilters, const char *default_location, bool allow_many);
  */
-export const showOpenFileDialog = lib.symbols.SDL_ShowOpenFileDialog;
+export function showOpenFileDialog(
+    callback: Deno.PointerValue,
+    userdata: Deno.PointerValue,
+    window: Deno.PointerValue<"SDL_Window">,
+    filters: Deno.PointerValue<"SDL_DialogFileFilter">,
+    nfilters: number,
+    default_location: string,
+    allow_many: boolean,
+): void {
+  return lib.symbols.SDL_ShowOpenFileDialog(callback, userdata, window, filters, nfilters, _p.toCstr(default_location), allow_many);
+}
 
 /**
  * Displays a dialog that lets the user choose a new or existing file on their
@@ -145,7 +157,16 @@ export const showOpenFileDialog = lib.symbols.SDL_ShowOpenFileDialog;
  *
  * @from SDL_dialog.h:212 void SDL_ShowSaveFileDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const SDL_DialogFileFilter *filters, int nfilters, const char *default_location);
  */
-export const showSaveFileDialog = lib.symbols.SDL_ShowSaveFileDialog;
+export function showSaveFileDialog(
+    callback: Deno.PointerValue,
+    userdata: Deno.PointerValue,
+    window: Deno.PointerValue<"SDL_Window">,
+    filters: Deno.PointerValue<"SDL_DialogFileFilter">,
+    nfilters: number,
+    default_location: string,
+): void {
+  return lib.symbols.SDL_ShowSaveFileDialog(callback, userdata, window, filters, nfilters, _p.toCstr(default_location));
+}
 
 /**
  * Displays a dialog that lets the user select a folder on their filesystem.
@@ -192,7 +213,15 @@ export const showSaveFileDialog = lib.symbols.SDL_ShowSaveFileDialog;
  *
  * @from SDL_dialog.h:257 void SDL_ShowOpenFolderDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const char *default_location, bool allow_many);
  */
-export const showOpenFolderDialog = lib.symbols.SDL_ShowOpenFolderDialog;
+export function showOpenFolderDialog(
+    callback: Deno.PointerValue,
+    userdata: Deno.PointerValue,
+    window: Deno.PointerValue<"SDL_Window">,
+    default_location: string,
+    allow_many: boolean,
+): void {
+  return lib.symbols.SDL_ShowOpenFolderDialog(callback, userdata, window, _p.toCstr(default_location), allow_many);
+}
 
 /**
  * Create and launch a file dialog with the specified properties.
@@ -243,5 +272,12 @@ export const showOpenFolderDialog = lib.symbols.SDL_ShowOpenFolderDialog;
  *
  * @from SDL_dialog.h:323 void SDL_ShowFileDialogWithProperties(SDL_FileDialogType type, SDL_DialogFileCallback callback, void *userdata, SDL_PropertiesID props);
  */
-export const showFileDialogWithProperties = lib.symbols.SDL_ShowFileDialogWithProperties;
+export function showFileDialogWithProperties(
+    type: number,
+    callback: Deno.PointerValue,
+    userdata: Deno.PointerValue,
+    props: number,
+): void {
+  return lib.symbols.SDL_ShowFileDialogWithProperties(type, callback, userdata, props);
+}
 

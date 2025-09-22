@@ -48,6 +48,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   SDL_PropertyType as PROPERTY_TYPE,
@@ -63,7 +65,9 @@ export {
  *
  * @from SDL_properties.h:90 SDL_PropertiesID SDL_GetGlobalProperties(void);
  */
-export const getGlobalProperties = lib.symbols.SDL_GetGlobalProperties;
+export function getGlobalProperties(): number {
+  return lib.symbols.SDL_GetGlobalProperties();
+}
 
 /**
  * Create a group of properties.
@@ -81,7 +85,9 @@ export const getGlobalProperties = lib.symbols.SDL_GetGlobalProperties;
  *
  * @from SDL_properties.h:106 SDL_PropertiesID SDL_CreateProperties(void);
  */
-export const createProperties = lib.symbols.SDL_CreateProperties;
+export function createProperties(): number {
+  return lib.symbols.SDL_CreateProperties();
+}
 
 /**
  * Copy a group of properties.
@@ -102,7 +108,9 @@ export const createProperties = lib.symbols.SDL_CreateProperties;
  *
  * @from SDL_properties.h:125 bool SDL_CopyProperties(SDL_PropertiesID src, SDL_PropertiesID dst);
  */
-export const copyProperties = lib.symbols.SDL_CopyProperties;
+export function copyProperties(src: number, dst: number): boolean {
+  return lib.symbols.SDL_CopyProperties(src, dst);
+}
 
 /**
  * Lock a group of properties.
@@ -128,7 +136,9 @@ export const copyProperties = lib.symbols.SDL_CopyProperties;
  *
  * @from SDL_properties.h:149 bool SDL_LockProperties(SDL_PropertiesID props);
  */
-export const lockProperties = lib.symbols.SDL_LockProperties;
+export function lockProperties(props: number): boolean {
+  return lib.symbols.SDL_LockProperties(props);
+}
 
 /**
  * Unlock a group of properties.
@@ -143,7 +153,9 @@ export const lockProperties = lib.symbols.SDL_LockProperties;
  *
  * @from SDL_properties.h:162 void SDL_UnlockProperties(SDL_PropertiesID props);
  */
-export const unlockProperties = lib.symbols.SDL_UnlockProperties;
+export function unlockProperties(props: number): void {
+  return lib.symbols.SDL_UnlockProperties(props);
+}
 
 /**
  * Set a pointer property in a group of properties with a cleanup function
@@ -176,7 +188,15 @@ export const unlockProperties = lib.symbols.SDL_UnlockProperties;
  *
  * @from SDL_properties.h:217 bool SDL_SetPointerPropertyWithCleanup(SDL_PropertiesID props, const char *name, void *value, SDL_CleanupPropertyCallback cleanup, void *userdata);
  */
-export const setPointerPropertyWithCleanup = lib.symbols.SDL_SetPointerPropertyWithCleanup;
+export function setPointerPropertyWithCleanup(
+    props: number,
+    name: string,
+    value: Deno.PointerValue,
+    cleanup: Deno.PointerValue,
+    userdata: Deno.PointerValue,
+): boolean {
+  return lib.symbols.SDL_SetPointerPropertyWithCleanup(props, _p.toCstr(name), value, cleanup, userdata);
+}
 
 /**
  * Set a pointer property in a group of properties.
@@ -201,7 +221,9 @@ export const setPointerPropertyWithCleanup = lib.symbols.SDL_SetPointerPropertyW
  *
  * @from SDL_properties.h:240 bool SDL_SetPointerProperty(SDL_PropertiesID props, const char *name, void *value);
  */
-export const setPointerProperty = lib.symbols.SDL_SetPointerProperty;
+export function setPointerProperty(props: number, name: string, value: Deno.PointerValue): boolean {
+  return lib.symbols.SDL_SetPointerProperty(props, _p.toCstr(name), value);
+}
 
 /**
  * Set a string property in a group of properties.
@@ -223,7 +245,9 @@ export const setPointerProperty = lib.symbols.SDL_SetPointerProperty;
  *
  * @from SDL_properties.h:260 bool SDL_SetStringProperty(SDL_PropertiesID props, const char *name, const char *value);
  */
-export const setStringProperty = lib.symbols.SDL_SetStringProperty;
+export function setStringProperty(props: number, name: string, value: string): boolean {
+  return lib.symbols.SDL_SetStringProperty(props, _p.toCstr(name), _p.toCstr(value));
+}
 
 /**
  * Set an integer property in a group of properties.
@@ -242,7 +266,9 @@ export const setStringProperty = lib.symbols.SDL_SetStringProperty;
  *
  * @from SDL_properties.h:277 bool SDL_SetNumberProperty(SDL_PropertiesID props, const char *name, Sint64 value);
  */
-export const setNumberProperty = lib.symbols.SDL_SetNumberProperty;
+export function setNumberProperty(props: number, name: string, value: bigint): boolean {
+  return lib.symbols.SDL_SetNumberProperty(props, _p.toCstr(name), value);
+}
 
 /**
  * Set a floating point property in a group of properties.
@@ -261,7 +287,9 @@ export const setNumberProperty = lib.symbols.SDL_SetNumberProperty;
  *
  * @from SDL_properties.h:294 bool SDL_SetFloatProperty(SDL_PropertiesID props, const char *name, float value);
  */
-export const setFloatProperty = lib.symbols.SDL_SetFloatProperty;
+export function setFloatProperty(props: number, name: string, value: number): boolean {
+  return lib.symbols.SDL_SetFloatProperty(props, _p.toCstr(name), value);
+}
 
 /**
  * Set a boolean property in a group of properties.
@@ -280,7 +308,9 @@ export const setFloatProperty = lib.symbols.SDL_SetFloatProperty;
  *
  * @from SDL_properties.h:311 bool SDL_SetBooleanProperty(SDL_PropertiesID props, const char *name, bool value);
  */
-export const setBooleanProperty = lib.symbols.SDL_SetBooleanProperty;
+export function setBooleanProperty(props: number, name: string, value: boolean): boolean {
+  return lib.symbols.SDL_SetBooleanProperty(props, _p.toCstr(name), value);
+}
 
 /**
  * Return whether a property exists in a group of properties.
@@ -297,7 +327,9 @@ export const setBooleanProperty = lib.symbols.SDL_SetBooleanProperty;
  *
  * @from SDL_properties.h:326 bool SDL_HasProperty(SDL_PropertiesID props, const char *name);
  */
-export const hasProperty = lib.symbols.SDL_HasProperty;
+export function hasProperty(props: number, name: string): boolean {
+  return lib.symbols.SDL_HasProperty(props, _p.toCstr(name));
+}
 
 /**
  * Get the type of a property in a group of properties.
@@ -315,7 +347,9 @@ export const hasProperty = lib.symbols.SDL_HasProperty;
  *
  * @from SDL_properties.h:342 SDL_PropertyType SDL_GetPropertyType(SDL_PropertiesID props, const char *name);
  */
-export const getPropertyType = lib.symbols.SDL_GetPropertyType;
+export function getPropertyType(props: number, name: string): number {
+  return lib.symbols.SDL_GetPropertyType(props, _p.toCstr(name));
+}
 
 /**
  * Get a pointer property from a group of properties.
@@ -350,7 +384,9 @@ export const getPropertyType = lib.symbols.SDL_GetPropertyType;
  *
  * @from SDL_properties.h:375 void * SDL_GetPointerProperty(SDL_PropertiesID props, const char *name, void *default_value);
  */
-export const getPointerProperty = lib.symbols.SDL_GetPointerProperty;
+export function getPointerProperty(props: number, name: string, default_value: Deno.PointerValue): Deno.PointerValue {
+  return lib.symbols.SDL_GetPointerProperty(props, _p.toCstr(name), default_value);
+}
 
 /**
  * Get a string property from a group of properties.
@@ -376,7 +412,9 @@ export const getPointerProperty = lib.symbols.SDL_GetPointerProperty;
  *
  * @from SDL_properties.h:399 const char * SDL_GetStringProperty(SDL_PropertiesID props, const char *name, const char *default_value);
  */
-export const getStringProperty = lib.symbols.SDL_GetStringProperty;
+export function getStringProperty(props: number, name: string, default_value: string): string {
+  return _p.getCstr2(lib.symbols.SDL_GetStringProperty(props, _p.toCstr(name), _p.toCstr(default_value)));
+}
 
 /**
  * Get a number property from a group of properties.
@@ -400,7 +438,9 @@ export const getStringProperty = lib.symbols.SDL_GetStringProperty;
  *
  * @from SDL_properties.h:421 Sint64 SDL_GetNumberProperty(SDL_PropertiesID props, const char *name, Sint64 default_value);
  */
-export const getNumberProperty = lib.symbols.SDL_GetNumberProperty;
+export function getNumberProperty(props: number, name: string, default_value: bigint): bigint {
+  return lib.symbols.SDL_GetNumberProperty(props, _p.toCstr(name), default_value);
+}
 
 /**
  * Get a floating point property from a group of properties.
@@ -424,7 +464,9 @@ export const getNumberProperty = lib.symbols.SDL_GetNumberProperty;
  *
  * @from SDL_properties.h:443 float SDL_GetFloatProperty(SDL_PropertiesID props, const char *name, float default_value);
  */
-export const getFloatProperty = lib.symbols.SDL_GetFloatProperty;
+export function getFloatProperty(props: number, name: string, default_value: number): number {
+  return lib.symbols.SDL_GetFloatProperty(props, _p.toCstr(name), default_value);
+}
 
 /**
  * Get a boolean property from a group of properties.
@@ -448,7 +490,9 @@ export const getFloatProperty = lib.symbols.SDL_GetFloatProperty;
  *
  * @from SDL_properties.h:465 bool SDL_GetBooleanProperty(SDL_PropertiesID props, const char *name, bool default_value);
  */
-export const getBooleanProperty = lib.symbols.SDL_GetBooleanProperty;
+export function getBooleanProperty(props: number, name: string, default_value: boolean): boolean {
+  return lib.symbols.SDL_GetBooleanProperty(props, _p.toCstr(name), default_value);
+}
 
 /**
  * Clear a property from a group of properties.
@@ -464,7 +508,9 @@ export const getBooleanProperty = lib.symbols.SDL_GetBooleanProperty;
  *
  * @from SDL_properties.h:479 bool SDL_ClearProperty(SDL_PropertiesID props, const char *name);
  */
-export const clearProperty = lib.symbols.SDL_ClearProperty;
+export function clearProperty(props: number, name: string): boolean {
+  return lib.symbols.SDL_ClearProperty(props, _p.toCstr(name));
+}
 
 /**
  * Enumerate the properties contained in a group of properties.
@@ -484,7 +530,9 @@ export const clearProperty = lib.symbols.SDL_ClearProperty;
  *
  * @from SDL_properties.h:516 bool SDL_EnumerateProperties(SDL_PropertiesID props, SDL_EnumeratePropertiesCallback callback, void *userdata);
  */
-export const enumerateProperties = lib.symbols.SDL_EnumerateProperties;
+export function enumerateProperties(props: number, callback: Deno.PointerValue, userdata: Deno.PointerValue): boolean {
+  return lib.symbols.SDL_EnumerateProperties(props, callback, userdata);
+}
 
 /**
  * Destroy a group of properties.
@@ -504,5 +552,7 @@ export const enumerateProperties = lib.symbols.SDL_EnumerateProperties;
  *
  * @from SDL_properties.h:534 void SDL_DestroyProperties(SDL_PropertiesID props);
  */
-export const destroyProperties = lib.symbols.SDL_DestroyProperties;
+export function destroyProperties(props: number): void {
+  return lib.symbols.SDL_DestroyProperties(props);
+}
 

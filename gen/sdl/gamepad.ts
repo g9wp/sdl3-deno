@@ -74,6 +74,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   SDL_GamepadType as GAMEPAD_TYPE,
@@ -126,7 +128,9 @@ export {
  *
  * @from SDL_gamepad.h:340 int SDL_AddGamepadMapping(const char *mapping);
  */
-export const addGamepadMapping = lib.symbols.SDL_AddGamepadMapping;
+export function addGamepadMapping(mapping: string): number {
+  return lib.symbols.SDL_AddGamepadMapping(_p.toCstr(mapping));
+}
 
 /**
  * Load a set of gamepad mappings from an SDL_IOStream.
@@ -168,7 +172,9 @@ export const addGamepadMapping = lib.symbols.SDL_AddGamepadMapping;
  *
  * @from SDL_gamepad.h:380 int SDL_AddGamepadMappingsFromIO(SDL_IOStream *src, bool closeio);
  */
-export const addGamepadMappingsFromIo = lib.symbols.SDL_AddGamepadMappingsFromIO;
+export function addGamepadMappingsFromIo(src: Deno.PointerValue<"SDL_IOStream">, closeio: boolean): number {
+  return lib.symbols.SDL_AddGamepadMappingsFromIO(src, closeio);
+}
 
 /**
  * Load a set of gamepad mappings from a file.
@@ -204,7 +210,9 @@ export const addGamepadMappingsFromIo = lib.symbols.SDL_AddGamepadMappingsFromIO
  *
  * @from SDL_gamepad.h:414 int SDL_AddGamepadMappingsFromFile(const char *file);
  */
-export const addGamepadMappingsFromFile = lib.symbols.SDL_AddGamepadMappingsFromFile;
+export function addGamepadMappingsFromFile(file: string): number {
+  return lib.symbols.SDL_AddGamepadMappingsFromFile(_p.toCstr(file));
+}
 
 /**
  * Reinitialize the SDL mapping database to its initial state.
@@ -218,7 +226,9 @@ export const addGamepadMappingsFromFile = lib.symbols.SDL_AddGamepadMappingsFrom
  *
  * @from SDL_gamepad.h:426 bool SDL_ReloadGamepadMappings(void);
  */
-export const reloadGamepadMappings = lib.symbols.SDL_ReloadGamepadMappings;
+export function reloadGamepadMappings(): boolean {
+  return lib.symbols.SDL_ReloadGamepadMappings();
+}
 
 /**
  * Get the current gamepad mappings.
@@ -234,7 +244,11 @@ export const reloadGamepadMappings = lib.symbols.SDL_ReloadGamepadMappings;
  *
  * @from SDL_gamepad.h:440 char ** SDL_GetGamepadMappings(int *count);
  */
-export const getGamepadMappings = lib.symbols.SDL_GetGamepadMappings;
+export function getGamepadMappings(): { count: number; ret: Deno.PointerValue } {
+  const ret = lib.symbols.SDL_GetGamepadMappings(_p.i32.p0) as Deno.PointerValue;
+  if(!ret) throw new Error(`SDL_GetGamepadMappings: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { count: _p.i32.v0, ret };
+}
 
 /**
  * Get the gamepad mapping string for a given GUID.
@@ -251,7 +265,9 @@ export const getGamepadMappings = lib.symbols.SDL_GetGamepadMappings;
  *
  * @from SDL_gamepad.h:455 char * SDL_GetGamepadMappingForGUID(SDL_GUID guid);
  */
-export const getGamepadMappingForGuid = lib.symbols.SDL_GetGamepadMappingForGUID;
+export function getGamepadMappingForGuid(guid: Uint8Array<ArrayBuffer>): string {
+  return _p.getCstr2(lib.symbols.SDL_GetGamepadMappingForGUID(guid));
+}
 
 /**
  * Get the current mapping of a gamepad.
@@ -272,7 +288,9 @@ export const getGamepadMappingForGuid = lib.symbols.SDL_GetGamepadMappingForGUID
  *
  * @from SDL_gamepad.h:474 char * SDL_GetGamepadMapping(SDL_Gamepad *gamepad);
  */
-export const getGamepadMapping = lib.symbols.SDL_GetGamepadMapping;
+export function getGamepadMapping(gamepad: Deno.PointerValue<"SDL_Gamepad">): string {
+  return _p.getCstr2(lib.symbols.SDL_GetGamepadMapping(gamepad));
+}
 
 /**
  * Set the current mapping of a joystick or gamepad.
@@ -292,7 +310,9 @@ export const getGamepadMapping = lib.symbols.SDL_GetGamepadMapping;
  *
  * @from SDL_gamepad.h:492 bool SDL_SetGamepadMapping(SDL_JoystickID instance_id, const char *mapping);
  */
-export const setGamepadMapping = lib.symbols.SDL_SetGamepadMapping;
+export function setGamepadMapping(instance_id: number, mapping: string): boolean {
+  return lib.symbols.SDL_SetGamepadMapping(instance_id, _p.toCstr(mapping));
+}
 
 /**
  * Return whether a gamepad is currently connected.
@@ -305,7 +325,9 @@ export const setGamepadMapping = lib.symbols.SDL_SetGamepadMapping;
  *
  * @from SDL_gamepad.h:503 bool SDL_HasGamepad(void);
  */
-export const hasGamepad = lib.symbols.SDL_HasGamepad;
+export function hasGamepad(): boolean {
+  return lib.symbols.SDL_HasGamepad();
+}
 
 /**
  * Get a list of currently connected gamepads.
@@ -323,7 +345,11 @@ export const hasGamepad = lib.symbols.SDL_HasGamepad;
  *
  * @from SDL_gamepad.h:519 SDL_JoystickID * SDL_GetGamepads(int *count);
  */
-export const getGamepads = lib.symbols.SDL_GetGamepads;
+export function getGamepads(): { count: number; ret: Deno.PointerValue<"SDL_JoystickID"> } {
+  const ret = lib.symbols.SDL_GetGamepads(_p.i32.p0) as Deno.PointerValue<"SDL_JoystickID">;
+  if(!ret) throw new Error(`SDL_GetGamepads: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { count: _p.i32.v0, ret };
+}
 
 /**
  * Check if the given joystick is supported by the gamepad interface.
@@ -339,7 +365,9 @@ export const getGamepads = lib.symbols.SDL_GetGamepads;
  *
  * @from SDL_gamepad.h:533 bool SDL_IsGamepad(SDL_JoystickID instance_id);
  */
-export const isGamepad = lib.symbols.SDL_IsGamepad;
+export function isGamepad(instance_id: number): boolean {
+  return lib.symbols.SDL_IsGamepad(instance_id);
+}
 
 /**
  * Get the implementation dependent name of a gamepad.
@@ -357,7 +385,9 @@ export const isGamepad = lib.symbols.SDL_IsGamepad;
  *
  * @from SDL_gamepad.h:549 const char * SDL_GetGamepadNameForID(SDL_JoystickID instance_id);
  */
-export const getGamepadNameForId = lib.symbols.SDL_GetGamepadNameForID;
+export function getGamepadNameForId(instance_id: number): string {
+  return _p.getCstr2(lib.symbols.SDL_GetGamepadNameForID(instance_id));
+}
 
 /**
  * Get the implementation dependent path of a gamepad.
@@ -375,7 +405,9 @@ export const getGamepadNameForId = lib.symbols.SDL_GetGamepadNameForID;
  *
  * @from SDL_gamepad.h:565 const char * SDL_GetGamepadPathForID(SDL_JoystickID instance_id);
  */
-export const getGamepadPathForId = lib.symbols.SDL_GetGamepadPathForID;
+export function getGamepadPathForId(instance_id: number): string {
+  return _p.getCstr2(lib.symbols.SDL_GetGamepadPathForID(instance_id));
+}
 
 /**
  * Get the player index of a gamepad.
@@ -392,7 +424,9 @@ export const getGamepadPathForId = lib.symbols.SDL_GetGamepadPathForID;
  *
  * @from SDL_gamepad.h:580 int SDL_GetGamepadPlayerIndexForID(SDL_JoystickID instance_id);
  */
-export const getGamepadPlayerIndexForId = lib.symbols.SDL_GetGamepadPlayerIndexForID;
+export function getGamepadPlayerIndexForId(instance_id: number): number {
+  return lib.symbols.SDL_GetGamepadPlayerIndexForID(instance_id);
+}
 
 /**
  * Get the implementation-dependent GUID of a gamepad.
@@ -410,7 +444,9 @@ export const getGamepadPlayerIndexForId = lib.symbols.SDL_GetGamepadPlayerIndexF
  *
  * @from SDL_gamepad.h:596 SDL_GUID SDL_GetGamepadGUIDForID(SDL_JoystickID instance_id);
  */
-export const getGamepadGuidForId = lib.symbols.SDL_GetGamepadGUIDForID;
+export function getGamepadGuidForId(instance_id: number): Uint8Array<ArrayBuffer> {
+  return lib.symbols.SDL_GetGamepadGUIDForID(instance_id);
+}
 
 /**
  * Get the USB vendor ID of a gamepad, if available.
@@ -429,7 +465,9 @@ export const getGamepadGuidForId = lib.symbols.SDL_GetGamepadGUIDForID;
  *
  * @from SDL_gamepad.h:613 Uint16 SDL_GetGamepadVendorForID(SDL_JoystickID instance_id);
  */
-export const getGamepadVendorForId = lib.symbols.SDL_GetGamepadVendorForID;
+export function getGamepadVendorForId(instance_id: number): number {
+  return lib.symbols.SDL_GetGamepadVendorForID(instance_id);
+}
 
 /**
  * Get the USB product ID of a gamepad, if available.
@@ -448,7 +486,9 @@ export const getGamepadVendorForId = lib.symbols.SDL_GetGamepadVendorForID;
  *
  * @from SDL_gamepad.h:630 Uint16 SDL_GetGamepadProductForID(SDL_JoystickID instance_id);
  */
-export const getGamepadProductForId = lib.symbols.SDL_GetGamepadProductForID;
+export function getGamepadProductForId(instance_id: number): number {
+  return lib.symbols.SDL_GetGamepadProductForID(instance_id);
+}
 
 /**
  * Get the product version of a gamepad, if available.
@@ -467,7 +507,9 @@ export const getGamepadProductForId = lib.symbols.SDL_GetGamepadProductForID;
  *
  * @from SDL_gamepad.h:647 Uint16 SDL_GetGamepadProductVersionForID(SDL_JoystickID instance_id);
  */
-export const getGamepadProductVersionForId = lib.symbols.SDL_GetGamepadProductVersionForID;
+export function getGamepadProductVersionForId(instance_id: number): number {
+  return lib.symbols.SDL_GetGamepadProductVersionForID(instance_id);
+}
 
 /**
  * Get the type of a gamepad.
@@ -485,7 +527,9 @@ export const getGamepadProductVersionForId = lib.symbols.SDL_GetGamepadProductVe
  *
  * @from SDL_gamepad.h:663 SDL_GamepadType SDL_GetGamepadTypeForID(SDL_JoystickID instance_id);
  */
-export const getGamepadTypeForId = lib.symbols.SDL_GetGamepadTypeForID;
+export function getGamepadTypeForId(instance_id: number): number {
+  return lib.symbols.SDL_GetGamepadTypeForID(instance_id);
+}
 
 /**
  * Get the type of a gamepad, ignoring any mapping override.
@@ -503,7 +547,9 @@ export const getGamepadTypeForId = lib.symbols.SDL_GetGamepadTypeForID;
  *
  * @from SDL_gamepad.h:679 SDL_GamepadType SDL_GetRealGamepadTypeForID(SDL_JoystickID instance_id);
  */
-export const getRealGamepadTypeForId = lib.symbols.SDL_GetRealGamepadTypeForID;
+export function getRealGamepadTypeForId(instance_id: number): number {
+  return lib.symbols.SDL_GetRealGamepadTypeForID(instance_id);
+}
 
 /**
  * Get the mapping of a gamepad.
@@ -521,7 +567,9 @@ export const getRealGamepadTypeForId = lib.symbols.SDL_GetRealGamepadTypeForID;
  *
  * @from SDL_gamepad.h:695 char * SDL_GetGamepadMappingForID(SDL_JoystickID instance_id);
  */
-export const getGamepadMappingForId = lib.symbols.SDL_GetGamepadMappingForID;
+export function getGamepadMappingForId(instance_id: number): string {
+  return _p.getCstr2(lib.symbols.SDL_GetGamepadMappingForID(instance_id));
+}
 
 /**
  * Open a gamepad for use.
@@ -537,7 +585,9 @@ export const getGamepadMappingForId = lib.symbols.SDL_GetGamepadMappingForID;
  *
  * @from SDL_gamepad.h:709 SDL_Gamepad * SDL_OpenGamepad(SDL_JoystickID instance_id);
  */
-export const openGamepad = lib.symbols.SDL_OpenGamepad;
+export function openGamepad(instance_id: number): Deno.PointerValue<"SDL_Gamepad"> {
+  return lib.symbols.SDL_OpenGamepad(instance_id) as Deno.PointerValue<"SDL_Gamepad">;
+}
 
 /**
  * Get the SDL_Gamepad associated with a joystick instance ID, if it has been
@@ -551,7 +601,9 @@ export const openGamepad = lib.symbols.SDL_OpenGamepad;
  *
  * @from SDL_gamepad.h:721 SDL_Gamepad * SDL_GetGamepadFromID(SDL_JoystickID instance_id);
  */
-export const getGamepadFromId = lib.symbols.SDL_GetGamepadFromID;
+export function getGamepadFromId(instance_id: number): Deno.PointerValue<"SDL_Gamepad"> {
+  return lib.symbols.SDL_GetGamepadFromID(instance_id) as Deno.PointerValue<"SDL_Gamepad">;
+}
 
 /**
  * Get the SDL_Gamepad associated with a player index.
@@ -566,7 +618,9 @@ export const getGamepadFromId = lib.symbols.SDL_GetGamepadFromID;
  *
  * @from SDL_gamepad.h:734 SDL_Gamepad * SDL_GetGamepadFromPlayerIndex(int player_index);
  */
-export const getGamepadFromPlayerIndex = lib.symbols.SDL_GetGamepadFromPlayerIndex;
+export function getGamepadFromPlayerIndex(player_index: number): Deno.PointerValue<"SDL_Gamepad"> {
+  return lib.symbols.SDL_GetGamepadFromPlayerIndex(player_index) as Deno.PointerValue<"SDL_Gamepad">;
+}
 
 /**
  * Get the properties associated with an opened gamepad.
@@ -595,7 +649,9 @@ export const getGamepadFromPlayerIndex = lib.symbols.SDL_GetGamepadFromPlayerInd
  *
  * @from SDL_gamepad.h:761 SDL_PropertiesID SDL_GetGamepadProperties(SDL_Gamepad *gamepad);
  */
-export const getGamepadProperties = lib.symbols.SDL_GetGamepadProperties;
+export function getGamepadProperties(gamepad: Deno.PointerValue<"SDL_Gamepad">): number {
+  return lib.symbols.SDL_GetGamepadProperties(gamepad);
+}
 
 /**
  * Get the instance ID of an opened gamepad.
@@ -609,7 +665,9 @@ export const getGamepadProperties = lib.symbols.SDL_GetGamepadProperties;
  *
  * @from SDL_gamepad.h:779 SDL_JoystickID SDL_GetGamepadID(SDL_Gamepad *gamepad);
  */
-export const getGamepadId = lib.symbols.SDL_GetGamepadID;
+export function getGamepadId(gamepad: Deno.PointerValue<"SDL_Gamepad">): number {
+  return lib.symbols.SDL_GetGamepadID(gamepad);
+}
 
 /**
  * Get the implementation-dependent name for an opened gamepad.
@@ -625,7 +683,9 @@ export const getGamepadId = lib.symbols.SDL_GetGamepadID;
  *
  * @from SDL_gamepad.h:793 const char * SDL_GetGamepadName(SDL_Gamepad *gamepad);
  */
-export const getGamepadName = lib.symbols.SDL_GetGamepadName;
+export function getGamepadName(gamepad: Deno.PointerValue<"SDL_Gamepad">): string {
+  return _p.getCstr2(lib.symbols.SDL_GetGamepadName(gamepad));
+}
 
 /**
  * Get the implementation-dependent path for an opened gamepad.
@@ -641,7 +701,9 @@ export const getGamepadName = lib.symbols.SDL_GetGamepadName;
  *
  * @from SDL_gamepad.h:807 const char * SDL_GetGamepadPath(SDL_Gamepad *gamepad);
  */
-export const getGamepadPath = lib.symbols.SDL_GetGamepadPath;
+export function getGamepadPath(gamepad: Deno.PointerValue<"SDL_Gamepad">): string {
+  return _p.getCstr2(lib.symbols.SDL_GetGamepadPath(gamepad));
+}
 
 /**
  * Get the type of an opened gamepad.
@@ -656,7 +718,9 @@ export const getGamepadPath = lib.symbols.SDL_GetGamepadPath;
  *
  * @from SDL_gamepad.h:820 SDL_GamepadType SDL_GetGamepadType(SDL_Gamepad *gamepad);
  */
-export const getGamepadType = lib.symbols.SDL_GetGamepadType;
+export function getGamepadType(gamepad: Deno.PointerValue<"SDL_Gamepad">): number {
+  return lib.symbols.SDL_GetGamepadType(gamepad);
+}
 
 /**
  * Get the type of an opened gamepad, ignoring any mapping override.
@@ -671,7 +735,9 @@ export const getGamepadType = lib.symbols.SDL_GetGamepadType;
  *
  * @from SDL_gamepad.h:833 SDL_GamepadType SDL_GetRealGamepadType(SDL_Gamepad *gamepad);
  */
-export const getRealGamepadType = lib.symbols.SDL_GetRealGamepadType;
+export function getRealGamepadType(gamepad: Deno.PointerValue<"SDL_Gamepad">): number {
+  return lib.symbols.SDL_GetRealGamepadType(gamepad);
+}
 
 /**
  * Get the player index of an opened gamepad.
@@ -687,7 +753,9 @@ export const getRealGamepadType = lib.symbols.SDL_GetRealGamepadType;
  *
  * @from SDL_gamepad.h:847 int SDL_GetGamepadPlayerIndex(SDL_Gamepad *gamepad);
  */
-export const getGamepadPlayerIndex = lib.symbols.SDL_GetGamepadPlayerIndex;
+export function getGamepadPlayerIndex(gamepad: Deno.PointerValue<"SDL_Gamepad">): number {
+  return lib.symbols.SDL_GetGamepadPlayerIndex(gamepad);
+}
 
 /**
  * Set the player index of an opened gamepad.
@@ -704,7 +772,9 @@ export const getGamepadPlayerIndex = lib.symbols.SDL_GetGamepadPlayerIndex;
  *
  * @from SDL_gamepad.h:862 bool SDL_SetGamepadPlayerIndex(SDL_Gamepad *gamepad, int player_index);
  */
-export const setGamepadPlayerIndex = lib.symbols.SDL_SetGamepadPlayerIndex;
+export function setGamepadPlayerIndex(gamepad: Deno.PointerValue<"SDL_Gamepad">, player_index: number): boolean {
+  return lib.symbols.SDL_SetGamepadPlayerIndex(gamepad, player_index);
+}
 
 /**
  * Get the USB vendor ID of an opened gamepad, if available.
@@ -720,7 +790,9 @@ export const setGamepadPlayerIndex = lib.symbols.SDL_SetGamepadPlayerIndex;
  *
  * @from SDL_gamepad.h:876 Uint16 SDL_GetGamepadVendor(SDL_Gamepad *gamepad);
  */
-export const getGamepadVendor = lib.symbols.SDL_GetGamepadVendor;
+export function getGamepadVendor(gamepad: Deno.PointerValue<"SDL_Gamepad">): number {
+  return lib.symbols.SDL_GetGamepadVendor(gamepad);
+}
 
 /**
  * Get the USB product ID of an opened gamepad, if available.
@@ -736,7 +808,9 @@ export const getGamepadVendor = lib.symbols.SDL_GetGamepadVendor;
  *
  * @from SDL_gamepad.h:890 Uint16 SDL_GetGamepadProduct(SDL_Gamepad *gamepad);
  */
-export const getGamepadProduct = lib.symbols.SDL_GetGamepadProduct;
+export function getGamepadProduct(gamepad: Deno.PointerValue<"SDL_Gamepad">): number {
+  return lib.symbols.SDL_GetGamepadProduct(gamepad);
+}
 
 /**
  * Get the product version of an opened gamepad, if available.
@@ -752,7 +826,9 @@ export const getGamepadProduct = lib.symbols.SDL_GetGamepadProduct;
  *
  * @from SDL_gamepad.h:904 Uint16 SDL_GetGamepadProductVersion(SDL_Gamepad *gamepad);
  */
-export const getGamepadProductVersion = lib.symbols.SDL_GetGamepadProductVersion;
+export function getGamepadProductVersion(gamepad: Deno.PointerValue<"SDL_Gamepad">): number {
+  return lib.symbols.SDL_GetGamepadProductVersion(gamepad);
+}
 
 /**
  * Get the firmware version of an opened gamepad, if available.
@@ -766,7 +842,9 @@ export const getGamepadProductVersion = lib.symbols.SDL_GetGamepadProductVersion
  *
  * @from SDL_gamepad.h:916 Uint16 SDL_GetGamepadFirmwareVersion(SDL_Gamepad *gamepad);
  */
-export const getGamepadFirmwareVersion = lib.symbols.SDL_GetGamepadFirmwareVersion;
+export function getGamepadFirmwareVersion(gamepad: Deno.PointerValue<"SDL_Gamepad">): number {
+  return lib.symbols.SDL_GetGamepadFirmwareVersion(gamepad);
+}
 
 /**
  * Get the serial number of an opened gamepad, if available.
@@ -780,7 +858,9 @@ export const getGamepadFirmwareVersion = lib.symbols.SDL_GetGamepadFirmwareVersi
  *
  * @from SDL_gamepad.h:928 const char * SDL_GetGamepadSerial(SDL_Gamepad *gamepad);
  */
-export const getGamepadSerial = lib.symbols.SDL_GetGamepadSerial;
+export function getGamepadSerial(gamepad: Deno.PointerValue<"SDL_Gamepad">): string {
+  return _p.getCstr2(lib.symbols.SDL_GetGamepadSerial(gamepad));
+}
 
 /**
  * Get the Steam Input handle of an opened gamepad, if available.
@@ -795,7 +875,9 @@ export const getGamepadSerial = lib.symbols.SDL_GetGamepadSerial;
  *
  * @from SDL_gamepad.h:941 Uint64 SDL_GetGamepadSteamHandle(SDL_Gamepad *gamepad);
  */
-export const getGamepadSteamHandle = lib.symbols.SDL_GetGamepadSteamHandle;
+export function getGamepadSteamHandle(gamepad: Deno.PointerValue<"SDL_Gamepad">): bigint {
+  return lib.symbols.SDL_GetGamepadSteamHandle(gamepad);
+}
 
 /**
  * Get the connection state of a gamepad.
@@ -809,7 +891,9 @@ export const getGamepadSteamHandle = lib.symbols.SDL_GetGamepadSteamHandle;
  *
  * @from SDL_gamepad.h:953 SDL_JoystickConnectionState SDL_GetGamepadConnectionState(SDL_Gamepad *gamepad);
  */
-export const getGamepadConnectionState = lib.symbols.SDL_GetGamepadConnectionState;
+export function getGamepadConnectionState(gamepad: Deno.PointerValue<"SDL_Gamepad">): number {
+  return lib.symbols.SDL_GetGamepadConnectionState(gamepad);
+}
 
 /**
  * Get the battery state of a gamepad.
@@ -831,7 +915,11 @@ export const getGamepadConnectionState = lib.symbols.SDL_GetGamepadConnectionSta
  *
  * @from SDL_gamepad.h:973 SDL_PowerState SDL_GetGamepadPowerInfo(SDL_Gamepad *gamepad, int *percent);
  */
-export const getGamepadPowerInfo = lib.symbols.SDL_GetGamepadPowerInfo;
+export function getGamepadPowerInfo(gamepad: Deno.PointerValue<"SDL_Gamepad">): number {
+  if(!lib.symbols.SDL_GetGamepadPowerInfo(gamepad, _p.i32.p0))
+    throw new Error(`SDL_GetGamepadPowerInfo: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.i32.v0;
+}
 
 /**
  * Check if a gamepad has been opened and is currently connected.
@@ -845,7 +933,9 @@ export const getGamepadPowerInfo = lib.symbols.SDL_GetGamepadPowerInfo;
  *
  * @from SDL_gamepad.h:985 bool SDL_GamepadConnected(SDL_Gamepad *gamepad);
  */
-export const gamepadConnected = lib.symbols.SDL_GamepadConnected;
+export function gamepadConnected(gamepad: Deno.PointerValue<"SDL_Gamepad">): boolean {
+  return lib.symbols.SDL_GamepadConnected(gamepad);
+}
 
 /**
  * Get the underlying joystick from a gamepad.
@@ -867,7 +957,9 @@ export const gamepadConnected = lib.symbols.SDL_GamepadConnected;
  *
  * @from SDL_gamepad.h:1005 SDL_Joystick * SDL_GetGamepadJoystick(SDL_Gamepad *gamepad);
  */
-export const getGamepadJoystick = lib.symbols.SDL_GetGamepadJoystick;
+export function getGamepadJoystick(gamepad: Deno.PointerValue<"SDL_Gamepad">): Deno.PointerValue<"SDL_Joystick"> {
+  return lib.symbols.SDL_GetGamepadJoystick(gamepad) as Deno.PointerValue<"SDL_Joystick">;
+}
 
 /**
  * Set the state of gamepad event processing.
@@ -884,7 +976,9 @@ export const getGamepadJoystick = lib.symbols.SDL_GetGamepadJoystick;
  *
  * @from SDL_gamepad.h:1020 void SDL_SetGamepadEventsEnabled(bool enabled);
  */
-export const setGamepadEventsEnabled = lib.symbols.SDL_SetGamepadEventsEnabled;
+export function setGamepadEventsEnabled(enabled: boolean): void {
+  return lib.symbols.SDL_SetGamepadEventsEnabled(enabled);
+}
 
 /**
  * Query the state of gamepad event processing.
@@ -900,7 +994,9 @@ export const setGamepadEventsEnabled = lib.symbols.SDL_SetGamepadEventsEnabled;
  *
  * @from SDL_gamepad.h:1034 bool SDL_GamepadEventsEnabled(void);
  */
-export const gamepadEventsEnabled = lib.symbols.SDL_GamepadEventsEnabled;
+export function gamepadEventsEnabled(): boolean {
+  return lib.symbols.SDL_GamepadEventsEnabled();
+}
 
 /**
  * Get the SDL joystick layer bindings for a gamepad.
@@ -916,7 +1012,11 @@ export const gamepadEventsEnabled = lib.symbols.SDL_GamepadEventsEnabled;
  *
  * @from SDL_gamepad.h:1048 SDL_GamepadBinding ** SDL_GetGamepadBindings(SDL_Gamepad *gamepad, int *count);
  */
-export const getGamepadBindings = lib.symbols.SDL_GetGamepadBindings;
+export function getGamepadBindings(gamepad: Deno.PointerValue<"SDL_Gamepad">): { count: number; ret: Deno.PointerValue } {
+  const ret = lib.symbols.SDL_GetGamepadBindings(gamepad, _p.i32.p0) as Deno.PointerValue;
+  if(!ret) throw new Error(`SDL_GetGamepadBindings: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { count: _p.i32.v0, ret };
+}
 
 /**
  * Manually pump gamepad updates if not using the loop.
@@ -929,7 +1029,9 @@ export const getGamepadBindings = lib.symbols.SDL_GetGamepadBindings;
  *
  * @from SDL_gamepad.h:1059 void SDL_UpdateGamepads(void);
  */
-export const updateGamepads = lib.symbols.SDL_UpdateGamepads;
+export function updateGamepads(): void {
+  return lib.symbols.SDL_UpdateGamepads();
+}
 
 /**
  * Convert a string into SDL_GamepadType enum.
@@ -949,7 +1051,9 @@ export const updateGamepads = lib.symbols.SDL_UpdateGamepads;
  *
  * @from SDL_gamepad.h:1077 SDL_GamepadType SDL_GetGamepadTypeFromString(const char *str);
  */
-export const getGamepadTypeFromString = lib.symbols.SDL_GetGamepadTypeFromString;
+export function getGamepadTypeFromString(str: string): number {
+  return lib.symbols.SDL_GetGamepadTypeFromString(_p.toCstr(str));
+}
 
 /**
  * Convert from an SDL_GamepadType enum to a string.
@@ -965,7 +1069,9 @@ export const getGamepadTypeFromString = lib.symbols.SDL_GetGamepadTypeFromString
  *
  * @from SDL_gamepad.h:1091 const char * SDL_GetGamepadStringForType(SDL_GamepadType type);
  */
-export const getGamepadStringForType = lib.symbols.SDL_GetGamepadStringForType;
+export function getGamepadStringForType(type: number): string {
+  return _p.getCstr2(lib.symbols.SDL_GetGamepadStringForType(type));
+}
 
 /**
  * Convert a string into SDL_GamepadAxis enum.
@@ -989,7 +1095,9 @@ export const getGamepadStringForType = lib.symbols.SDL_GetGamepadStringForType;
  *
  * @from SDL_gamepad.h:1113 SDL_GamepadAxis SDL_GetGamepadAxisFromString(const char *str);
  */
-export const getGamepadAxisFromString = lib.symbols.SDL_GetGamepadAxisFromString;
+export function getGamepadAxisFromString(str: string): number {
+  return lib.symbols.SDL_GetGamepadAxisFromString(_p.toCstr(str));
+}
 
 /**
  * Convert from an SDL_GamepadAxis enum to a string.
@@ -1005,7 +1113,9 @@ export const getGamepadAxisFromString = lib.symbols.SDL_GetGamepadAxisFromString
  *
  * @from SDL_gamepad.h:1127 const char * SDL_GetGamepadStringForAxis(SDL_GamepadAxis axis);
  */
-export const getGamepadStringForAxis = lib.symbols.SDL_GetGamepadStringForAxis;
+export function getGamepadStringForAxis(axis: number): string {
+  return _p.getCstr2(lib.symbols.SDL_GetGamepadStringForAxis(axis));
+}
 
 /**
  * Query whether a gamepad has a given axis.
@@ -1024,7 +1134,9 @@ export const getGamepadStringForAxis = lib.symbols.SDL_GetGamepadStringForAxis;
  *
  * @from SDL_gamepad.h:1144 bool SDL_GamepadHasAxis(SDL_Gamepad *gamepad, SDL_GamepadAxis axis);
  */
-export const gamepadHasAxis = lib.symbols.SDL_GamepadHasAxis;
+export function gamepadHasAxis(gamepad: Deno.PointerValue<"SDL_Gamepad">, axis: number): boolean {
+  return lib.symbols.SDL_GamepadHasAxis(gamepad, axis);
+}
 
 /**
  * Get the current state of an axis control on a gamepad.
@@ -1050,7 +1162,9 @@ export const gamepadHasAxis = lib.symbols.SDL_GamepadHasAxis;
  *
  * @from SDL_gamepad.h:1168 Sint16 SDL_GetGamepadAxis(SDL_Gamepad *gamepad, SDL_GamepadAxis axis);
  */
-export const getGamepadAxis = lib.symbols.SDL_GetGamepadAxis;
+export function getGamepadAxis(gamepad: Deno.PointerValue<"SDL_Gamepad">, axis: number): number {
+  return lib.symbols.SDL_GetGamepadAxis(gamepad, axis);
+}
 
 /**
  * Convert a string into an SDL_GamepadButton enum.
@@ -1070,7 +1184,9 @@ export const getGamepadAxis = lib.symbols.SDL_GetGamepadAxis;
  *
  * @from SDL_gamepad.h:1186 SDL_GamepadButton SDL_GetGamepadButtonFromString(const char *str);
  */
-export const getGamepadButtonFromString = lib.symbols.SDL_GetGamepadButtonFromString;
+export function getGamepadButtonFromString(str: string): number {
+  return lib.symbols.SDL_GetGamepadButtonFromString(_p.toCstr(str));
+}
 
 /**
  * Convert from an SDL_GamepadButton enum to a string.
@@ -1086,7 +1202,9 @@ export const getGamepadButtonFromString = lib.symbols.SDL_GetGamepadButtonFromSt
  *
  * @from SDL_gamepad.h:1200 const char * SDL_GetGamepadStringForButton(SDL_GamepadButton button);
  */
-export const getGamepadStringForButton = lib.symbols.SDL_GetGamepadStringForButton;
+export function getGamepadStringForButton(button: number): string {
+  return _p.getCstr2(lib.symbols.SDL_GetGamepadStringForButton(button));
+}
 
 /**
  * Query whether a gamepad has a given button.
@@ -1104,7 +1222,9 @@ export const getGamepadStringForButton = lib.symbols.SDL_GetGamepadStringForButt
  *
  * @from SDL_gamepad.h:1216 bool SDL_GamepadHasButton(SDL_Gamepad *gamepad, SDL_GamepadButton button);
  */
-export const gamepadHasButton = lib.symbols.SDL_GamepadHasButton;
+export function gamepadHasButton(gamepad: Deno.PointerValue<"SDL_Gamepad">, button: number): boolean {
+  return lib.symbols.SDL_GamepadHasButton(gamepad, button);
+}
 
 /**
  * Get the current state of a button on a gamepad.
@@ -1120,7 +1240,9 @@ export const gamepadHasButton = lib.symbols.SDL_GamepadHasButton;
  *
  * @from SDL_gamepad.h:1230 bool SDL_GetGamepadButton(SDL_Gamepad *gamepad, SDL_GamepadButton button);
  */
-export const getGamepadButton = lib.symbols.SDL_GetGamepadButton;
+export function getGamepadButton(gamepad: Deno.PointerValue<"SDL_Gamepad">, button: number): boolean {
+  return lib.symbols.SDL_GetGamepadButton(gamepad, button);
+}
 
 /**
  * Get the label of a button on a gamepad.
@@ -1135,7 +1257,9 @@ export const getGamepadButton = lib.symbols.SDL_GetGamepadButton;
  *
  * @from SDL_gamepad.h:1243 SDL_GamepadButtonLabel SDL_GetGamepadButtonLabelForType(SDL_GamepadType type, SDL_GamepadButton button);
  */
-export const getGamepadButtonLabelForType = lib.symbols.SDL_GetGamepadButtonLabelForType;
+export function getGamepadButtonLabelForType(type: number, button: number): number {
+  return lib.symbols.SDL_GetGamepadButtonLabelForType(type, button);
+}
 
 /**
  * Get the label of a button on a gamepad.
@@ -1150,7 +1274,9 @@ export const getGamepadButtonLabelForType = lib.symbols.SDL_GetGamepadButtonLabe
  *
  * @from SDL_gamepad.h:1256 SDL_GamepadButtonLabel SDL_GetGamepadButtonLabel(SDL_Gamepad *gamepad, SDL_GamepadButton button);
  */
-export const getGamepadButtonLabel = lib.symbols.SDL_GetGamepadButtonLabel;
+export function getGamepadButtonLabel(gamepad: Deno.PointerValue<"SDL_Gamepad">, button: number): number {
+  return lib.symbols.SDL_GetGamepadButtonLabel(gamepad, button);
+}
 
 /**
  * Get the number of touchpads on a gamepad.
@@ -1164,7 +1290,9 @@ export const getGamepadButtonLabel = lib.symbols.SDL_GetGamepadButtonLabel;
  *
  * @from SDL_gamepad.h:1268 int SDL_GetNumGamepadTouchpads(SDL_Gamepad *gamepad);
  */
-export const getNumGamepadTouchpads = lib.symbols.SDL_GetNumGamepadTouchpads;
+export function getNumGamepadTouchpads(gamepad: Deno.PointerValue<"SDL_Gamepad">): number {
+  return lib.symbols.SDL_GetNumGamepadTouchpads(gamepad);
+}
 
 /**
  * Get the number of supported simultaneous fingers on a touchpad on a game
@@ -1181,7 +1309,9 @@ export const getNumGamepadTouchpads = lib.symbols.SDL_GetNumGamepadTouchpads;
  *
  * @from SDL_gamepad.h:1283 int SDL_GetNumGamepadTouchpadFingers(SDL_Gamepad *gamepad, int touchpad);
  */
-export const getNumGamepadTouchpadFingers = lib.symbols.SDL_GetNumGamepadTouchpadFingers;
+export function getNumGamepadTouchpadFingers(gamepad: Deno.PointerValue<"SDL_Gamepad">, touchpad: number): number {
+  return lib.symbols.SDL_GetNumGamepadTouchpadFingers(gamepad, touchpad);
+}
 
 /**
  * Get the current state of a finger on a touchpad on a gamepad.
@@ -1205,7 +1335,11 @@ export const getNumGamepadTouchpadFingers = lib.symbols.SDL_GetNumGamepadTouchpa
  *
  * @from SDL_gamepad.h:1305 bool SDL_GetGamepadTouchpadFinger(SDL_Gamepad *gamepad, int touchpad, int finger, bool *down, float *x, float *y, float *pressure);
  */
-export const getGamepadTouchpadFinger = lib.symbols.SDL_GetGamepadTouchpadFinger;
+export function getGamepadTouchpadFinger(gamepad: Deno.PointerValue<"SDL_Gamepad">, touchpad: number, finger: number): { down: boolean; x: number; y: number; pressure: number } {
+  if(!lib.symbols.SDL_GetGamepadTouchpadFinger(gamepad, touchpad, finger, _p.i8.p0, _p.f32.p0, _p.f32.p1, _p.f32.p2))
+    throw new Error(`SDL_GetGamepadTouchpadFinger: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { down: !!_p.i8.v0, x: _p.f32.v0, y: _p.f32.v1, pressure: _p.f32.v2 };
+}
 
 /**
  * Return whether a gamepad has a particular sensor.
@@ -1222,7 +1356,9 @@ export const getGamepadTouchpadFinger = lib.symbols.SDL_GetGamepadTouchpadFinger
  *
  * @from SDL_gamepad.h:1320 bool SDL_GamepadHasSensor(SDL_Gamepad *gamepad, SDL_SensorType type);
  */
-export const gamepadHasSensor = lib.symbols.SDL_GamepadHasSensor;
+export function gamepadHasSensor(gamepad: Deno.PointerValue<"SDL_Gamepad">, type: number): boolean {
+  return lib.symbols.SDL_GamepadHasSensor(gamepad, type);
+}
 
 /**
  * Set whether data reporting for a gamepad sensor is enabled.
@@ -1240,7 +1376,9 @@ export const gamepadHasSensor = lib.symbols.SDL_GamepadHasSensor;
  *
  * @from SDL_gamepad.h:1336 bool SDL_SetGamepadSensorEnabled(SDL_Gamepad *gamepad, SDL_SensorType type, bool enabled);
  */
-export const setGamepadSensorEnabled = lib.symbols.SDL_SetGamepadSensorEnabled;
+export function setGamepadSensorEnabled(gamepad: Deno.PointerValue<"SDL_Gamepad">, type: number, enabled: boolean): boolean {
+  return lib.symbols.SDL_SetGamepadSensorEnabled(gamepad, type, enabled);
+}
 
 /**
  * Query whether sensor data reporting is enabled for a gamepad.
@@ -1255,7 +1393,9 @@ export const setGamepadSensorEnabled = lib.symbols.SDL_SetGamepadSensorEnabled;
  *
  * @from SDL_gamepad.h:1349 bool SDL_GamepadSensorEnabled(SDL_Gamepad *gamepad, SDL_SensorType type);
  */
-export const gamepadSensorEnabled = lib.symbols.SDL_GamepadSensorEnabled;
+export function gamepadSensorEnabled(gamepad: Deno.PointerValue<"SDL_Gamepad">, type: number): boolean {
+  return lib.symbols.SDL_GamepadSensorEnabled(gamepad, type);
+}
 
 /**
  * Get the data rate (number of events per second) of a gamepad sensor.
@@ -1268,7 +1408,9 @@ export const gamepadSensorEnabled = lib.symbols.SDL_GamepadSensorEnabled;
  *
  * @from SDL_gamepad.h:1360 float SDL_GetGamepadSensorDataRate(SDL_Gamepad *gamepad, SDL_SensorType type);
  */
-export const getGamepadSensorDataRate = lib.symbols.SDL_GetGamepadSensorDataRate;
+export function getGamepadSensorDataRate(gamepad: Deno.PointerValue<"SDL_Gamepad">, type: number): number {
+  return lib.symbols.SDL_GetGamepadSensorDataRate(gamepad, type);
+}
 
 /**
  * Get the current state of a gamepad sensor.
@@ -1287,7 +1429,11 @@ export const getGamepadSensorDataRate = lib.symbols.SDL_GetGamepadSensorDataRate
  *
  * @from SDL_gamepad.h:1377 bool SDL_GetGamepadSensorData(SDL_Gamepad *gamepad, SDL_SensorType type, float *data, int num_values);
  */
-export const getGamepadSensorData = lib.symbols.SDL_GetGamepadSensorData;
+export function getGamepadSensorData(gamepad: Deno.PointerValue<"SDL_Gamepad">, type: number, num_values: number): number {
+  if(!lib.symbols.SDL_GetGamepadSensorData(gamepad, type, _p.f32.p0, num_values))
+    throw new Error(`SDL_GetGamepadSensorData: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.f32.v0;
+}
 
 /**
  * Start a rumble effect on a gamepad.
@@ -1311,7 +1457,14 @@ export const getGamepadSensorData = lib.symbols.SDL_GetGamepadSensorData;
  *
  * @from SDL_gamepad.h:1399 bool SDL_RumbleGamepad(SDL_Gamepad *gamepad, Uint16 low_frequency_rumble, Uint16 high_frequency_rumble, Uint32 duration_ms);
  */
-export const rumbleGamepad = lib.symbols.SDL_RumbleGamepad;
+export function rumbleGamepad(
+    gamepad: Deno.PointerValue<"SDL_Gamepad">,
+    low_frequency_rumble: number,
+    high_frequency_rumble: number,
+    duration_ms: number,
+): boolean {
+  return lib.symbols.SDL_RumbleGamepad(gamepad, low_frequency_rumble, high_frequency_rumble, duration_ms);
+}
 
 /**
  * Start a rumble effect in the gamepad's triggers.
@@ -1341,7 +1494,14 @@ export const rumbleGamepad = lib.symbols.SDL_RumbleGamepad;
  *
  * @from SDL_gamepad.h:1427 bool SDL_RumbleGamepadTriggers(SDL_Gamepad *gamepad, Uint16 left_rumble, Uint16 right_rumble, Uint32 duration_ms);
  */
-export const rumbleGamepadTriggers = lib.symbols.SDL_RumbleGamepadTriggers;
+export function rumbleGamepadTriggers(
+    gamepad: Deno.PointerValue<"SDL_Gamepad">,
+    left_rumble: number,
+    right_rumble: number,
+    duration_ms: number,
+): boolean {
+  return lib.symbols.SDL_RumbleGamepadTriggers(gamepad, left_rumble, right_rumble, duration_ms);
+}
 
 /**
  * Update a gamepad's LED color.
@@ -1363,7 +1523,14 @@ export const rumbleGamepadTriggers = lib.symbols.SDL_RumbleGamepadTriggers;
  *
  * @from SDL_gamepad.h:1447 bool SDL_SetGamepadLED(SDL_Gamepad *gamepad, Uint8 red, Uint8 green, Uint8 blue);
  */
-export const setGamepadLed = lib.symbols.SDL_SetGamepadLED;
+export function setGamepadLed(
+    gamepad: Deno.PointerValue<"SDL_Gamepad">,
+    red: number,
+    green: number,
+    blue: number,
+): boolean {
+  return lib.symbols.SDL_SetGamepadLED(gamepad, red, green, blue);
+}
 
 /**
  * Send a gamepad specific effect packet.
@@ -1378,7 +1545,9 @@ export const setGamepadLed = lib.symbols.SDL_SetGamepadLED;
  *
  * @from SDL_gamepad.h:1460 bool SDL_SendGamepadEffect(SDL_Gamepad *gamepad, const void *data, int size);
  */
-export const sendGamepadEffect = lib.symbols.SDL_SendGamepadEffect;
+export function sendGamepadEffect(gamepad: Deno.PointerValue<"SDL_Gamepad">, data: Deno.PointerValue, size: number): boolean {
+  return lib.symbols.SDL_SendGamepadEffect(gamepad, data, size);
+}
 
 /**
  * Close a gamepad previously opened with SDL_OpenGamepad().
@@ -1392,7 +1561,9 @@ export const sendGamepadEffect = lib.symbols.SDL_SendGamepadEffect;
  *
  * @from SDL_gamepad.h:1472 void SDL_CloseGamepad(SDL_Gamepad *gamepad);
  */
-export const closeGamepad = lib.symbols.SDL_CloseGamepad;
+export function closeGamepad(gamepad: Deno.PointerValue<"SDL_Gamepad">): void {
+  return lib.symbols.SDL_CloseGamepad(gamepad);
+}
 
 /**
  * Return the sfSymbolsName for a given button on a gamepad on Apple
@@ -1408,7 +1579,9 @@ export const closeGamepad = lib.symbols.SDL_CloseGamepad;
  *
  * @from SDL_gamepad.h:1486 const char * SDL_GetGamepadAppleSFSymbolsNameForButton(SDL_Gamepad *gamepad, SDL_GamepadButton button);
  */
-export const getGamepadAppleSfSymbolsNameForButton = lib.symbols.SDL_GetGamepadAppleSFSymbolsNameForButton;
+export function getGamepadAppleSfSymbolsNameForButton(gamepad: Deno.PointerValue<"SDL_Gamepad">, button: number): string {
+  return _p.getCstr2(lib.symbols.SDL_GetGamepadAppleSFSymbolsNameForButton(gamepad, button));
+}
 
 /**
  * Return the sfSymbolsName for a given axis on a gamepad on Apple platforms.
@@ -1423,5 +1596,7 @@ export const getGamepadAppleSfSymbolsNameForButton = lib.symbols.SDL_GetGamepadA
  *
  * @from SDL_gamepad.h:1499 const char * SDL_GetGamepadAppleSFSymbolsNameForAxis(SDL_Gamepad *gamepad, SDL_GamepadAxis axis);
  */
-export const getGamepadAppleSfSymbolsNameForAxis = lib.symbols.SDL_GetGamepadAppleSFSymbolsNameForAxis;
+export function getGamepadAppleSfSymbolsNameForAxis(gamepad: Deno.PointerValue<"SDL_Gamepad">, axis: number): string {
+  return _p.getCstr2(lib.symbols.SDL_GetGamepadAppleSFSymbolsNameForAxis(gamepad, axis));
+}
 

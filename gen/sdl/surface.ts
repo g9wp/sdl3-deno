@@ -40,6 +40,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   SURFACE as SURFACE,
@@ -68,7 +70,9 @@ export {
  *
  * @from SDL_surface.h:166 SDL_Surface * SDL_CreateSurface(int width, int height, SDL_PixelFormat format);
  */
-export const createSurface = lib.symbols.SDL_CreateSurface;
+export function createSurface(width: number, height: number, format: number): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.SDL_CreateSurface(width, height, format) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Allocate a new surface with a specific pixel format and existing pixel
@@ -100,7 +104,15 @@ export const createSurface = lib.symbols.SDL_CreateSurface;
  *
  * @from SDL_surface.h:196 SDL_Surface * SDL_CreateSurfaceFrom(int width, int height, SDL_PixelFormat format, void *pixels, int pitch);
  */
-export const createSurfaceFrom = lib.symbols.SDL_CreateSurfaceFrom;
+export function createSurfaceFrom(
+    width: number,
+    height: number,
+    format: number,
+    pixels: Deno.PointerValue,
+    pitch: number,
+): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.SDL_CreateSurfaceFrom(width, height, format, pixels, pitch) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Free a surface.
@@ -118,7 +130,9 @@ export const createSurfaceFrom = lib.symbols.SDL_CreateSurfaceFrom;
  *
  * @from SDL_surface.h:212 void SDL_DestroySurface(SDL_Surface *surface);
  */
-export const destroySurface = lib.symbols.SDL_DestroySurface;
+export function destroySurface(surface: Deno.PointerValue<"SDL_Surface">): void {
+  return lib.symbols.SDL_DestroySurface(surface);
+}
 
 /**
  * Get the properties associated with a surface.
@@ -154,7 +168,9 @@ export const destroySurface = lib.symbols.SDL_DestroySurface;
  *
  * @from SDL_surface.h:246 SDL_PropertiesID SDL_GetSurfaceProperties(SDL_Surface *surface);
  */
-export const getSurfaceProperties = lib.symbols.SDL_GetSurfaceProperties;
+export function getSurfaceProperties(surface: Deno.PointerValue<"SDL_Surface">): number {
+  return lib.symbols.SDL_GetSurfaceProperties(surface);
+}
 
 /**
  * Set the colorspace used by a surface.
@@ -176,7 +192,9 @@ export const getSurfaceProperties = lib.symbols.SDL_GetSurfaceProperties;
  *
  * @from SDL_surface.h:272 bool SDL_SetSurfaceColorspace(SDL_Surface *surface, SDL_Colorspace colorspace);
  */
-export const setSurfaceColorspace = lib.symbols.SDL_SetSurfaceColorspace;
+export function setSurfaceColorspace(surface: Deno.PointerValue<"SDL_Surface">, colorspace: number): boolean {
+  return lib.symbols.SDL_SetSurfaceColorspace(surface, colorspace);
+}
 
 /**
  * Get the colorspace used by a surface.
@@ -197,7 +215,9 @@ export const setSurfaceColorspace = lib.symbols.SDL_SetSurfaceColorspace;
  *
  * @from SDL_surface.h:291 SDL_Colorspace SDL_GetSurfaceColorspace(SDL_Surface *surface);
  */
-export const getSurfaceColorspace = lib.symbols.SDL_GetSurfaceColorspace;
+export function getSurfaceColorspace(surface: Deno.PointerValue<"SDL_Surface">): number {
+  return lib.symbols.SDL_GetSurfaceColorspace(surface);
+}
 
 /**
  * Create a palette and associate it with a surface.
@@ -229,7 +249,9 @@ export const getSurfaceColorspace = lib.symbols.SDL_GetSurfaceColorspace;
  *
  * @from SDL_surface.h:321 SDL_Palette * SDL_CreateSurfacePalette(SDL_Surface *surface);
  */
-export const createSurfacePalette = lib.symbols.SDL_CreateSurfacePalette;
+export function createSurfacePalette(surface: Deno.PointerValue<"SDL_Surface">): Deno.PointerValue<"SDL_Palette"> {
+  return lib.symbols.SDL_CreateSurfacePalette(surface) as Deno.PointerValue<"SDL_Palette">;
+}
 
 /**
  * Set the palette used by a surface.
@@ -250,7 +272,9 @@ export const createSurfacePalette = lib.symbols.SDL_CreateSurfacePalette;
  *
  * @from SDL_surface.h:340 bool SDL_SetSurfacePalette(SDL_Surface *surface, SDL_Palette *palette);
  */
-export const setSurfacePalette = lib.symbols.SDL_SetSurfacePalette;
+export function setSurfacePalette(surface: Deno.PointerValue<"SDL_Surface">, palette: Deno.PointerValue<"SDL_Palette">): boolean {
+  return lib.symbols.SDL_SetSurfacePalette(surface, palette);
+}
 
 /**
  * Get the palette used by a surface.
@@ -267,7 +291,9 @@ export const setSurfacePalette = lib.symbols.SDL_SetSurfacePalette;
  *
  * @from SDL_surface.h:355 SDL_Palette * SDL_GetSurfacePalette(SDL_Surface *surface);
  */
-export const getSurfacePalette = lib.symbols.SDL_GetSurfacePalette;
+export function getSurfacePalette(surface: Deno.PointerValue<"SDL_Surface">): Deno.PointerValue<"SDL_Palette"> {
+  return lib.symbols.SDL_GetSurfacePalette(surface) as Deno.PointerValue<"SDL_Palette">;
+}
 
 /**
  * Add an alternate version of a surface.
@@ -296,7 +322,9 @@ export const getSurfacePalette = lib.symbols.SDL_GetSurfacePalette;
  *
  * @from SDL_surface.h:382 bool SDL_AddSurfaceAlternateImage(SDL_Surface *surface, SDL_Surface *image);
  */
-export const addSurfaceAlternateImage = lib.symbols.SDL_AddSurfaceAlternateImage;
+export function addSurfaceAlternateImage(surface: Deno.PointerValue<"SDL_Surface">, image: Deno.PointerValue<"SDL_Surface">): boolean {
+  return lib.symbols.SDL_AddSurfaceAlternateImage(surface, image);
+}
 
 /**
  * Return whether a surface has alternate versions available.
@@ -314,7 +342,9 @@ export const addSurfaceAlternateImage = lib.symbols.SDL_AddSurfaceAlternateImage
  *
  * @from SDL_surface.h:398 bool SDL_SurfaceHasAlternateImages(SDL_Surface *surface);
  */
-export const surfaceHasAlternateImages = lib.symbols.SDL_SurfaceHasAlternateImages;
+export function surfaceHasAlternateImages(surface: Deno.PointerValue<"SDL_Surface">): boolean {
+  return lib.symbols.SDL_SurfaceHasAlternateImages(surface);
+}
 
 /**
  * Get an array including all versions of a surface.
@@ -343,7 +373,11 @@ export const surfaceHasAlternateImages = lib.symbols.SDL_SurfaceHasAlternateImag
  *
  * @from SDL_surface.h:425 SDL_Surface ** SDL_GetSurfaceImages(SDL_Surface *surface, int *count);
  */
-export const getSurfaceImages = lib.symbols.SDL_GetSurfaceImages;
+export function getSurfaceImages(surface: Deno.PointerValue<"SDL_Surface">): { count: number; ret: Deno.PointerValue } {
+  const ret = lib.symbols.SDL_GetSurfaceImages(surface, _p.i32.p0) as Deno.PointerValue;
+  if(!ret) throw new Error(`SDL_GetSurfaceImages: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { count: _p.i32.v0, ret };
+}
 
 /**
  * Remove all alternate versions of a surface.
@@ -363,7 +397,9 @@ export const getSurfaceImages = lib.symbols.SDL_GetSurfaceImages;
  *
  * @from SDL_surface.h:443 void SDL_RemoveSurfaceAlternateImages(SDL_Surface *surface);
  */
-export const removeSurfaceAlternateImages = lib.symbols.SDL_RemoveSurfaceAlternateImages;
+export function removeSurfaceAlternateImages(surface: Deno.PointerValue<"SDL_Surface">): void {
+  return lib.symbols.SDL_RemoveSurfaceAlternateImages(surface);
+}
 
 /**
  * Set up a surface for directly accessing the pixels.
@@ -392,7 +428,9 @@ export const removeSurfaceAlternateImages = lib.symbols.SDL_RemoveSurfaceAlterna
  *
  * @from SDL_surface.h:470 bool SDL_LockSurface(SDL_Surface *surface);
  */
-export const lockSurface = lib.symbols.SDL_LockSurface;
+export function lockSurface(surface: Deno.PointerValue<"SDL_Surface">): boolean {
+  return lib.symbols.SDL_LockSurface(surface);
+}
 
 /**
  * Release a surface after directly accessing the pixels.
@@ -409,7 +447,9 @@ export const lockSurface = lib.symbols.SDL_LockSurface;
  *
  * @from SDL_surface.h:485 void SDL_UnlockSurface(SDL_Surface *surface);
  */
-export const unlockSurface = lib.symbols.SDL_UnlockSurface;
+export function unlockSurface(surface: Deno.PointerValue<"SDL_Surface">): void {
+  return lib.symbols.SDL_UnlockSurface(surface);
+}
 
 /**
  * Load a BMP image from a seekable SDL data stream.
@@ -433,7 +473,9 @@ export const unlockSurface = lib.symbols.SDL_UnlockSurface;
  *
  * @from SDL_surface.h:507 SDL_Surface * SDL_LoadBMP_IO(SDL_IOStream *src, bool closeio);
  */
-export const loadBmpIo = lib.symbols.SDL_LoadBMP_IO;
+export function loadBmpIo(src: Deno.PointerValue<"SDL_IOStream">, closeio: boolean): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.SDL_LoadBMP_IO(src, closeio) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Load a BMP image from a file.
@@ -455,7 +497,9 @@ export const loadBmpIo = lib.symbols.SDL_LoadBMP_IO;
  *
  * @from SDL_surface.h:527 SDL_Surface * SDL_LoadBMP(const char *file);
  */
-export const loadBmp = lib.symbols.SDL_LoadBMP;
+export function loadBmp(file: string): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.SDL_LoadBMP(_p.toCstr(file)) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Save a surface to a seekable SDL data stream in BMP format.
@@ -482,7 +526,9 @@ export const loadBmp = lib.symbols.SDL_LoadBMP;
  *
  * @from SDL_surface.h:552 bool SDL_SaveBMP_IO(SDL_Surface *surface, SDL_IOStream *dst, bool closeio);
  */
-export const saveBmpIo = lib.symbols.SDL_SaveBMP_IO;
+export function saveBmpIo(surface: Deno.PointerValue<"SDL_Surface">, dst: Deno.PointerValue<"SDL_IOStream">, closeio: boolean): boolean {
+  return lib.symbols.SDL_SaveBMP_IO(surface, dst, closeio);
+}
 
 /**
  * Save a surface to a file.
@@ -507,7 +553,9 @@ export const saveBmpIo = lib.symbols.SDL_SaveBMP_IO;
  *
  * @from SDL_surface.h:575 bool SDL_SaveBMP(SDL_Surface *surface, const char *file);
  */
-export const saveBmp = lib.symbols.SDL_SaveBMP;
+export function saveBmp(surface: Deno.PointerValue<"SDL_Surface">, file: string): boolean {
+  return lib.symbols.SDL_SaveBMP(surface, _p.toCstr(file));
+}
 
 /**
  * Set the RLE acceleration hint for a surface.
@@ -530,7 +578,9 @@ export const saveBmp = lib.symbols.SDL_SaveBMP;
  *
  * @from SDL_surface.h:596 bool SDL_SetSurfaceRLE(SDL_Surface *surface, bool enabled);
  */
-export const setSurfaceRle = lib.symbols.SDL_SetSurfaceRLE;
+export function setSurfaceRle(surface: Deno.PointerValue<"SDL_Surface">, enabled: boolean): boolean {
+  return lib.symbols.SDL_SetSurfaceRLE(surface, enabled);
+}
 
 /**
  * Returns whether the surface is RLE enabled.
@@ -548,7 +598,9 @@ export const setSurfaceRle = lib.symbols.SDL_SetSurfaceRLE;
  *
  * @from SDL_surface.h:612 bool SDL_SurfaceHasRLE(SDL_Surface *surface);
  */
-export const surfaceHasRle = lib.symbols.SDL_SurfaceHasRLE;
+export function surfaceHasRle(surface: Deno.PointerValue<"SDL_Surface">): boolean {
+  return lib.symbols.SDL_SurfaceHasRLE(surface);
+}
 
 /**
  * Set the color key (transparent pixel) in a surface.
@@ -576,7 +628,9 @@ export const surfaceHasRle = lib.symbols.SDL_SurfaceHasRLE;
  *
  * @from SDL_surface.h:638 bool SDL_SetSurfaceColorKey(SDL_Surface *surface, bool enabled, Uint32 key);
  */
-export const setSurfaceColorKey = lib.symbols.SDL_SetSurfaceColorKey;
+export function setSurfaceColorKey(surface: Deno.PointerValue<"SDL_Surface">, enabled: boolean, key: number): boolean {
+  return lib.symbols.SDL_SetSurfaceColorKey(surface, enabled, key);
+}
 
 /**
  * Returns whether the surface has a color key.
@@ -595,7 +649,9 @@ export const setSurfaceColorKey = lib.symbols.SDL_SetSurfaceColorKey;
  *
  * @from SDL_surface.h:655 bool SDL_SurfaceHasColorKey(SDL_Surface *surface);
  */
-export const surfaceHasColorKey = lib.symbols.SDL_SurfaceHasColorKey;
+export function surfaceHasColorKey(surface: Deno.PointerValue<"SDL_Surface">): boolean {
+  return lib.symbols.SDL_SurfaceHasColorKey(surface);
+}
 
 /**
  * Get the color key (transparent pixel) for a surface.
@@ -619,7 +675,11 @@ export const surfaceHasColorKey = lib.symbols.SDL_SurfaceHasColorKey;
  *
  * @from SDL_surface.h:677 bool SDL_GetSurfaceColorKey(SDL_Surface *surface, Uint32 *key);
  */
-export const getSurfaceColorKey = lib.symbols.SDL_GetSurfaceColorKey;
+export function getSurfaceColorKey(surface: Deno.PointerValue<"SDL_Surface">): number {
+  if(!lib.symbols.SDL_GetSurfaceColorKey(surface, _p.u32.p0))
+    throw new Error(`SDL_GetSurfaceColorKey: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.u32.v0;
+}
 
 /**
  * Set an additional color value multiplied into blit operations.
@@ -646,7 +706,14 @@ export const getSurfaceColorKey = lib.symbols.SDL_GetSurfaceColorKey;
  *
  * @from SDL_surface.h:702 bool SDL_SetSurfaceColorMod(SDL_Surface *surface, Uint8 r, Uint8 g, Uint8 b);
  */
-export const setSurfaceColorMod = lib.symbols.SDL_SetSurfaceColorMod;
+export function setSurfaceColorMod(
+    surface: Deno.PointerValue<"SDL_Surface">,
+    r: number,
+    g: number,
+    b: number,
+): boolean {
+  return lib.symbols.SDL_SetSurfaceColorMod(surface, r, g, b);
+}
 
 /**
  * Get the additional color value multiplied into blit operations.
@@ -667,7 +734,11 @@ export const setSurfaceColorMod = lib.symbols.SDL_SetSurfaceColorMod;
  *
  * @from SDL_surface.h:722 bool SDL_GetSurfaceColorMod(SDL_Surface *surface, Uint8 *r, Uint8 *g, Uint8 *b);
  */
-export const getSurfaceColorMod = lib.symbols.SDL_GetSurfaceColorMod;
+export function getSurfaceColorMod(surface: Deno.PointerValue<"SDL_Surface">): { r: number; g: number; b: number } {
+  if(!lib.symbols.SDL_GetSurfaceColorMod(surface, _p.u8.p0, _p.u8.p1, _p.u8.p2))
+    throw new Error(`SDL_GetSurfaceColorMod: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { r: _p.u8.v0, g: _p.u8.v1, b: _p.u8.v2 };
+}
 
 /**
  * Set an additional alpha value used in blit operations.
@@ -691,7 +762,9 @@ export const getSurfaceColorMod = lib.symbols.SDL_GetSurfaceColorMod;
  *
  * @from SDL_surface.h:744 bool SDL_SetSurfaceAlphaMod(SDL_Surface *surface, Uint8 alpha);
  */
-export const setSurfaceAlphaMod = lib.symbols.SDL_SetSurfaceAlphaMod;
+export function setSurfaceAlphaMod(surface: Deno.PointerValue<"SDL_Surface">, alpha: number): boolean {
+  return lib.symbols.SDL_SetSurfaceAlphaMod(surface, alpha);
+}
 
 /**
  * Get the additional alpha value used in blit operations.
@@ -710,7 +783,11 @@ export const setSurfaceAlphaMod = lib.symbols.SDL_SetSurfaceAlphaMod;
  *
  * @from SDL_surface.h:761 bool SDL_GetSurfaceAlphaMod(SDL_Surface *surface, Uint8 *alpha);
  */
-export const getSurfaceAlphaMod = lib.symbols.SDL_GetSurfaceAlphaMod;
+export function getSurfaceAlphaMod(surface: Deno.PointerValue<"SDL_Surface">): number {
+  if(!lib.symbols.SDL_GetSurfaceAlphaMod(surface, _p.u8.p0))
+    throw new Error(`SDL_GetSurfaceAlphaMod: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.u8.v0;
+}
 
 /**
  * Set the blend mode used for blit operations.
@@ -732,7 +809,9 @@ export const getSurfaceAlphaMod = lib.symbols.SDL_GetSurfaceAlphaMod;
  *
  * @from SDL_surface.h:781 bool SDL_SetSurfaceBlendMode(SDL_Surface *surface, SDL_BlendMode blendMode);
  */
-export const setSurfaceBlendMode = lib.symbols.SDL_SetSurfaceBlendMode;
+export function setSurfaceBlendMode(surface: Deno.PointerValue<"SDL_Surface">, blendMode: number): boolean {
+  return lib.symbols.SDL_SetSurfaceBlendMode(surface, blendMode);
+}
 
 /**
  * Get the blend mode used for blit operations.
@@ -750,7 +829,9 @@ export const setSurfaceBlendMode = lib.symbols.SDL_SetSurfaceBlendMode;
  *
  * @from SDL_surface.h:797 bool SDL_GetSurfaceBlendMode(SDL_Surface *surface, SDL_BlendMode *blendMode);
  */
-export const getSurfaceBlendMode = lib.symbols.SDL_GetSurfaceBlendMode;
+export function getSurfaceBlendMode(surface: Deno.PointerValue<"SDL_Surface">, blendMode: Deno.PointerValue<"SDL_BlendMode">): boolean {
+  return lib.symbols.SDL_GetSurfaceBlendMode(surface, blendMode);
+}
 
 /**
  * Set the clipping rectangle for a surface.
@@ -775,7 +856,10 @@ export const getSurfaceBlendMode = lib.symbols.SDL_GetSurfaceBlendMode;
  *
  * @from SDL_surface.h:820 bool SDL_SetSurfaceClipRect(SDL_Surface *surface, const SDL_Rect *rect);
  */
-export const setSurfaceClipRect = lib.symbols.SDL_SetSurfaceClipRect;
+export function setSurfaceClipRect(surface: Deno.PointerValue<"SDL_Surface">, rect: { x: number; y: number; w: number; h: number; } | null): boolean {
+  if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
+  return lib.symbols.SDL_SetSurfaceClipRect(surface, _p.i32.p0);
+}
 
 /**
  * Get the clipping rectangle for a surface.
@@ -798,7 +882,11 @@ export const setSurfaceClipRect = lib.symbols.SDL_SetSurfaceClipRect;
  *
  * @from SDL_surface.h:841 bool SDL_GetSurfaceClipRect(SDL_Surface *surface, SDL_Rect *rect);
  */
-export const getSurfaceClipRect = lib.symbols.SDL_GetSurfaceClipRect;
+export function getSurfaceClipRect(surface: Deno.PointerValue<"SDL_Surface">): { x: number; y: number; w: number; h: number; } | null {
+  if(!lib.symbols.SDL_GetSurfaceClipRect(surface, _p.i32.p0))
+    throw new Error(`SDL_GetSurfaceClipRect: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { x: _p.i32.v0, y: _p.i32.v1, w: _p.i32.v2, h: _p.i32.v3, };
+}
 
 /**
  * Flip a surface vertically or horizontally.
@@ -814,7 +902,9 @@ export const getSurfaceClipRect = lib.symbols.SDL_GetSurfaceClipRect;
  *
  * @from SDL_surface.h:855 bool SDL_FlipSurface(SDL_Surface *surface, SDL_FlipMode flip);
  */
-export const flipSurface = lib.symbols.SDL_FlipSurface;
+export function flipSurface(surface: Deno.PointerValue<"SDL_Surface">, flip: number): boolean {
+  return lib.symbols.SDL_FlipSurface(surface, flip);
+}
 
 /**
  * Creates a new surface identical to the existing surface.
@@ -836,7 +926,9 @@ export const flipSurface = lib.symbols.SDL_FlipSurface;
  *
  * @from SDL_surface.h:875 SDL_Surface * SDL_DuplicateSurface(SDL_Surface *surface);
  */
-export const duplicateSurface = lib.symbols.SDL_DuplicateSurface;
+export function duplicateSurface(surface: Deno.PointerValue<"SDL_Surface">): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.SDL_DuplicateSurface(surface) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Creates a new surface identical to the existing surface, scaled to the
@@ -859,7 +951,14 @@ export const duplicateSurface = lib.symbols.SDL_DuplicateSurface;
  *
  * @from SDL_surface.h:896 SDL_Surface * SDL_ScaleSurface(SDL_Surface *surface, int width, int height, SDL_ScaleMode scaleMode);
  */
-export const scaleSurface = lib.symbols.SDL_ScaleSurface;
+export function scaleSurface(
+    surface: Deno.PointerValue<"SDL_Surface">,
+    width: number,
+    height: number,
+    scaleMode: number,
+): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.SDL_ScaleSurface(surface, width, height, scaleMode) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Copy an existing surface to a new surface of the specified format.
@@ -889,7 +988,9 @@ export const scaleSurface = lib.symbols.SDL_ScaleSurface;
  *
  * @from SDL_surface.h:924 SDL_Surface * SDL_ConvertSurface(SDL_Surface *surface, SDL_PixelFormat format);
  */
-export const convertSurface = lib.symbols.SDL_ConvertSurface;
+export function convertSurface(surface: Deno.PointerValue<"SDL_Surface">, format: number): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.SDL_ConvertSurface(surface, format) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Copy an existing surface to a new surface of the specified format and
@@ -919,7 +1020,15 @@ export const convertSurface = lib.symbols.SDL_ConvertSurface;
  *
  * @from SDL_surface.h:952 SDL_Surface * SDL_ConvertSurfaceAndColorspace(SDL_Surface *surface, SDL_PixelFormat format, SDL_Palette *palette, SDL_Colorspace colorspace, SDL_PropertiesID props);
  */
-export const convertSurfaceAndColorspace = lib.symbols.SDL_ConvertSurfaceAndColorspace;
+export function convertSurfaceAndColorspace(
+    surface: Deno.PointerValue<"SDL_Surface">,
+    format: number,
+    palette: Deno.PointerValue<"SDL_Palette">,
+    colorspace: number,
+    props: number,
+): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.SDL_ConvertSurfaceAndColorspace(surface, format, palette, colorspace, props) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Copy a block of pixels of one format to another format.
@@ -945,7 +1054,18 @@ export const convertSurfaceAndColorspace = lib.symbols.SDL_ConvertSurfaceAndColo
  *
  * @from SDL_surface.h:976 bool SDL_ConvertPixels(int width, int height, SDL_PixelFormat src_format, const void *src, int src_pitch, SDL_PixelFormat dst_format, void *dst, int dst_pitch);
  */
-export const convertPixels = lib.symbols.SDL_ConvertPixels;
+export function convertPixels(
+    width: number,
+    height: number,
+    src_format: number,
+    src: Deno.PointerValue,
+    src_pitch: number,
+    dst_format: number,
+    dst: Deno.PointerValue,
+    dst_pitch: number,
+): boolean {
+  return lib.symbols.SDL_ConvertPixels(width, height, src_format, src, src_pitch, dst_format, dst, dst_pitch);
+}
 
 /**
  * Copy a block of pixels of one format and colorspace to another format and
@@ -980,7 +1100,22 @@ export const convertPixels = lib.symbols.SDL_ConvertPixels;
  *
  * @from SDL_surface.h:1009 bool SDL_ConvertPixelsAndColorspace(int width, int height, SDL_PixelFormat src_format, SDL_Colorspace src_colorspace, SDL_PropertiesID src_properties, const void *src, int src_pitch, SDL_PixelFormat dst_format, SDL_Colorspace dst_colorspace, SDL_PropertiesID dst_properties, void *dst, int dst_pitch);
  */
-export const convertPixelsAndColorspace = lib.symbols.SDL_ConvertPixelsAndColorspace;
+export function convertPixelsAndColorspace(
+    width: number,
+    height: number,
+    src_format: number,
+    src_colorspace: number,
+    src_properties: number,
+    src: Deno.PointerValue,
+    src_pitch: number,
+    dst_format: number,
+    dst_colorspace: number,
+    dst_properties: number,
+    dst: Deno.PointerValue,
+    dst_pitch: number,
+): boolean {
+  return lib.symbols.SDL_ConvertPixelsAndColorspace(width, height, src_format, src_colorspace, src_properties, src, src_pitch, dst_format, dst_colorspace, dst_properties, dst, dst_pitch);
+}
 
 /**
  * Premultiply the alpha on a block of pixels.
@@ -1008,7 +1143,19 @@ export const convertPixelsAndColorspace = lib.symbols.SDL_ConvertPixelsAndColors
  *
  * @from SDL_surface.h:1035 bool SDL_PremultiplyAlpha(int width, int height, SDL_PixelFormat src_format, const void *src, int src_pitch, SDL_PixelFormat dst_format, void *dst, int dst_pitch, bool linear);
  */
-export const premultiplyAlpha = lib.symbols.SDL_PremultiplyAlpha;
+export function premultiplyAlpha(
+    width: number,
+    height: number,
+    src_format: number,
+    src: Deno.PointerValue,
+    src_pitch: number,
+    dst_format: number,
+    dst: Deno.PointerValue,
+    dst_pitch: number,
+    linear: boolean,
+): boolean {
+  return lib.symbols.SDL_PremultiplyAlpha(width, height, src_format, src, src_pitch, dst_format, dst, dst_pitch, linear);
+}
 
 /**
  * Premultiply the alpha in a surface.
@@ -1027,7 +1174,9 @@ export const premultiplyAlpha = lib.symbols.SDL_PremultiplyAlpha;
  *
  * @from SDL_surface.h:1052 bool SDL_PremultiplySurfaceAlpha(SDL_Surface *surface, bool linear);
  */
-export const premultiplySurfaceAlpha = lib.symbols.SDL_PremultiplySurfaceAlpha;
+export function premultiplySurfaceAlpha(surface: Deno.PointerValue<"SDL_Surface">, linear: boolean): boolean {
+  return lib.symbols.SDL_PremultiplySurfaceAlpha(surface, linear);
+}
 
 /**
  * Clear a surface with a specific color, with floating point precision.
@@ -1051,7 +1200,15 @@ export const premultiplySurfaceAlpha = lib.symbols.SDL_PremultiplySurfaceAlpha;
  *
  * @from SDL_surface.h:1074 bool SDL_ClearSurface(SDL_Surface *surface, float r, float g, float b, float a);
  */
-export const clearSurface = lib.symbols.SDL_ClearSurface;
+export function clearSurface(
+    surface: Deno.PointerValue<"SDL_Surface">,
+    r: number,
+    g: number,
+    b: number,
+    a: number,
+): boolean {
+  return lib.symbols.SDL_ClearSurface(surface, r, g, b, a);
+}
 
 /**
  * Perform a fast fill of a rectangle with a specific color.
@@ -1080,7 +1237,10 @@ export const clearSurface = lib.symbols.SDL_ClearSurface;
  *
  * @from SDL_surface.h:1101 bool SDL_FillSurfaceRect(SDL_Surface *dst, const SDL_Rect *rect, Uint32 color);
  */
-export const fillSurfaceRect = lib.symbols.SDL_FillSurfaceRect;
+export function fillSurfaceRect(dst: Deno.PointerValue<"SDL_Surface">, rect: { x: number; y: number; w: number; h: number; } | null, color: number): boolean {
+  if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
+  return lib.symbols.SDL_FillSurfaceRect(dst, _p.i32.p0, color);
+}
 
 /**
  * Perform a fast fill of a set of rectangles with a specific color.
@@ -1109,7 +1269,15 @@ export const fillSurfaceRect = lib.symbols.SDL_FillSurfaceRect;
  *
  * @from SDL_surface.h:1128 bool SDL_FillSurfaceRects(SDL_Surface *dst, const SDL_Rect *rects, int count, Uint32 color);
  */
-export const fillSurfaceRects = lib.symbols.SDL_FillSurfaceRects;
+export function fillSurfaceRects(
+    dst: Deno.PointerValue<"SDL_Surface">,
+    rects: { x: number; y: number; w: number; h: number; } | null,
+    count: number,
+    color: number,
+): boolean {
+  if (rects) _p.i32.arr.set([rects.x, rects.y, rects.w, rects.h], 0);
+  return lib.symbols.SDL_FillSurfaceRects(dst, _p.i32.p0, count, color);
+}
 
 /**
  * Performs a fast blit from the source surface to the destination surface
@@ -1184,7 +1352,16 @@ export const fillSurfaceRects = lib.symbols.SDL_FillSurfaceRects;
  *
  * @from SDL_surface.h:1201 bool SDL_BlitSurface(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect);
  */
-export const blitSurface = lib.symbols.SDL_BlitSurface;
+export function blitSurface(
+    src: Deno.PointerValue<"SDL_Surface">,
+    srcrect: { x: number; y: number; w: number; h: number; } | null,
+    dst: Deno.PointerValue<"SDL_Surface">,
+    dstrect: { x: number; y: number; w: number; h: number; } | null,
+): boolean {
+  if (srcrect) _p.i32.arr.set([srcrect.x, srcrect.y, srcrect.w, srcrect.h], 0);
+  if (dstrect) _p.i32.arr.set([dstrect.x, dstrect.y, dstrect.w, dstrect.h], 4);
+  return lib.symbols.SDL_BlitSurface(src, _p.i32.p0, dst, _p.i32.p4);
+}
 
 /**
  * Perform low-level surface blitting only.
@@ -1210,7 +1387,16 @@ export const blitSurface = lib.symbols.SDL_BlitSurface;
  *
  * @from SDL_surface.h:1225 bool SDL_BlitSurfaceUnchecked(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect);
  */
-export const blitSurfaceUnchecked = lib.symbols.SDL_BlitSurfaceUnchecked;
+export function blitSurfaceUnchecked(
+    src: Deno.PointerValue<"SDL_Surface">,
+    srcrect: { x: number; y: number; w: number; h: number; } | null,
+    dst: Deno.PointerValue<"SDL_Surface">,
+    dstrect: { x: number; y: number; w: number; h: number; } | null,
+): boolean {
+  if (srcrect) _p.i32.arr.set([srcrect.x, srcrect.y, srcrect.w, srcrect.h], 0);
+  if (dstrect) _p.i32.arr.set([dstrect.x, dstrect.y, dstrect.w, dstrect.h], 4);
+  return lib.symbols.SDL_BlitSurfaceUnchecked(src, _p.i32.p0, dst, _p.i32.p4);
+}
 
 /**
  * Perform a scaled blit to a destination surface, which may be of a different
@@ -1236,7 +1422,17 @@ export const blitSurfaceUnchecked = lib.symbols.SDL_BlitSurfaceUnchecked;
  *
  * @from SDL_surface.h:1249 bool SDL_BlitSurfaceScaled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect, SDL_ScaleMode scaleMode);
  */
-export const blitSurfaceScaled = lib.symbols.SDL_BlitSurfaceScaled;
+export function blitSurfaceScaled(
+    src: Deno.PointerValue<"SDL_Surface">,
+    srcrect: { x: number; y: number; w: number; h: number; } | null,
+    dst: Deno.PointerValue<"SDL_Surface">,
+    dstrect: { x: number; y: number; w: number; h: number; } | null,
+    scaleMode: number,
+): boolean {
+  if (srcrect) _p.i32.arr.set([srcrect.x, srcrect.y, srcrect.w, srcrect.h], 0);
+  if (dstrect) _p.i32.arr.set([dstrect.x, dstrect.y, dstrect.w, dstrect.h], 4);
+  return lib.symbols.SDL_BlitSurfaceScaled(src, _p.i32.p0, dst, _p.i32.p4, scaleMode);
+}
 
 /**
  * Perform low-level surface scaled blitting only.
@@ -1263,17 +1459,28 @@ export const blitSurfaceScaled = lib.symbols.SDL_BlitSurfaceScaled;
  *
  * @from SDL_surface.h:1274 bool SDL_BlitSurfaceUncheckedScaled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect, SDL_ScaleMode scaleMode);
  */
-export const blitSurfaceUncheckedScaled = lib.symbols.SDL_BlitSurfaceUncheckedScaled;
+export function blitSurfaceUncheckedScaled(
+    src: Deno.PointerValue<"SDL_Surface">,
+    srcrect: { x: number; y: number; w: number; h: number; } | null,
+    dst: Deno.PointerValue<"SDL_Surface">,
+    dstrect: { x: number; y: number; w: number; h: number; } | null,
+    scaleMode: number,
+): boolean {
+  if (srcrect) _p.i32.arr.set([srcrect.x, srcrect.y, srcrect.w, srcrect.h], 0);
+  if (dstrect) _p.i32.arr.set([dstrect.x, dstrect.y, dstrect.w, dstrect.h], 4);
+  return lib.symbols.SDL_BlitSurfaceUncheckedScaled(src, _p.i32.p0, dst, _p.i32.p4, scaleMode);
+}
 
 /**
  * Perform a stretched pixel copy from one surface to another.
  *
  * @param src the SDL_Surface structure to be copied from.
  * @param srcrect the SDL_Rect structure representing the rectangle to be
- *                copied, may not be NULL.
+ *                copied, or NULL to copy the entire surface.
  * @param dst the SDL_Surface structure that is the blit target.
  * @param dstrect the SDL_Rect structure representing the target rectangle in
- *                the destination surface, may not be NULL.
+ *                the destination surface, or NULL to fill the entire
+ *                destination surface.
  * @param scaleMode the SDL_ScaleMode to be used.
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
@@ -1285,9 +1492,19 @@ export const blitSurfaceUncheckedScaled = lib.symbols.SDL_BlitSurfaceUncheckedSc
  *
  * @sa SDL_BlitSurfaceScaled
  *
- * @from SDL_surface.h:1296 bool SDL_StretchSurface(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect, SDL_ScaleMode scaleMode);
+ * @from SDL_surface.h:1297 bool SDL_StretchSurface(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect, SDL_ScaleMode scaleMode);
  */
-export const stretchSurface = lib.symbols.SDL_StretchSurface;
+export function stretchSurface(
+    src: Deno.PointerValue<"SDL_Surface">,
+    srcrect: { x: number; y: number; w: number; h: number; } | null,
+    dst: Deno.PointerValue<"SDL_Surface">,
+    dstrect: { x: number; y: number; w: number; h: number; } | null,
+    scaleMode: number,
+): boolean {
+  if (srcrect) _p.i32.arr.set([srcrect.x, srcrect.y, srcrect.w, srcrect.h], 0);
+  if (dstrect) _p.i32.arr.set([dstrect.x, dstrect.y, dstrect.w, dstrect.h], 4);
+  return lib.symbols.SDL_StretchSurface(src, _p.i32.p0, dst, _p.i32.p4, scaleMode);
+}
 
 /**
  * Perform a tiled blit to a destination surface, which may be of a different
@@ -1312,9 +1529,18 @@ export const stretchSurface = lib.symbols.SDL_StretchSurface;
  *
  * @sa SDL_BlitSurface
  *
- * @from SDL_surface.h:1321 bool SDL_BlitSurfaceTiled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect);
+ * @from SDL_surface.h:1322 bool SDL_BlitSurfaceTiled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect);
  */
-export const blitSurfaceTiled = lib.symbols.SDL_BlitSurfaceTiled;
+export function blitSurfaceTiled(
+    src: Deno.PointerValue<"SDL_Surface">,
+    srcrect: { x: number; y: number; w: number; h: number; } | null,
+    dst: Deno.PointerValue<"SDL_Surface">,
+    dstrect: { x: number; y: number; w: number; h: number; } | null,
+): boolean {
+  if (srcrect) _p.i32.arr.set([srcrect.x, srcrect.y, srcrect.w, srcrect.h], 0);
+  if (dstrect) _p.i32.arr.set([dstrect.x, dstrect.y, dstrect.w, dstrect.h], 4);
+  return lib.symbols.SDL_BlitSurfaceTiled(src, _p.i32.p0, dst, _p.i32.p4);
+}
 
 /**
  * Perform a scaled and tiled blit to a destination surface, which may be of a
@@ -1343,9 +1569,20 @@ export const blitSurfaceTiled = lib.symbols.SDL_BlitSurfaceTiled;
  *
  * @sa SDL_BlitSurface
  *
- * @from SDL_surface.h:1350 bool SDL_BlitSurfaceTiledWithScale(SDL_Surface *src, const SDL_Rect *srcrect, float scale, SDL_ScaleMode scaleMode, SDL_Surface *dst, const SDL_Rect *dstrect);
+ * @from SDL_surface.h:1351 bool SDL_BlitSurfaceTiledWithScale(SDL_Surface *src, const SDL_Rect *srcrect, float scale, SDL_ScaleMode scaleMode, SDL_Surface *dst, const SDL_Rect *dstrect);
  */
-export const blitSurfaceTiledWithScale = lib.symbols.SDL_BlitSurfaceTiledWithScale;
+export function blitSurfaceTiledWithScale(
+    src: Deno.PointerValue<"SDL_Surface">,
+    srcrect: { x: number; y: number; w: number; h: number; } | null,
+    scale: number,
+    scaleMode: number,
+    dst: Deno.PointerValue<"SDL_Surface">,
+    dstrect: { x: number; y: number; w: number; h: number; } | null,
+): boolean {
+  if (srcrect) _p.i32.arr.set([srcrect.x, srcrect.y, srcrect.w, srcrect.h], 0);
+  if (dstrect) _p.i32.arr.set([dstrect.x, dstrect.y, dstrect.w, dstrect.h], 4);
+  return lib.symbols.SDL_BlitSurfaceTiledWithScale(src, _p.i32.p0, scale, scaleMode, dst, _p.i32.p4);
+}
 
 /**
  * Perform a scaled blit using the 9-grid algorithm to a destination surface,
@@ -1381,9 +1618,24 @@ export const blitSurfaceTiledWithScale = lib.symbols.SDL_BlitSurfaceTiledWithSca
  *
  * @sa SDL_BlitSurface
  *
- * @from SDL_surface.h:1386 bool SDL_BlitSurface9Grid(SDL_Surface *src, const SDL_Rect *srcrect, int left_width, int right_width, int top_height, int bottom_height, float scale, SDL_ScaleMode scaleMode, SDL_Surface *dst, const SDL_Rect *dstrect);
+ * @from SDL_surface.h:1387 bool SDL_BlitSurface9Grid(SDL_Surface *src, const SDL_Rect *srcrect, int left_width, int right_width, int top_height, int bottom_height, float scale, SDL_ScaleMode scaleMode, SDL_Surface *dst, const SDL_Rect *dstrect);
  */
-export const blitSurface9Grid = lib.symbols.SDL_BlitSurface9Grid;
+export function blitSurface9Grid(
+    src: Deno.PointerValue<"SDL_Surface">,
+    srcrect: { x: number; y: number; w: number; h: number; } | null,
+    left_width: number,
+    right_width: number,
+    top_height: number,
+    bottom_height: number,
+    scale: number,
+    scaleMode: number,
+    dst: Deno.PointerValue<"SDL_Surface">,
+    dstrect: { x: number; y: number; w: number; h: number; } | null,
+): boolean {
+  if (srcrect) _p.i32.arr.set([srcrect.x, srcrect.y, srcrect.w, srcrect.h], 0);
+  if (dstrect) _p.i32.arr.set([dstrect.x, dstrect.y, dstrect.w, dstrect.h], 4);
+  return lib.symbols.SDL_BlitSurface9Grid(src, _p.i32.p0, left_width, right_width, top_height, bottom_height, scale, scaleMode, dst, _p.i32.p4);
+}
 
 /**
  * Map an RGB triple to an opaque pixel value for a surface.
@@ -1415,9 +1667,16 @@ export const blitSurface9Grid = lib.symbols.SDL_BlitSurface9Grid;
  *
  * @sa SDL_MapSurfaceRGBA
  *
- * @from SDL_surface.h:1418 Uint32 SDL_MapSurfaceRGB(SDL_Surface *surface, Uint8 r, Uint8 g, Uint8 b);
+ * @from SDL_surface.h:1419 Uint32 SDL_MapSurfaceRGB(SDL_Surface *surface, Uint8 r, Uint8 g, Uint8 b);
  */
-export const mapSurfaceRgb = lib.symbols.SDL_MapSurfaceRGB;
+export function mapSurfaceRgb(
+    surface: Deno.PointerValue<"SDL_Surface">,
+    r: number,
+    g: number,
+    b: number,
+): number {
+  return lib.symbols.SDL_MapSurfaceRGB(surface, r, g, b);
+}
 
 /**
  * Map an RGBA quadruple to a pixel value for a surface.
@@ -1450,9 +1709,17 @@ export const mapSurfaceRgb = lib.symbols.SDL_MapSurfaceRGB;
  *
  * @sa SDL_MapSurfaceRGB
  *
- * @from SDL_surface.h:1451 Uint32 SDL_MapSurfaceRGBA(SDL_Surface *surface, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+ * @from SDL_surface.h:1452 Uint32 SDL_MapSurfaceRGBA(SDL_Surface *surface, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
  */
-export const mapSurfaceRgba = lib.symbols.SDL_MapSurfaceRGBA;
+export function mapSurfaceRgba(
+    surface: Deno.PointerValue<"SDL_Surface">,
+    r: number,
+    g: number,
+    b: number,
+    a: number,
+): number {
+  return lib.symbols.SDL_MapSurfaceRGBA(surface, r, g, b, a);
+}
 
 /**
  * Retrieves a single pixel from a surface.
@@ -1481,9 +1748,13 @@ export const mapSurfaceRgba = lib.symbols.SDL_MapSurfaceRGBA;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_surface.h:1480 bool SDL_ReadSurfacePixel(SDL_Surface *surface, int x, int y, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);
+ * @from SDL_surface.h:1481 bool SDL_ReadSurfacePixel(SDL_Surface *surface, int x, int y, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);
  */
-export const readSurfacePixel = lib.symbols.SDL_ReadSurfacePixel;
+export function readSurfacePixel(surface: Deno.PointerValue<"SDL_Surface">, x: number, y: number): { r: number; g: number; b: number; a: number } {
+  if(!lib.symbols.SDL_ReadSurfacePixel(surface, x, y, _p.u8.p0, _p.u8.p1, _p.u8.p2, _p.u8.p3))
+    throw new Error(`SDL_ReadSurfacePixel: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { r: _p.u8.v0, g: _p.u8.v1, b: _p.u8.v2, a: _p.u8.v3 };
+}
 
 /**
  * Retrieves a single pixel from a surface.
@@ -1509,9 +1780,13 @@ export const readSurfacePixel = lib.symbols.SDL_ReadSurfacePixel;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_surface.h:1506 bool SDL_ReadSurfacePixelFloat(SDL_Surface *surface, int x, int y, float *r, float *g, float *b, float *a);
+ * @from SDL_surface.h:1507 bool SDL_ReadSurfacePixelFloat(SDL_Surface *surface, int x, int y, float *r, float *g, float *b, float *a);
  */
-export const readSurfacePixelFloat = lib.symbols.SDL_ReadSurfacePixelFloat;
+export function readSurfacePixelFloat(surface: Deno.PointerValue<"SDL_Surface">, x: number, y: number): { r: number; g: number; b: number; a: number } {
+  if(!lib.symbols.SDL_ReadSurfacePixelFloat(surface, x, y, _p.f32.p0, _p.f32.p1, _p.f32.p2, _p.f32.p3))
+    throw new Error(`SDL_ReadSurfacePixelFloat: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { r: _p.f32.v0, g: _p.f32.v1, b: _p.f32.v2, a: _p.f32.v3 };
+}
 
 /**
  * Writes a single pixel to a surface.
@@ -1536,9 +1811,19 @@ export const readSurfacePixelFloat = lib.symbols.SDL_ReadSurfacePixelFloat;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_surface.h:1531 bool SDL_WriteSurfacePixel(SDL_Surface *surface, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+ * @from SDL_surface.h:1532 bool SDL_WriteSurfacePixel(SDL_Surface *surface, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
  */
-export const writeSurfacePixel = lib.symbols.SDL_WriteSurfacePixel;
+export function writeSurfacePixel(
+    surface: Deno.PointerValue<"SDL_Surface">,
+    x: number,
+    y: number,
+    r: number,
+    g: number,
+    b: number,
+    a: number,
+): boolean {
+  return lib.symbols.SDL_WriteSurfacePixel(surface, x, y, r, g, b, a);
+}
 
 /**
  * Writes a single pixel to a surface.
@@ -1560,7 +1845,17 @@ export const writeSurfacePixel = lib.symbols.SDL_WriteSurfacePixel;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_surface.h:1553 bool SDL_WriteSurfacePixelFloat(SDL_Surface *surface, int x, int y, float r, float g, float b, float a);
+ * @from SDL_surface.h:1554 bool SDL_WriteSurfacePixelFloat(SDL_Surface *surface, int x, int y, float r, float g, float b, float a);
  */
-export const writeSurfacePixelFloat = lib.symbols.SDL_WriteSurfacePixelFloat;
+export function writeSurfacePixelFloat(
+    surface: Deno.PointerValue<"SDL_Surface">,
+    x: number,
+    y: number,
+    r: number,
+    g: number,
+    b: number,
+    a: number,
+): boolean {
+  return lib.symbols.SDL_WriteSurfacePixelFloat(surface, x, y, r, g, b, a);
+}
 

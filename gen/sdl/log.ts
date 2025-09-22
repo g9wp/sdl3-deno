@@ -70,6 +70,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   SDL_LogCategory as LOG_CATEGORY,
@@ -90,7 +92,9 @@ export {
  *
  * @from SDL_log.h:155 void SDL_SetLogPriorities(SDL_LogPriority priority);
  */
-export const setLogPriorities = lib.symbols.SDL_SetLogPriorities;
+export function setLogPriorities(priority: number): void {
+  return lib.symbols.SDL_SetLogPriorities(priority);
+}
 
 /**
  * Set the priority of a particular log category.
@@ -108,7 +112,9 @@ export const setLogPriorities = lib.symbols.SDL_SetLogPriorities;
  *
  * @from SDL_log.h:171 void SDL_SetLogPriority(int category, SDL_LogPriority priority);
  */
-export const setLogPriority = lib.symbols.SDL_SetLogPriority;
+export function setLogPriority(category: number, priority: number): void {
+  return lib.symbols.SDL_SetLogPriority(category, priority);
+}
 
 /**
  * Get the priority of a particular log category.
@@ -124,7 +130,9 @@ export const setLogPriority = lib.symbols.SDL_SetLogPriority;
  *
  * @from SDL_log.h:185 SDL_LogPriority SDL_GetLogPriority(int category);
  */
-export const getLogPriority = lib.symbols.SDL_GetLogPriority;
+export function getLogPriority(category: number): number {
+  return lib.symbols.SDL_GetLogPriority(category);
+}
 
 /**
  * Reset all priorities to default.
@@ -140,7 +148,9 @@ export const getLogPriority = lib.symbols.SDL_GetLogPriority;
  *
  * @from SDL_log.h:199 void SDL_ResetLogPriorities(void);
  */
-export const resetLogPriorities = lib.symbols.SDL_ResetLogPriorities;
+export function resetLogPriorities(): void {
+  return lib.symbols.SDL_ResetLogPriorities();
+}
 
 /**
  * Set the text prepended to log messages of a given priority.
@@ -164,7 +174,9 @@ export const resetLogPriorities = lib.symbols.SDL_ResetLogPriorities;
  *
  * @from SDL_log.h:221 bool SDL_SetLogPriorityPrefix(SDL_LogPriority priority, const char *prefix);
  */
-export const setLogPriorityPrefix = lib.symbols.SDL_SetLogPriorityPrefix;
+export function setLogPriorityPrefix(priority: number, prefix: string): boolean {
+  return lib.symbols.SDL_SetLogPriorityPrefix(priority, _p.toCstr(prefix));
+}
 
 /**
  * Get the default log output function.
@@ -180,7 +192,9 @@ export const setLogPriorityPrefix = lib.symbols.SDL_SetLogPriorityPrefix;
  *
  * @from SDL_log.h:496 SDL_LogOutputFunction SDL_GetDefaultLogOutputFunction(void);
  */
-export const getDefaultLogOutputFunction = lib.symbols.SDL_GetDefaultLogOutputFunction;
+export function getDefaultLogOutputFunction(): Deno.PointerValue {
+  return lib.symbols.SDL_GetDefaultLogOutputFunction();
+}
 
 /**
  * Get the current log output function.
@@ -199,7 +213,9 @@ export const getDefaultLogOutputFunction = lib.symbols.SDL_GetDefaultLogOutputFu
  *
  * @from SDL_log.h:513 void SDL_GetLogOutputFunction(SDL_LogOutputFunction *callback, void **userdata);
  */
-export const getLogOutputFunction = lib.symbols.SDL_GetLogOutputFunction;
+export function getLogOutputFunction(callback: Deno.PointerValue<"SDL_LogOutputFunction">, userdata: Deno.PointerValue): void {
+  return lib.symbols.SDL_GetLogOutputFunction(callback, userdata);
+}
 
 /**
  * Replace the default log output function with one of your own.
@@ -216,5 +232,7 @@ export const getLogOutputFunction = lib.symbols.SDL_GetLogOutputFunction;
  *
  * @from SDL_log.h:528 void SDL_SetLogOutputFunction(SDL_LogOutputFunction callback, void *userdata);
  */
-export const setLogOutputFunction = lib.symbols.SDL_SetLogOutputFunction;
+export function setLogOutputFunction(callback: Deno.PointerValue, userdata: Deno.PointerValue): void {
+  return lib.symbols.SDL_SetLogOutputFunction(callback, userdata);
+}
 

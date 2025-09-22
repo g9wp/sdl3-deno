@@ -29,6 +29,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 /**
  * Get the name of the platform.
@@ -48,5 +50,7 @@ import { lib } from "./lib.ts";
  *
  * @from SDL_platform.h:55 const char * SDL_GetPlatform(void);
  */
-export const getPlatform = lib.symbols.SDL_GetPlatform;
+export function getPlatform(): string {
+  return _p.getCstr2(lib.symbols.SDL_GetPlatform());
+}
 

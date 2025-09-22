@@ -33,6 +33,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   PROP_IOSTREAM as PROP_IOSTREAM,
@@ -126,7 +128,9 @@ export {
  *
  * @from SDL_iostream.h:273 SDL_IOStream * SDL_IOFromFile(const char *file, const char *mode);
  */
-export const ioFromFile = lib.symbols.SDL_IOFromFile;
+export function ioFromFile(file: string, mode: string): Deno.PointerValue<"SDL_IOStream"> {
+  return lib.symbols.SDL_IOFromFile(_p.toCstr(file), _p.toCstr(mode)) as Deno.PointerValue<"SDL_IOStream">;
+}
 
 /**
  * Use this function to prepare a read-write memory buffer for use with
@@ -169,7 +173,9 @@ export const ioFromFile = lib.symbols.SDL_IOFromFile;
  *
  * @from SDL_iostream.h:319 SDL_IOStream * SDL_IOFromMem(void *mem, size_t size);
  */
-export const ioFromMem = lib.symbols.SDL_IOFromMem;
+export function ioFromMem(mem: Deno.PointerValue, size: bigint): Deno.PointerValue<"SDL_IOStream"> {
+  return lib.symbols.SDL_IOFromMem(mem, size) as Deno.PointerValue<"SDL_IOStream">;
+}
 
 /**
  * Use this function to prepare a read-only memory buffer for use with
@@ -212,7 +218,9 @@ export const ioFromMem = lib.symbols.SDL_IOFromMem;
  *
  * @from SDL_iostream.h:363 SDL_IOStream * SDL_IOFromConstMem(const void *mem, size_t size);
  */
-export const ioFromConstMem = lib.symbols.SDL_IOFromConstMem;
+export function ioFromConstMem(mem: Deno.PointerValue, size: bigint): Deno.PointerValue<"SDL_IOStream"> {
+  return lib.symbols.SDL_IOFromConstMem(mem, size) as Deno.PointerValue<"SDL_IOStream">;
+}
 
 /**
  * Use this function to create an SDL_IOStream that is backed by dynamically
@@ -244,7 +252,9 @@ export const ioFromConstMem = lib.symbols.SDL_IOFromConstMem;
  *
  * @from SDL_iostream.h:393 SDL_IOStream * SDL_IOFromDynamicMem(void);
  */
-export const ioFromDynamicMem = lib.symbols.SDL_IOFromDynamicMem;
+export function ioFromDynamicMem(): Deno.PointerValue<"SDL_IOStream"> {
+  return lib.symbols.SDL_IOFromDynamicMem() as Deno.PointerValue<"SDL_IOStream">;
+}
 
 /**
  * Create a custom SDL_IOStream.
@@ -275,7 +285,9 @@ export const ioFromDynamicMem = lib.symbols.SDL_IOFromDynamicMem;
  *
  * @from SDL_iostream.h:428 SDL_IOStream * SDL_OpenIO(const SDL_IOStreamInterface *iface, void *userdata);
  */
-export const openIo = lib.symbols.SDL_OpenIO;
+export function openIo(iface: Deno.PointerValue<"SDL_IOStreamInterface">, userdata: Deno.PointerValue): Deno.PointerValue<"SDL_IOStream"> {
+  return lib.symbols.SDL_OpenIO(iface, userdata) as Deno.PointerValue<"SDL_IOStream">;
+}
 
 /**
  * Close and free an allocated SDL_IOStream structure.
@@ -309,7 +321,9 @@ export const openIo = lib.symbols.SDL_OpenIO;
  *
  * @from SDL_iostream.h:460 bool SDL_CloseIO(SDL_IOStream *context);
  */
-export const closeIo = lib.symbols.SDL_CloseIO;
+export function closeIo(context: Deno.PointerValue<"SDL_IOStream">): boolean {
+  return lib.symbols.SDL_CloseIO(context);
+}
 
 /**
  * Get the properties associated with an SDL_IOStream.
@@ -324,7 +338,9 @@ export const closeIo = lib.symbols.SDL_CloseIO;
  *
  * @from SDL_iostream.h:473 SDL_PropertiesID SDL_GetIOProperties(SDL_IOStream *context);
  */
-export const getIoProperties = lib.symbols.SDL_GetIOProperties;
+export function getIoProperties(context: Deno.PointerValue<"SDL_IOStream">): number {
+  return lib.symbols.SDL_GetIOProperties(context);
+}
 
 /**
  * Query the stream status of an SDL_IOStream.
@@ -346,7 +362,9 @@ export const getIoProperties = lib.symbols.SDL_GetIOProperties;
  *
  * @from SDL_iostream.h:493 SDL_IOStatus SDL_GetIOStatus(SDL_IOStream *context);
  */
-export const getIoStatus = lib.symbols.SDL_GetIOStatus;
+export function getIoStatus(context: Deno.PointerValue<"SDL_IOStream">): number {
+  return lib.symbols.SDL_GetIOStatus(context);
+}
 
 /**
  * Use this function to get the size of the data stream in an SDL_IOStream.
@@ -362,7 +380,9 @@ export const getIoStatus = lib.symbols.SDL_GetIOStatus;
  *
  * @from SDL_iostream.h:507 Sint64 SDL_GetIOSize(SDL_IOStream *context);
  */
-export const getIoSize = lib.symbols.SDL_GetIOSize;
+export function getIoSize(context: Deno.PointerValue<"SDL_IOStream">): bigint {
+  return lib.symbols.SDL_GetIOSize(context);
+}
 
 /**
  * Seek within an SDL_IOStream data stream.
@@ -393,7 +413,9 @@ export const getIoSize = lib.symbols.SDL_GetIOSize;
  *
  * @from SDL_iostream.h:536 Sint64 SDL_SeekIO(SDL_IOStream *context, Sint64 offset, SDL_IOWhence whence);
  */
-export const seekIo = lib.symbols.SDL_SeekIO;
+export function seekIo(context: Deno.PointerValue<"SDL_IOStream">, offset: bigint, whence: number): bigint {
+  return lib.symbols.SDL_SeekIO(context, offset, whence);
+}
 
 /**
  * Determine the current read/write offset in an SDL_IOStream data stream.
@@ -415,7 +437,9 @@ export const seekIo = lib.symbols.SDL_SeekIO;
  *
  * @from SDL_iostream.h:556 Sint64 SDL_TellIO(SDL_IOStream *context);
  */
-export const tellIo = lib.symbols.SDL_TellIO;
+export function tellIo(context: Deno.PointerValue<"SDL_IOStream">): bigint {
+  return lib.symbols.SDL_TellIO(context);
+}
 
 /**
  * Read from a data source.
@@ -443,7 +467,9 @@ export const tellIo = lib.symbols.SDL_TellIO;
  *
  * @from SDL_iostream.h:582 size_t SDL_ReadIO(SDL_IOStream *context, void *ptr, size_t size);
  */
-export const readIo = lib.symbols.SDL_ReadIO;
+export function readIo(context: Deno.PointerValue<"SDL_IOStream">, ptr: Deno.PointerValue, size: bigint): bigint {
+  return lib.symbols.SDL_ReadIO(context, ptr, size);
+}
 
 /**
  * Write to an SDL_IOStream data stream.
@@ -477,7 +503,9 @@ export const readIo = lib.symbols.SDL_ReadIO;
  *
  * @from SDL_iostream.h:614 size_t SDL_WriteIO(SDL_IOStream *context, const void *ptr, size_t size);
  */
-export const writeIo = lib.symbols.SDL_WriteIO;
+export function writeIo(context: Deno.PointerValue<"SDL_IOStream">, ptr: Deno.PointerValue, size: bigint): bigint {
+  return lib.symbols.SDL_WriteIO(context, ptr, size);
+}
 
 /**
  * Flush any buffered data in the stream.
@@ -499,7 +527,9 @@ export const writeIo = lib.symbols.SDL_WriteIO;
  *
  * @from SDL_iostream.h:675 bool SDL_FlushIO(SDL_IOStream *context);
  */
-export const flushIo = lib.symbols.SDL_FlushIO;
+export function flushIo(context: Deno.PointerValue<"SDL_IOStream">): boolean {
+  return lib.symbols.SDL_FlushIO(context);
+}
 
 /**
  * Load all the data from an SDL data stream.
@@ -527,7 +557,11 @@ export const flushIo = lib.symbols.SDL_FlushIO;
  *
  * @from SDL_iostream.h:701 void * SDL_LoadFile_IO(SDL_IOStream *src, size_t *datasize, bool closeio);
  */
-export const loadFileIo = lib.symbols.SDL_LoadFile_IO;
+export function loadFileIo(src: Deno.PointerValue<"SDL_IOStream">, closeio: boolean): { datasize: bigint; ret: Deno.PointerValue } {
+  const ret = lib.symbols.SDL_LoadFile_IO(src, _p.u64.p0, closeio) as Deno.PointerValue;
+  if(!ret) throw new Error(`SDL_LoadFile_IO: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { datasize: _p.u64.v0, ret };
+}
 
 /**
  * Load all the data from a file path.
@@ -552,7 +586,11 @@ export const loadFileIo = lib.symbols.SDL_LoadFile_IO;
  *
  * @from SDL_iostream.h:724 void * SDL_LoadFile(const char *file, size_t *datasize);
  */
-export const loadFile = lib.symbols.SDL_LoadFile;
+export function loadFile(file: string): { datasize: bigint; ret: Deno.PointerValue } {
+  const ret = lib.symbols.SDL_LoadFile(_p.toCstr(file), _p.u64.p0) as Deno.PointerValue;
+  if(!ret) throw new Error(`SDL_LoadFile: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { datasize: _p.u64.v0, ret };
+}
 
 /**
  * Save all the data into an SDL data stream.
@@ -575,7 +613,14 @@ export const loadFile = lib.symbols.SDL_LoadFile;
  *
  * @from SDL_iostream.h:745 bool SDL_SaveFile_IO(SDL_IOStream *src, const void *data, size_t datasize, bool closeio);
  */
-export const saveFileIo = lib.symbols.SDL_SaveFile_IO;
+export function saveFileIo(
+    src: Deno.PointerValue<"SDL_IOStream">,
+    data: Deno.PointerValue,
+    datasize: bigint,
+    closeio: boolean,
+): boolean {
+  return lib.symbols.SDL_SaveFile_IO(src, data, datasize, closeio);
+}
 
 /**
  * Save all the data into a file path.
@@ -596,7 +641,9 @@ export const saveFileIo = lib.symbols.SDL_SaveFile_IO;
  *
  * @from SDL_iostream.h:764 bool SDL_SaveFile(const char *file, const void *data, size_t datasize);
  */
-export const saveFile = lib.symbols.SDL_SaveFile;
+export function saveFile(file: string, data: Deno.PointerValue, datasize: bigint): boolean {
+  return lib.symbols.SDL_SaveFile(_p.toCstr(file), data, datasize);
+}
 
 /**
  * Use this function to read a byte from an SDL_IOStream.
@@ -617,7 +664,11 @@ export const saveFile = lib.symbols.SDL_SaveFile;
  *
  * @from SDL_iostream.h:790 bool SDL_ReadU8(SDL_IOStream *src, Uint8 *value);
  */
-export const readU8 = lib.symbols.SDL_ReadU8;
+export function readU8(src: Deno.PointerValue<"SDL_IOStream">): number {
+  if(!lib.symbols.SDL_ReadU8(src, _p.u8.p0))
+    throw new Error(`SDL_ReadU8: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.u8.v0;
+}
 
 /**
  * Use this function to read a signed byte from an SDL_IOStream.
@@ -638,7 +689,11 @@ export const readU8 = lib.symbols.SDL_ReadU8;
  *
  * @from SDL_iostream.h:809 bool SDL_ReadS8(SDL_IOStream *src, Sint8 *value);
  */
-export const readS8 = lib.symbols.SDL_ReadS8;
+export function readS8(src: Deno.PointerValue<"SDL_IOStream">): number {
+  if(!lib.symbols.SDL_ReadS8(src, _p.i8.p0))
+    throw new Error(`SDL_ReadS8: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.i8.v0;
+}
 
 /**
  * Use this function to read 16 bits of little-endian data from an
@@ -663,7 +718,11 @@ export const readS8 = lib.symbols.SDL_ReadS8;
  *
  * @from SDL_iostream.h:832 bool SDL_ReadU16LE(SDL_IOStream *src, Uint16 *value);
  */
-export const readU16Le = lib.symbols.SDL_ReadU16LE;
+export function readU16Le(src: Deno.PointerValue<"SDL_IOStream">): number {
+  if(!lib.symbols.SDL_ReadU16LE(src, _p.u16.p0))
+    throw new Error(`SDL_ReadU16LE: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.u16.v0;
+}
 
 /**
  * Use this function to read 16 bits of little-endian data from an
@@ -688,7 +747,11 @@ export const readU16Le = lib.symbols.SDL_ReadU16LE;
  *
  * @from SDL_iostream.h:855 bool SDL_ReadS16LE(SDL_IOStream *src, Sint16 *value);
  */
-export const readS16Le = lib.symbols.SDL_ReadS16LE;
+export function readS16Le(src: Deno.PointerValue<"SDL_IOStream">): number {
+  if(!lib.symbols.SDL_ReadS16LE(src, _p.i16.p0))
+    throw new Error(`SDL_ReadS16LE: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.i16.v0;
+}
 
 /**
  * Use this function to read 16 bits of big-endian data from an SDL_IOStream
@@ -713,7 +776,11 @@ export const readS16Le = lib.symbols.SDL_ReadS16LE;
  *
  * @from SDL_iostream.h:878 bool SDL_ReadU16BE(SDL_IOStream *src, Uint16 *value);
  */
-export const readU16Be = lib.symbols.SDL_ReadU16BE;
+export function readU16Be(src: Deno.PointerValue<"SDL_IOStream">): number {
+  if(!lib.symbols.SDL_ReadU16BE(src, _p.u16.p0))
+    throw new Error(`SDL_ReadU16BE: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.u16.v0;
+}
 
 /**
  * Use this function to read 16 bits of big-endian data from an SDL_IOStream
@@ -738,7 +805,11 @@ export const readU16Be = lib.symbols.SDL_ReadU16BE;
  *
  * @from SDL_iostream.h:901 bool SDL_ReadS16BE(SDL_IOStream *src, Sint16 *value);
  */
-export const readS16Be = lib.symbols.SDL_ReadS16BE;
+export function readS16Be(src: Deno.PointerValue<"SDL_IOStream">): number {
+  if(!lib.symbols.SDL_ReadS16BE(src, _p.i16.p0))
+    throw new Error(`SDL_ReadS16BE: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.i16.v0;
+}
 
 /**
  * Use this function to read 32 bits of little-endian data from an
@@ -763,7 +834,11 @@ export const readS16Be = lib.symbols.SDL_ReadS16BE;
  *
  * @from SDL_iostream.h:924 bool SDL_ReadU32LE(SDL_IOStream *src, Uint32 *value);
  */
-export const readU32Le = lib.symbols.SDL_ReadU32LE;
+export function readU32Le(src: Deno.PointerValue<"SDL_IOStream">): number {
+  if(!lib.symbols.SDL_ReadU32LE(src, _p.u32.p0))
+    throw new Error(`SDL_ReadU32LE: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.u32.v0;
+}
 
 /**
  * Use this function to read 32 bits of little-endian data from an
@@ -788,7 +863,11 @@ export const readU32Le = lib.symbols.SDL_ReadU32LE;
  *
  * @from SDL_iostream.h:947 bool SDL_ReadS32LE(SDL_IOStream *src, Sint32 *value);
  */
-export const readS32Le = lib.symbols.SDL_ReadS32LE;
+export function readS32Le(src: Deno.PointerValue<"SDL_IOStream">): number {
+  if(!lib.symbols.SDL_ReadS32LE(src, _p.i32.p0))
+    throw new Error(`SDL_ReadS32LE: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.i32.v0;
+}
 
 /**
  * Use this function to read 32 bits of big-endian data from an SDL_IOStream
@@ -813,7 +892,11 @@ export const readS32Le = lib.symbols.SDL_ReadS32LE;
  *
  * @from SDL_iostream.h:970 bool SDL_ReadU32BE(SDL_IOStream *src, Uint32 *value);
  */
-export const readU32Be = lib.symbols.SDL_ReadU32BE;
+export function readU32Be(src: Deno.PointerValue<"SDL_IOStream">): number {
+  if(!lib.symbols.SDL_ReadU32BE(src, _p.u32.p0))
+    throw new Error(`SDL_ReadU32BE: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.u32.v0;
+}
 
 /**
  * Use this function to read 32 bits of big-endian data from an SDL_IOStream
@@ -838,7 +921,11 @@ export const readU32Be = lib.symbols.SDL_ReadU32BE;
  *
  * @from SDL_iostream.h:993 bool SDL_ReadS32BE(SDL_IOStream *src, Sint32 *value);
  */
-export const readS32Be = lib.symbols.SDL_ReadS32BE;
+export function readS32Be(src: Deno.PointerValue<"SDL_IOStream">): number {
+  if(!lib.symbols.SDL_ReadS32BE(src, _p.i32.p0))
+    throw new Error(`SDL_ReadS32BE: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.i32.v0;
+}
 
 /**
  * Use this function to read 64 bits of little-endian data from an
@@ -863,7 +950,11 @@ export const readS32Be = lib.symbols.SDL_ReadS32BE;
  *
  * @from SDL_iostream.h:1016 bool SDL_ReadU64LE(SDL_IOStream *src, Uint64 *value);
  */
-export const readU64Le = lib.symbols.SDL_ReadU64LE;
+export function readU64Le(src: Deno.PointerValue<"SDL_IOStream">): bigint {
+  if(!lib.symbols.SDL_ReadU64LE(src, _p.u64.p0))
+    throw new Error(`SDL_ReadU64LE: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.u64.v0;
+}
 
 /**
  * Use this function to read 64 bits of little-endian data from an
@@ -888,7 +979,11 @@ export const readU64Le = lib.symbols.SDL_ReadU64LE;
  *
  * @from SDL_iostream.h:1039 bool SDL_ReadS64LE(SDL_IOStream *src, Sint64 *value);
  */
-export const readS64Le = lib.symbols.SDL_ReadS64LE;
+export function readS64Le(src: Deno.PointerValue<"SDL_IOStream">): bigint {
+  if(!lib.symbols.SDL_ReadS64LE(src, _p.i64.p0))
+    throw new Error(`SDL_ReadS64LE: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.i64.v0;
+}
 
 /**
  * Use this function to read 64 bits of big-endian data from an SDL_IOStream
@@ -913,7 +1008,11 @@ export const readS64Le = lib.symbols.SDL_ReadS64LE;
  *
  * @from SDL_iostream.h:1062 bool SDL_ReadU64BE(SDL_IOStream *src, Uint64 *value);
  */
-export const readU64Be = lib.symbols.SDL_ReadU64BE;
+export function readU64Be(src: Deno.PointerValue<"SDL_IOStream">): bigint {
+  if(!lib.symbols.SDL_ReadU64BE(src, _p.u64.p0))
+    throw new Error(`SDL_ReadU64BE: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.u64.v0;
+}
 
 /**
  * Use this function to read 64 bits of big-endian data from an SDL_IOStream
@@ -938,7 +1037,11 @@ export const readU64Be = lib.symbols.SDL_ReadU64BE;
  *
  * @from SDL_iostream.h:1085 bool SDL_ReadS64BE(SDL_IOStream *src, Sint64 *value);
  */
-export const readS64Be = lib.symbols.SDL_ReadS64BE;
+export function readS64Be(src: Deno.PointerValue<"SDL_IOStream">): bigint {
+  if(!lib.symbols.SDL_ReadS64BE(src, _p.i64.p0))
+    throw new Error(`SDL_ReadS64BE: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.i64.v0;
+}
 
 /**
  * Use this function to write a byte to an SDL_IOStream.
@@ -954,7 +1057,9 @@ export const readS64Be = lib.symbols.SDL_ReadS64BE;
  *
  * @from SDL_iostream.h:1107 bool SDL_WriteU8(SDL_IOStream *dst, Uint8 value);
  */
-export const writeU8 = lib.symbols.SDL_WriteU8;
+export function writeU8(dst: Deno.PointerValue<"SDL_IOStream">, value: number): boolean {
+  return lib.symbols.SDL_WriteU8(dst, value);
+}
 
 /**
  * Use this function to write a signed byte to an SDL_IOStream.
@@ -970,7 +1075,9 @@ export const writeU8 = lib.symbols.SDL_WriteU8;
  *
  * @from SDL_iostream.h:1121 bool SDL_WriteS8(SDL_IOStream *dst, Sint8 value);
  */
-export const writeS8 = lib.symbols.SDL_WriteS8;
+export function writeS8(dst: Deno.PointerValue<"SDL_IOStream">, value: number): boolean {
+  return lib.symbols.SDL_WriteS8(dst, value);
+}
 
 /**
  * Use this function to write 16 bits in native format to an SDL_IOStream as
@@ -991,7 +1098,9 @@ export const writeS8 = lib.symbols.SDL_WriteS8;
  *
  * @from SDL_iostream.h:1140 bool SDL_WriteU16LE(SDL_IOStream *dst, Uint16 value);
  */
-export const writeU16Le = lib.symbols.SDL_WriteU16LE;
+export function writeU16Le(dst: Deno.PointerValue<"SDL_IOStream">, value: number): boolean {
+  return lib.symbols.SDL_WriteU16LE(dst, value);
+}
 
 /**
  * Use this function to write 16 bits in native format to an SDL_IOStream as
@@ -1012,7 +1121,9 @@ export const writeU16Le = lib.symbols.SDL_WriteU16LE;
  *
  * @from SDL_iostream.h:1159 bool SDL_WriteS16LE(SDL_IOStream *dst, Sint16 value);
  */
-export const writeS16Le = lib.symbols.SDL_WriteS16LE;
+export function writeS16Le(dst: Deno.PointerValue<"SDL_IOStream">, value: number): boolean {
+  return lib.symbols.SDL_WriteS16LE(dst, value);
+}
 
 /**
  * Use this function to write 16 bits in native format to an SDL_IOStream as
@@ -1032,7 +1143,9 @@ export const writeS16Le = lib.symbols.SDL_WriteS16LE;
  *
  * @from SDL_iostream.h:1177 bool SDL_WriteU16BE(SDL_IOStream *dst, Uint16 value);
  */
-export const writeU16Be = lib.symbols.SDL_WriteU16BE;
+export function writeU16Be(dst: Deno.PointerValue<"SDL_IOStream">, value: number): boolean {
+  return lib.symbols.SDL_WriteU16BE(dst, value);
+}
 
 /**
  * Use this function to write 16 bits in native format to an SDL_IOStream as
@@ -1052,7 +1165,9 @@ export const writeU16Be = lib.symbols.SDL_WriteU16BE;
  *
  * @from SDL_iostream.h:1195 bool SDL_WriteS16BE(SDL_IOStream *dst, Sint16 value);
  */
-export const writeS16Be = lib.symbols.SDL_WriteS16BE;
+export function writeS16Be(dst: Deno.PointerValue<"SDL_IOStream">, value: number): boolean {
+  return lib.symbols.SDL_WriteS16BE(dst, value);
+}
 
 /**
  * Use this function to write 32 bits in native format to an SDL_IOStream as
@@ -1073,7 +1188,9 @@ export const writeS16Be = lib.symbols.SDL_WriteS16BE;
  *
  * @from SDL_iostream.h:1214 bool SDL_WriteU32LE(SDL_IOStream *dst, Uint32 value);
  */
-export const writeU32Le = lib.symbols.SDL_WriteU32LE;
+export function writeU32Le(dst: Deno.PointerValue<"SDL_IOStream">, value: number): boolean {
+  return lib.symbols.SDL_WriteU32LE(dst, value);
+}
 
 /**
  * Use this function to write 32 bits in native format to an SDL_IOStream as
@@ -1094,7 +1211,9 @@ export const writeU32Le = lib.symbols.SDL_WriteU32LE;
  *
  * @from SDL_iostream.h:1233 bool SDL_WriteS32LE(SDL_IOStream *dst, Sint32 value);
  */
-export const writeS32Le = lib.symbols.SDL_WriteS32LE;
+export function writeS32Le(dst: Deno.PointerValue<"SDL_IOStream">, value: number): boolean {
+  return lib.symbols.SDL_WriteS32LE(dst, value);
+}
 
 /**
  * Use this function to write 32 bits in native format to an SDL_IOStream as
@@ -1114,7 +1233,9 @@ export const writeS32Le = lib.symbols.SDL_WriteS32LE;
  *
  * @from SDL_iostream.h:1251 bool SDL_WriteU32BE(SDL_IOStream *dst, Uint32 value);
  */
-export const writeU32Be = lib.symbols.SDL_WriteU32BE;
+export function writeU32Be(dst: Deno.PointerValue<"SDL_IOStream">, value: number): boolean {
+  return lib.symbols.SDL_WriteU32BE(dst, value);
+}
 
 /**
  * Use this function to write 32 bits in native format to an SDL_IOStream as
@@ -1134,7 +1255,9 @@ export const writeU32Be = lib.symbols.SDL_WriteU32BE;
  *
  * @from SDL_iostream.h:1269 bool SDL_WriteS32BE(SDL_IOStream *dst, Sint32 value);
  */
-export const writeS32Be = lib.symbols.SDL_WriteS32BE;
+export function writeS32Be(dst: Deno.PointerValue<"SDL_IOStream">, value: number): boolean {
+  return lib.symbols.SDL_WriteS32BE(dst, value);
+}
 
 /**
  * Use this function to write 64 bits in native format to an SDL_IOStream as
@@ -1155,7 +1278,9 @@ export const writeS32Be = lib.symbols.SDL_WriteS32BE;
  *
  * @from SDL_iostream.h:1288 bool SDL_WriteU64LE(SDL_IOStream *dst, Uint64 value);
  */
-export const writeU64Le = lib.symbols.SDL_WriteU64LE;
+export function writeU64Le(dst: Deno.PointerValue<"SDL_IOStream">, value: bigint): boolean {
+  return lib.symbols.SDL_WriteU64LE(dst, value);
+}
 
 /**
  * Use this function to write 64 bits in native format to an SDL_IOStream as
@@ -1176,7 +1301,9 @@ export const writeU64Le = lib.symbols.SDL_WriteU64LE;
  *
  * @from SDL_iostream.h:1307 bool SDL_WriteS64LE(SDL_IOStream *dst, Sint64 value);
  */
-export const writeS64Le = lib.symbols.SDL_WriteS64LE;
+export function writeS64Le(dst: Deno.PointerValue<"SDL_IOStream">, value: bigint): boolean {
+  return lib.symbols.SDL_WriteS64LE(dst, value);
+}
 
 /**
  * Use this function to write 64 bits in native format to an SDL_IOStream as
@@ -1196,7 +1323,9 @@ export const writeS64Le = lib.symbols.SDL_WriteS64LE;
  *
  * @from SDL_iostream.h:1325 bool SDL_WriteU64BE(SDL_IOStream *dst, Uint64 value);
  */
-export const writeU64Be = lib.symbols.SDL_WriteU64BE;
+export function writeU64Be(dst: Deno.PointerValue<"SDL_IOStream">, value: bigint): boolean {
+  return lib.symbols.SDL_WriteU64BE(dst, value);
+}
 
 /**
  * Use this function to write 64 bits in native format to an SDL_IOStream as
@@ -1216,5 +1345,7 @@ export const writeU64Be = lib.symbols.SDL_WriteU64BE;
  *
  * @from SDL_iostream.h:1343 bool SDL_WriteS64BE(SDL_IOStream *dst, Sint64 value);
  */
-export const writeS64Be = lib.symbols.SDL_WriteS64BE;
+export function writeS64Be(dst: Deno.PointerValue<"SDL_IOStream">, value: bigint): boolean {
+  return lib.symbols.SDL_WriteS64BE(dst, value);
+}
 

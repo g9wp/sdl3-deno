@@ -81,10 +81,10 @@ import * as _b from "../_structs/SDL_assert.ts";
 export interface AssertData {
   always_ignore: boolean; /**< bool : true if app should always continue when assertion is triggered. */
   trigger_count: number; /**< unsigned int : Number of times this assertion has been triggered. */
-  condition: string; /**< const char * : A string of this assert's test code. */
-  filename: string; /**< const char * : The source file where this assert lives. */
+  condition: Deno.PointerValue; /**< const char * : A string of this assert's test code. */
+  filename: Deno.PointerValue; /**< const char * : The source file where this assert lives. */
   linenum: number; /**< int : The line in `filename` where this assert lives. */
-  function: string; /**< const char * : The name of the function where this assert lives. */
+  function: Deno.PointerValue; /**< const char * : The name of the function where this assert lives. */
   next: Deno.PointerValue; /**< const struct SDL_AssertData * : next item in the linked list. */
 }
 

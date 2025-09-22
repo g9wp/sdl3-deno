@@ -98,6 +98,7 @@ export enum SDL_SensorType {
   GYRO_L, /**< Gyroscope for left Joy-Con controller */
   ACCEL_R, /**< Accelerometer for right Joy-Con controller */
   GYRO_R, /**< Gyroscope for right Joy-Con controller */
+  COUNT, 
 }
 
 

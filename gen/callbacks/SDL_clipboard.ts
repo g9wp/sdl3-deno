@@ -84,15 +84,15 @@ export const callbacks = {
  * clipboard is cleared or new data is set. The clipboard is automatically
  * cleared in SDL_Quit().
  *
- * @param userdata a pointer to provided user data.
+ * @param userdata a pointer to the provided user data.
  * @param mime_type the requested mime-type.
  * @param size a pointer filled in with the length of the returned data.
  * @returns a pointer to the data for the provided mime-type. Returning NULL
- *          or setting length to 0 will cause no data to be sent to the
+ *          or setting the length to 0 will cause no data to be sent to the
  *          "receiver". It is up to the receiver to handle this. Essentially
  *          returning no data is more or less undefined behavior and may cause
  *          breakage in receiving applications. The returned data will not be
- *          freed so it needs to be retained and dealt with internally.
+ *          freed, so it needs to be retained and dealt with internally.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -106,10 +106,10 @@ SDL_ClipboardDataCallback: {
     },
 
 /**
- * Callback function that will be called when the clipboard is cleared, or new
+ * Callback function that will be called when the clipboard is cleared, or when new
  * data is set.
  *
- * @param userdata a pointer to provided user data.
+ * @param userdata a pointer to the provided user data.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -123,3 +123,55 @@ SDL_ClipboardCleanupCallback: {
     },
 
 } as const;
+
+
+/**
+ * Callback function that will be called when data for the specified mime-type
+ * is requested by the OS.
+ *
+ * The callback function is called with NULL as the mime_type when the
+ * clipboard is cleared or new data is set. The clipboard is automatically
+ * cleared in SDL_Quit().
+ *
+ * @param userdata a pointer to the provided user data.
+ * @param mime_type the requested mime-type.
+ * @param size a pointer filled in with the length of the returned data.
+ * @returns a pointer to the data for the provided mime-type. Returning NULL
+ *          or setting the length to 0 will cause no data to be sent to the
+ *          "receiver". It is up to the receiver to handle this. Essentially
+ *          returning no data is more or less undefined behavior and may cause
+ *          breakage in receiving applications. The returned data will not be
+ *          freed, so it needs to be retained and dealt with internally.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_SetClipboardData
+ *
+ * @from SDL_clipboard.h:210 typedef const void *(*SDL_ClipboardDataCallback)(void *userdata, const char *mime_type, size_t *size);
+ */
+export function ClipboardDataCallback(cb: (
+    userdata: Deno.PointerValue, 
+    mime_type: Deno.PointerValue, 
+    size: Deno.PointerValue, 
+  ) => Deno.PointerValue) {
+  return new Deno.UnsafeCallback(callbacks.SDL_ClipboardDataCallback, cb);
+}
+
+/**
+ * Callback function that will be called when the clipboard is cleared, or when new
+ * data is set.
+ *
+ * @param userdata a pointer to the provided user data.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_SetClipboardData
+ *
+ * @from SDL_clipboard.h:222 typedef void (*SDL_ClipboardCleanupCallback)(void *userdata);
+ */
+export function ClipboardCleanupCallback(cb: (
+    userdata: Deno.PointerValue, 
+  ) => void) {
+  return new Deno.UnsafeCallback(callbacks.SDL_ClipboardCleanupCallback, cb);
+}
+

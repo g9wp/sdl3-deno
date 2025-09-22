@@ -53,6 +53,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   PROP_JOYSTICK_CAP as PROP_JOYSTICK_CAP,
@@ -72,7 +74,9 @@ export {
  *
  * @from SDL_joystick.h:174 void SDL_LockJoysticks(void) SDL_ACQUIRE(SDL_joystick_lock);
  */
-export const lockJoysticks = lib.symbols.SDL_LockJoysticks;
+export function lockJoysticks(): void {
+  return lib.symbols.SDL_LockJoysticks();
+}
 
 /**
  * Unlocking for atomic access to the joystick API.
@@ -81,7 +85,9 @@ export const lockJoysticks = lib.symbols.SDL_LockJoysticks;
  *
  * @from SDL_joystick.h:181 void SDL_UnlockJoysticks(void) SDL_RELEASE(SDL_joystick_lock);
  */
-export const unlockJoysticks = lib.symbols.SDL_UnlockJoysticks;
+export function unlockJoysticks(): void {
+  return lib.symbols.SDL_UnlockJoysticks();
+}
 
 /**
  * Return whether a joystick is currently connected.
@@ -94,7 +100,9 @@ export const unlockJoysticks = lib.symbols.SDL_UnlockJoysticks;
  *
  * @from SDL_joystick.h:192 bool SDL_HasJoystick(void);
  */
-export const hasJoystick = lib.symbols.SDL_HasJoystick;
+export function hasJoystick(): boolean {
+  return lib.symbols.SDL_HasJoystick();
+}
 
 /**
  * Get a list of currently connected joysticks.
@@ -112,7 +120,11 @@ export const hasJoystick = lib.symbols.SDL_HasJoystick;
  *
  * @from SDL_joystick.h:208 SDL_JoystickID * SDL_GetJoysticks(int *count);
  */
-export const getJoysticks = lib.symbols.SDL_GetJoysticks;
+export function getJoysticks(): { count: number; ret: Deno.PointerValue<"SDL_JoystickID"> } {
+  const ret = lib.symbols.SDL_GetJoysticks(_p.i32.p0) as Deno.PointerValue<"SDL_JoystickID">;
+  if(!ret) throw new Error(`SDL_GetJoysticks: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { count: _p.i32.v0, ret };
+}
 
 /**
  * Get the implementation dependent name of a joystick.
@@ -130,7 +142,9 @@ export const getJoysticks = lib.symbols.SDL_GetJoysticks;
  *
  * @from SDL_joystick.h:224 const char * SDL_GetJoystickNameForID(SDL_JoystickID instance_id);
  */
-export const getJoystickNameForId = lib.symbols.SDL_GetJoystickNameForID;
+export function getJoystickNameForId(instance_id: number): string {
+  return _p.getCstr2(lib.symbols.SDL_GetJoystickNameForID(instance_id));
+}
 
 /**
  * Get the implementation dependent path of a joystick.
@@ -148,7 +162,9 @@ export const getJoystickNameForId = lib.symbols.SDL_GetJoystickNameForID;
  *
  * @from SDL_joystick.h:240 const char * SDL_GetJoystickPathForID(SDL_JoystickID instance_id);
  */
-export const getJoystickPathForId = lib.symbols.SDL_GetJoystickPathForID;
+export function getJoystickPathForId(instance_id: number): string {
+  return _p.getCstr2(lib.symbols.SDL_GetJoystickPathForID(instance_id));
+}
 
 /**
  * Get the player index of a joystick.
@@ -165,7 +181,9 @@ export const getJoystickPathForId = lib.symbols.SDL_GetJoystickPathForID;
  *
  * @from SDL_joystick.h:255 int SDL_GetJoystickPlayerIndexForID(SDL_JoystickID instance_id);
  */
-export const getJoystickPlayerIndexForId = lib.symbols.SDL_GetJoystickPlayerIndexForID;
+export function getJoystickPlayerIndexForId(instance_id: number): number {
+  return lib.symbols.SDL_GetJoystickPlayerIndexForID(instance_id);
+}
 
 /**
  * Get the implementation-dependent GUID of a joystick.
@@ -183,7 +201,9 @@ export const getJoystickPlayerIndexForId = lib.symbols.SDL_GetJoystickPlayerInde
  *
  * @from SDL_joystick.h:271 SDL_GUID SDL_GetJoystickGUIDForID(SDL_JoystickID instance_id);
  */
-export const getJoystickGuidForId = lib.symbols.SDL_GetJoystickGUIDForID;
+export function getJoystickGuidForId(instance_id: number): Uint8Array<ArrayBuffer> {
+  return lib.symbols.SDL_GetJoystickGUIDForID(instance_id);
+}
 
 /**
  * Get the USB vendor ID of a joystick, if available.
@@ -202,7 +222,9 @@ export const getJoystickGuidForId = lib.symbols.SDL_GetJoystickGUIDForID;
  *
  * @from SDL_joystick.h:288 Uint16 SDL_GetJoystickVendorForID(SDL_JoystickID instance_id);
  */
-export const getJoystickVendorForId = lib.symbols.SDL_GetJoystickVendorForID;
+export function getJoystickVendorForId(instance_id: number): number {
+  return lib.symbols.SDL_GetJoystickVendorForID(instance_id);
+}
 
 /**
  * Get the USB product ID of a joystick, if available.
@@ -221,7 +243,9 @@ export const getJoystickVendorForId = lib.symbols.SDL_GetJoystickVendorForID;
  *
  * @from SDL_joystick.h:305 Uint16 SDL_GetJoystickProductForID(SDL_JoystickID instance_id);
  */
-export const getJoystickProductForId = lib.symbols.SDL_GetJoystickProductForID;
+export function getJoystickProductForId(instance_id: number): number {
+  return lib.symbols.SDL_GetJoystickProductForID(instance_id);
+}
 
 /**
  * Get the product version of a joystick, if available.
@@ -240,7 +264,9 @@ export const getJoystickProductForId = lib.symbols.SDL_GetJoystickProductForID;
  *
  * @from SDL_joystick.h:322 Uint16 SDL_GetJoystickProductVersionForID(SDL_JoystickID instance_id);
  */
-export const getJoystickProductVersionForId = lib.symbols.SDL_GetJoystickProductVersionForID;
+export function getJoystickProductVersionForId(instance_id: number): number {
+  return lib.symbols.SDL_GetJoystickProductVersionForID(instance_id);
+}
 
 /**
  * Get the type of a joystick, if available.
@@ -259,7 +285,9 @@ export const getJoystickProductVersionForId = lib.symbols.SDL_GetJoystickProduct
  *
  * @from SDL_joystick.h:339 SDL_JoystickType SDL_GetJoystickTypeForID(SDL_JoystickID instance_id);
  */
-export const getJoystickTypeForId = lib.symbols.SDL_GetJoystickTypeForID;
+export function getJoystickTypeForId(instance_id: number): number {
+  return lib.symbols.SDL_GetJoystickTypeForID(instance_id);
+}
 
 /**
  * Open a joystick for use.
@@ -277,7 +305,9 @@ export const getJoystickTypeForId = lib.symbols.SDL_GetJoystickTypeForID;
  *
  * @from SDL_joystick.h:355 SDL_Joystick * SDL_OpenJoystick(SDL_JoystickID instance_id);
  */
-export const openJoystick = lib.symbols.SDL_OpenJoystick;
+export function openJoystick(instance_id: number): Deno.PointerValue<"SDL_Joystick"> {
+  return lib.symbols.SDL_OpenJoystick(instance_id) as Deno.PointerValue<"SDL_Joystick">;
+}
 
 /**
  * Get the SDL_Joystick associated with an instance ID, if it has been opened.
@@ -290,7 +320,9 @@ export const openJoystick = lib.symbols.SDL_OpenJoystick;
  *
  * @from SDL_joystick.h:366 SDL_Joystick * SDL_GetJoystickFromID(SDL_JoystickID instance_id);
  */
-export const getJoystickFromId = lib.symbols.SDL_GetJoystickFromID;
+export function getJoystickFromId(instance_id: number): Deno.PointerValue<"SDL_Joystick"> {
+  return lib.symbols.SDL_GetJoystickFromID(instance_id) as Deno.PointerValue<"SDL_Joystick">;
+}
 
 /**
  * Get the SDL_Joystick associated with a player index.
@@ -306,7 +338,9 @@ export const getJoystickFromId = lib.symbols.SDL_GetJoystickFromID;
  *
  * @from SDL_joystick.h:380 SDL_Joystick * SDL_GetJoystickFromPlayerIndex(int player_index);
  */
-export const getJoystickFromPlayerIndex = lib.symbols.SDL_GetJoystickFromPlayerIndex;
+export function getJoystickFromPlayerIndex(player_index: number): Deno.PointerValue<"SDL_Joystick"> {
+  return lib.symbols.SDL_GetJoystickFromPlayerIndex(player_index) as Deno.PointerValue<"SDL_Joystick">;
+}
 
 /**
  * Attach a new virtual joystick.
@@ -321,7 +355,9 @@ export const getJoystickFromPlayerIndex = lib.symbols.SDL_GetJoystickFromPlayerI
  *
  * @from SDL_joystick.h:475 SDL_JoystickID SDL_AttachVirtualJoystick(const SDL_VirtualJoystickDesc *desc);
  */
-export const attachVirtualJoystick = lib.symbols.SDL_AttachVirtualJoystick;
+export function attachVirtualJoystick(desc: Deno.PointerValue<"SDL_VirtualJoystickDesc">): number {
+  return lib.symbols.SDL_AttachVirtualJoystick(desc);
+}
 
 /**
  * Detach a virtual joystick.
@@ -337,7 +373,9 @@ export const attachVirtualJoystick = lib.symbols.SDL_AttachVirtualJoystick;
  *
  * @from SDL_joystick.h:489 bool SDL_DetachVirtualJoystick(SDL_JoystickID instance_id);
  */
-export const detachVirtualJoystick = lib.symbols.SDL_DetachVirtualJoystick;
+export function detachVirtualJoystick(instance_id: number): boolean {
+  return lib.symbols.SDL_DetachVirtualJoystick(instance_id);
+}
 
 /**
  * Query whether or not a joystick is virtual.
@@ -349,7 +387,9 @@ export const detachVirtualJoystick = lib.symbols.SDL_DetachVirtualJoystick;
  *
  * @from SDL_joystick.h:499 bool SDL_IsJoystickVirtual(SDL_JoystickID instance_id);
  */
-export const isJoystickVirtual = lib.symbols.SDL_IsJoystickVirtual;
+export function isJoystickVirtual(instance_id: number): boolean {
+  return lib.symbols.SDL_IsJoystickVirtual(instance_id);
+}
 
 /**
  * Set the state of an axis on an opened virtual joystick.
@@ -374,7 +414,9 @@ export const isJoystickVirtual = lib.symbols.SDL_IsJoystickVirtual;
  *
  * @from SDL_joystick.h:522 bool SDL_SetJoystickVirtualAxis(SDL_Joystick *joystick, int axis, Sint16 value);
  */
-export const setJoystickVirtualAxis = lib.symbols.SDL_SetJoystickVirtualAxis;
+export function setJoystickVirtualAxis(joystick: Deno.PointerValue<"SDL_Joystick">, axis: number, value: number): boolean {
+  return lib.symbols.SDL_SetJoystickVirtualAxis(joystick, axis, value);
+}
 
 /**
  * Generate ball motion on an opened virtual joystick.
@@ -396,7 +438,14 @@ export const setJoystickVirtualAxis = lib.symbols.SDL_SetJoystickVirtualAxis;
  *
  * @from SDL_joystick.h:542 bool SDL_SetJoystickVirtualBall(SDL_Joystick *joystick, int ball, Sint16 xrel, Sint16 yrel);
  */
-export const setJoystickVirtualBall = lib.symbols.SDL_SetJoystickVirtualBall;
+export function setJoystickVirtualBall(
+    joystick: Deno.PointerValue<"SDL_Joystick">,
+    ball: number,
+    xrel: number,
+    yrel: number,
+): boolean {
+  return lib.symbols.SDL_SetJoystickVirtualBall(joystick, ball, xrel, yrel);
+}
 
 /**
  * Set the state of a button on an opened virtual joystick.
@@ -417,7 +466,9 @@ export const setJoystickVirtualBall = lib.symbols.SDL_SetJoystickVirtualBall;
  *
  * @from SDL_joystick.h:561 bool SDL_SetJoystickVirtualButton(SDL_Joystick *joystick, int button, bool down);
  */
-export const setJoystickVirtualButton = lib.symbols.SDL_SetJoystickVirtualButton;
+export function setJoystickVirtualButton(joystick: Deno.PointerValue<"SDL_Joystick">, button: number, down: boolean): boolean {
+  return lib.symbols.SDL_SetJoystickVirtualButton(joystick, button, down);
+}
 
 /**
  * Set the state of a hat on an opened virtual joystick.
@@ -438,7 +489,9 @@ export const setJoystickVirtualButton = lib.symbols.SDL_SetJoystickVirtualButton
  *
  * @from SDL_joystick.h:580 bool SDL_SetJoystickVirtualHat(SDL_Joystick *joystick, int hat, Uint8 value);
  */
-export const setJoystickVirtualHat = lib.symbols.SDL_SetJoystickVirtualHat;
+export function setJoystickVirtualHat(joystick: Deno.PointerValue<"SDL_Joystick">, hat: number, value: number): boolean {
+  return lib.symbols.SDL_SetJoystickVirtualHat(joystick, hat, value);
+}
 
 /**
  * Set touchpad finger state on an opened virtual joystick.
@@ -466,7 +519,17 @@ export const setJoystickVirtualHat = lib.symbols.SDL_SetJoystickVirtualHat;
  *
  * @from SDL_joystick.h:606 bool SDL_SetJoystickVirtualTouchpad(SDL_Joystick *joystick, int touchpad, int finger, bool down, float x, float y, float pressure);
  */
-export const setJoystickVirtualTouchpad = lib.symbols.SDL_SetJoystickVirtualTouchpad;
+export function setJoystickVirtualTouchpad(
+    joystick: Deno.PointerValue<"SDL_Joystick">,
+    touchpad: number,
+    finger: number,
+    down: boolean,
+    x: number,
+    y: number,
+    pressure: number,
+): boolean {
+  return lib.symbols.SDL_SetJoystickVirtualTouchpad(joystick, touchpad, finger, down, x, y, pressure);
+}
 
 /**
  * Send a sensor update for an opened virtual joystick.
@@ -490,7 +553,18 @@ export const setJoystickVirtualTouchpad = lib.symbols.SDL_SetJoystickVirtualTouc
  *
  * @from SDL_joystick.h:628 bool SDL_SendJoystickVirtualSensorData(SDL_Joystick *joystick, SDL_SensorType type, Uint64 sensor_timestamp, const float *data, int num_values);
  */
-export const sendJoystickVirtualSensorData = lib.symbols.SDL_SendJoystickVirtualSensorData;
+export function sendJoystickVirtualSensorData(
+    joystick: Deno.PointerValue<"SDL_Joystick">,
+    type: number,
+    sensor_timestamp: bigint,
+    data: number,
+    num_values: number,
+): number {
+  _p.f32.arr[0] = data;
+  if(!lib.symbols.SDL_SendJoystickVirtualSensorData(joystick, type, sensor_timestamp, _p.f32.p0, num_values))
+    throw new Error(`SDL_SendJoystickVirtualSensorData: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.f32.v0;
+}
 
 /**
  * Get the properties associated with a joystick.
@@ -516,7 +590,9 @@ export const sendJoystickVirtualSensorData = lib.symbols.SDL_SendJoystickVirtual
  *
  * @from SDL_joystick.h:652 SDL_PropertiesID SDL_GetJoystickProperties(SDL_Joystick *joystick);
  */
-export const getJoystickProperties = lib.symbols.SDL_GetJoystickProperties;
+export function getJoystickProperties(joystick: Deno.PointerValue<"SDL_Joystick">): number {
+  return lib.symbols.SDL_GetJoystickProperties(joystick);
+}
 
 /**
  * Get the implementation dependent name of a joystick.
@@ -531,7 +607,9 @@ export const getJoystickProperties = lib.symbols.SDL_GetJoystickProperties;
  *
  * @from SDL_joystick.h:671 const char * SDL_GetJoystickName(SDL_Joystick *joystick);
  */
-export const getJoystickName = lib.symbols.SDL_GetJoystickName;
+export function getJoystickName(joystick: Deno.PointerValue<"SDL_Joystick">): string {
+  return _p.getCstr2(lib.symbols.SDL_GetJoystickName(joystick));
+}
 
 /**
  * Get the implementation dependent path of a joystick.
@@ -546,7 +624,9 @@ export const getJoystickName = lib.symbols.SDL_GetJoystickName;
  *
  * @from SDL_joystick.h:684 const char * SDL_GetJoystickPath(SDL_Joystick *joystick);
  */
-export const getJoystickPath = lib.symbols.SDL_GetJoystickPath;
+export function getJoystickPath(joystick: Deno.PointerValue<"SDL_Joystick">): string {
+  return _p.getCstr2(lib.symbols.SDL_GetJoystickPath(joystick));
+}
 
 /**
  * Get the player index of an opened joystick.
@@ -563,7 +643,9 @@ export const getJoystickPath = lib.symbols.SDL_GetJoystickPath;
  *
  * @from SDL_joystick.h:699 int SDL_GetJoystickPlayerIndex(SDL_Joystick *joystick);
  */
-export const getJoystickPlayerIndex = lib.symbols.SDL_GetJoystickPlayerIndex;
+export function getJoystickPlayerIndex(joystick: Deno.PointerValue<"SDL_Joystick">): number {
+  return lib.symbols.SDL_GetJoystickPlayerIndex(joystick);
+}
 
 /**
  * Set the player index of an opened joystick.
@@ -580,7 +662,9 @@ export const getJoystickPlayerIndex = lib.symbols.SDL_GetJoystickPlayerIndex;
  *
  * @from SDL_joystick.h:714 bool SDL_SetJoystickPlayerIndex(SDL_Joystick *joystick, int player_index);
  */
-export const setJoystickPlayerIndex = lib.symbols.SDL_SetJoystickPlayerIndex;
+export function setJoystickPlayerIndex(joystick: Deno.PointerValue<"SDL_Joystick">, player_index: number): boolean {
+  return lib.symbols.SDL_SetJoystickPlayerIndex(joystick, player_index);
+}
 
 /**
  * Get the implementation-dependent GUID for the joystick.
@@ -599,7 +683,9 @@ export const setJoystickPlayerIndex = lib.symbols.SDL_SetJoystickPlayerIndex;
  *
  * @from SDL_joystick.h:731 SDL_GUID SDL_GetJoystickGUID(SDL_Joystick *joystick);
  */
-export const getJoystickGuid = lib.symbols.SDL_GetJoystickGUID;
+export function getJoystickGuid(joystick: Deno.PointerValue<"SDL_Joystick">): Uint8Array<ArrayBuffer> {
+  return lib.symbols.SDL_GetJoystickGUID(joystick);
+}
 
 /**
  * Get the USB vendor ID of an opened joystick, if available.
@@ -615,7 +701,9 @@ export const getJoystickGuid = lib.symbols.SDL_GetJoystickGUID;
  *
  * @from SDL_joystick.h:745 Uint16 SDL_GetJoystickVendor(SDL_Joystick *joystick);
  */
-export const getJoystickVendor = lib.symbols.SDL_GetJoystickVendor;
+export function getJoystickVendor(joystick: Deno.PointerValue<"SDL_Joystick">): number {
+  return lib.symbols.SDL_GetJoystickVendor(joystick);
+}
 
 /**
  * Get the USB product ID of an opened joystick, if available.
@@ -631,7 +719,9 @@ export const getJoystickVendor = lib.symbols.SDL_GetJoystickVendor;
  *
  * @from SDL_joystick.h:759 Uint16 SDL_GetJoystickProduct(SDL_Joystick *joystick);
  */
-export const getJoystickProduct = lib.symbols.SDL_GetJoystickProduct;
+export function getJoystickProduct(joystick: Deno.PointerValue<"SDL_Joystick">): number {
+  return lib.symbols.SDL_GetJoystickProduct(joystick);
+}
 
 /**
  * Get the product version of an opened joystick, if available.
@@ -647,7 +737,9 @@ export const getJoystickProduct = lib.symbols.SDL_GetJoystickProduct;
  *
  * @from SDL_joystick.h:773 Uint16 SDL_GetJoystickProductVersion(SDL_Joystick *joystick);
  */
-export const getJoystickProductVersion = lib.symbols.SDL_GetJoystickProductVersion;
+export function getJoystickProductVersion(joystick: Deno.PointerValue<"SDL_Joystick">): number {
+  return lib.symbols.SDL_GetJoystickProductVersion(joystick);
+}
 
 /**
  * Get the firmware version of an opened joystick, if available.
@@ -662,7 +754,9 @@ export const getJoystickProductVersion = lib.symbols.SDL_GetJoystickProductVersi
  *
  * @from SDL_joystick.h:786 Uint16 SDL_GetJoystickFirmwareVersion(SDL_Joystick *joystick);
  */
-export const getJoystickFirmwareVersion = lib.symbols.SDL_GetJoystickFirmwareVersion;
+export function getJoystickFirmwareVersion(joystick: Deno.PointerValue<"SDL_Joystick">): number {
+  return lib.symbols.SDL_GetJoystickFirmwareVersion(joystick);
+}
 
 /**
  * Get the serial number of an opened joystick, if available.
@@ -677,7 +771,9 @@ export const getJoystickFirmwareVersion = lib.symbols.SDL_GetJoystickFirmwareVer
  *
  * @from SDL_joystick.h:799 const char * SDL_GetJoystickSerial(SDL_Joystick *joystick);
  */
-export const getJoystickSerial = lib.symbols.SDL_GetJoystickSerial;
+export function getJoystickSerial(joystick: Deno.PointerValue<"SDL_Joystick">): string {
+  return _p.getCstr2(lib.symbols.SDL_GetJoystickSerial(joystick));
+}
 
 /**
  * Get the type of an opened joystick.
@@ -691,7 +787,9 @@ export const getJoystickSerial = lib.symbols.SDL_GetJoystickSerial;
  *
  * @from SDL_joystick.h:811 SDL_JoystickType SDL_GetJoystickType(SDL_Joystick *joystick);
  */
-export const getJoystickType = lib.symbols.SDL_GetJoystickType;
+export function getJoystickType(joystick: Deno.PointerValue<"SDL_Joystick">): number {
+  return lib.symbols.SDL_GetJoystickType(joystick);
+}
 
 /**
  * Get the device information encoded in a SDL_GUID structure.
@@ -712,7 +810,10 @@ export const getJoystickType = lib.symbols.SDL_GetJoystickType;
  *
  * @from SDL_joystick.h:830 void SDL_GetJoystickGUIDInfo(SDL_GUID guid, Uint16 *vendor, Uint16 *product, Uint16 *version, Uint16 *crc16);
  */
-export const getJoystickGuidInfo = lib.symbols.SDL_GetJoystickGUIDInfo;
+export function getJoystickGuidInfo(guid: Uint8Array<ArrayBuffer>): { vendor: number; product: number; version: number; crc16: number } {
+  lib.symbols.SDL_GetJoystickGUIDInfo(guid, _p.u16.p0, _p.u16.p1, _p.u16.p2, _p.u16.p3);
+  return {vendor: _p.u16.v0, product: _p.u16.v1, version: _p.u16.v2, crc16: _p.u16.v3};
+}
 
 /**
  * Get the status of a specified joystick.
@@ -725,7 +826,9 @@ export const getJoystickGuidInfo = lib.symbols.SDL_GetJoystickGUIDInfo;
  *
  * @from SDL_joystick.h:841 bool SDL_JoystickConnected(SDL_Joystick *joystick);
  */
-export const joystickConnected = lib.symbols.SDL_JoystickConnected;
+export function joystickConnected(joystick: Deno.PointerValue<"SDL_Joystick">): boolean {
+  return lib.symbols.SDL_JoystickConnected(joystick);
+}
 
 /**
  * Get the instance ID of an opened joystick.
@@ -738,7 +841,9 @@ export const joystickConnected = lib.symbols.SDL_JoystickConnected;
  *
  * @from SDL_joystick.h:852 SDL_JoystickID SDL_GetJoystickID(SDL_Joystick *joystick);
  */
-export const getJoystickId = lib.symbols.SDL_GetJoystickID;
+export function getJoystickId(joystick: Deno.PointerValue<"SDL_Joystick">): number {
+  return lib.symbols.SDL_GetJoystickID(joystick);
+}
 
 /**
  * Get the number of general axis controls on a joystick.
@@ -760,7 +865,9 @@ export const getJoystickId = lib.symbols.SDL_GetJoystickID;
  *
  * @from SDL_joystick.h:872 int SDL_GetNumJoystickAxes(SDL_Joystick *joystick);
  */
-export const getNumJoystickAxes = lib.symbols.SDL_GetNumJoystickAxes;
+export function getNumJoystickAxes(joystick: Deno.PointerValue<"SDL_Joystick">): number {
+  return lib.symbols.SDL_GetNumJoystickAxes(joystick);
+}
 
 /**
  * Get the number of trackballs on a joystick.
@@ -783,7 +890,9 @@ export const getNumJoystickAxes = lib.symbols.SDL_GetNumJoystickAxes;
  *
  * @from SDL_joystick.h:893 int SDL_GetNumJoystickBalls(SDL_Joystick *joystick);
  */
-export const getNumJoystickBalls = lib.symbols.SDL_GetNumJoystickBalls;
+export function getNumJoystickBalls(joystick: Deno.PointerValue<"SDL_Joystick">): number {
+  return lib.symbols.SDL_GetNumJoystickBalls(joystick);
+}
 
 /**
  * Get the number of POV hats on a joystick.
@@ -801,7 +910,9 @@ export const getNumJoystickBalls = lib.symbols.SDL_GetNumJoystickBalls;
  *
  * @from SDL_joystick.h:909 int SDL_GetNumJoystickHats(SDL_Joystick *joystick);
  */
-export const getNumJoystickHats = lib.symbols.SDL_GetNumJoystickHats;
+export function getNumJoystickHats(joystick: Deno.PointerValue<"SDL_Joystick">): number {
+  return lib.symbols.SDL_GetNumJoystickHats(joystick);
+}
 
 /**
  * Get the number of buttons on a joystick.
@@ -819,7 +930,9 @@ export const getNumJoystickHats = lib.symbols.SDL_GetNumJoystickHats;
  *
  * @from SDL_joystick.h:925 int SDL_GetNumJoystickButtons(SDL_Joystick *joystick);
  */
-export const getNumJoystickButtons = lib.symbols.SDL_GetNumJoystickButtons;
+export function getNumJoystickButtons(joystick: Deno.PointerValue<"SDL_Joystick">): number {
+  return lib.symbols.SDL_GetNumJoystickButtons(joystick);
+}
 
 /**
  * Set the state of joystick event processing.
@@ -837,7 +950,9 @@ export const getNumJoystickButtons = lib.symbols.SDL_GetNumJoystickButtons;
  *
  * @from SDL_joystick.h:941 void SDL_SetJoystickEventsEnabled(bool enabled);
  */
-export const setJoystickEventsEnabled = lib.symbols.SDL_SetJoystickEventsEnabled;
+export function setJoystickEventsEnabled(enabled: boolean): void {
+  return lib.symbols.SDL_SetJoystickEventsEnabled(enabled);
+}
 
 /**
  * Query the state of joystick event processing.
@@ -854,7 +969,9 @@ export const setJoystickEventsEnabled = lib.symbols.SDL_SetJoystickEventsEnabled
  *
  * @from SDL_joystick.h:956 bool SDL_JoystickEventsEnabled(void);
  */
-export const joystickEventsEnabled = lib.symbols.SDL_JoystickEventsEnabled;
+export function joystickEventsEnabled(): boolean {
+  return lib.symbols.SDL_JoystickEventsEnabled();
+}
 
 /**
  * Update the current state of the open joysticks.
@@ -866,7 +983,9 @@ export const joystickEventsEnabled = lib.symbols.SDL_JoystickEventsEnabled;
  *
  * @from SDL_joystick.h:966 void SDL_UpdateJoysticks(void);
  */
-export const updateJoysticks = lib.symbols.SDL_UpdateJoysticks;
+export function updateJoysticks(): void {
+  return lib.symbols.SDL_UpdateJoysticks();
+}
 
 /**
  * Get the current state of an axis control on a joystick.
@@ -892,7 +1011,9 @@ export const updateJoysticks = lib.symbols.SDL_UpdateJoysticks;
  *
  * @from SDL_joystick.h:990 Sint16 SDL_GetJoystickAxis(SDL_Joystick *joystick, int axis);
  */
-export const getJoystickAxis = lib.symbols.SDL_GetJoystickAxis;
+export function getJoystickAxis(joystick: Deno.PointerValue<"SDL_Joystick">, axis: number): number {
+  return lib.symbols.SDL_GetJoystickAxis(joystick, axis);
+}
 
 /**
  * Get the initial state of an axis control on a joystick.
@@ -910,7 +1031,11 @@ export const getJoystickAxis = lib.symbols.SDL_GetJoystickAxis;
  *
  * @from SDL_joystick.h:1006 bool SDL_GetJoystickAxisInitialState(SDL_Joystick *joystick, int axis, Sint16 *state);
  */
-export const getJoystickAxisInitialState = lib.symbols.SDL_GetJoystickAxisInitialState;
+export function getJoystickAxisInitialState(joystick: Deno.PointerValue<"SDL_Joystick">, axis: number): number {
+  if(!lib.symbols.SDL_GetJoystickAxisInitialState(joystick, axis, _p.i16.p0))
+    throw new Error(`SDL_GetJoystickAxisInitialState: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.i16.v0;
+}
 
 /**
  * Get the ball axis change since the last poll.
@@ -933,7 +1058,11 @@ export const getJoystickAxisInitialState = lib.symbols.SDL_GetJoystickAxisInitia
  *
  * @from SDL_joystick.h:1027 bool SDL_GetJoystickBall(SDL_Joystick *joystick, int ball, int *dx, int *dy);
  */
-export const getJoystickBall = lib.symbols.SDL_GetJoystickBall;
+export function getJoystickBall(joystick: Deno.PointerValue<"SDL_Joystick">, ball: number): { dx: number; dy: number } {
+  if(!lib.symbols.SDL_GetJoystickBall(joystick, ball, _p.i32.p0, _p.i32.p1))
+    throw new Error(`SDL_GetJoystickBall: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { dx: _p.i32.v0, dy: _p.i32.v1 };
+}
 
 /**
  * Get the current state of a POV hat on a joystick.
@@ -950,7 +1079,9 @@ export const getJoystickBall = lib.symbols.SDL_GetJoystickBall;
  *
  * @from SDL_joystick.h:1042 Uint8 SDL_GetJoystickHat(SDL_Joystick *joystick, int hat);
  */
-export const getJoystickHat = lib.symbols.SDL_GetJoystickHat;
+export function getJoystickHat(joystick: Deno.PointerValue<"SDL_Joystick">, hat: number): number {
+  return lib.symbols.SDL_GetJoystickHat(joystick, hat);
+}
 
 /**
  * Get the current state of a button on a joystick.
@@ -966,7 +1097,9 @@ export const getJoystickHat = lib.symbols.SDL_GetJoystickHat;
  *
  * @from SDL_joystick.h:1066 bool SDL_GetJoystickButton(SDL_Joystick *joystick, int button);
  */
-export const getJoystickButton = lib.symbols.SDL_GetJoystickButton;
+export function getJoystickButton(joystick: Deno.PointerValue<"SDL_Joystick">, button: number): boolean {
+  return lib.symbols.SDL_GetJoystickButton(joystick, button);
+}
 
 /**
  * Start a rumble effect.
@@ -989,7 +1122,14 @@ export const getJoystickButton = lib.symbols.SDL_GetJoystickButton;
  *
  * @from SDL_joystick.h:1087 bool SDL_RumbleJoystick(SDL_Joystick *joystick, Uint16 low_frequency_rumble, Uint16 high_frequency_rumble, Uint32 duration_ms);
  */
-export const rumbleJoystick = lib.symbols.SDL_RumbleJoystick;
+export function rumbleJoystick(
+    joystick: Deno.PointerValue<"SDL_Joystick">,
+    low_frequency_rumble: number,
+    high_frequency_rumble: number,
+    duration_ms: number,
+): boolean {
+  return lib.symbols.SDL_RumbleJoystick(joystick, low_frequency_rumble, high_frequency_rumble, duration_ms);
+}
 
 /**
  * Start a rumble effect in the joystick's triggers.
@@ -1020,7 +1160,14 @@ export const rumbleJoystick = lib.symbols.SDL_RumbleJoystick;
  *
  * @from SDL_joystick.h:1116 bool SDL_RumbleJoystickTriggers(SDL_Joystick *joystick, Uint16 left_rumble, Uint16 right_rumble, Uint32 duration_ms);
  */
-export const rumbleJoystickTriggers = lib.symbols.SDL_RumbleJoystickTriggers;
+export function rumbleJoystickTriggers(
+    joystick: Deno.PointerValue<"SDL_Joystick">,
+    left_rumble: number,
+    right_rumble: number,
+    duration_ms: number,
+): boolean {
+  return lib.symbols.SDL_RumbleJoystickTriggers(joystick, left_rumble, right_rumble, duration_ms);
+}
 
 /**
  * Update a joystick's LED color.
@@ -1042,7 +1189,14 @@ export const rumbleJoystickTriggers = lib.symbols.SDL_RumbleJoystickTriggers;
  *
  * @from SDL_joystick.h:1136 bool SDL_SetJoystickLED(SDL_Joystick *joystick, Uint8 red, Uint8 green, Uint8 blue);
  */
-export const setJoystickLed = lib.symbols.SDL_SetJoystickLED;
+export function setJoystickLed(
+    joystick: Deno.PointerValue<"SDL_Joystick">,
+    red: number,
+    green: number,
+    blue: number,
+): boolean {
+  return lib.symbols.SDL_SetJoystickLED(joystick, red, green, blue);
+}
 
 /**
  * Send a joystick specific effect packet.
@@ -1057,7 +1211,9 @@ export const setJoystickLed = lib.symbols.SDL_SetJoystickLED;
  *
  * @from SDL_joystick.h:1149 bool SDL_SendJoystickEffect(SDL_Joystick *joystick, const void *data, int size);
  */
-export const sendJoystickEffect = lib.symbols.SDL_SendJoystickEffect;
+export function sendJoystickEffect(joystick: Deno.PointerValue<"SDL_Joystick">, data: Deno.PointerValue, size: number): boolean {
+  return lib.symbols.SDL_SendJoystickEffect(joystick, data, size);
+}
 
 /**
  * Close a joystick previously opened with SDL_OpenJoystick().
@@ -1070,7 +1226,9 @@ export const sendJoystickEffect = lib.symbols.SDL_SendJoystickEffect;
  *
  * @from SDL_joystick.h:1160 void SDL_CloseJoystick(SDL_Joystick *joystick);
  */
-export const closeJoystick = lib.symbols.SDL_CloseJoystick;
+export function closeJoystick(joystick: Deno.PointerValue<"SDL_Joystick">): void {
+  return lib.symbols.SDL_CloseJoystick(joystick);
+}
 
 /**
  * Get the connection state of a joystick.
@@ -1084,7 +1242,9 @@ export const closeJoystick = lib.symbols.SDL_CloseJoystick;
  *
  * @from SDL_joystick.h:1172 SDL_JoystickConnectionState SDL_GetJoystickConnectionState(SDL_Joystick *joystick);
  */
-export const getJoystickConnectionState = lib.symbols.SDL_GetJoystickConnectionState;
+export function getJoystickConnectionState(joystick: Deno.PointerValue<"SDL_Joystick">): number {
+  return lib.symbols.SDL_GetJoystickConnectionState(joystick);
+}
 
 /**
  * Get the battery state of a joystick.
@@ -1107,5 +1267,9 @@ export const getJoystickConnectionState = lib.symbols.SDL_GetJoystickConnectionS
  *
  * @from SDL_joystick.h:1193 SDL_PowerState SDL_GetJoystickPowerInfo(SDL_Joystick *joystick, int *percent);
  */
-export const getJoystickPowerInfo = lib.symbols.SDL_GetJoystickPowerInfo;
+export function getJoystickPowerInfo(joystick: Deno.PointerValue<"SDL_Joystick">): number {
+  if(!lib.symbols.SDL_GetJoystickPowerInfo(joystick, _p.i32.p0))
+    throw new Error(`SDL_GetJoystickPowerInfo: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.i32.v0;
+}
 

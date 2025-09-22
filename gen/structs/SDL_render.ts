@@ -63,9 +63,9 @@ import { FColor } from "./SDL_pixels.ts";
  * @from SDL_render.h:80
  */
 export interface Vertex {
-  position: FPoint; /**< SDL_FPoint : Vertex position, in SDL_Renderer coordinates  */
-  color: FColor; /**< SDL_FColor : Vertex color */
-  tex_coord: FPoint; /**< SDL_FPoint : Normalized texture coordinates, if needed */
+  position: { x: number; y: number; }; /**< SDL_FPoint : Vertex position, in SDL_Renderer coordinates  */
+  color: { r: number; g: number; b: number; a: number; }; /**< SDL_FColor : Vertex color */
+  tex_coord: { x: number; y: number; }; /**< SDL_FPoint : Normalized texture coordinates, if needed */
 }
 
 export function read_Vertex(dt: DataView): Vertex {

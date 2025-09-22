@@ -16,18 +16,15 @@ import * as SDL_guid from './SDL_guid.ts';
 import * as SDL_haptic from './SDL_haptic.ts';
 import * as SDL_hidapi from './SDL_hidapi.ts';
 import * as SDL_hints from './SDL_hints.ts';
-import * as SDL_init from './SDL_init.ts';
 import * as SDL_iostream from './SDL_iostream.ts';
 import * as SDL_joystick from './SDL_joystick.ts';
 import * as SDL_keyboard from './SDL_keyboard.ts';
 import * as SDL_loadso from './SDL_loadso.ts';
 import * as SDL_locale from './SDL_locale.ts';
 import * as SDL_log from './SDL_log.ts';
-import * as SDL_main from './SDL_main.ts';
 import * as SDL_messagebox from './SDL_messagebox.ts';
 import * as SDL_misc from './SDL_misc.ts';
 import * as SDL_mouse from './SDL_mouse.ts';
-import * as SDL_mutex from './SDL_mutex.ts';
 import * as SDL_pixels from './SDL_pixels.ts';
 import * as SDL_platform from './SDL_platform.ts';
 import * as SDL_power from './SDL_power.ts';
@@ -71,18 +68,15 @@ export const symbols = {
   ...SDL_haptic.symbols,
   ...SDL_hidapi.symbols,
   ...SDL_hints.symbols,
-  ...SDL_init.symbols,
   ...SDL_iostream.symbols,
   ...SDL_joystick.symbols,
   ...SDL_keyboard.symbols,
   ...SDL_loadso.symbols,
   ...SDL_locale.symbols,
   ...SDL_log.symbols,
-  ...SDL_main.symbols,
   ...SDL_messagebox.symbols,
   ...SDL_misc.symbols,
   ...SDL_mouse.symbols,
-  ...SDL_mutex.symbols,
   ...SDL_pixels.symbols,
   ...SDL_platform.symbols,
   ...SDL_power.symbols,

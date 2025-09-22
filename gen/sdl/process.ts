@@ -43,6 +43,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   PROP_PROCESS_CREATE as PROP_PROCESS_CREATE,
@@ -92,7 +94,9 @@ export {
  *
  * @from SDL_process.h:105 SDL_Process * SDL_CreateProcess(const char * const *args, bool pipe_stdio);
  */
-export const createProcess = lib.symbols.SDL_CreateProcess;
+export function createProcess(args: Deno.PointerValue, pipe_stdio: boolean): Deno.PointerValue<"SDL_Process"> {
+  return lib.symbols.SDL_CreateProcess(args, pipe_stdio) as Deno.PointerValue<"SDL_Process">;
+}
 
 /**
  * Create a new process with the specified properties.
@@ -156,7 +160,9 @@ export const createProcess = lib.symbols.SDL_CreateProcess;
  *
  * @from SDL_process.h:217 SDL_Process * SDL_CreateProcessWithProperties(SDL_PropertiesID props);
  */
-export const createProcessWithProperties = lib.symbols.SDL_CreateProcessWithProperties;
+export function createProcessWithProperties(props: number): Deno.PointerValue<"SDL_Process"> {
+  return lib.symbols.SDL_CreateProcessWithProperties(props) as Deno.PointerValue<"SDL_Process">;
+}
 
 /**
  * Get the properties associated with a process.
@@ -189,7 +195,9 @@ export const createProcessWithProperties = lib.symbols.SDL_CreateProcessWithProp
  *
  * @from SDL_process.h:259 SDL_PropertiesID SDL_GetProcessProperties(SDL_Process *process);
  */
-export const getProcessProperties = lib.symbols.SDL_GetProcessProperties;
+export function getProcessProperties(process: Deno.PointerValue<"SDL_Process">): number {
+  return lib.symbols.SDL_GetProcessProperties(process);
+}
 
 /**
  * Read all the output from a process.
@@ -222,7 +230,11 @@ export const getProcessProperties = lib.symbols.SDL_GetProcessProperties;
  *
  * @from SDL_process.h:296 void * SDL_ReadProcess(SDL_Process *process, size_t *datasize, int *exitcode);
  */
-export const readProcess = lib.symbols.SDL_ReadProcess;
+export function readProcess(process: Deno.PointerValue<"SDL_Process">): { datasize: bigint; exitcode: number; ret: Deno.PointerValue } {
+  const ret = lib.symbols.SDL_ReadProcess(process, _p.u64.p0, _p.i32.p0) as Deno.PointerValue;
+  if(!ret) throw new Error(`SDL_ReadProcess: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { datasize: _p.u64.v0, exitcode: _p.i32.v0, ret };
+}
 
 /**
  * Get the SDL_IOStream associated with process standard input.
@@ -250,7 +262,9 @@ export const readProcess = lib.symbols.SDL_ReadProcess;
  *
  * @from SDL_process.h:322 SDL_IOStream * SDL_GetProcessInput(SDL_Process *process);
  */
-export const getProcessInput = lib.symbols.SDL_GetProcessInput;
+export function getProcessInput(process: Deno.PointerValue<"SDL_Process">): Deno.PointerValue<"SDL_IOStream"> {
+  return lib.symbols.SDL_GetProcessInput(process) as Deno.PointerValue<"SDL_IOStream">;
+}
 
 /**
  * Get the SDL_IOStream associated with process standard output.
@@ -276,7 +290,9 @@ export const getProcessInput = lib.symbols.SDL_GetProcessInput;
  *
  * @from SDL_process.h:346 SDL_IOStream * SDL_GetProcessOutput(SDL_Process *process);
  */
-export const getProcessOutput = lib.symbols.SDL_GetProcessOutput;
+export function getProcessOutput(process: Deno.PointerValue<"SDL_Process">): Deno.PointerValue<"SDL_IOStream"> {
+  return lib.symbols.SDL_GetProcessOutput(process) as Deno.PointerValue<"SDL_IOStream">;
+}
 
 /**
  * Stop a process.
@@ -301,7 +317,9 @@ export const getProcessOutput = lib.symbols.SDL_GetProcessOutput;
  *
  * @from SDL_process.h:369 bool SDL_KillProcess(SDL_Process *process, bool force);
  */
-export const killProcess = lib.symbols.SDL_KillProcess;
+export function killProcess(process: Deno.PointerValue<"SDL_Process">, force: boolean): boolean {
+  return lib.symbols.SDL_KillProcess(process, force);
+}
 
 /**
  * Wait for a process to finish.
@@ -336,7 +354,11 @@ export const killProcess = lib.symbols.SDL_KillProcess;
  *
  * @from SDL_process.h:402 bool SDL_WaitProcess(SDL_Process *process, bool block, int *exitcode);
  */
-export const waitProcess = lib.symbols.SDL_WaitProcess;
+export function waitProcess(process: Deno.PointerValue<"SDL_Process">, block: boolean): number {
+  if(!lib.symbols.SDL_WaitProcess(process, block, _p.i32.p0))
+    throw new Error(`SDL_WaitProcess: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.i32.v0;
+}
 
 /**
  * Destroy a previously created process object.
@@ -357,5 +379,7 @@ export const waitProcess = lib.symbols.SDL_WaitProcess;
  *
  * @from SDL_process.h:421 void SDL_DestroyProcess(SDL_Process *process);
  */
-export const destroyProcess = lib.symbols.SDL_DestroyProcess;
+export function destroyProcess(process: Deno.PointerValue<"SDL_Process">): void {
+  return lib.symbols.SDL_DestroyProcess(process);
+}
 

@@ -57,6 +57,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   BUTTON as BUTTON,
@@ -77,7 +79,9 @@ export {
  *
  * @from SDL_mouse.h:176 bool SDL_HasMouse(void);
  */
-export const hasMouse = lib.symbols.SDL_HasMouse;
+export function hasMouse(): boolean {
+  return lib.symbols.SDL_HasMouse();
+}
 
 /**
  * Get a list of currently connected mice.
@@ -102,7 +106,11 @@ export const hasMouse = lib.symbols.SDL_HasMouse;
  *
  * @from SDL_mouse.h:199 SDL_MouseID * SDL_GetMice(int *count);
  */
-export const getMice = lib.symbols.SDL_GetMice;
+export function getMice(): { count: number; ret: Deno.PointerValue<"SDL_MouseID"> } {
+  const ret = lib.symbols.SDL_GetMice(_p.i32.p0) as Deno.PointerValue<"SDL_MouseID">;
+  if(!ret) throw new Error(`SDL_GetMice: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { count: _p.i32.v0, ret };
+}
 
 /**
  * Get the name of a mouse.
@@ -121,7 +129,9 @@ export const getMice = lib.symbols.SDL_GetMice;
  *
  * @from SDL_mouse.h:216 const char * SDL_GetMouseNameForID(SDL_MouseID instance_id);
  */
-export const getMouseNameForId = lib.symbols.SDL_GetMouseNameForID;
+export function getMouseNameForId(instance_id: number): string {
+  return _p.getCstr2(lib.symbols.SDL_GetMouseNameForID(instance_id));
+}
 
 /**
  * Get the window which currently has mouse focus.
@@ -134,7 +144,9 @@ export const getMouseNameForId = lib.symbols.SDL_GetMouseNameForID;
  *
  * @from SDL_mouse.h:227 SDL_Window * SDL_GetMouseFocus(void);
  */
-export const getMouseFocus = lib.symbols.SDL_GetMouseFocus;
+export function getMouseFocus(): Deno.PointerValue<"SDL_Window"> {
+  return lib.symbols.SDL_GetMouseFocus() as Deno.PointerValue<"SDL_Window">;
+}
 
 /**
  * Query SDL's cache for the synchronous mouse button state and the
@@ -169,7 +181,11 @@ export const getMouseFocus = lib.symbols.SDL_GetMouseFocus;
  *
  * @from SDL_mouse.h:260 SDL_MouseButtonFlags SDL_GetMouseState(float *x, float *y);
  */
-export const getMouseState = lib.symbols.SDL_GetMouseState;
+export function getMouseState(): { x: number; y: number } {
+  if(!lib.symbols.SDL_GetMouseState(_p.f32.p0, _p.f32.p1))
+    throw new Error(`SDL_GetMouseState: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { x: _p.f32.v0, y: _p.f32.v1 };
+}
 
 /**
  * Query the platform for the asynchronous mouse button state and the
@@ -208,7 +224,11 @@ export const getMouseState = lib.symbols.SDL_GetMouseState;
  *
  * @from SDL_mouse.h:297 SDL_MouseButtonFlags SDL_GetGlobalMouseState(float *x, float *y);
  */
-export const getGlobalMouseState = lib.symbols.SDL_GetGlobalMouseState;
+export function getGlobalMouseState(): { x: number; y: number } {
+  if(!lib.symbols.SDL_GetGlobalMouseState(_p.f32.p0, _p.f32.p1))
+    throw new Error(`SDL_GetGlobalMouseState: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { x: _p.f32.v0, y: _p.f32.v1 };
+}
 
 /**
  * Query SDL's cache for the synchronous mouse button state and accumulated
@@ -245,7 +265,11 @@ export const getGlobalMouseState = lib.symbols.SDL_GetGlobalMouseState;
  *
  * @from SDL_mouse.h:332 SDL_MouseButtonFlags SDL_GetRelativeMouseState(float *x, float *y);
  */
-export const getRelativeMouseState = lib.symbols.SDL_GetRelativeMouseState;
+export function getRelativeMouseState(): { x: number; y: number } {
+  if(!lib.symbols.SDL_GetRelativeMouseState(_p.f32.p0, _p.f32.p1))
+    throw new Error(`SDL_GetRelativeMouseState: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { x: _p.f32.v0, y: _p.f32.v1 };
+}
 
 /**
  * Move the mouse cursor to the given position within the window.
@@ -270,7 +294,9 @@ export const getRelativeMouseState = lib.symbols.SDL_GetRelativeMouseState;
  *
  * @from SDL_mouse.h:355 void SDL_WarpMouseInWindow(SDL_Window *window, float x, float y);
  */
-export const warpMouseInWindow = lib.symbols.SDL_WarpMouseInWindow;
+export function warpMouseInWindow(window: Deno.PointerValue<"SDL_Window">, x: number, y: number): void {
+  return lib.symbols.SDL_WarpMouseInWindow(window, x, y);
+}
 
 /**
  * Move the mouse to the given position in global screen space.
@@ -296,7 +322,9 @@ export const warpMouseInWindow = lib.symbols.SDL_WarpMouseInWindow;
  *
  * @from SDL_mouse.h:380 bool SDL_WarpMouseGlobal(float x, float y);
  */
-export const warpMouseGlobal = lib.symbols.SDL_WarpMouseGlobal;
+export function warpMouseGlobal(x: number, y: number): boolean {
+  return lib.symbols.SDL_WarpMouseGlobal(x, y);
+}
 
 /**
  * Set relative mouse mode for a window.
@@ -326,7 +354,9 @@ export const warpMouseGlobal = lib.symbols.SDL_WarpMouseGlobal;
  *
  * @from SDL_mouse.h:408 bool SDL_SetWindowRelativeMouseMode(SDL_Window *window, bool enabled);
  */
-export const setWindowRelativeMouseMode = lib.symbols.SDL_SetWindowRelativeMouseMode;
+export function setWindowRelativeMouseMode(window: Deno.PointerValue<"SDL_Window">, enabled: boolean): boolean {
+  return lib.symbols.SDL_SetWindowRelativeMouseMode(window, enabled);
+}
 
 /**
  * Query whether relative mouse mode is enabled for a window.
@@ -342,7 +372,9 @@ export const setWindowRelativeMouseMode = lib.symbols.SDL_SetWindowRelativeMouse
  *
  * @from SDL_mouse.h:422 bool SDL_GetWindowRelativeMouseMode(SDL_Window *window);
  */
-export const getWindowRelativeMouseMode = lib.symbols.SDL_GetWindowRelativeMouseMode;
+export function getWindowRelativeMouseMode(window: Deno.PointerValue<"SDL_Window">): boolean {
+  return lib.symbols.SDL_GetWindowRelativeMouseMode(window);
+}
 
 /**
  * Capture the mouse and to track input outside an SDL window.
@@ -392,7 +424,9 @@ export const getWindowRelativeMouseMode = lib.symbols.SDL_GetWindowRelativeMouse
  *
  * @from SDL_mouse.h:470 bool SDL_CaptureMouse(bool enabled);
  */
-export const captureMouse = lib.symbols.SDL_CaptureMouse;
+export function captureMouse(enabled: boolean): boolean {
+  return lib.symbols.SDL_CaptureMouse(enabled);
+}
 
 /**
  * Create a cursor using the specified bitmap data and mask (in MSB format).
@@ -440,7 +474,20 @@ export const captureMouse = lib.symbols.SDL_CaptureMouse;
  *
  * @from SDL_mouse.h:516 SDL_Cursor * SDL_CreateCursor(const Uint8 *data, const Uint8 *mask, int w, int h, int hot_x, int hot_y);
  */
-export const createCursor = lib.symbols.SDL_CreateCursor;
+export function createCursor(
+    data: number,
+    mask: number,
+    w: number,
+    h: number,
+    hot_x: number,
+    hot_y: number,
+): { data: number; mask: number; ret: Deno.PointerValue<"SDL_Cursor"> } {
+  _p.u8.arr[0] = data;
+  _p.u8.arr[1] = mask;
+  const ret = lib.symbols.SDL_CreateCursor(_p.u8.p0, _p.u8.p1, w, h, hot_x, hot_y) as Deno.PointerValue<"SDL_Cursor">;
+  if(!ret) throw new Error(`SDL_CreateCursor: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { data: _p.u8.v0, mask: _p.u8.v1, ret };
+}
 
 /**
  * Create a color cursor.
@@ -472,7 +519,9 @@ export const createCursor = lib.symbols.SDL_CreateCursor;
  *
  * @from SDL_mouse.h:549 SDL_Cursor * SDL_CreateColorCursor(SDL_Surface *surface, int hot_x, int hot_y);
  */
-export const createColorCursor = lib.symbols.SDL_CreateColorCursor;
+export function createColorCursor(surface: Deno.PointerValue<"SDL_Surface">, hot_x: number, hot_y: number): Deno.PointerValue<"SDL_Cursor"> {
+  return lib.symbols.SDL_CreateColorCursor(surface, hot_x, hot_y) as Deno.PointerValue<"SDL_Cursor">;
+}
 
 /**
  * Create a system cursor.
@@ -489,7 +538,9 @@ export const createColorCursor = lib.symbols.SDL_CreateColorCursor;
  *
  * @from SDL_mouse.h:566 SDL_Cursor * SDL_CreateSystemCursor(SDL_SystemCursor id);
  */
-export const createSystemCursor = lib.symbols.SDL_CreateSystemCursor;
+export function createSystemCursor(id: number): Deno.PointerValue<"SDL_Cursor"> {
+  return lib.symbols.SDL_CreateSystemCursor(id) as Deno.PointerValue<"SDL_Cursor">;
+}
 
 /**
  * Set the active cursor.
@@ -511,7 +562,9 @@ export const createSystemCursor = lib.symbols.SDL_CreateSystemCursor;
  *
  * @from SDL_mouse.h:586 bool SDL_SetCursor(SDL_Cursor *cursor);
  */
-export const setCursor = lib.symbols.SDL_SetCursor;
+export function setCursor(cursor: Deno.PointerValue<"SDL_Cursor">): boolean {
+  return lib.symbols.SDL_SetCursor(cursor);
+}
 
 /**
  * Get the active cursor.
@@ -529,7 +582,9 @@ export const setCursor = lib.symbols.SDL_SetCursor;
  *
  * @from SDL_mouse.h:602 SDL_Cursor * SDL_GetCursor(void);
  */
-export const getCursor = lib.symbols.SDL_GetCursor;
+export function getCursor(): Deno.PointerValue<"SDL_Cursor"> {
+  return lib.symbols.SDL_GetCursor() as Deno.PointerValue<"SDL_Cursor">;
+}
 
 /**
  * Get the default cursor.
@@ -546,7 +601,9 @@ export const getCursor = lib.symbols.SDL_GetCursor;
  *
  * @from SDL_mouse.h:617 SDL_Cursor * SDL_GetDefaultCursor(void);
  */
-export const getDefaultCursor = lib.symbols.SDL_GetDefaultCursor;
+export function getDefaultCursor(): Deno.PointerValue<"SDL_Cursor"> {
+  return lib.symbols.SDL_GetDefaultCursor() as Deno.PointerValue<"SDL_Cursor">;
+}
 
 /**
  * Free a previously-created cursor.
@@ -566,7 +623,9 @@ export const getDefaultCursor = lib.symbols.SDL_GetDefaultCursor;
  *
  * @from SDL_mouse.h:635 void SDL_DestroyCursor(SDL_Cursor *cursor);
  */
-export const destroyCursor = lib.symbols.SDL_DestroyCursor;
+export function destroyCursor(cursor: Deno.PointerValue<"SDL_Cursor">): void {
+  return lib.symbols.SDL_DestroyCursor(cursor);
+}
 
 /**
  * Show the cursor.
@@ -583,7 +642,9 @@ export const destroyCursor = lib.symbols.SDL_DestroyCursor;
  *
  * @from SDL_mouse.h:650 bool SDL_ShowCursor(void);
  */
-export const showCursor = lib.symbols.SDL_ShowCursor;
+export function showCursor(): boolean {
+  return lib.symbols.SDL_ShowCursor();
+}
 
 /**
  * Hide the cursor.
@@ -600,7 +661,9 @@ export const showCursor = lib.symbols.SDL_ShowCursor;
  *
  * @from SDL_mouse.h:665 bool SDL_HideCursor(void);
  */
-export const hideCursor = lib.symbols.SDL_HideCursor;
+export function hideCursor(): boolean {
+  return lib.symbols.SDL_HideCursor();
+}
 
 /**
  * Return whether the cursor is currently being shown.
@@ -617,5 +680,7 @@ export const hideCursor = lib.symbols.SDL_HideCursor;
  *
  * @from SDL_mouse.h:680 bool SDL_CursorVisible(void);
  */
-export const cursorVisible = lib.symbols.SDL_CursorVisible;
+export function cursorVisible(): boolean {
+  return lib.symbols.SDL_CursorVisible();
+}
 
