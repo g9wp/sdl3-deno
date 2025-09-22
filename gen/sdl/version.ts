@@ -29,6 +29,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 /**
  * Get the version of SDL that is linked against your program.
@@ -48,7 +50,9 @@ import { lib } from "./lib.ts";
  *
  * @from SDL_version.h:147 int SDL_GetVersion(void);
  */
-export const getVersion = lib.symbols.SDL_GetVersion;
+export function getVersion(): number {
+  return lib.symbols.SDL_GetVersion();
+}
 
 /**
  * Get the code revision of SDL that is linked against your program.
@@ -76,5 +80,7 @@ export const getVersion = lib.symbols.SDL_GetVersion;
  *
  * @from SDL_version.h:173 const char * SDL_GetRevision(void);
  */
-export const getRevision = lib.symbols.SDL_GetRevision;
+export function getRevision(): string {
+  return _p.getCstr2(lib.symbols.SDL_GetRevision());
+}
 

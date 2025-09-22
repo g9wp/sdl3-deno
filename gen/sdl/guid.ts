@@ -31,6 +31,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 /**
  * Get an ASCII string representation for a given SDL_GUID.
@@ -47,7 +49,10 @@ import { lib } from "./lib.ts";
  *
  * @from SDL_guid.h:79 void SDL_GUIDToString(SDL_GUID guid, char *pszGUID, int cbGUID);
  */
-export const guidToString = lib.symbols.SDL_GUIDToString;
+export function guidToString(guid: Uint8Array<ArrayBuffer>, cbGUID: number): string {
+  lib.symbols.SDL_GUIDToString(guid, _p.cstr.p0, cbGUID);
+  return _p.cstr.v0;
+}
 
 /**
  * Convert a GUID string into a SDL_GUID structure.
@@ -67,5 +72,7 @@ export const guidToString = lib.symbols.SDL_GUIDToString;
  *
  * @from SDL_guid.h:97 SDL_GUID SDL_StringToGUID(const char *pchGUID);
  */
-export const stringToGuid = lib.symbols.SDL_StringToGUID;
+export function stringToGuid(pchGUID: string): Uint8Array<ArrayBuffer> {
+  return lib.symbols.SDL_StringToGUID(_p.toCstr(pchGUID));
+}
 

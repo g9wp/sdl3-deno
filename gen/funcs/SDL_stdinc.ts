@@ -2344,7 +2344,7 @@ SDL_utf8strnlen: {
  * Convert an integer into a string.
  *
  * This requires a radix to specified for string format. Specifying 10
- * produces a decimal number, 16 hexidecimal, etc. Must be in the range of 2
+ * produces a decimal number, 16 hexadecimal, etc. Must be in the range of 2
  * to 36.
  *
  * Note that this function will overflow a buffer if `str` is not large enough
@@ -2378,7 +2378,7 @@ SDL_itoa: {
  * Convert an unsigned integer into a string.
  *
  * This requires a radix to specified for string format. Specifying 10
- * produces a decimal number, 16 hexidecimal, etc. Must be in the range of 2
+ * produces a decimal number, 16 hexadecimal, etc. Must be in the range of 2
  * to 36.
  *
  * Note that this function will overflow a buffer if `str` is not large enough
@@ -2403,7 +2403,7 @@ SDL_itoa: {
  * @from SDL_stdinc.h:3478 char * SDL_uitoa(unsigned int value, char *str, int radix);
  */
 SDL_uitoa: {
-      parameters: ["u32", "pointer", "i32"],
+      parameters: ["i32", "pointer", "i32"],
       result: "pointer"
     },
 
@@ -2412,7 +2412,7 @@ SDL_uitoa: {
  * Convert a long integer into a string.
  *
  * This requires a radix to specified for string format. Specifying 10
- * produces a decimal number, 16 hexidecimal, etc. Must be in the range of 2
+ * produces a decimal number, 16 hexadecimal, etc. Must be in the range of 2
  * to 36.
  *
  * Note that this function will overflow a buffer if `str` is not large enough
@@ -2446,7 +2446,7 @@ SDL_ltoa: {
  * Convert an unsigned long integer into a string.
  *
  * This requires a radix to specified for string format. Specifying 10
- * produces a decimal number, 16 hexidecimal, etc. Must be in the range of 2
+ * produces a decimal number, 16 hexadecimal, etc. Must be in the range of 2
  * to 36.
  *
  * Note that this function will overflow a buffer if `str` is not large enough
@@ -2471,7 +2471,7 @@ SDL_ltoa: {
  * @from SDL_stdinc.h:3534 char * SDL_ultoa(unsigned long value, char *str, int radix);
  */
 SDL_ultoa: {
-      parameters: ["u32", "pointer", "i32"],
+      parameters: ["i64", "pointer", "i32"],
       result: "pointer"
     },
 
@@ -2480,7 +2480,7 @@ SDL_ultoa: {
  * Convert a long long integer into a string.
  *
  * This requires a radix to specified for string format. Specifying 10
- * produces a decimal number, 16 hexidecimal, etc. Must be in the range of 2
+ * produces a decimal number, 16 hexadecimal, etc. Must be in the range of 2
  * to 36.
  *
  * Note that this function will overflow a buffer if `str` is not large enough
@@ -2514,7 +2514,7 @@ SDL_lltoa: {
  * Convert an unsigned long long integer into a string.
  *
  * This requires a radix to specified for string format. Specifying 10
- * produces a decimal number, 16 hexidecimal, etc. Must be in the range of 2
+ * produces a decimal number, 16 hexadecimal, etc. Must be in the range of 2
  * to 36.
  *
  * Note that this function will overflow a buffer if `str` is not large enough
@@ -2539,7 +2539,7 @@ SDL_lltoa: {
  * @from SDL_stdinc.h:3592 char * SDL_ulltoa(unsigned long long value, char *str, int radix);
  */
 SDL_ulltoa: {
-      parameters: ["u32", "pointer", "i32"],
+      parameters: ["i64", "pointer", "i32"],
       result: "pointer"
     },
 
@@ -2936,7 +2936,7 @@ SDL_strncasecmp: {
 
 
 /**
- * Searches a string for the first occurence of any character contained in a
+ * Searches a string for the first occurrence of any character contained in a
  * breakset, and returns a pointer from the string to that character.
  *
  * @param str The null-terminated string to be searched. Must not be NULL, and
@@ -2944,7 +2944,7 @@ SDL_strncasecmp: {
  * @param breakset A null-terminated string containing the list of characters
  *                 to look for. Must not be NULL, and must not overlap with
  *                 `str`.
- * @returns A pointer to the location, in str, of the first occurence of a
+ * @returns A pointer to the location, in str, of the first occurrence of a
  *          character present in the breakset, or NULL if none is found.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -3540,7 +3540,7 @@ SDL_atanf: {
  *
  * Domain: `-INF <= x <= INF`, `-INF <= y <= INF`
  *
- * Range: `-Pi/2 <= y <= Pi/2`
+ * Range: `-Pi <= y <= Pi`
  *
  * This function operates on double-precision floating point values, use
  * SDL_atan2f for single-precision floats.
@@ -3582,7 +3582,7 @@ SDL_atan2: {
  *
  * Domain: `-INF <= x <= INF`, `-INF <= y <= INF`
  *
- * Range: `-Pi/2 <= y <= Pi/2`
+ * Range: `-Pi <= y <= Pi`
  *
  * This function operates on single-precision floating point values, use
  * SDL_atan2 for double-precision floats.

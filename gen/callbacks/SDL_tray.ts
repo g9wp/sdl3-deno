@@ -51,3 +51,25 @@ SDL_TrayCallback: {
     },
 
 } as const;
+
+
+/**
+ * A callback that is invoked when a tray entry is selected.
+ *
+ * @param userdata an optional pointer to pass extra data to the callback when
+ *                 it will be invoked.
+ * @param entry the tray entry that was selected.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa SDL_SetTrayEntryCallback
+ *
+ * @from SDL_tray.h:96 typedef void (*SDL_TrayCallback)(void *userdata, SDL_TrayEntry *entry);
+ */
+export function TrayCallback(cb: (
+    userdata: Deno.PointerValue, 
+    entry: Deno.PointerValue, 
+  ) => void) {
+  return new Deno.UnsafeCallback(callbacks.SDL_TrayCallback, cb);
+}
+

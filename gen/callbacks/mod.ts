@@ -5,9 +5,7 @@ import * as SDL_dialog from './SDL_dialog.ts'
 import * as SDL_events from './SDL_events.ts'
 import * as SDL_filesystem from './SDL_filesystem.ts'
 import * as SDL_hints from './SDL_hints.ts'
-import * as SDL_init from './SDL_init.ts'
 import * as SDL_log from './SDL_log.ts'
-import * as SDL_main from './SDL_main.ts'
 import * as SDL_properties from './SDL_properties.ts'
 import * as SDL_stdinc from './SDL_stdinc.ts'
 import * as SDL_system from './SDL_system.ts'
@@ -25,9 +23,7 @@ export const callbacks = {
   ...SDL_events.callbacks,
   ...SDL_filesystem.callbacks,
   ...SDL_hints.callbacks,
-  ...SDL_init.callbacks,
   ...SDL_log.callbacks,
-  ...SDL_main.callbacks,
   ...SDL_properties.callbacks,
   ...SDL_stdinc.callbacks,
   ...SDL_system.callbacks,

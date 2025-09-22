@@ -37,6 +37,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   SDL_HintPriority as HINT,
@@ -65,7 +67,9 @@ export {
  *
  * @from SDL_hints.h:4323 bool SDL_SetHintWithPriority(const char *name, const char *value, SDL_HintPriority priority);
  */
-export const setHintWithPriority = lib.symbols.SDL_SetHintWithPriority;
+export function setHintWithPriority(name: string, value: string, priority: number): boolean {
+  return lib.symbols.SDL_SetHintWithPriority(_p.toCstr(name), _p.toCstr(value), priority);
+}
 
 /**
  * Set a hint with normal priority.
@@ -89,7 +93,9 @@ export const setHintWithPriority = lib.symbols.SDL_SetHintWithPriority;
  *
  * @from SDL_hints.h:4345 bool SDL_SetHint(const char *name, const char *value);
  */
-export const setHint = lib.symbols.SDL_SetHint;
+export function setHint(name: string, value: string): boolean {
+  return lib.symbols.SDL_SetHint(_p.toCstr(name), _p.toCstr(value));
+}
 
 /**
  * Reset a hint to the default value.
@@ -111,7 +117,9 @@ export const setHint = lib.symbols.SDL_SetHint;
  *
  * @from SDL_hints.h:4365 bool SDL_ResetHint(const char *name);
  */
-export const resetHint = lib.symbols.SDL_ResetHint;
+export function resetHint(name: string): boolean {
+  return lib.symbols.SDL_ResetHint(_p.toCstr(name));
+}
 
 /**
  * Reset all hints to the default values.
@@ -128,7 +136,9 @@ export const resetHint = lib.symbols.SDL_ResetHint;
  *
  * @from SDL_hints.h:4380 void SDL_ResetHints(void);
  */
-export const resetHints = lib.symbols.SDL_ResetHints;
+export function resetHints(): void {
+  return lib.symbols.SDL_ResetHints();
+}
 
 /**
  * Get the value of a hint.
@@ -150,7 +160,9 @@ export const resetHints = lib.symbols.SDL_ResetHints;
  *
  * @from SDL_hints.h:4400 const char * SDL_GetHint(const char *name);
  */
-export const getHint = lib.symbols.SDL_GetHint;
+export function getHint(name: string): string {
+  return _p.getCstr2(lib.symbols.SDL_GetHint(_p.toCstr(name)));
+}
 
 /**
  * Get the boolean value of a hint variable.
@@ -169,7 +181,9 @@ export const getHint = lib.symbols.SDL_GetHint;
  *
  * @from SDL_hints.h:4417 bool SDL_GetHintBoolean(const char *name, bool default_value);
  */
-export const getHintBoolean = lib.symbols.SDL_GetHintBoolean;
+export function getHintBoolean(name: string, default_value: boolean): boolean {
+  return lib.symbols.SDL_GetHintBoolean(_p.toCstr(name), default_value);
+}
 
 /**
  * Add a function to watch a particular hint.
@@ -192,7 +206,9 @@ export const getHintBoolean = lib.symbols.SDL_GetHintBoolean;
  *
  * @from SDL_hints.h:4459 bool SDL_AddHintCallback(const char *name, SDL_HintCallback callback, void *userdata);
  */
-export const addHintCallback = lib.symbols.SDL_AddHintCallback;
+export function addHintCallback(name: string, callback: Deno.PointerValue, userdata: Deno.PointerValue): boolean {
+  return lib.symbols.SDL_AddHintCallback(_p.toCstr(name), callback, userdata);
+}
 
 /**
  * Remove a function watching a particular hint.
@@ -210,5 +226,7 @@ export const addHintCallback = lib.symbols.SDL_AddHintCallback;
  *
  * @from SDL_hints.h:4475 void SDL_RemoveHintCallback(const char *name, SDL_HintCallback callback, void *userdata);
  */
-export const removeHintCallback = lib.symbols.SDL_RemoveHintCallback;
+export function removeHintCallback(name: string, callback: Deno.PointerValue, userdata: Deno.PointerValue): void {
+  return lib.symbols.SDL_RemoveHintCallback(_p.toCstr(name), callback, userdata);
+}
 

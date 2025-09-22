@@ -40,6 +40,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   PROP_THREAD_CREATE as PROP_THREAD_CREATE,
@@ -113,7 +115,9 @@ export {
  *
  * @from SDL_thread.h:280 SDL_Thread * SDL_CreateThreadWithProperties(SDL_PropertiesID props);
  */
-/* export const createThreadWithProperties = lib.symbols.SDL_CreateThreadWithProperties; */
+export function createThreadWithProperties(props: number): Deno.PointerValue<"SDL_Thread"> {
+  return lib.symbols.SDL_CreateThreadWithProperties(props) as Deno.PointerValue<"SDL_Thread">;
+}
 
 /**
  * The actual entry point for SDL_CreateThreadWithProperties.
@@ -129,7 +133,9 @@ export {
  *
  * @from SDL_thread.h:346 SDL_Thread * SDL_CreateThreadWithPropertiesRuntime(SDL_PropertiesID props, SDL_FunctionPointer pfnBeginThread, SDL_FunctionPointer pfnEndThread);
  */
-export const createThreadWithPropertiesRuntime = lib.symbols.SDL_CreateThreadWithPropertiesRuntime;
+export function createThreadWithPropertiesRuntime(props: number, pfnBeginThread: Deno.PointerValue, pfnEndThread: Deno.PointerValue): Deno.PointerValue<"SDL_Thread"> {
+  return lib.symbols.SDL_CreateThreadWithPropertiesRuntime(props, pfnBeginThread, pfnEndThread) as Deno.PointerValue<"SDL_Thread">;
+}
 
 /**
  * Get the thread name as it was specified in SDL_CreateThread().
@@ -142,7 +148,9 @@ export const createThreadWithPropertiesRuntime = lib.symbols.SDL_CreateThreadWit
  *
  * @from SDL_thread.h:366 const char * SDL_GetThreadName(SDL_Thread *thread);
  */
-export const getThreadName = lib.symbols.SDL_GetThreadName;
+export function getThreadName(thread: Deno.PointerValue<"SDL_Thread">): string {
+  return _p.getCstr2(lib.symbols.SDL_GetThreadName(thread));
+}
 
 /**
  * Get the thread identifier for the current thread.
@@ -162,7 +170,9 @@ export const getThreadName = lib.symbols.SDL_GetThreadName;
  *
  * @from SDL_thread.h:384 SDL_ThreadID SDL_GetCurrentThreadID(void);
  */
-export const getCurrentThreadId = lib.symbols.SDL_GetCurrentThreadID;
+export function getCurrentThreadId(): bigint {
+  return lib.symbols.SDL_GetCurrentThreadID();
+}
 
 /**
  * Get the thread identifier for the specified thread.
@@ -181,7 +191,9 @@ export const getCurrentThreadId = lib.symbols.SDL_GetCurrentThreadID;
  *
  * @from SDL_thread.h:401 SDL_ThreadID SDL_GetThreadID(SDL_Thread *thread);
  */
-export const getThreadId = lib.symbols.SDL_GetThreadID;
+export function getThreadId(thread: Deno.PointerValue<"SDL_Thread">): bigint {
+  return lib.symbols.SDL_GetThreadID(thread);
+}
 
 /**
  * Set the priority for the current thread.
@@ -198,7 +210,9 @@ export const getThreadId = lib.symbols.SDL_GetThreadID;
  *
  * @from SDL_thread.h:416 bool SDL_SetCurrentThreadPriority(SDL_ThreadPriority priority);
  */
-export const setCurrentThreadPriority = lib.symbols.SDL_SetCurrentThreadPriority;
+export function setCurrentThreadPriority(priority: number): boolean {
+  return lib.symbols.SDL_SetCurrentThreadPriority(priority);
+}
 
 /**
  * Wait for a thread to finish.
@@ -235,7 +249,10 @@ export const setCurrentThreadPriority = lib.symbols.SDL_SetCurrentThreadPriority
  *
  * @from SDL_thread.h:451 void SDL_WaitThread(SDL_Thread *thread, int *status);
  */
-export const waitThread = lib.symbols.SDL_WaitThread;
+export function waitThread(thread: Deno.PointerValue<"SDL_Thread">): number {
+  lib.symbols.SDL_WaitThread(thread, _p.i32.p0);
+  return _p.i32.v0;
+}
 
 /**
  * Get the current state of a thread.
@@ -250,7 +267,9 @@ export const waitThread = lib.symbols.SDL_WaitThread;
  *
  * @from SDL_thread.h:464 SDL_ThreadState SDL_GetThreadState(SDL_Thread *thread);
  */
-export const getThreadState = lib.symbols.SDL_GetThreadState;
+export function getThreadState(thread: Deno.PointerValue<"SDL_Thread">): number {
+  return lib.symbols.SDL_GetThreadState(thread);
+}
 
 /**
  * Let a thread clean up on exit without intervention.
@@ -288,7 +307,9 @@ export const getThreadState = lib.symbols.SDL_GetThreadState;
  *
  * @from SDL_thread.h:500 void SDL_DetachThread(SDL_Thread *thread);
  */
-export const detachThread = lib.symbols.SDL_DetachThread;
+export function detachThread(thread: Deno.PointerValue<"SDL_Thread">): void {
+  return lib.symbols.SDL_DetachThread(thread);
+}
 
 /**
  * Get the current thread's value associated with a thread local storage ID.
@@ -305,7 +326,9 @@ export const detachThread = lib.symbols.SDL_DetachThread;
  *
  * @from SDL_thread.h:515 void * SDL_GetTLS(SDL_TLSID *id);
  */
-export const getTls = lib.symbols.SDL_GetTLS;
+export function getTls(id: Deno.PointerValue<"SDL_TLSID">): Deno.PointerValue {
+  return lib.symbols.SDL_GetTLS(id);
+}
 
 /**
  * Set the current thread's value associated with a thread local storage ID.
@@ -335,7 +358,9 @@ export const getTls = lib.symbols.SDL_GetTLS;
  *
  * @from SDL_thread.h:556 bool SDL_SetTLS(SDL_TLSID *id, const void *value, SDL_TLSDestructorCallback destructor);
  */
-export const setTls = lib.symbols.SDL_SetTLS;
+export function setTls(id: Deno.PointerValue<"SDL_TLSID">, value: Deno.PointerValue, destructor: Deno.PointerValue): boolean {
+  return lib.symbols.SDL_SetTLS(id, value, destructor);
+}
 
 /**
  * Cleanup all TLS data for this thread.
@@ -350,5 +375,7 @@ export const setTls = lib.symbols.SDL_SetTLS;
  *
  * @from SDL_thread.h:569 void SDL_CleanupTLS(void);
  */
-export const cleanupTls = lib.symbols.SDL_CleanupTLS;
+export function cleanupTls(): void {
+  return lib.symbols.SDL_CleanupTLS();
+}
 

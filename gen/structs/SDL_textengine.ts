@@ -15,7 +15,7 @@ import { FColor } from "./SDL_pixels.ts";
  */
 export interface FillOperation {
   cmd: number; /**< TTF_DrawCommand : TTF_DRAW_COMMAND_FILL */
-  rect: Rect; /**< SDL_Rect : The rectangle to fill, in pixels. The x coordinate is relative to the left side of the text area, going right, and the y coordinate is relative to the top side of the text area, going down. */
+  rect: { x: number; y: number; w: number; h: number; }; /**< SDL_Rect : The rectangle to fill, in pixels. The x coordinate is relative to the left side of the text area, going right, and the y coordinate is relative to the top side of the text area, going down. */
 }
 
 export function read_FillOperation(dt: DataView): FillOperation {
@@ -53,8 +53,8 @@ export interface CopyOperation {
                                       rectangles for the corresponding glyphs. */
   glyph_font: Deno.PointerValue; /**< TTF_Font * : The font containing the glyph to be drawn, can be passed to TTF_GetGlyphImageForIndex() */
   glyph_index: number; /**< Uint32 : The glyph index of the glyph to be drawn, can be passed to TTF_GetGlyphImageForIndex() */
-  src: Rect; /**< SDL_Rect : The area within the glyph to be drawn */
-  dst: Rect; /**< SDL_Rect : The drawing coordinates of the glyph, in pixels. The x coordinate is relative to the left side of the text area, going right, and the y coordinate is relative to the top side of the text area, going down. */
+  src: { x: number; y: number; w: number; h: number; }; /**< SDL_Rect : The area within the glyph to be drawn */
+  dst: { x: number; y: number; w: number; h: number; }; /**< SDL_Rect : The drawing coordinates of the glyph, in pixels. The x coordinate is relative to the left side of the text area, going right, and the y coordinate is relative to the top side of the text area, going down. */
   reserved: Deno.PointerValue; /* void * */
 }
 
@@ -87,7 +87,7 @@ export function write_CopyOperation(t: CopyOperation, dt: DataView) {
 /* Private data in TTF_Text, available to implementations */
 export interface TextData {
   font: Deno.PointerValue; /**< TTF_Font * : The font used by this text, read-only. */
-  color: FColor; /**< SDL_FColor : The color of the text, read-only. */
+  color: { r: number; g: number; b: number; a: number; }; /**< SDL_FColor : The color of the text, read-only. */
   needs_layout_update: boolean; /**< bool : True if the layout needs to be updated */
   layout: Deno.PointerValue; /**< TTF_TextLayout * : Cached layout information, read-only. */
   x: number; /**< int : The x offset of the upper left corner of this text, in pixels, read-only. */

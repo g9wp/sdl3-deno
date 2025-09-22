@@ -33,6 +33,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   PROP_TEXTINPUT as PROP_TEXTINPUT,
@@ -53,7 +55,9 @@ export {
  *
  * @from SDL_keyboard.h:74 bool SDL_HasKeyboard(void);
  */
-export const hasKeyboard = lib.symbols.SDL_HasKeyboard;
+export function hasKeyboard(): boolean {
+  return lib.symbols.SDL_HasKeyboard();
+}
 
 /**
  * Get a list of currently connected keyboards.
@@ -78,7 +82,11 @@ export const hasKeyboard = lib.symbols.SDL_HasKeyboard;
  *
  * @from SDL_keyboard.h:97 SDL_KeyboardID * SDL_GetKeyboards(int *count);
  */
-export const getKeyboards = lib.symbols.SDL_GetKeyboards;
+export function getKeyboards(): { count: number; ret: Deno.PointerValue<"SDL_KeyboardID"> } {
+  const ret = lib.symbols.SDL_GetKeyboards(_p.i32.p0) as Deno.PointerValue<"SDL_KeyboardID">;
+  if(!ret) throw new Error(`SDL_GetKeyboards: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { count: _p.i32.v0, ret };
+}
 
 /**
  * Get the name of a keyboard.
@@ -97,7 +105,9 @@ export const getKeyboards = lib.symbols.SDL_GetKeyboards;
  *
  * @from SDL_keyboard.h:114 const char * SDL_GetKeyboardNameForID(SDL_KeyboardID instance_id);
  */
-export const getKeyboardNameForId = lib.symbols.SDL_GetKeyboardNameForID;
+export function getKeyboardNameForId(instance_id: number): string {
+  return _p.getCstr2(lib.symbols.SDL_GetKeyboardNameForID(instance_id));
+}
 
 /**
  * Query the window which currently has keyboard focus.
@@ -110,7 +120,9 @@ export const getKeyboardNameForId = lib.symbols.SDL_GetKeyboardNameForID;
  *
  * @from SDL_keyboard.h:125 SDL_Window * SDL_GetKeyboardFocus(void);
  */
-export const getKeyboardFocus = lib.symbols.SDL_GetKeyboardFocus;
+export function getKeyboardFocus(): Deno.PointerValue<"SDL_Window"> {
+  return lib.symbols.SDL_GetKeyboardFocus() as Deno.PointerValue<"SDL_Window">;
+}
 
 /**
  * Get a snapshot of the current state of the keyboard.
@@ -145,7 +157,11 @@ export const getKeyboardFocus = lib.symbols.SDL_GetKeyboardFocus;
  *
  * @from SDL_keyboard.h:158 const bool * SDL_GetKeyboardState(int *numkeys);
  */
-export const getKeyboardState = lib.symbols.SDL_GetKeyboardState;
+export function getKeyboardState(): { numkeys: number; ret: Deno.PointerValue } {
+  const ret = lib.symbols.SDL_GetKeyboardState(_p.i32.p0) as Deno.PointerValue;
+  if(!ret) throw new Error(`SDL_GetKeyboardState: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { numkeys: _p.i32.v0, ret };
+}
 
 /**
  * Clear the state of the keyboard.
@@ -160,7 +176,9 @@ export const getKeyboardState = lib.symbols.SDL_GetKeyboardState;
  *
  * @from SDL_keyboard.h:171 void SDL_ResetKeyboard(void);
  */
-export const resetKeyboard = lib.symbols.SDL_ResetKeyboard;
+export function resetKeyboard(): void {
+  return lib.symbols.SDL_ResetKeyboard();
+}
 
 /**
  * Get the current key modifier state for the keyboard.
@@ -177,7 +195,9 @@ export const resetKeyboard = lib.symbols.SDL_ResetKeyboard;
  *
  * @from SDL_keyboard.h:186 SDL_Keymod SDL_GetModState(void);
  */
-export const getModState = lib.symbols.SDL_GetModState;
+export function getModState(): number {
+  return lib.symbols.SDL_GetModState();
+}
 
 /**
  * Set the current key modifier state for the keyboard.
@@ -200,7 +220,9 @@ export const getModState = lib.symbols.SDL_GetModState;
  *
  * @from SDL_keyboard.h:207 void SDL_SetModState(SDL_Keymod modstate);
  */
-export const setModState = lib.symbols.SDL_SetModState;
+export function setModState(modstate: number): void {
+  return lib.symbols.SDL_SetModState(modstate);
+}
 
 /**
  * Get the key code corresponding to the given scancode according to the
@@ -226,7 +248,9 @@ export const setModState = lib.symbols.SDL_SetModState;
  *
  * @from SDL_keyboard.h:231 SDL_Keycode SDL_GetKeyFromScancode(SDL_Scancode scancode, SDL_Keymod modstate, bool key_event);
  */
-export const getKeyFromScancode = lib.symbols.SDL_GetKeyFromScancode;
+export function getKeyFromScancode(scancode: number, modstate: number, key_event: boolean): number {
+  return lib.symbols.SDL_GetKeyFromScancode(scancode, modstate, key_event);
+}
 
 /**
  * Get the scancode corresponding to the given key code according to the
@@ -249,7 +273,9 @@ export const getKeyFromScancode = lib.symbols.SDL_GetKeyFromScancode;
  *
  * @from SDL_keyboard.h:252 SDL_Scancode SDL_GetScancodeFromKey(SDL_Keycode key, SDL_Keymod *modstate);
  */
-export const getScancodeFromKey = lib.symbols.SDL_GetScancodeFromKey;
+export function getScancodeFromKey(key: number, modstate: Deno.PointerValue<"SDL_Keymod">): number {
+  return lib.symbols.SDL_GetScancodeFromKey(key, modstate);
+}
 
 /**
  * Set a human-readable name for a scancode.
@@ -269,7 +295,9 @@ export const getScancodeFromKey = lib.symbols.SDL_GetScancodeFromKey;
  *
  * @from SDL_keyboard.h:270 bool SDL_SetScancodeName(SDL_Scancode scancode, const char *name);
  */
-export const setScancodeName = lib.symbols.SDL_SetScancodeName;
+export function setScancodeName(scancode: number, name: string): boolean {
+  return lib.symbols.SDL_SetScancodeName(scancode, _p.toCstr(name));
+}
 
 /**
  * Get a human-readable name for a scancode.
@@ -297,7 +325,9 @@ export const setScancodeName = lib.symbols.SDL_SetScancodeName;
  *
  * @from SDL_keyboard.h:296 const char * SDL_GetScancodeName(SDL_Scancode scancode);
  */
-export const getScancodeName = lib.symbols.SDL_GetScancodeName;
+export function getScancodeName(scancode: number): string {
+  return _p.getCstr2(lib.symbols.SDL_GetScancodeName(scancode));
+}
 
 /**
  * Get a scancode from a human-readable name.
@@ -316,7 +346,9 @@ export const getScancodeName = lib.symbols.SDL_GetScancodeName;
  *
  * @from SDL_keyboard.h:313 SDL_Scancode SDL_GetScancodeFromName(const char *name);
  */
-export const getScancodeFromName = lib.symbols.SDL_GetScancodeFromName;
+export function getScancodeFromName(name: string): number {
+  return lib.symbols.SDL_GetScancodeFromName(_p.toCstr(name));
+}
 
 /**
  * Get a human-readable name for a key.
@@ -338,7 +370,9 @@ export const getScancodeFromName = lib.symbols.SDL_GetScancodeFromName;
  *
  * @from SDL_keyboard.h:333 const char * SDL_GetKeyName(SDL_Keycode key);
  */
-export const getKeyName = lib.symbols.SDL_GetKeyName;
+export function getKeyName(key: number): string {
+  return _p.getCstr2(lib.symbols.SDL_GetKeyName(key));
+}
 
 /**
  * Get a key code from a human-readable name.
@@ -357,7 +391,9 @@ export const getKeyName = lib.symbols.SDL_GetKeyName;
  *
  * @from SDL_keyboard.h:350 SDL_Keycode SDL_GetKeyFromName(const char *name);
  */
-export const getKeyFromName = lib.symbols.SDL_GetKeyFromName;
+export function getKeyFromName(name: string): number {
+  return lib.symbols.SDL_GetKeyFromName(_p.toCstr(name));
+}
 
 /**
  * Start accepting Unicode text input events in a window.
@@ -387,7 +423,9 @@ export const getKeyFromName = lib.symbols.SDL_GetKeyFromName;
  *
  * @from SDL_keyboard.h:378 bool SDL_StartTextInput(SDL_Window *window);
  */
-export const startTextInput = lib.symbols.SDL_StartTextInput;
+export function startTextInput(window: Deno.PointerValue<"SDL_Window">): boolean {
+  return lib.symbols.SDL_StartTextInput(window);
+}
 
 /**
  * Start accepting Unicode text input events in a window, with properties
@@ -441,7 +479,9 @@ export const startTextInput = lib.symbols.SDL_StartTextInput;
  *
  * @from SDL_keyboard.h:473 bool SDL_StartTextInputWithProperties(SDL_Window *window, SDL_PropertiesID props);
  */
-export const startTextInputWithProperties = lib.symbols.SDL_StartTextInputWithProperties;
+export function startTextInputWithProperties(window: Deno.PointerValue<"SDL_Window">, props: number): boolean {
+  return lib.symbols.SDL_StartTextInputWithProperties(window, props);
+}
 
 /**
  * Check whether or not Unicode text input events are enabled for a window.
@@ -457,7 +497,9 @@ export const startTextInputWithProperties = lib.symbols.SDL_StartTextInputWithPr
  *
  * @from SDL_keyboard.h:493 bool SDL_TextInputActive(SDL_Window *window);
  */
-export const textInputActive = lib.symbols.SDL_TextInputActive;
+export function textInputActive(window: Deno.PointerValue<"SDL_Window">): boolean {
+  return lib.symbols.SDL_TextInputActive(window);
+}
 
 /**
  * Stop receiving any text input events in a window.
@@ -477,7 +519,9 @@ export const textInputActive = lib.symbols.SDL_TextInputActive;
  *
  * @from SDL_keyboard.h:511 bool SDL_StopTextInput(SDL_Window *window);
  */
-export const stopTextInput = lib.symbols.SDL_StopTextInput;
+export function stopTextInput(window: Deno.PointerValue<"SDL_Window">): boolean {
+  return lib.symbols.SDL_StopTextInput(window);
+}
 
 /**
  * Dismiss the composition window/IME without disabling the subsystem.
@@ -495,7 +539,9 @@ export const stopTextInput = lib.symbols.SDL_StopTextInput;
  *
  * @from SDL_keyboard.h:527 bool SDL_ClearComposition(SDL_Window *window);
  */
-export const clearComposition = lib.symbols.SDL_ClearComposition;
+export function clearComposition(window: Deno.PointerValue<"SDL_Window">): boolean {
+  return lib.symbols.SDL_ClearComposition(window);
+}
 
 /**
  * Set the area used to type Unicode text input.
@@ -520,7 +566,10 @@ export const clearComposition = lib.symbols.SDL_ClearComposition;
  *
  * @from SDL_keyboard.h:550 bool SDL_SetTextInputArea(SDL_Window *window, const SDL_Rect *rect, int cursor);
  */
-export const setTextInputArea = lib.symbols.SDL_SetTextInputArea;
+export function setTextInputArea(window: Deno.PointerValue<"SDL_Window">, rect: { x: number; y: number; w: number; h: number; } | null, cursor: number): boolean {
+  if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
+  return lib.symbols.SDL_SetTextInputArea(window, _p.i32.p0, cursor);
+}
 
 /**
  * Get the area used to type Unicode text input.
@@ -543,7 +592,11 @@ export const setTextInputArea = lib.symbols.SDL_SetTextInputArea;
  *
  * @from SDL_keyboard.h:571 bool SDL_GetTextInputArea(SDL_Window *window, SDL_Rect *rect, int *cursor);
  */
-export const getTextInputArea = lib.symbols.SDL_GetTextInputArea;
+export function getTextInputArea(window: Deno.PointerValue<"SDL_Window">): { rect: { x: number; y: number; w: number; h: number; } | null; cursor: number } {
+  if(!lib.symbols.SDL_GetTextInputArea(window, _p.i32.p0, _p.i32.p4))
+    throw new Error(`SDL_GetTextInputArea: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { rect: { x: _p.i32.v0, y: _p.i32.v1, w: _p.i32.v2, h: _p.i32.v3, }, cursor: _p.i32.v4 };
+}
 
 /**
  * Check whether the platform has screen keyboard support.
@@ -560,7 +613,9 @@ export const getTextInputArea = lib.symbols.SDL_GetTextInputArea;
  *
  * @from SDL_keyboard.h:586 bool SDL_HasScreenKeyboardSupport(void);
  */
-export const hasScreenKeyboardSupport = lib.symbols.SDL_HasScreenKeyboardSupport;
+export function hasScreenKeyboardSupport(): boolean {
+  return lib.symbols.SDL_HasScreenKeyboardSupport();
+}
 
 /**
  * Check whether the screen keyboard is shown for given window.
@@ -576,5 +631,7 @@ export const hasScreenKeyboardSupport = lib.symbols.SDL_HasScreenKeyboardSupport
  *
  * @from SDL_keyboard.h:600 bool SDL_ScreenKeyboardShown(SDL_Window *window);
  */
-export const screenKeyboardShown = lib.symbols.SDL_ScreenKeyboardShown;
+export function screenKeyboardShown(window: Deno.PointerValue<"SDL_Window">): boolean {
+  return lib.symbols.SDL_ScreenKeyboardShown(window);
+}
 

@@ -39,6 +39,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   SDL_TouchDeviceType as TOUCH_DEVICE,
@@ -61,7 +63,11 @@ export {
  *
  * @from SDL_touch.h:139 SDL_TouchID * SDL_GetTouchDevices(int *count);
  */
-export const getTouchDevices = lib.symbols.SDL_GetTouchDevices;
+export function getTouchDevices(): { count: number; ret: Deno.PointerValue<"SDL_TouchID"> } {
+  const ret = lib.symbols.SDL_GetTouchDevices(_p.i32.p0) as Deno.PointerValue<"SDL_TouchID">;
+  if(!ret) throw new Error(`SDL_GetTouchDevices: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { count: _p.i32.v0, ret };
+}
 
 /**
  * Get the touch device name as reported from the driver.
@@ -74,7 +80,9 @@ export const getTouchDevices = lib.symbols.SDL_GetTouchDevices;
  *
  * @from SDL_touch.h:150 const char * SDL_GetTouchDeviceName(SDL_TouchID touchID);
  */
-export const getTouchDeviceName = lib.symbols.SDL_GetTouchDeviceName;
+export function getTouchDeviceName(touchID: bigint): string {
+  return _p.getCstr2(lib.symbols.SDL_GetTouchDeviceName(touchID));
+}
 
 /**
  * Get the type of the given touch device.
@@ -86,7 +94,9 @@ export const getTouchDeviceName = lib.symbols.SDL_GetTouchDeviceName;
  *
  * @from SDL_touch.h:160 SDL_TouchDeviceType SDL_GetTouchDeviceType(SDL_TouchID touchID);
  */
-export const getTouchDeviceType = lib.symbols.SDL_GetTouchDeviceType;
+export function getTouchDeviceType(touchID: bigint): number {
+  return lib.symbols.SDL_GetTouchDeviceType(touchID);
+}
 
 /**
  * Get a list of active fingers for a given touch device.
@@ -103,5 +113,9 @@ export const getTouchDeviceType = lib.symbols.SDL_GetTouchDeviceType;
  *
  * @from SDL_touch.h:175 SDL_Finger ** SDL_GetTouchFingers(SDL_TouchID touchID, int *count);
  */
-export const getTouchFingers = lib.symbols.SDL_GetTouchFingers;
+export function getTouchFingers(touchID: bigint): { count: number; ret: Deno.PointerValue } {
+  const ret = lib.symbols.SDL_GetTouchFingers(touchID, _p.i32.p0) as Deno.PointerValue;
+  if(!ret) throw new Error(`SDL_GetTouchFingers: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { count: _p.i32.v0, ret };
+}
 

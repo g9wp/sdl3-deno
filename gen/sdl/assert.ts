@@ -64,6 +64,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   SDL_AssertState as ASSERTION,
@@ -86,7 +88,14 @@ export {
  *
  * @from SDL_assert.h:314 SDL_AssertState SDL_ReportAssertion(SDL_AssertData *data, const char *func, const char *file, int line) SDL_ANALYZER_NORETURN;
  */
-export const reportAssertion = lib.symbols.SDL_ReportAssertion;
+export function reportAssertion(
+    data: Deno.PointerValue<"SDL_AssertData">,
+    func: string,
+    file: string,
+    line: number,
+): number {
+  return lib.symbols.SDL_ReportAssertion(data, _p.toCstr(func), _p.toCstr(file), line);
+}
 
 /**
  * Get a list of all assertion failures.
@@ -122,7 +131,9 @@ export const reportAssertion = lib.symbols.SDL_ReportAssertion;
  *
  * @from SDL_assert.h:635 const SDL_AssertData * SDL_GetAssertionReport(void);
  */
-export const getAssertionReport = lib.symbols.SDL_GetAssertionReport;
+export function getAssertionReport(): Deno.PointerValue<"SDL_AssertData"> {
+  return lib.symbols.SDL_GetAssertionReport() as Deno.PointerValue<"SDL_AssertData">;
+}
 
 /**
  * Clear the list of all assertion failures.
@@ -142,5 +153,7 @@ export const getAssertionReport = lib.symbols.SDL_GetAssertionReport;
  *
  * @from SDL_assert.h:653 void SDL_ResetAssertionReport(void);
  */
-export const resetAssertionReport = lib.symbols.SDL_ResetAssertionReport;
+export function resetAssertionReport(): void {
+  return lib.symbols.SDL_ResetAssertionReport();
+}
 

@@ -62,3 +62,16 @@ SDL_KernelMemoryBarrierFunc: {
     },
 
 } as const;
+
+
+/* Information from:
+   https://chromium.googlesource.com/chromium/chromium/+/trunk/base/atomicops_internals_arm_gcc.h#19
+
+   The Linux kernel provides a helper function which provides the right code for a memory barrier,
+   hard-coded at address 0xffff0fa0
+*/
+export function KernelMemoryBarrierFunc(cb: (
+  ) => void) {
+  return new Deno.UnsafeCallback(callbacks.SDL_KernelMemoryBarrierFunc, cb);
+}
+

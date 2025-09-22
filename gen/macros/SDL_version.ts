@@ -41,5 +41,5 @@ export const SDL_MINOR_VERSION = 2;
 /**
  * @from SDL_version:64
  */
-export const SDL_MICRO_VERSION = 14;
+export const SDL_MICRO_VERSION = 22;
 

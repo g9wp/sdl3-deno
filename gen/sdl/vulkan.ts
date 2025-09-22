@@ -41,6 +41,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 /**
  * Dynamically load the Vulkan loader library.
@@ -94,7 +96,9 @@ import { lib } from "./lib.ts";
  *
  * @from SDL_vulkan.h:132 bool SDL_Vulkan_LoadLibrary(const char *path);
  */
-export const vulkanLoadLibrary = lib.symbols.SDL_Vulkan_LoadLibrary;
+export function vulkanLoadLibrary(path: string): boolean {
+  return lib.symbols.SDL_Vulkan_LoadLibrary(_p.toCstr(path));
+}
 
 /**
  * Get the address of the `vkGetInstanceProcAddr` function.
@@ -117,7 +121,9 @@ export const vulkanLoadLibrary = lib.symbols.SDL_Vulkan_LoadLibrary;
  *
  * @from SDL_vulkan.h:153 SDL_FunctionPointer SDL_Vulkan_GetVkGetInstanceProcAddr(void);
  */
-export const vulkanGetVkGetInstanceProcAddr = lib.symbols.SDL_Vulkan_GetVkGetInstanceProcAddr;
+export function vulkanGetVkGetInstanceProcAddr(): Deno.PointerValue {
+  return lib.symbols.SDL_Vulkan_GetVkGetInstanceProcAddr();
+}
 
 /**
  * Unload the Vulkan library previously loaded by SDL_Vulkan_LoadLibrary().
@@ -141,7 +147,9 @@ export const vulkanGetVkGetInstanceProcAddr = lib.symbols.SDL_Vulkan_GetVkGetIns
  *
  * @from SDL_vulkan.h:175 void SDL_Vulkan_UnloadLibrary(void);
  */
-export const vulkanUnloadLibrary = lib.symbols.SDL_Vulkan_UnloadLibrary;
+export function vulkanUnloadLibrary(): void {
+  return lib.symbols.SDL_Vulkan_UnloadLibrary();
+}
 
 /**
  * Get the Vulkan instance extensions needed for vkCreateInstance.
@@ -167,5 +175,9 @@ export const vulkanUnloadLibrary = lib.symbols.SDL_Vulkan_UnloadLibrary;
  *
  * @from SDL_vulkan.h:199 char const * const * SDL_Vulkan_GetInstanceExtensions(Uint32 *count);
  */
-export const vulkanGetInstanceExtensions = lib.symbols.SDL_Vulkan_GetInstanceExtensions;
+export function vulkanGetInstanceExtensions(): { count: number; ret: Deno.PointerValue } {
+  const ret = lib.symbols.SDL_Vulkan_GetInstanceExtensions(_p.u32.p0) as Deno.PointerValue;
+  if(!ret) throw new Error(`SDL_Vulkan_GetInstanceExtensions: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { count: _p.u32.v0, ret };
+}
 

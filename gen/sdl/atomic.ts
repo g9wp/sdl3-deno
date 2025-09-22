@@ -50,6 +50,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 /**
  * Try to lock a spin lock by setting it to a non-zero value.
@@ -69,7 +71,9 @@ import { lib } from "./lib.ts";
  *
  * @from SDL_atomic.h:99 bool SDL_TryLockSpinlock(SDL_SpinLock *lock);
  */
-export const tryLockSpinlock = lib.symbols.SDL_TryLockSpinlock;
+export function tryLockSpinlock(lock: Deno.PointerValue<"SDL_SpinLock">): boolean {
+  return lib.symbols.SDL_TryLockSpinlock(lock);
+}
 
 /**
  * Lock a spin lock by setting it to a non-zero value.
@@ -88,7 +92,9 @@ export const tryLockSpinlock = lib.symbols.SDL_TryLockSpinlock;
  *
  * @from SDL_atomic.h:116 void SDL_LockSpinlock(SDL_SpinLock *lock);
  */
-export const lockSpinlock = lib.symbols.SDL_LockSpinlock;
+export function lockSpinlock(lock: Deno.PointerValue<"SDL_SpinLock">): void {
+  return lib.symbols.SDL_LockSpinlock(lock);
+}
 
 /**
  * Unlock a spin lock by setting it to 0.
@@ -109,7 +115,9 @@ export const lockSpinlock = lib.symbols.SDL_LockSpinlock;
  *
  * @from SDL_atomic.h:135 void SDL_UnlockSpinlock(SDL_SpinLock *lock);
  */
-export const unlockSpinlock = lib.symbols.SDL_UnlockSpinlock;
+export function unlockSpinlock(lock: Deno.PointerValue<"SDL_SpinLock">): void {
+  return lib.symbols.SDL_UnlockSpinlock(lock);
+}
 
 /**
  * Insert a memory release barrier (function version).
@@ -131,7 +139,9 @@ export const unlockSpinlock = lib.symbols.SDL_UnlockSpinlock;
  *
  * @from SDL_atomic.h:191 void SDL_MemoryBarrierReleaseFunction(void);
  */
-export const memoryBarrierReleaseFunction = lib.symbols.SDL_MemoryBarrierReleaseFunction;
+export function memoryBarrierReleaseFunction(): void {
+  return lib.symbols.SDL_MemoryBarrierReleaseFunction();
+}
 
 /**
  * Insert a memory acquire barrier (function version).
@@ -153,7 +163,9 @@ export const memoryBarrierReleaseFunction = lib.symbols.SDL_MemoryBarrierRelease
  *
  * @from SDL_atomic.h:211 void SDL_MemoryBarrierAcquireFunction(void);
  */
-export const memoryBarrierAcquireFunction = lib.symbols.SDL_MemoryBarrierAcquireFunction;
+export function memoryBarrierAcquireFunction(): void {
+  return lib.symbols.SDL_MemoryBarrierAcquireFunction();
+}
 
 /**
  * Set an atomic variable to a new value if it is currently an old value.
@@ -175,7 +187,9 @@ export const memoryBarrierAcquireFunction = lib.symbols.SDL_MemoryBarrierAcquire
  *
  * @from SDL_atomic.h:414 bool SDL_CompareAndSwapAtomicInt(SDL_AtomicInt *a, int oldval, int newval);
  */
-export const compareAndSwapAtomicInt = lib.symbols.SDL_CompareAndSwapAtomicInt;
+export function compareAndSwapAtomicInt(a: Deno.PointerValue<"SDL_AtomicInt">, oldval: number, newval: number): boolean {
+  return lib.symbols.SDL_CompareAndSwapAtomicInt(a, oldval, newval);
+}
 
 /**
  * Set an atomic variable to a value.
@@ -197,7 +211,9 @@ export const compareAndSwapAtomicInt = lib.symbols.SDL_CompareAndSwapAtomicInt;
  *
  * @from SDL_atomic.h:434 int SDL_SetAtomicInt(SDL_AtomicInt *a, int v);
  */
-export const setAtomicInt = lib.symbols.SDL_SetAtomicInt;
+export function setAtomicInt(a: Deno.PointerValue<"SDL_AtomicInt">, v: number): number {
+  return lib.symbols.SDL_SetAtomicInt(a, v);
+}
 
 /**
  * Get the value of an atomic variable.
@@ -216,7 +232,9 @@ export const setAtomicInt = lib.symbols.SDL_SetAtomicInt;
  *
  * @from SDL_atomic.h:451 int SDL_GetAtomicInt(SDL_AtomicInt *a);
  */
-export const getAtomicInt = lib.symbols.SDL_GetAtomicInt;
+export function getAtomicInt(a: Deno.PointerValue<"SDL_AtomicInt">): number {
+  return lib.symbols.SDL_GetAtomicInt(a);
+}
 
 /**
  * Add to an atomic variable.
@@ -239,7 +257,9 @@ export const getAtomicInt = lib.symbols.SDL_GetAtomicInt;
  *
  * @from SDL_atomic.h:472 int SDL_AddAtomicInt(SDL_AtomicInt *a, int v);
  */
-export const addAtomicInt = lib.symbols.SDL_AddAtomicInt;
+export function addAtomicInt(a: Deno.PointerValue<"SDL_AtomicInt">, v: number): number {
+  return lib.symbols.SDL_AddAtomicInt(a, v);
+}
 
 /**
  * Set an atomic variable to a new value if it is currently an old value.
@@ -261,7 +281,9 @@ export const addAtomicInt = lib.symbols.SDL_AddAtomicInt;
  *
  * @from SDL_atomic.h:559 bool SDL_CompareAndSwapAtomicU32(SDL_AtomicU32 *a, Uint32 oldval, Uint32 newval);
  */
-export const compareAndSwapAtomicU32 = lib.symbols.SDL_CompareAndSwapAtomicU32;
+export function compareAndSwapAtomicU32(a: Deno.PointerValue<"SDL_AtomicU32">, oldval: number, newval: number): boolean {
+  return lib.symbols.SDL_CompareAndSwapAtomicU32(a, oldval, newval);
+}
 
 /**
  * Set an atomic variable to a value.
@@ -283,7 +305,9 @@ export const compareAndSwapAtomicU32 = lib.symbols.SDL_CompareAndSwapAtomicU32;
  *
  * @from SDL_atomic.h:579 Uint32 SDL_SetAtomicU32(SDL_AtomicU32 *a, Uint32 v);
  */
-export const setAtomicU32 = lib.symbols.SDL_SetAtomicU32;
+export function setAtomicU32(a: Deno.PointerValue<"SDL_AtomicU32">, v: number): number {
+  return lib.symbols.SDL_SetAtomicU32(a, v);
+}
 
 /**
  * Get the value of an atomic variable.
@@ -302,7 +326,9 @@ export const setAtomicU32 = lib.symbols.SDL_SetAtomicU32;
  *
  * @from SDL_atomic.h:596 Uint32 SDL_GetAtomicU32(SDL_AtomicU32 *a);
  */
-export const getAtomicU32 = lib.symbols.SDL_GetAtomicU32;
+export function getAtomicU32(a: Deno.PointerValue<"SDL_AtomicU32">): number {
+  return lib.symbols.SDL_GetAtomicU32(a);
+}
 
 /**
  * Set a pointer to a new value if it is currently an old value.
@@ -325,7 +351,9 @@ export const getAtomicU32 = lib.symbols.SDL_GetAtomicU32;
  *
  * @from SDL_atomic.h:617 bool SDL_CompareAndSwapAtomicPointer(void **a, void *oldval, void *newval);
  */
-export const compareAndSwapAtomicPointer = lib.symbols.SDL_CompareAndSwapAtomicPointer;
+export function compareAndSwapAtomicPointer(a: Deno.PointerValue, oldval: Deno.PointerValue, newval: Deno.PointerValue): boolean {
+  return lib.symbols.SDL_CompareAndSwapAtomicPointer(a, oldval, newval);
+}
 
 /**
  * Set a pointer to a value atomically.
@@ -346,7 +374,9 @@ export const compareAndSwapAtomicPointer = lib.symbols.SDL_CompareAndSwapAtomicP
  *
  * @from SDL_atomic.h:636 void * SDL_SetAtomicPointer(void **a, void *v);
  */
-export const setAtomicPointer = lib.symbols.SDL_SetAtomicPointer;
+export function setAtomicPointer(a: Deno.PointerValue, v: Deno.PointerValue): Deno.PointerValue {
+  return lib.symbols.SDL_SetAtomicPointer(a, v);
+}
 
 /**
  * Get the value of a pointer atomically.
@@ -366,5 +396,7 @@ export const setAtomicPointer = lib.symbols.SDL_SetAtomicPointer;
  *
  * @from SDL_atomic.h:654 void * SDL_GetAtomicPointer(void **a);
  */
-export const getAtomicPointer = lib.symbols.SDL_GetAtomicPointer;
+export function getAtomicPointer(a: Deno.PointerValue): Deno.PointerValue {
+  return lib.symbols.SDL_GetAtomicPointer(a);
+}
 

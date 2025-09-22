@@ -30,6 +30,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   BLENDMODE as BLENDMODE,
@@ -126,5 +128,14 @@ export {
  *
  * @from SDL_blendmode.h:188 SDL_BlendMode SDL_ComposeCustomBlendMode(SDL_BlendFactor srcColorFactor, SDL_BlendFactor dstColorFactor, SDL_BlendOperation colorOperation, SDL_BlendFactor srcAlphaFactor, SDL_BlendFactor dstAlphaFactor, SDL_BlendOperation alphaOperation);
  */
-export const composeCustomBlendMode = lib.symbols.SDL_ComposeCustomBlendMode;
+export function composeCustomBlendMode(
+    srcColorFactor: number,
+    dstColorFactor: number,
+    colorOperation: number,
+    srcAlphaFactor: number,
+    dstAlphaFactor: number,
+    alphaOperation: number,
+): number {
+  return lib.symbols.SDL_ComposeCustomBlendMode(srcColorFactor, dstColorFactor, colorOperation, srcAlphaFactor, dstAlphaFactor, alphaOperation);
+}
 

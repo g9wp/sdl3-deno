@@ -201,8 +201,8 @@
  * - `drawIndirectFirstInstance`
  *
  * **D3D12:** Supported on Windows 10 or newer, Xbox One (GDK), and Xbox
- * Series X|S (GDK). Requires a GPU that supports DirectX 12 Feature Level
- * 11_1.
+ * Series X|S (GDK). Requires a GPU that supports DirectX 12 Feature Level 11_0 and
+ * Resource Binding Tier 2 or above.
  *
  * **Metal:** Supported on macOS 10.14+ and iOS/tvOS 13.0+. Hardware
  * requirements vary by operating system:
@@ -862,7 +862,7 @@ export function write_GPUSamplerCreateInfo(t: GPUSamplerCreateInfo, dt: DataView
  */
 export interface GPUVertexBufferDescription {
   slot: number; /**< Uint32 : The binding slot of the vertex buffer. */
-  pitch: number; /**< Uint32 : The byte pitch between consecutive elements of the vertex buffer. */
+  pitch: number; /**< Uint32 : The size of a single element + the offset between elements. */
   input_rate: number; /**< SDL_GPUVertexInputRate : Whether attribute addressing is a function of the vertex index or instance index. */
   instance_step_rate: number; /**< Uint32 : Reserved for future use. Must be set to 0. */
 }
@@ -1080,7 +1080,7 @@ export function write_GPUColorTargetBlendState(t: GPUColorTargetBlendState, dt: 
 export interface GPUShaderCreateInfo {
   code_size: bigint; /**< size_t : The size in bytes of the code pointed to. */
   code: Deno.PointerValue; /**< const Uint8 * : A pointer to shader code. */
-  entrypoint: string; /**< const char * : A pointer to a null-terminated UTF-8 string specifying the entry point function name for the shader. */
+  entrypoint: Deno.PointerValue; /**< const char * : A pointer to a null-terminated UTF-8 string specifying the entry point function name for the shader. */
   format: number; /**< SDL_GPUShaderFormat : The format of the shader code. */
   stage: number; /**< SDL_GPUShaderStage : The stage the shader program corresponds to. */
   num_samplers: number; /**< Uint32 : The number of samplers defined in the shader. */
@@ -1571,7 +1571,7 @@ export function write_GPUGraphicsPipelineCreateInfo(t: GPUGraphicsPipelineCreate
 export interface GPUComputePipelineCreateInfo {
   code_size: bigint; /**< size_t : The size in bytes of the compute shader code pointed to. */
   code: Deno.PointerValue; /**< const Uint8 * : A pointer to compute shader code. */
-  entrypoint: string; /**< const char * : A pointer to a null-terminated UTF-8 string specifying the entry point function name for the shader. */
+  entrypoint: Deno.PointerValue; /**< const char * : A pointer to a null-terminated UTF-8 string specifying the entry point function name for the shader. */
   format: number; /**< SDL_GPUShaderFormat : The format of the compute shader code. */
   num_samplers: number; /**< Uint32 : The number of samplers defined in the shader. */
   num_readonly_storage_textures: number; /**< Uint32 : The number of readonly storage textures defined in the shader. */
@@ -1666,7 +1666,7 @@ export interface GPUColorTargetInfo {
   texture: Deno.PointerValue; /**< SDL_GPUTexture * : The texture that will be used as a color target by a render pass. */
   mip_level: number; /**< Uint32 : The mip level to use as a color target. */
   layer_or_depth_plane: number; /**< Uint32 : The layer index or depth plane to use as a color target. This value is treated as a layer index on 2D array and cube textures, and as a depth plane on 3D textures. */
-  clear_color: FColor; /**< SDL_FColor : The color to clear the color target to at the start of the render pass. Ignored if SDL_GPU_LOADOP_CLEAR is not used. */
+  clear_color: { r: number; g: number; b: number; a: number; }; /**< SDL_FColor : The color to clear the color target to at the start of the render pass. Ignored if SDL_GPU_LOADOP_CLEAR is not used. */
   load_op: number; /**< SDL_GPULoadOp : What is done with the contents of the color target at the beginning of the render pass. */
   store_op: number; /**< SDL_GPUStoreOp : What is done with the results of the render pass. */
   resolve_texture: Deno.PointerValue; /**< SDL_GPUTexture * : The texture that will receive the results of a multisample resolve operation. Ignored if a RESOLVE* store_op is not used. */
@@ -1820,7 +1820,7 @@ export interface GPUBlitInfo {
   source: GPUBlitRegion; /**< SDL_GPUBlitRegion : The source region for the blit. */
   destination: GPUBlitRegion; /**< SDL_GPUBlitRegion : The destination region for the blit. */
   load_op: number; /**< SDL_GPULoadOp : What is done with the contents of the destination before the blit. */
-  clear_color: FColor; /**< SDL_FColor : The color to clear the destination region to before the blit. Ignored if load_op is not SDL_GPU_LOADOP_CLEAR. */
+  clear_color: { r: number; g: number; b: number; a: number; }; /**< SDL_FColor : The color to clear the destination region to before the blit. Ignored if load_op is not SDL_GPU_LOADOP_CLEAR. */
   flip_mode: number; /**< SDL_FlipMode : The flip mode for the source region. */
   filter: number; /**< SDL_GPUFilter : The filter mode used when blitting. */
   cycle: boolean; /**< bool : true cycles the destination texture if it is already bound. */

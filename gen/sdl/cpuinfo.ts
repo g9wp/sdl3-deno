@@ -38,6 +38,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 /**
  * Get the number of logical CPU cores available.
@@ -52,7 +54,9 @@ import { lib } from "./lib.ts";
  *
  * @from SDL_cpuinfo.h:72 int SDL_GetNumLogicalCPUCores(void);
  */
-export const getNumLogicalCpuCores = lib.symbols.SDL_GetNumLogicalCPUCores;
+export function getNumLogicalCpuCores(): number {
+  return lib.symbols.SDL_GetNumLogicalCPUCores();
+}
 
 /**
  * Determine the L1 cache line size of the CPU.
@@ -68,7 +72,9 @@ export const getNumLogicalCpuCores = lib.symbols.SDL_GetNumLogicalCPUCores;
  *
  * @from SDL_cpuinfo.h:86 int SDL_GetCPUCacheLineSize(void);
  */
-export const getCpuCacheLineSize = lib.symbols.SDL_GetCPUCacheLineSize;
+export function getCpuCacheLineSize(): number {
+  return lib.symbols.SDL_GetCPUCacheLineSize();
+}
 
 /**
  * Determine whether the CPU has AltiVec features.
@@ -84,7 +90,9 @@ export const getCpuCacheLineSize = lib.symbols.SDL_GetCPUCacheLineSize;
  *
  * @from SDL_cpuinfo.h:100 bool SDL_HasAltiVec(void);
  */
-export const hasAltiVec = lib.symbols.SDL_HasAltiVec;
+export function hasAltiVec(): boolean {
+  return lib.symbols.SDL_HasAltiVec();
+}
 
 /**
  * Determine whether the CPU has MMX features.
@@ -99,7 +107,9 @@ export const hasAltiVec = lib.symbols.SDL_HasAltiVec;
  *
  * @from SDL_cpuinfo.h:113 bool SDL_HasMMX(void);
  */
-export const hasMmx = lib.symbols.SDL_HasMMX;
+export function hasMmx(): boolean {
+  return lib.symbols.SDL_HasMMX();
+}
 
 /**
  * Determine whether the CPU has SSE features.
@@ -119,7 +129,9 @@ export const hasMmx = lib.symbols.SDL_HasMMX;
  *
  * @from SDL_cpuinfo.h:131 bool SDL_HasSSE(void);
  */
-export const hasSse = lib.symbols.SDL_HasSSE;
+export function hasSse(): boolean {
+  return lib.symbols.SDL_HasSSE();
+}
 
 /**
  * Determine whether the CPU has SSE2 features.
@@ -139,7 +151,9 @@ export const hasSse = lib.symbols.SDL_HasSSE;
  *
  * @from SDL_cpuinfo.h:149 bool SDL_HasSSE2(void);
  */
-export const hasSse2 = lib.symbols.SDL_HasSSE2;
+export function hasSse2(): boolean {
+  return lib.symbols.SDL_HasSSE2();
+}
 
 /**
  * Determine whether the CPU has SSE3 features.
@@ -159,7 +173,9 @@ export const hasSse2 = lib.symbols.SDL_HasSSE2;
  *
  * @from SDL_cpuinfo.h:167 bool SDL_HasSSE3(void);
  */
-export const hasSse3 = lib.symbols.SDL_HasSSE3;
+export function hasSse3(): boolean {
+  return lib.symbols.SDL_HasSSE3();
+}
 
 /**
  * Determine whether the CPU has SSE4.1 features.
@@ -179,7 +195,9 @@ export const hasSse3 = lib.symbols.SDL_HasSSE3;
  *
  * @from SDL_cpuinfo.h:185 bool SDL_HasSSE41(void);
  */
-export const hasSse41 = lib.symbols.SDL_HasSSE41;
+export function hasSse41(): boolean {
+  return lib.symbols.SDL_HasSSE41();
+}
 
 /**
  * Determine whether the CPU has SSE4.2 features.
@@ -199,7 +217,9 @@ export const hasSse41 = lib.symbols.SDL_HasSSE41;
  *
  * @from SDL_cpuinfo.h:203 bool SDL_HasSSE42(void);
  */
-export const hasSse42 = lib.symbols.SDL_HasSSE42;
+export function hasSse42(): boolean {
+  return lib.symbols.SDL_HasSSE42();
+}
 
 /**
  * Determine whether the CPU has AVX features.
@@ -217,7 +237,9 @@ export const hasSse42 = lib.symbols.SDL_HasSSE42;
  *
  * @from SDL_cpuinfo.h:219 bool SDL_HasAVX(void);
  */
-export const hasAvx = lib.symbols.SDL_HasAVX;
+export function hasAvx(): boolean {
+  return lib.symbols.SDL_HasAVX();
+}
 
 /**
  * Determine whether the CPU has AVX2 features.
@@ -235,7 +257,9 @@ export const hasAvx = lib.symbols.SDL_HasAVX;
  *
  * @from SDL_cpuinfo.h:235 bool SDL_HasAVX2(void);
  */
-export const hasAvx2 = lib.symbols.SDL_HasAVX2;
+export function hasAvx2(): boolean {
+  return lib.symbols.SDL_HasAVX2();
+}
 
 /**
  * Determine whether the CPU has AVX-512F (foundation) features.
@@ -253,7 +277,9 @@ export const hasAvx2 = lib.symbols.SDL_HasAVX2;
  *
  * @from SDL_cpuinfo.h:251 bool SDL_HasAVX512F(void);
  */
-export const hasAvx512F = lib.symbols.SDL_HasAVX512F;
+export function hasAvx512F(): boolean {
+  return lib.symbols.SDL_HasAVX512F();
+}
 
 /**
  * Determine whether the CPU has ARM SIMD (ARMv6) features.
@@ -272,7 +298,9 @@ export const hasAvx512F = lib.symbols.SDL_HasAVX512F;
  *
  * @from SDL_cpuinfo.h:268 bool SDL_HasARMSIMD(void);
  */
-export const hasArmsimd = lib.symbols.SDL_HasARMSIMD;
+export function hasArmsimd(): boolean {
+  return lib.symbols.SDL_HasARMSIMD();
+}
 
 /**
  * Determine whether the CPU has NEON (ARM SIMD) features.
@@ -287,7 +315,9 @@ export const hasArmsimd = lib.symbols.SDL_HasARMSIMD;
  *
  * @from SDL_cpuinfo.h:281 bool SDL_HasNEON(void);
  */
-export const hasNeon = lib.symbols.SDL_HasNEON;
+export function hasNeon(): boolean {
+  return lib.symbols.SDL_HasNEON();
+}
 
 /**
  * Determine whether the CPU has LSX (LOONGARCH SIMD) features.
@@ -303,7 +333,9 @@ export const hasNeon = lib.symbols.SDL_HasNEON;
  *
  * @from SDL_cpuinfo.h:295 bool SDL_HasLSX(void);
  */
-export const hasLsx = lib.symbols.SDL_HasLSX;
+export function hasLsx(): boolean {
+  return lib.symbols.SDL_HasLSX();
+}
 
 /**
  * Determine whether the CPU has LASX (LOONGARCH SIMD) features.
@@ -319,7 +351,9 @@ export const hasLsx = lib.symbols.SDL_HasLSX;
  *
  * @from SDL_cpuinfo.h:309 bool SDL_HasLASX(void);
  */
-export const hasLasx = lib.symbols.SDL_HasLASX;
+export function hasLasx(): boolean {
+  return lib.symbols.SDL_HasLASX();
+}
 
 /**
  * Get the amount of RAM configured in the system.
@@ -332,7 +366,9 @@ export const hasLasx = lib.symbols.SDL_HasLASX;
  *
  * @from SDL_cpuinfo.h:320 int SDL_GetSystemRAM(void);
  */
-export const getSystemRam = lib.symbols.SDL_GetSystemRAM;
+export function getSystemRam(): number {
+  return lib.symbols.SDL_GetSystemRAM();
+}
 
 /**
  * Report the alignment this system needs for SIMD allocations.
@@ -358,5 +394,7 @@ export const getSystemRam = lib.symbols.SDL_GetSystemRAM;
  *
  * @from SDL_cpuinfo.h:344 size_t SDL_GetSIMDAlignment(void);
  */
-export const getSimdAlignment = lib.symbols.SDL_GetSIMDAlignment;
+export function getSimdAlignment(): bigint {
+  return lib.symbols.SDL_GetSIMDAlignment();
+}
 

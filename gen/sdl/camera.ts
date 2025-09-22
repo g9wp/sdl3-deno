@@ -68,6 +68,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   SDL_CameraPosition as CAMERA_POSITION,
@@ -96,7 +98,9 @@ export {
  *
  * @from SDL_camera.h:160 int SDL_GetNumCameraDrivers(void);
  */
-export const getNumCameraDrivers = lib.symbols.SDL_GetNumCameraDrivers;
+export function getNumCameraDrivers(): number {
+  return lib.symbols.SDL_GetNumCameraDrivers();
+}
 
 /**
  * Use this function to get the name of a built in camera driver.
@@ -122,7 +126,9 @@ export const getNumCameraDrivers = lib.symbols.SDL_GetNumCameraDrivers;
  *
  * @from SDL_camera.h:184 const char * SDL_GetCameraDriver(int index);
  */
-export const getCameraDriver = lib.symbols.SDL_GetCameraDriver;
+export function getCameraDriver(index: number): string {
+  return _p.getCstr2(lib.symbols.SDL_GetCameraDriver(index));
+}
 
 /**
  * Get the name of the current camera driver.
@@ -140,7 +146,9 @@ export const getCameraDriver = lib.symbols.SDL_GetCameraDriver;
  *
  * @from SDL_camera.h:200 const char * SDL_GetCurrentCameraDriver(void);
  */
-export const getCurrentCameraDriver = lib.symbols.SDL_GetCurrentCameraDriver;
+export function getCurrentCameraDriver(): string {
+  return _p.getCstr2(lib.symbols.SDL_GetCurrentCameraDriver());
+}
 
 /**
  * Get a list of currently connected camera devices.
@@ -159,7 +167,11 @@ export const getCurrentCameraDriver = lib.symbols.SDL_GetCurrentCameraDriver;
  *
  * @from SDL_camera.h:217 SDL_CameraID * SDL_GetCameras(int *count);
  */
-export const getCameras = lib.symbols.SDL_GetCameras;
+export function getCameras(): { count: number; ret: Deno.PointerValue<"SDL_CameraID"> } {
+  const ret = lib.symbols.SDL_GetCameras(_p.i32.p0) as Deno.PointerValue<"SDL_CameraID">;
+  if(!ret) throw new Error(`SDL_GetCameras: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { count: _p.i32.v0, ret };
+}
 
 /**
  * Get the list of native formats/sizes a camera supports.
@@ -200,7 +212,11 @@ export const getCameras = lib.symbols.SDL_GetCameras;
  *
  * @from SDL_camera.h:256 SDL_CameraSpec ** SDL_GetCameraSupportedFormats(SDL_CameraID instance_id, int *count);
  */
-export const getCameraSupportedFormats = lib.symbols.SDL_GetCameraSupportedFormats;
+export function getCameraSupportedFormats(instance_id: number): { count: number; ret: Deno.PointerValue } {
+  const ret = lib.symbols.SDL_GetCameraSupportedFormats(instance_id, _p.i32.p0) as Deno.PointerValue;
+  if(!ret) throw new Error(`SDL_GetCameraSupportedFormats: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { count: _p.i32.v0, ret };
+}
 
 /**
  * Get the human-readable device name for a camera.
@@ -217,7 +233,9 @@ export const getCameraSupportedFormats = lib.symbols.SDL_GetCameraSupportedForma
  *
  * @from SDL_camera.h:271 const char * SDL_GetCameraName(SDL_CameraID instance_id);
  */
-export const getCameraName = lib.symbols.SDL_GetCameraName;
+export function getCameraName(instance_id: number): string {
+  return _p.getCstr2(lib.symbols.SDL_GetCameraName(instance_id));
+}
 
 /**
  * Get the position of the camera in relation to the system.
@@ -238,7 +256,9 @@ export const getCameraName = lib.symbols.SDL_GetCameraName;
  *
  * @from SDL_camera.h:290 SDL_CameraPosition SDL_GetCameraPosition(SDL_CameraID instance_id);
  */
-export const getCameraPosition = lib.symbols.SDL_GetCameraPosition;
+export function getCameraPosition(instance_id: number): number {
+  return lib.symbols.SDL_GetCameraPosition(instance_id);
+}
 
 /**
  * Open a video recording device (a "camera").
@@ -287,7 +307,9 @@ export const getCameraPosition = lib.symbols.SDL_GetCameraPosition;
  *
  * @from SDL_camera.h:337 SDL_Camera * SDL_OpenCamera(SDL_CameraID instance_id, const SDL_CameraSpec *spec);
  */
-export const openCamera = lib.symbols.SDL_OpenCamera;
+export function openCamera(instance_id: number, spec: Deno.PointerValue<"SDL_CameraSpec">): Deno.PointerValue<"SDL_Camera"> {
+  return lib.symbols.SDL_OpenCamera(instance_id, spec) as Deno.PointerValue<"SDL_Camera">;
+}
 
 /**
  * Query if camera access has been approved by the user.
@@ -322,7 +344,9 @@ export const openCamera = lib.symbols.SDL_OpenCamera;
  *
  * @from SDL_camera.h:370 int SDL_GetCameraPermissionState(SDL_Camera *camera);
  */
-export const getCameraPermissionState = lib.symbols.SDL_GetCameraPermissionState;
+export function getCameraPermissionState(camera: Deno.PointerValue<"SDL_Camera">): number {
+  return lib.symbols.SDL_GetCameraPermissionState(camera);
+}
 
 /**
  * Get the instance ID of an opened camera.
@@ -339,7 +363,9 @@ export const getCameraPermissionState = lib.symbols.SDL_GetCameraPermissionState
  *
  * @from SDL_camera.h:385 SDL_CameraID SDL_GetCameraID(SDL_Camera *camera);
  */
-export const getCameraId = lib.symbols.SDL_GetCameraID;
+export function getCameraId(camera: Deno.PointerValue<"SDL_Camera">): number {
+  return lib.symbols.SDL_GetCameraID(camera);
+}
 
 /**
  * Get the properties associated with an opened camera.
@@ -354,7 +380,9 @@ export const getCameraId = lib.symbols.SDL_GetCameraID;
  *
  * @from SDL_camera.h:398 SDL_PropertiesID SDL_GetCameraProperties(SDL_Camera *camera);
  */
-export const getCameraProperties = lib.symbols.SDL_GetCameraProperties;
+export function getCameraProperties(camera: Deno.PointerValue<"SDL_Camera">): number {
+  return lib.symbols.SDL_GetCameraProperties(camera);
+}
 
 /**
  * Get the spec that a camera is using when generating images.
@@ -382,7 +410,9 @@ export const getCameraProperties = lib.symbols.SDL_GetCameraProperties;
  *
  * @from SDL_camera.h:424 bool SDL_GetCameraFormat(SDL_Camera *camera, SDL_CameraSpec *spec);
  */
-export const getCameraFormat = lib.symbols.SDL_GetCameraFormat;
+export function getCameraFormat(camera: Deno.PointerValue<"SDL_Camera">, spec: Deno.PointerValue<"SDL_CameraSpec">): boolean {
+  return lib.symbols.SDL_GetCameraFormat(camera, spec);
+}
 
 /**
  * Acquire a frame.
@@ -427,7 +457,11 @@ export const getCameraFormat = lib.symbols.SDL_GetCameraFormat;
  *
  * @from SDL_camera.h:467 SDL_Surface * SDL_AcquireCameraFrame(SDL_Camera *camera, Uint64 *timestampNS);
  */
-export const acquireCameraFrame = lib.symbols.SDL_AcquireCameraFrame;
+export function acquireCameraFrame(camera: Deno.PointerValue<"SDL_Camera">): { timestampNS: bigint; ret: Deno.PointerValue<"SDL_Surface"> } {
+  const ret = lib.symbols.SDL_AcquireCameraFrame(camera, _p.u64.p0) as Deno.PointerValue<"SDL_Surface">;
+  if(!ret) throw new Error(`SDL_AcquireCameraFrame: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { timestampNS: _p.u64.v0, ret };
+}
 
 /**
  * Release a frame of video acquired from a camera.
@@ -457,7 +491,9 @@ export const acquireCameraFrame = lib.symbols.SDL_AcquireCameraFrame;
  *
  * @from SDL_camera.h:495 void SDL_ReleaseCameraFrame(SDL_Camera *camera, SDL_Surface *frame);
  */
-export const releaseCameraFrame = lib.symbols.SDL_ReleaseCameraFrame;
+export function releaseCameraFrame(camera: Deno.PointerValue<"SDL_Camera">, frame: Deno.PointerValue<"SDL_Surface">): void {
+  return lib.symbols.SDL_ReleaseCameraFrame(camera, frame);
+}
 
 /**
  * Use this function to shut down camera processing and close the camera
@@ -474,5 +510,7 @@ export const releaseCameraFrame = lib.symbols.SDL_ReleaseCameraFrame;
  *
  * @from SDL_camera.h:510 void SDL_CloseCamera(SDL_Camera *camera);
  */
-export const closeCamera = lib.symbols.SDL_CloseCamera;
+export function closeCamera(camera: Deno.PointerValue<"SDL_Camera">): void {
+  return lib.symbols.SDL_CloseCamera(camera);
+}
 

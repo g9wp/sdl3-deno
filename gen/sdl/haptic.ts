@@ -116,6 +116,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 /**
  * Get a list of currently connected haptic devices.
@@ -132,7 +134,11 @@ import { lib } from "./lib.ts";
  *
  * @from SDL_haptic.h:954 SDL_HapticID * SDL_GetHaptics(int *count);
  */
-export const getHaptics = lib.symbols.SDL_GetHaptics;
+export function getHaptics(): { count: number; ret: Deno.PointerValue<"SDL_HapticID"> } {
+  const ret = lib.symbols.SDL_GetHaptics(_p.i32.p0) as Deno.PointerValue<"SDL_HapticID">;
+  if(!ret) throw new Error(`SDL_GetHaptics: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { count: _p.i32.v0, ret };
+}
 
 /**
  * Get the implementation dependent name of a haptic device.
@@ -151,7 +157,9 @@ export const getHaptics = lib.symbols.SDL_GetHaptics;
  *
  * @from SDL_haptic.h:971 const char * SDL_GetHapticNameForID(SDL_HapticID instance_id);
  */
-export const getHapticNameForId = lib.symbols.SDL_GetHapticNameForID;
+export function getHapticNameForId(instance_id: number): string {
+  return _p.getCstr2(lib.symbols.SDL_GetHapticNameForID(instance_id));
+}
 
 /**
  * Open a haptic device for use.
@@ -178,7 +186,9 @@ export const getHapticNameForId = lib.symbols.SDL_GetHapticNameForID;
  *
  * @from SDL_haptic.h:996 SDL_Haptic * SDL_OpenHaptic(SDL_HapticID instance_id);
  */
-export const openHaptic = lib.symbols.SDL_OpenHaptic;
+export function openHaptic(instance_id: number): Deno.PointerValue<"SDL_Haptic"> {
+  return lib.symbols.SDL_OpenHaptic(instance_id) as Deno.PointerValue<"SDL_Haptic">;
+}
 
 /**
  * Get the SDL_Haptic associated with an instance ID, if it has been opened.
@@ -191,7 +201,9 @@ export const openHaptic = lib.symbols.SDL_OpenHaptic;
  *
  * @from SDL_haptic.h:1008 SDL_Haptic * SDL_GetHapticFromID(SDL_HapticID instance_id);
  */
-export const getHapticFromId = lib.symbols.SDL_GetHapticFromID;
+export function getHapticFromId(instance_id: number): Deno.PointerValue<"SDL_Haptic"> {
+  return lib.symbols.SDL_GetHapticFromID(instance_id) as Deno.PointerValue<"SDL_Haptic">;
+}
 
 /**
  * Get the instance ID of an opened haptic device.
@@ -204,7 +216,9 @@ export const getHapticFromId = lib.symbols.SDL_GetHapticFromID;
  *
  * @from SDL_haptic.h:1019 SDL_HapticID SDL_GetHapticID(SDL_Haptic *haptic);
  */
-export const getHapticId = lib.symbols.SDL_GetHapticID;
+export function getHapticId(haptic: Deno.PointerValue<"SDL_Haptic">): number {
+  return lib.symbols.SDL_GetHapticID(haptic);
+}
 
 /**
  * Get the implementation dependent name of a haptic device.
@@ -220,7 +234,9 @@ export const getHapticId = lib.symbols.SDL_GetHapticID;
  *
  * @from SDL_haptic.h:1033 const char * SDL_GetHapticName(SDL_Haptic *haptic);
  */
-export const getHapticName = lib.symbols.SDL_GetHapticName;
+export function getHapticName(haptic: Deno.PointerValue<"SDL_Haptic">): string {
+  return _p.getCstr2(lib.symbols.SDL_GetHapticName(haptic));
+}
 
 /**
  * Query whether or not the current mouse has haptic capabilities.
@@ -233,7 +249,9 @@ export const getHapticName = lib.symbols.SDL_GetHapticName;
  *
  * @from SDL_haptic.h:1044 bool SDL_IsMouseHaptic(void);
  */
-export const isMouseHaptic = lib.symbols.SDL_IsMouseHaptic;
+export function isMouseHaptic(): boolean {
+  return lib.symbols.SDL_IsMouseHaptic();
+}
 
 /**
  * Try to open a haptic device from the current mouse.
@@ -248,7 +266,9 @@ export const isMouseHaptic = lib.symbols.SDL_IsMouseHaptic;
  *
  * @from SDL_haptic.h:1057 SDL_Haptic * SDL_OpenHapticFromMouse(void);
  */
-export const openHapticFromMouse = lib.symbols.SDL_OpenHapticFromMouse;
+export function openHapticFromMouse(): Deno.PointerValue<"SDL_Haptic"> {
+  return lib.symbols.SDL_OpenHapticFromMouse() as Deno.PointerValue<"SDL_Haptic">;
+}
 
 /**
  * Query if a joystick has haptic features.
@@ -262,7 +282,9 @@ export const openHapticFromMouse = lib.symbols.SDL_OpenHapticFromMouse;
  *
  * @from SDL_haptic.h:1069 bool SDL_IsJoystickHaptic(SDL_Joystick *joystick);
  */
-export const isJoystickHaptic = lib.symbols.SDL_IsJoystickHaptic;
+export function isJoystickHaptic(joystick: Deno.PointerValue<"SDL_Joystick">): boolean {
+  return lib.symbols.SDL_IsJoystickHaptic(joystick);
+}
 
 /**
  * Open a haptic device for use from a joystick device.
@@ -286,7 +308,9 @@ export const isJoystickHaptic = lib.symbols.SDL_IsJoystickHaptic;
  *
  * @from SDL_haptic.h:1091 SDL_Haptic * SDL_OpenHapticFromJoystick(SDL_Joystick *joystick);
  */
-export const openHapticFromJoystick = lib.symbols.SDL_OpenHapticFromJoystick;
+export function openHapticFromJoystick(joystick: Deno.PointerValue<"SDL_Joystick">): Deno.PointerValue<"SDL_Haptic"> {
+  return lib.symbols.SDL_OpenHapticFromJoystick(joystick) as Deno.PointerValue<"SDL_Haptic">;
+}
 
 /**
  * Close a haptic device previously opened with SDL_OpenHaptic().
@@ -299,7 +323,9 @@ export const openHapticFromJoystick = lib.symbols.SDL_OpenHapticFromJoystick;
  *
  * @from SDL_haptic.h:1102 void SDL_CloseHaptic(SDL_Haptic *haptic);
  */
-export const closeHaptic = lib.symbols.SDL_CloseHaptic;
+export function closeHaptic(haptic: Deno.PointerValue<"SDL_Haptic">): void {
+  return lib.symbols.SDL_CloseHaptic(haptic);
+}
 
 /**
  * Get the number of effects a haptic device can store.
@@ -319,7 +345,9 @@ export const closeHaptic = lib.symbols.SDL_CloseHaptic;
  *
  * @from SDL_haptic.h:1120 int SDL_GetMaxHapticEffects(SDL_Haptic *haptic);
  */
-export const getMaxHapticEffects = lib.symbols.SDL_GetMaxHapticEffects;
+export function getMaxHapticEffects(haptic: Deno.PointerValue<"SDL_Haptic">): number {
+  return lib.symbols.SDL_GetMaxHapticEffects(haptic);
+}
 
 /**
  * Get the number of effects a haptic device can play at the same time.
@@ -337,7 +365,9 @@ export const getMaxHapticEffects = lib.symbols.SDL_GetMaxHapticEffects;
  *
  * @from SDL_haptic.h:1136 int SDL_GetMaxHapticEffectsPlaying(SDL_Haptic *haptic);
  */
-export const getMaxHapticEffectsPlaying = lib.symbols.SDL_GetMaxHapticEffectsPlaying;
+export function getMaxHapticEffectsPlaying(haptic: Deno.PointerValue<"SDL_Haptic">): number {
+  return lib.symbols.SDL_GetMaxHapticEffectsPlaying(haptic);
+}
 
 /**
  * Get the haptic device's supported features in bitwise manner.
@@ -353,7 +383,9 @@ export const getMaxHapticEffectsPlaying = lib.symbols.SDL_GetMaxHapticEffectsPla
  *
  * @from SDL_haptic.h:1150 Uint32 SDL_GetHapticFeatures(SDL_Haptic *haptic);
  */
-export const getHapticFeatures = lib.symbols.SDL_GetHapticFeatures;
+export function getHapticFeatures(haptic: Deno.PointerValue<"SDL_Haptic">): number {
+  return lib.symbols.SDL_GetHapticFeatures(haptic);
+}
 
 /**
  * Get the number of haptic axes the device has.
@@ -369,7 +401,9 @@ export const getHapticFeatures = lib.symbols.SDL_GetHapticFeatures;
  *
  * @from SDL_haptic.h:1164 int SDL_GetNumHapticAxes(SDL_Haptic *haptic);
  */
-export const getNumHapticAxes = lib.symbols.SDL_GetNumHapticAxes;
+export function getNumHapticAxes(haptic: Deno.PointerValue<"SDL_Haptic">): number {
+  return lib.symbols.SDL_GetNumHapticAxes(haptic);
+}
 
 /**
  * Check to see if an effect is supported by a haptic device.
@@ -385,7 +419,9 @@ export const getNumHapticAxes = lib.symbols.SDL_GetNumHapticAxes;
  *
  * @from SDL_haptic.h:1178 bool SDL_HapticEffectSupported(SDL_Haptic *haptic, const SDL_HapticEffect *effect);
  */
-export const hapticEffectSupported = lib.symbols.SDL_HapticEffectSupported;
+export function hapticEffectSupported(haptic: Deno.PointerValue<"SDL_Haptic">, effect: Deno.PointerValue<"SDL_HapticEffect">): boolean {
+  return lib.symbols.SDL_HapticEffectSupported(haptic, effect);
+}
 
 /**
  * Create a new haptic effect on a specified device.
@@ -404,7 +440,9 @@ export const hapticEffectSupported = lib.symbols.SDL_HapticEffectSupported;
  *
  * @from SDL_haptic.h:1195 int SDL_CreateHapticEffect(SDL_Haptic *haptic, const SDL_HapticEffect *effect);
  */
-export const createHapticEffect = lib.symbols.SDL_CreateHapticEffect;
+export function createHapticEffect(haptic: Deno.PointerValue<"SDL_Haptic">, effect: Deno.PointerValue<"SDL_HapticEffect">): number {
+  return lib.symbols.SDL_CreateHapticEffect(haptic, effect);
+}
 
 /**
  * Update the properties of an effect.
@@ -428,7 +466,9 @@ export const createHapticEffect = lib.symbols.SDL_CreateHapticEffect;
  *
  * @from SDL_haptic.h:1217 bool SDL_UpdateHapticEffect(SDL_Haptic *haptic, int effect, const SDL_HapticEffect *data);
  */
-export const updateHapticEffect = lib.symbols.SDL_UpdateHapticEffect;
+export function updateHapticEffect(haptic: Deno.PointerValue<"SDL_Haptic">, effect: number, data: Deno.PointerValue<"SDL_HapticEffect">): boolean {
+  return lib.symbols.SDL_UpdateHapticEffect(haptic, effect, data);
+}
 
 /**
  * Run the haptic effect on its associated haptic device.
@@ -454,7 +494,9 @@ export const updateHapticEffect = lib.symbols.SDL_UpdateHapticEffect;
  *
  * @from SDL_haptic.h:1241 bool SDL_RunHapticEffect(SDL_Haptic *haptic, int effect, Uint32 iterations);
  */
-export const runHapticEffect = lib.symbols.SDL_RunHapticEffect;
+export function runHapticEffect(haptic: Deno.PointerValue<"SDL_Haptic">, effect: number, iterations: number): boolean {
+  return lib.symbols.SDL_RunHapticEffect(haptic, effect, iterations);
+}
 
 /**
  * Stop the haptic effect on its associated haptic device.
@@ -471,7 +513,9 @@ export const runHapticEffect = lib.symbols.SDL_RunHapticEffect;
  *
  * @from SDL_haptic.h:1256 bool SDL_StopHapticEffect(SDL_Haptic *haptic, int effect);
  */
-export const stopHapticEffect = lib.symbols.SDL_StopHapticEffect;
+export function stopHapticEffect(haptic: Deno.PointerValue<"SDL_Haptic">, effect: number): boolean {
+  return lib.symbols.SDL_StopHapticEffect(haptic, effect);
+}
 
 /**
  * Destroy a haptic effect on the device.
@@ -488,7 +532,9 @@ export const stopHapticEffect = lib.symbols.SDL_StopHapticEffect;
  *
  * @from SDL_haptic.h:1271 void SDL_DestroyHapticEffect(SDL_Haptic *haptic, int effect);
  */
-export const destroyHapticEffect = lib.symbols.SDL_DestroyHapticEffect;
+export function destroyHapticEffect(haptic: Deno.PointerValue<"SDL_Haptic">, effect: number): void {
+  return lib.symbols.SDL_DestroyHapticEffect(haptic, effect);
+}
 
 /**
  * Get the status of the current effect on the specified haptic device.
@@ -506,7 +552,9 @@ export const destroyHapticEffect = lib.symbols.SDL_DestroyHapticEffect;
  *
  * @from SDL_haptic.h:1287 bool SDL_GetHapticEffectStatus(SDL_Haptic *haptic, int effect);
  */
-export const getHapticEffectStatus = lib.symbols.SDL_GetHapticEffectStatus;
+export function getHapticEffectStatus(haptic: Deno.PointerValue<"SDL_Haptic">, effect: number): boolean {
+  return lib.symbols.SDL_GetHapticEffectStatus(haptic, effect);
+}
 
 /**
  * Set the global gain of the specified haptic device.
@@ -530,7 +578,9 @@ export const getHapticEffectStatus = lib.symbols.SDL_GetHapticEffectStatus;
  *
  * @from SDL_haptic.h:1309 bool SDL_SetHapticGain(SDL_Haptic *haptic, int gain);
  */
-export const setHapticGain = lib.symbols.SDL_SetHapticGain;
+export function setHapticGain(haptic: Deno.PointerValue<"SDL_Haptic">, gain: number): boolean {
+  return lib.symbols.SDL_SetHapticGain(haptic, gain);
+}
 
 /**
  * Set the global autocenter of the device.
@@ -551,7 +601,9 @@ export const setHapticGain = lib.symbols.SDL_SetHapticGain;
  *
  * @from SDL_haptic.h:1328 bool SDL_SetHapticAutocenter(SDL_Haptic *haptic, int autocenter);
  */
-export const setHapticAutocenter = lib.symbols.SDL_SetHapticAutocenter;
+export function setHapticAutocenter(haptic: Deno.PointerValue<"SDL_Haptic">, autocenter: number): boolean {
+  return lib.symbols.SDL_SetHapticAutocenter(haptic, autocenter);
+}
 
 /**
  * Pause a haptic device.
@@ -572,7 +624,9 @@ export const setHapticAutocenter = lib.symbols.SDL_SetHapticAutocenter;
  *
  * @from SDL_haptic.h:1347 bool SDL_PauseHaptic(SDL_Haptic *haptic);
  */
-export const pauseHaptic = lib.symbols.SDL_PauseHaptic;
+export function pauseHaptic(haptic: Deno.PointerValue<"SDL_Haptic">): boolean {
+  return lib.symbols.SDL_PauseHaptic(haptic);
+}
 
 /**
  * Resume a haptic device.
@@ -589,7 +643,9 @@ export const pauseHaptic = lib.symbols.SDL_PauseHaptic;
  *
  * @from SDL_haptic.h:1362 bool SDL_ResumeHaptic(SDL_Haptic *haptic);
  */
-export const resumeHaptic = lib.symbols.SDL_ResumeHaptic;
+export function resumeHaptic(haptic: Deno.PointerValue<"SDL_Haptic">): boolean {
+  return lib.symbols.SDL_ResumeHaptic(haptic);
+}
 
 /**
  * Stop all the currently playing effects on a haptic device.
@@ -605,7 +661,9 @@ export const resumeHaptic = lib.symbols.SDL_ResumeHaptic;
  *
  * @from SDL_haptic.h:1376 bool SDL_StopHapticEffects(SDL_Haptic *haptic);
  */
-export const stopHapticEffects = lib.symbols.SDL_StopHapticEffects;
+export function stopHapticEffects(haptic: Deno.PointerValue<"SDL_Haptic">): boolean {
+  return lib.symbols.SDL_StopHapticEffects(haptic);
+}
 
 /**
  * Check whether rumble is supported on a haptic device.
@@ -619,7 +677,9 @@ export const stopHapticEffects = lib.symbols.SDL_StopHapticEffects;
  *
  * @from SDL_haptic.h:1388 bool SDL_HapticRumbleSupported(SDL_Haptic *haptic);
  */
-export const hapticRumbleSupported = lib.symbols.SDL_HapticRumbleSupported;
+export function hapticRumbleSupported(haptic: Deno.PointerValue<"SDL_Haptic">): boolean {
+  return lib.symbols.SDL_HapticRumbleSupported(haptic);
+}
 
 /**
  * Initialize a haptic device for simple rumble playback.
@@ -636,7 +696,9 @@ export const hapticRumbleSupported = lib.symbols.SDL_HapticRumbleSupported;
  *
  * @from SDL_haptic.h:1403 bool SDL_InitHapticRumble(SDL_Haptic *haptic);
  */
-export const initHapticRumble = lib.symbols.SDL_InitHapticRumble;
+export function initHapticRumble(haptic: Deno.PointerValue<"SDL_Haptic">): boolean {
+  return lib.symbols.SDL_InitHapticRumble(haptic);
+}
 
 /**
  * Run a simple rumble effect on a haptic device.
@@ -654,7 +716,9 @@ export const initHapticRumble = lib.symbols.SDL_InitHapticRumble;
  *
  * @from SDL_haptic.h:1419 bool SDL_PlayHapticRumble(SDL_Haptic *haptic, float strength, Uint32 length);
  */
-export const playHapticRumble = lib.symbols.SDL_PlayHapticRumble;
+export function playHapticRumble(haptic: Deno.PointerValue<"SDL_Haptic">, strength: number, length: number): boolean {
+  return lib.symbols.SDL_PlayHapticRumble(haptic, strength, length);
+}
 
 /**
  * Stop the simple rumble on a haptic device.
@@ -669,5 +733,7 @@ export const playHapticRumble = lib.symbols.SDL_PlayHapticRumble;
  *
  * @from SDL_haptic.h:1432 bool SDL_StopHapticRumble(SDL_Haptic *haptic);
  */
-export const stopHapticRumble = lib.symbols.SDL_StopHapticRumble;
+export function stopHapticRumble(haptic: Deno.PointerValue<"SDL_Haptic">): boolean {
+  return lib.symbols.SDL_StopHapticRumble(haptic);
+}
 

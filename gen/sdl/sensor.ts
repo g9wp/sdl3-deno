@@ -34,6 +34,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   SDL_SensorType as SENSOR,
@@ -50,9 +52,13 @@ export {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:157 SDL_SensorID * SDL_GetSensors(int *count);
+ * @from SDL_sensor.h:158 SDL_SensorID * SDL_GetSensors(int *count);
  */
-export const getSensors = lib.symbols.SDL_GetSensors;
+export function getSensors(): { count: number; ret: Deno.PointerValue<"SDL_SensorID"> } {
+  const ret = lib.symbols.SDL_GetSensors(_p.i32.p0) as Deno.PointerValue<"SDL_SensorID">;
+  if(!ret) throw new Error(`SDL_GetSensors: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { count: _p.i32.v0, ret };
+}
 
 /**
  * Get the implementation dependent name of a sensor.
@@ -64,9 +70,11 @@ export const getSensors = lib.symbols.SDL_GetSensors;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:169 const char * SDL_GetSensorNameForID(SDL_SensorID instance_id);
+ * @from SDL_sensor.h:170 const char * SDL_GetSensorNameForID(SDL_SensorID instance_id);
  */
-export const getSensorNameForId = lib.symbols.SDL_GetSensorNameForID;
+export function getSensorNameForId(instance_id: number): string {
+  return _p.getCstr2(lib.symbols.SDL_GetSensorNameForID(instance_id));
+}
 
 /**
  * Get the type of a sensor.
@@ -79,9 +87,11 @@ export const getSensorNameForId = lib.symbols.SDL_GetSensorNameForID;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:182 SDL_SensorType SDL_GetSensorTypeForID(SDL_SensorID instance_id);
+ * @from SDL_sensor.h:183 SDL_SensorType SDL_GetSensorTypeForID(SDL_SensorID instance_id);
  */
-export const getSensorTypeForId = lib.symbols.SDL_GetSensorTypeForID;
+export function getSensorTypeForId(instance_id: number): number {
+  return lib.symbols.SDL_GetSensorTypeForID(instance_id);
+}
 
 /**
  * Get the platform dependent type of a sensor.
@@ -94,9 +104,11 @@ export const getSensorTypeForId = lib.symbols.SDL_GetSensorTypeForID;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:195 int SDL_GetSensorNonPortableTypeForID(SDL_SensorID instance_id);
+ * @from SDL_sensor.h:196 int SDL_GetSensorNonPortableTypeForID(SDL_SensorID instance_id);
  */
-export const getSensorNonPortableTypeForId = lib.symbols.SDL_GetSensorNonPortableTypeForID;
+export function getSensorNonPortableTypeForId(instance_id: number): number {
+  return lib.symbols.SDL_GetSensorNonPortableTypeForID(instance_id);
+}
 
 /**
  * Open a sensor for use.
@@ -107,9 +119,11 @@ export const getSensorNonPortableTypeForId = lib.symbols.SDL_GetSensorNonPortabl
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:206 SDL_Sensor * SDL_OpenSensor(SDL_SensorID instance_id);
+ * @from SDL_sensor.h:207 SDL_Sensor * SDL_OpenSensor(SDL_SensorID instance_id);
  */
-export const openSensor = lib.symbols.SDL_OpenSensor;
+export function openSensor(instance_id: number): Deno.PointerValue<"SDL_Sensor"> {
+  return lib.symbols.SDL_OpenSensor(instance_id) as Deno.PointerValue<"SDL_Sensor">;
+}
 
 /**
  * Return the SDL_Sensor associated with an instance ID.
@@ -120,9 +134,11 @@ export const openSensor = lib.symbols.SDL_OpenSensor;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:217 SDL_Sensor * SDL_GetSensorFromID(SDL_SensorID instance_id);
+ * @from SDL_sensor.h:218 SDL_Sensor * SDL_GetSensorFromID(SDL_SensorID instance_id);
  */
-export const getSensorFromId = lib.symbols.SDL_GetSensorFromID;
+export function getSensorFromId(instance_id: number): Deno.PointerValue<"SDL_Sensor"> {
+  return lib.symbols.SDL_GetSensorFromID(instance_id) as Deno.PointerValue<"SDL_Sensor">;
+}
 
 /**
  * Get the properties associated with a sensor.
@@ -133,9 +149,11 @@ export const getSensorFromId = lib.symbols.SDL_GetSensorFromID;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:228 SDL_PropertiesID SDL_GetSensorProperties(SDL_Sensor *sensor);
+ * @from SDL_sensor.h:229 SDL_PropertiesID SDL_GetSensorProperties(SDL_Sensor *sensor);
  */
-export const getSensorProperties = lib.symbols.SDL_GetSensorProperties;
+export function getSensorProperties(sensor: Deno.PointerValue<"SDL_Sensor">): number {
+  return lib.symbols.SDL_GetSensorProperties(sensor);
+}
 
 /**
  * Get the implementation dependent name of a sensor.
@@ -146,9 +164,11 @@ export const getSensorProperties = lib.symbols.SDL_GetSensorProperties;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:239 const char * SDL_GetSensorName(SDL_Sensor *sensor);
+ * @from SDL_sensor.h:240 const char * SDL_GetSensorName(SDL_Sensor *sensor);
  */
-export const getSensorName = lib.symbols.SDL_GetSensorName;
+export function getSensorName(sensor: Deno.PointerValue<"SDL_Sensor">): string {
+  return _p.getCstr2(lib.symbols.SDL_GetSensorName(sensor));
+}
 
 /**
  * Get the type of a sensor.
@@ -159,9 +179,11 @@ export const getSensorName = lib.symbols.SDL_GetSensorName;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:250 SDL_SensorType SDL_GetSensorType(SDL_Sensor *sensor);
+ * @from SDL_sensor.h:251 SDL_SensorType SDL_GetSensorType(SDL_Sensor *sensor);
  */
-export const getSensorType = lib.symbols.SDL_GetSensorType;
+export function getSensorType(sensor: Deno.PointerValue<"SDL_Sensor">): number {
+  return lib.symbols.SDL_GetSensorType(sensor);
+}
 
 /**
  * Get the platform dependent type of a sensor.
@@ -171,9 +193,11 @@ export const getSensorType = lib.symbols.SDL_GetSensorType;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:260 int SDL_GetSensorNonPortableType(SDL_Sensor *sensor);
+ * @from SDL_sensor.h:261 int SDL_GetSensorNonPortableType(SDL_Sensor *sensor);
  */
-export const getSensorNonPortableType = lib.symbols.SDL_GetSensorNonPortableType;
+export function getSensorNonPortableType(sensor: Deno.PointerValue<"SDL_Sensor">): number {
+  return lib.symbols.SDL_GetSensorNonPortableType(sensor);
+}
 
 /**
  * Get the instance ID of a sensor.
@@ -184,9 +208,11 @@ export const getSensorNonPortableType = lib.symbols.SDL_GetSensorNonPortableType
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:271 SDL_SensorID SDL_GetSensorID(SDL_Sensor *sensor);
+ * @from SDL_sensor.h:272 SDL_SensorID SDL_GetSensorID(SDL_Sensor *sensor);
  */
-export const getSensorId = lib.symbols.SDL_GetSensorID;
+export function getSensorId(sensor: Deno.PointerValue<"SDL_Sensor">): number {
+  return lib.symbols.SDL_GetSensorID(sensor);
+}
 
 /**
  * Get the current state of an opened sensor.
@@ -201,9 +227,13 @@ export const getSensorId = lib.symbols.SDL_GetSensorID;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:286 bool SDL_GetSensorData(SDL_Sensor *sensor, float *data, int num_values);
+ * @from SDL_sensor.h:287 bool SDL_GetSensorData(SDL_Sensor *sensor, float *data, int num_values);
  */
-export const getSensorData = lib.symbols.SDL_GetSensorData;
+export function getSensorData(sensor: Deno.PointerValue<"SDL_Sensor">, num_values: number): number {
+  if(!lib.symbols.SDL_GetSensorData(sensor, _p.f32.p0, num_values))
+    throw new Error(`SDL_GetSensorData: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.f32.v0;
+}
 
 /**
  * Close a sensor previously opened with SDL_OpenSensor().
@@ -212,9 +242,11 @@ export const getSensorData = lib.symbols.SDL_GetSensorData;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:295 void SDL_CloseSensor(SDL_Sensor *sensor);
+ * @from SDL_sensor.h:296 void SDL_CloseSensor(SDL_Sensor *sensor);
  */
-export const closeSensor = lib.symbols.SDL_CloseSensor;
+export function closeSensor(sensor: Deno.PointerValue<"SDL_Sensor">): void {
+  return lib.symbols.SDL_CloseSensor(sensor);
+}
 
 /**
  * Update the current state of the open sensors.
@@ -227,7 +259,9 @@ export const closeSensor = lib.symbols.SDL_CloseSensor;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:308 void SDL_UpdateSensors(void);
+ * @from SDL_sensor.h:309 void SDL_UpdateSensors(void);
  */
-export const updateSensors = lib.symbols.SDL_UpdateSensors;
+export function updateSensors(): void {
+  return lib.symbols.SDL_UpdateSensors();
+}
 

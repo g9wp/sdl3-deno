@@ -29,6 +29,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 /**
  * Determine whether two rectangles intersect.
@@ -47,7 +49,11 @@ import { lib } from "./lib.ts";
  *
  * @from SDL_rect.h:223 bool SDL_HasRectIntersection(const SDL_Rect *A, const SDL_Rect *B);
  */
-export const hasRectIntersection = lib.symbols.SDL_HasRectIntersection;
+export function hasRectIntersection(A: { x: number; y: number; w: number; h: number; } | null, B: { x: number; y: number; w: number; h: number; } | null): boolean {
+  if (A) _p.i32.arr.set([A.x, A.y, A.w, A.h], 0);
+  if (B) _p.i32.arr.set([B.x, B.y, B.w, B.h], 4);
+  return lib.symbols.SDL_HasRectIntersection(_p.i32.p0, _p.i32.p4);
+}
 
 /**
  * Calculate the intersection of two rectangles.
@@ -66,7 +72,13 @@ export const hasRectIntersection = lib.symbols.SDL_HasRectIntersection;
  *
  * @from SDL_rect.h:240 bool SDL_GetRectIntersection(const SDL_Rect *A, const SDL_Rect *B, SDL_Rect *result);
  */
-export const getRectIntersection = lib.symbols.SDL_GetRectIntersection;
+export function getRectIntersection(A: { x: number; y: number; w: number; h: number; } | null, B: { x: number; y: number; w: number; h: number; } | null): { x: number; y: number; w: number; h: number; } | null {
+  if (A) _p.i32.arr.set([A.x, A.y, A.w, A.h], 0);
+  if (B) _p.i32.arr.set([B.x, B.y, B.w, B.h], 4);
+  if(!lib.symbols.SDL_GetRectIntersection(_p.i32.p0, _p.i32.p4, _p.i32.p(8)))
+    throw new Error(`SDL_GetRectIntersection: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { x: _p.i32.v(8), y: _p.i32.v(9), w: _p.i32.v(10), h: _p.i32.v(11), };
+}
 
 /**
  * Calculate the union of two rectangles.
@@ -82,7 +94,13 @@ export const getRectIntersection = lib.symbols.SDL_GetRectIntersection;
  *
  * @from SDL_rect.h:254 bool SDL_GetRectUnion(const SDL_Rect *A, const SDL_Rect *B, SDL_Rect *result);
  */
-export const getRectUnion = lib.symbols.SDL_GetRectUnion;
+export function getRectUnion(A: { x: number; y: number; w: number; h: number; } | null, B: { x: number; y: number; w: number; h: number; } | null): { x: number; y: number; w: number; h: number; } | null {
+  if (A) _p.i32.arr.set([A.x, A.y, A.w, A.h], 0);
+  if (B) _p.i32.arr.set([B.x, B.y, B.w, B.h], 4);
+  if(!lib.symbols.SDL_GetRectUnion(_p.i32.p0, _p.i32.p4, _p.i32.p(8)))
+    throw new Error(`SDL_GetRectUnion: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { x: _p.i32.v(8), y: _p.i32.v(9), w: _p.i32.v(10), h: _p.i32.v(11), };
+}
 
 /**
  * Calculate a minimal rectangle enclosing a set of points.
@@ -103,7 +121,13 @@ export const getRectUnion = lib.symbols.SDL_GetRectUnion;
  *
  * @from SDL_rect.h:273 bool SDL_GetRectEnclosingPoints(const SDL_Point *points, int count, const SDL_Rect *clip, SDL_Rect *result);
  */
-export const getRectEnclosingPoints = lib.symbols.SDL_GetRectEnclosingPoints;
+export function getRectEnclosingPoints(points: { x: number; y: number; } | null, count: number, clip: { x: number; y: number; w: number; h: number; } | null): { x: number; y: number; w: number; h: number; } | null {
+  if (points) _p.i32.arr.set([points.x, points.y], 0);
+  if (clip) _p.i32.arr.set([clip.x, clip.y, clip.w, clip.h], 2);
+  if(!lib.symbols.SDL_GetRectEnclosingPoints(_p.i32.p0, count, _p.i32.p2, _p.i32.p6))
+    throw new Error(`SDL_GetRectEnclosingPoints: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { x: _p.i32.v6, y: _p.i32.v7, w: _p.i32.v(8), h: _p.i32.v(9), };
+}
 
 /**
  * Calculate the intersection of a rectangle and line segment.
@@ -125,7 +149,22 @@ export const getRectEnclosingPoints = lib.symbols.SDL_GetRectEnclosingPoints;
  *
  * @from SDL_rect.h:293 bool SDL_GetRectAndLineIntersection(const SDL_Rect *rect, int *X1, int *Y1, int *X2, int *Y2);
  */
-export const getRectAndLineIntersection = lib.symbols.SDL_GetRectAndLineIntersection;
+export function getRectAndLineIntersection(
+    rect: { x: number; y: number; w: number; h: number; } | null,
+    X1: number,
+    Y1: number,
+    X2: number,
+    Y2: number,
+): { X1: number; Y1: number; X2: number; Y2: number } {
+  if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
+  _p.i32.arr[4] = X1;
+  _p.i32.arr[5] = Y1;
+  _p.i32.arr[6] = X2;
+  _p.i32.arr[7] = Y2;
+  if(!lib.symbols.SDL_GetRectAndLineIntersection(_p.i32.p0, _p.i32.p4, _p.i32.p5, _p.i32.p6, _p.i32.p7))
+    throw new Error(`SDL_GetRectAndLineIntersection: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { X1: _p.i32.v4, Y1: _p.i32.v5, X2: _p.i32.v6, Y2: _p.i32.v7 };
+}
 
 /**
  * Determine whether two rectangles intersect with float precision.
@@ -142,7 +181,11 @@ export const getRectAndLineIntersection = lib.symbols.SDL_GetRectAndLineIntersec
  *
  * @from SDL_rect.h:426 bool SDL_HasRectIntersectionFloat(const SDL_FRect *A, const SDL_FRect *B);
  */
-export const hasRectIntersectionFloat = lib.symbols.SDL_HasRectIntersectionFloat;
+export function hasRectIntersectionFloat(A: { x: number; y: number; w: number; h: number; } | null, B: { x: number; y: number; w: number; h: number; } | null): boolean {
+  if (A) _p.f32.arr.set([A.x, A.y, A.w, A.h], 0);
+  if (B) _p.f32.arr.set([B.x, B.y, B.w, B.h], 4);
+  return lib.symbols.SDL_HasRectIntersectionFloat(_p.f32.p0, _p.f32.p4);
+}
 
 /**
  * Calculate the intersection of two rectangles with float precision.
@@ -161,7 +204,13 @@ export const hasRectIntersectionFloat = lib.symbols.SDL_HasRectIntersectionFloat
  *
  * @from SDL_rect.h:443 bool SDL_GetRectIntersectionFloat(const SDL_FRect *A, const SDL_FRect *B, SDL_FRect *result);
  */
-export const getRectIntersectionFloat = lib.symbols.SDL_GetRectIntersectionFloat;
+export function getRectIntersectionFloat(A: { x: number; y: number; w: number; h: number; } | null, B: { x: number; y: number; w: number; h: number; } | null): { x: number; y: number; w: number; h: number; } | null {
+  if (A) _p.f32.arr.set([A.x, A.y, A.w, A.h], 0);
+  if (B) _p.f32.arr.set([B.x, B.y, B.w, B.h], 4);
+  if(!lib.symbols.SDL_GetRectIntersectionFloat(_p.f32.p0, _p.f32.p4, _p.f32.p(8)))
+    throw new Error(`SDL_GetRectIntersectionFloat: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { x: _p.f32.v(8), y: _p.f32.v(9), w: _p.f32.v(10), h: _p.f32.v(11), };
+}
 
 /**
  * Calculate the union of two rectangles with float precision.
@@ -177,7 +226,13 @@ export const getRectIntersectionFloat = lib.symbols.SDL_GetRectIntersectionFloat
  *
  * @from SDL_rect.h:457 bool SDL_GetRectUnionFloat(const SDL_FRect *A, const SDL_FRect *B, SDL_FRect *result);
  */
-export const getRectUnionFloat = lib.symbols.SDL_GetRectUnionFloat;
+export function getRectUnionFloat(A: { x: number; y: number; w: number; h: number; } | null, B: { x: number; y: number; w: number; h: number; } | null): { x: number; y: number; w: number; h: number; } | null {
+  if (A) _p.f32.arr.set([A.x, A.y, A.w, A.h], 0);
+  if (B) _p.f32.arr.set([B.x, B.y, B.w, B.h], 4);
+  if(!lib.symbols.SDL_GetRectUnionFloat(_p.f32.p0, _p.f32.p4, _p.f32.p(8)))
+    throw new Error(`SDL_GetRectUnionFloat: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { x: _p.f32.v(8), y: _p.f32.v(9), w: _p.f32.v(10), h: _p.f32.v(11), };
+}
 
 /**
  * Calculate a minimal rectangle enclosing a set of points with float
@@ -199,7 +254,13 @@ export const getRectUnionFloat = lib.symbols.SDL_GetRectUnionFloat;
  *
  * @from SDL_rect.h:477 bool SDL_GetRectEnclosingPointsFloat(const SDL_FPoint *points, int count, const SDL_FRect *clip, SDL_FRect *result);
  */
-export const getRectEnclosingPointsFloat = lib.symbols.SDL_GetRectEnclosingPointsFloat;
+export function getRectEnclosingPointsFloat(points: { x: number; y: number; } | null, count: number, clip: { x: number; y: number; w: number; h: number; } | null): { x: number; y: number; w: number; h: number; } | null {
+  if (points) _p.f32.arr.set([points.x, points.y], 0);
+  if (clip) _p.f32.arr.set([clip.x, clip.y, clip.w, clip.h], 2);
+  if(!lib.symbols.SDL_GetRectEnclosingPointsFloat(_p.f32.p0, count, _p.f32.p2, _p.f32.p6))
+    throw new Error(`SDL_GetRectEnclosingPointsFloat: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { x: _p.f32.v6, y: _p.f32.v7, w: _p.f32.v(8), h: _p.f32.v(9), };
+}
 
 /**
  * Calculate the intersection of a rectangle and line segment with float
@@ -222,5 +283,20 @@ export const getRectEnclosingPointsFloat = lib.symbols.SDL_GetRectEnclosingPoint
  *
  * @from SDL_rect.h:498 bool SDL_GetRectAndLineIntersectionFloat(const SDL_FRect *rect, float *X1, float *Y1, float *X2, float *Y2);
  */
-export const getRectAndLineIntersectionFloat = lib.symbols.SDL_GetRectAndLineIntersectionFloat;
+export function getRectAndLineIntersectionFloat(
+    rect: { x: number; y: number; w: number; h: number; } | null,
+    X1: number,
+    Y1: number,
+    X2: number,
+    Y2: number,
+): { X1: number; Y1: number; X2: number; Y2: number } {
+  if (rect) _p.f32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
+  _p.f32.arr[4] = X1;
+  _p.f32.arr[5] = Y1;
+  _p.f32.arr[6] = X2;
+  _p.f32.arr[7] = Y2;
+  if(!lib.symbols.SDL_GetRectAndLineIntersectionFloat(_p.f32.p0, _p.f32.p4, _p.f32.p5, _p.f32.p6, _p.f32.p7))
+    throw new Error(`SDL_GetRectAndLineIntersectionFloat: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { X1: _p.f32.v4, Y1: _p.f32.v5, X2: _p.f32.v6, Y2: _p.f32.v7 };
+}
 

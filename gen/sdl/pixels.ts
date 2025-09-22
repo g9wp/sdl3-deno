@@ -80,6 +80,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   SDL_PixelType as PIXELTYPE,
@@ -110,7 +112,9 @@ export {
  *
  * @from SDL_pixels.h:1184 const char * SDL_GetPixelFormatName(SDL_PixelFormat format);
  */
-export const getPixelFormatName = lib.symbols.SDL_GetPixelFormatName;
+export function getPixelFormatName(format: number): string {
+  return _p.getCstr2(lib.symbols.SDL_GetPixelFormatName(format));
+}
 
 /**
  * Convert one of the enumerated pixel formats to a bpp value and RGBA masks.
@@ -132,7 +136,11 @@ export const getPixelFormatName = lib.symbols.SDL_GetPixelFormatName;
  *
  * @from SDL_pixels.h:1204 bool SDL_GetMasksForPixelFormat(SDL_PixelFormat format, int *bpp, Uint32 *Rmask, Uint32 *Gmask, Uint32 *Bmask, Uint32 *Amask);
  */
-export const getMasksForPixelFormat = lib.symbols.SDL_GetMasksForPixelFormat;
+export function getMasksForPixelFormat(format: number): { bpp: number; Rmask: number; Gmask: number; Bmask: number; Amask: number } {
+  if(!lib.symbols.SDL_GetMasksForPixelFormat(format, _p.i32.p0, _p.u32.p0, _p.u32.p1, _p.u32.p2, _p.u32.p3))
+    throw new Error(`SDL_GetMasksForPixelFormat: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { bpp: _p.i32.v0, Rmask: _p.u32.v0, Gmask: _p.u32.v1, Bmask: _p.u32.v2, Amask: _p.u32.v3 };
+}
 
 /**
  * Convert a bpp value and RGBA masks to an enumerated pixel format.
@@ -156,7 +164,15 @@ export const getMasksForPixelFormat = lib.symbols.SDL_GetMasksForPixelFormat;
  *
  * @from SDL_pixels.h:1226 SDL_PixelFormat SDL_GetPixelFormatForMasks(int bpp, Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask);
  */
-export const getPixelFormatForMasks = lib.symbols.SDL_GetPixelFormatForMasks;
+export function getPixelFormatForMasks(
+    bpp: number,
+    Rmask: number,
+    Gmask: number,
+    Bmask: number,
+    Amask: number,
+): number {
+  return lib.symbols.SDL_GetPixelFormatForMasks(bpp, Rmask, Gmask, Bmask, Amask);
+}
 
 /**
  * Create an SDL_PixelFormatDetails structure corresponding to a pixel format.
@@ -175,7 +191,9 @@ export const getPixelFormatForMasks = lib.symbols.SDL_GetPixelFormatForMasks;
  *
  * @from SDL_pixels.h:1243 const SDL_PixelFormatDetails * SDL_GetPixelFormatDetails(SDL_PixelFormat format);
  */
-export const getPixelFormatDetails = lib.symbols.SDL_GetPixelFormatDetails;
+export function getPixelFormatDetails(format: number): Deno.PointerValue<"SDL_PixelFormatDetails"> {
+  return lib.symbols.SDL_GetPixelFormatDetails(format) as Deno.PointerValue<"SDL_PixelFormatDetails">;
+}
 
 /**
  * Create a palette structure with the specified number of color entries.
@@ -197,7 +215,9 @@ export const getPixelFormatDetails = lib.symbols.SDL_GetPixelFormatDetails;
  *
  * @from SDL_pixels.h:1263 SDL_Palette * SDL_CreatePalette(int ncolors);
  */
-export const createPalette = lib.symbols.SDL_CreatePalette;
+export function createPalette(ncolors: number): Deno.PointerValue<"SDL_Palette"> {
+  return lib.symbols.SDL_CreatePalette(ncolors) as Deno.PointerValue<"SDL_Palette">;
+}
 
 /**
  * Set a range of colors in a palette.
@@ -216,7 +236,15 @@ export const createPalette = lib.symbols.SDL_CreatePalette;
  *
  * @from SDL_pixels.h:1280 bool SDL_SetPaletteColors(SDL_Palette *palette, const SDL_Color *colors, int firstcolor, int ncolors);
  */
-export const setPaletteColors = lib.symbols.SDL_SetPaletteColors;
+export function setPaletteColors(
+    palette: Deno.PointerValue<"SDL_Palette">,
+    colors: { r: number; g: number; b: number; a: number; } | null,
+    firstcolor: number,
+    ncolors: number,
+): boolean {
+  if (colors) _p.u8.arr.set([colors.r, colors.g, colors.b, colors.a], 0);
+  return lib.symbols.SDL_SetPaletteColors(palette, _p.u8.p0, firstcolor, ncolors);
+}
 
 /**
  * Free a palette created with SDL_CreatePalette().
@@ -232,7 +260,9 @@ export const setPaletteColors = lib.symbols.SDL_SetPaletteColors;
  *
  * @from SDL_pixels.h:1294 void SDL_DestroyPalette(SDL_Palette *palette);
  */
-export const destroyPalette = lib.symbols.SDL_DestroyPalette;
+export function destroyPalette(palette: Deno.PointerValue<"SDL_Palette">): void {
+  return lib.symbols.SDL_DestroyPalette(palette);
+}
 
 /**
  * Map an RGB triple to an opaque pixel value for a given pixel format.
@@ -272,7 +302,15 @@ export const destroyPalette = lib.symbols.SDL_DestroyPalette;
  *
  * @from SDL_pixels.h:1332 Uint32 SDL_MapRGB(const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 r, Uint8 g, Uint8 b);
  */
-export const mapRgb = lib.symbols.SDL_MapRGB;
+export function mapRgb(
+    format: Deno.PointerValue<"SDL_PixelFormatDetails">,
+    palette: Deno.PointerValue<"SDL_Palette">,
+    r: number,
+    g: number,
+    b: number,
+): number {
+  return lib.symbols.SDL_MapRGB(format, palette, r, g, b);
+}
 
 /**
  * Map an RGBA quadruple to a pixel value for a given pixel format.
@@ -313,7 +351,16 @@ export const mapRgb = lib.symbols.SDL_MapRGB;
  *
  * @from SDL_pixels.h:1371 Uint32 SDL_MapRGBA(const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
  */
-export const mapRgba = lib.symbols.SDL_MapRGBA;
+export function mapRgba(
+    format: Deno.PointerValue<"SDL_PixelFormatDetails">,
+    palette: Deno.PointerValue<"SDL_Palette">,
+    r: number,
+    g: number,
+    b: number,
+    a: number,
+): number {
+  return lib.symbols.SDL_MapRGBA(format, palette, r, g, b, a);
+}
 
 /**
  * Get RGB values from a pixel in the specified format.
@@ -343,7 +390,10 @@ export const mapRgba = lib.symbols.SDL_MapRGBA;
  *
  * @from SDL_pixels.h:1399 void SDL_GetRGB(Uint32 pixel, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b);
  */
-export const getRgb = lib.symbols.SDL_GetRGB;
+export function getRgb(pixel: number, format: Deno.PointerValue<"SDL_PixelFormatDetails">, palette: Deno.PointerValue<"SDL_Palette">): { r: number; g: number; b: number } {
+  lib.symbols.SDL_GetRGB(pixel, format, palette, _p.u8.p0, _p.u8.p1, _p.u8.p2);
+  return {r: _p.u8.v0, g: _p.u8.v1, b: _p.u8.v2};
+}
 
 /**
  * Get RGBA values from a pixel in the specified format.
@@ -377,5 +427,8 @@ export const getRgb = lib.symbols.SDL_GetRGB;
  *
  * @from SDL_pixels.h:1431 void SDL_GetRGBA(Uint32 pixel, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);
  */
-export const getRgba = lib.symbols.SDL_GetRGBA;
+export function getRgba(pixel: number, format: Deno.PointerValue<"SDL_PixelFormatDetails">, palette: Deno.PointerValue<"SDL_Palette">): { r: number; g: number; b: number; a: number } {
+  lib.symbols.SDL_GetRGBA(pixel, format, palette, _p.u8.p0, _p.u8.p1, _p.u8.p2, _p.u8.p3);
+  return {r: _p.u8.v0, g: _p.u8.v1, b: _p.u8.v2, a: _p.u8.v3};
+}
 

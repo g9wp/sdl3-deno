@@ -52,8 +52,8 @@ import * as _b from "../_structs/SDL_locale.ts";
  * @from SDL_locale.h:59
  */
 export interface Locale {
-  language: string; /**< const char * : A language name, like "en" for English. */
-  country: string; /**< const char * : A country, like "US" for America. Can be NULL. */
+  language: Deno.PointerValue; /**< const char * : A language name, like "en" for English. */
+  country: Deno.PointerValue; /**< const char * : A country, like "US" for America. Can be NULL. */
 }
 
 export function read_Locale(dt: DataView): Locale {

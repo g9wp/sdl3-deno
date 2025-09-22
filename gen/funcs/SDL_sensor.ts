@@ -47,7 +47,7 @@ export const symbols = {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:157 SDL_SensorID * SDL_GetSensors(int *count);
+ * @from SDL_sensor.h:158 SDL_SensorID * SDL_GetSensors(int *count);
  */
 SDL_GetSensors: {
       parameters: ["pointer"],
@@ -65,7 +65,7 @@ SDL_GetSensors: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:169 const char * SDL_GetSensorNameForID(SDL_SensorID instance_id);
+ * @from SDL_sensor.h:170 const char * SDL_GetSensorNameForID(SDL_SensorID instance_id);
  */
 SDL_GetSensorNameForID: {
       parameters: ["u32"],
@@ -84,7 +84,7 @@ SDL_GetSensorNameForID: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:182 SDL_SensorType SDL_GetSensorTypeForID(SDL_SensorID instance_id);
+ * @from SDL_sensor.h:183 SDL_SensorType SDL_GetSensorTypeForID(SDL_SensorID instance_id);
  */
 SDL_GetSensorTypeForID: {
       parameters: ["u32"],
@@ -103,7 +103,7 @@ SDL_GetSensorTypeForID: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:195 int SDL_GetSensorNonPortableTypeForID(SDL_SensorID instance_id);
+ * @from SDL_sensor.h:196 int SDL_GetSensorNonPortableTypeForID(SDL_SensorID instance_id);
  */
 SDL_GetSensorNonPortableTypeForID: {
       parameters: ["u32"],
@@ -120,7 +120,7 @@ SDL_GetSensorNonPortableTypeForID: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:206 SDL_Sensor * SDL_OpenSensor(SDL_SensorID instance_id);
+ * @from SDL_sensor.h:207 SDL_Sensor * SDL_OpenSensor(SDL_SensorID instance_id);
  */
 SDL_OpenSensor: {
       parameters: ["u32"],
@@ -137,7 +137,7 @@ SDL_OpenSensor: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:217 SDL_Sensor * SDL_GetSensorFromID(SDL_SensorID instance_id);
+ * @from SDL_sensor.h:218 SDL_Sensor * SDL_GetSensorFromID(SDL_SensorID instance_id);
  */
 SDL_GetSensorFromID: {
       parameters: ["u32"],
@@ -154,7 +154,7 @@ SDL_GetSensorFromID: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:228 SDL_PropertiesID SDL_GetSensorProperties(SDL_Sensor *sensor);
+ * @from SDL_sensor.h:229 SDL_PropertiesID SDL_GetSensorProperties(SDL_Sensor *sensor);
  */
 SDL_GetSensorProperties: {
       parameters: ["pointer"],
@@ -171,7 +171,7 @@ SDL_GetSensorProperties: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:239 const char * SDL_GetSensorName(SDL_Sensor *sensor);
+ * @from SDL_sensor.h:240 const char * SDL_GetSensorName(SDL_Sensor *sensor);
  */
 SDL_GetSensorName: {
       parameters: ["pointer"],
@@ -188,7 +188,7 @@ SDL_GetSensorName: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:250 SDL_SensorType SDL_GetSensorType(SDL_Sensor *sensor);
+ * @from SDL_sensor.h:251 SDL_SensorType SDL_GetSensorType(SDL_Sensor *sensor);
  */
 SDL_GetSensorType: {
       parameters: ["pointer"],
@@ -204,7 +204,7 @@ SDL_GetSensorType: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:260 int SDL_GetSensorNonPortableType(SDL_Sensor *sensor);
+ * @from SDL_sensor.h:261 int SDL_GetSensorNonPortableType(SDL_Sensor *sensor);
  */
 SDL_GetSensorNonPortableType: {
       parameters: ["pointer"],
@@ -221,7 +221,7 @@ SDL_GetSensorNonPortableType: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:271 SDL_SensorID SDL_GetSensorID(SDL_Sensor *sensor);
+ * @from SDL_sensor.h:272 SDL_SensorID SDL_GetSensorID(SDL_Sensor *sensor);
  */
 SDL_GetSensorID: {
       parameters: ["pointer"],
@@ -242,7 +242,7 @@ SDL_GetSensorID: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:286 bool SDL_GetSensorData(SDL_Sensor *sensor, float *data, int num_values);
+ * @from SDL_sensor.h:287 bool SDL_GetSensorData(SDL_Sensor *sensor, float *data, int num_values);
  */
 SDL_GetSensorData: {
       parameters: ["pointer", "pointer", "i32"],
@@ -257,7 +257,7 @@ SDL_GetSensorData: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:295 void SDL_CloseSensor(SDL_Sensor *sensor);
+ * @from SDL_sensor.h:296 void SDL_CloseSensor(SDL_Sensor *sensor);
  */
 SDL_CloseSensor: {
       parameters: ["pointer"],
@@ -276,7 +276,7 @@ SDL_CloseSensor: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_sensor.h:308 void SDL_UpdateSensors(void);
+ * @from SDL_sensor.h:309 void SDL_UpdateSensors(void);
  */
 SDL_UpdateSensors: {
       parameters: [],

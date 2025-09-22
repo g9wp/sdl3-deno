@@ -128,6 +128,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   SDL_AudioFormat as AUDIO,
@@ -156,7 +158,9 @@ export {
  *
  * @from SDL_audio.h:476 int SDL_GetNumAudioDrivers(void);
  */
-export const getNumAudioDrivers = lib.symbols.SDL_GetNumAudioDrivers;
+export function getNumAudioDrivers(): number {
+  return lib.symbols.SDL_GetNumAudioDrivers();
+}
 
 /**
  * Use this function to get the name of a built in audio driver.
@@ -182,7 +186,9 @@ export const getNumAudioDrivers = lib.symbols.SDL_GetNumAudioDrivers;
  *
  * @from SDL_audio.h:500 const char * SDL_GetAudioDriver(int index);
  */
-export const getAudioDriver = lib.symbols.SDL_GetAudioDriver;
+export function getAudioDriver(index: number): string {
+  return _p.getCstr2(lib.symbols.SDL_GetAudioDriver(index));
+}
 
 /**
  * Get the name of the current audio driver.
@@ -200,7 +206,9 @@ export const getAudioDriver = lib.symbols.SDL_GetAudioDriver;
  *
  * @from SDL_audio.h:516 const char * SDL_GetCurrentAudioDriver(void);
  */
-export const getCurrentAudioDriver = lib.symbols.SDL_GetCurrentAudioDriver;
+export function getCurrentAudioDriver(): string {
+  return _p.getCstr2(lib.symbols.SDL_GetCurrentAudioDriver());
+}
 
 /**
  * Get a list of currently-connected audio playback devices.
@@ -231,7 +239,11 @@ export const getCurrentAudioDriver = lib.symbols.SDL_GetCurrentAudioDriver;
  *
  * @from SDL_audio.h:545 SDL_AudioDeviceID * SDL_GetAudioPlaybackDevices(int *count);
  */
-export const getAudioPlaybackDevices = lib.symbols.SDL_GetAudioPlaybackDevices;
+export function getAudioPlaybackDevices(): { count: number; ret: Deno.PointerValue<"SDL_AudioDeviceID"> } {
+  const ret = lib.symbols.SDL_GetAudioPlaybackDevices(_p.i32.p0) as Deno.PointerValue<"SDL_AudioDeviceID">;
+  if(!ret) throw new Error(`SDL_GetAudioPlaybackDevices: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { count: _p.i32.v0, ret };
+}
 
 /**
  * Get a list of currently-connected audio recording devices.
@@ -262,7 +274,11 @@ export const getAudioPlaybackDevices = lib.symbols.SDL_GetAudioPlaybackDevices;
  *
  * @from SDL_audio.h:574 SDL_AudioDeviceID * SDL_GetAudioRecordingDevices(int *count);
  */
-export const getAudioRecordingDevices = lib.symbols.SDL_GetAudioRecordingDevices;
+export function getAudioRecordingDevices(): { count: number; ret: Deno.PointerValue<"SDL_AudioDeviceID"> } {
+  const ret = lib.symbols.SDL_GetAudioRecordingDevices(_p.i32.p0) as Deno.PointerValue<"SDL_AudioDeviceID">;
+  if(!ret) throw new Error(`SDL_GetAudioRecordingDevices: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { count: _p.i32.v0, ret };
+}
 
 /**
  * Get the human-readable name of a specific audio device.
@@ -280,7 +296,9 @@ export const getAudioRecordingDevices = lib.symbols.SDL_GetAudioRecordingDevices
  *
  * @from SDL_audio.h:590 const char * SDL_GetAudioDeviceName(SDL_AudioDeviceID devid);
  */
-export const getAudioDeviceName = lib.symbols.SDL_GetAudioDeviceName;
+export function getAudioDeviceName(devid: number): string {
+  return _p.getCstr2(lib.symbols.SDL_GetAudioDeviceName(devid));
+}
 
 /**
  * Get the current audio format of a specific audio device.
@@ -317,7 +335,11 @@ export const getAudioDeviceName = lib.symbols.SDL_GetAudioDeviceName;
  *
  * @from SDL_audio.h:625 bool SDL_GetAudioDeviceFormat(SDL_AudioDeviceID devid, SDL_AudioSpec *spec, int *sample_frames);
  */
-export const getAudioDeviceFormat = lib.symbols.SDL_GetAudioDeviceFormat;
+export function getAudioDeviceFormat(devid: number, spec: Deno.PointerValue<"SDL_AudioSpec">): number {
+  if(!lib.symbols.SDL_GetAudioDeviceFormat(devid, spec, _p.i32.p0))
+    throw new Error(`SDL_GetAudioDeviceFormat: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.i32.v0;
+}
 
 /**
  * Get the current channel map of an audio device.
@@ -342,7 +364,11 @@ export const getAudioDeviceFormat = lib.symbols.SDL_GetAudioDeviceFormat;
  *
  * @from SDL_audio.h:648 int * SDL_GetAudioDeviceChannelMap(SDL_AudioDeviceID devid, int *count);
  */
-export const getAudioDeviceChannelMap = lib.symbols.SDL_GetAudioDeviceChannelMap;
+export function getAudioDeviceChannelMap(devid: number): { count: number; ret: Deno.PointerValue } {
+  const ret = lib.symbols.SDL_GetAudioDeviceChannelMap(devid, _p.i32.p0) as Deno.PointerValue;
+  if(!ret) throw new Error(`SDL_GetAudioDeviceChannelMap: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { count: _p.i32.v0, ret };
+}
 
 /**
  * Open a specific audio device.
@@ -420,7 +446,9 @@ export const getAudioDeviceChannelMap = lib.symbols.SDL_GetAudioDeviceChannelMap
  *
  * @from SDL_audio.h:724 SDL_AudioDeviceID SDL_OpenAudioDevice(SDL_AudioDeviceID devid, const SDL_AudioSpec *spec);
  */
-export const openAudioDevice = lib.symbols.SDL_OpenAudioDevice;
+export function openAudioDevice(devid: number, spec: Deno.PointerValue<"SDL_AudioSpec">): number {
+  return lib.symbols.SDL_OpenAudioDevice(devid, spec);
+}
 
 /**
  * Determine if an audio device is physical (instead of logical).
@@ -447,7 +475,9 @@ export const openAudioDevice = lib.symbols.SDL_OpenAudioDevice;
  *
  * @from SDL_audio.h:749 bool SDL_IsAudioDevicePhysical(SDL_AudioDeviceID devid);
  */
-export const isAudioDevicePhysical = lib.symbols.SDL_IsAudioDevicePhysical;
+export function isAudioDevicePhysical(devid: number): boolean {
+  return lib.symbols.SDL_IsAudioDevicePhysical(devid);
+}
 
 /**
  * Determine if an audio device is a playback device (instead of recording).
@@ -463,7 +493,9 @@ export const isAudioDevicePhysical = lib.symbols.SDL_IsAudioDevicePhysical;
  *
  * @from SDL_audio.h:763 bool SDL_IsAudioDevicePlayback(SDL_AudioDeviceID devid);
  */
-export const isAudioDevicePlayback = lib.symbols.SDL_IsAudioDevicePlayback;
+export function isAudioDevicePlayback(devid: number): boolean {
+  return lib.symbols.SDL_IsAudioDevicePlayback(devid);
+}
 
 /**
  * Use this function to pause audio playback on a specified device.
@@ -496,7 +528,9 @@ export const isAudioDevicePlayback = lib.symbols.SDL_IsAudioDevicePlayback;
  *
  * @from SDL_audio.h:794 bool SDL_PauseAudioDevice(SDL_AudioDeviceID devid);
  */
-export const pauseAudioDevice = lib.symbols.SDL_PauseAudioDevice;
+export function pauseAudioDevice(devid: number): boolean {
+  return lib.symbols.SDL_PauseAudioDevice(devid);
+}
 
 /**
  * Use this function to unpause audio playback on a specified device.
@@ -526,7 +560,9 @@ export const pauseAudioDevice = lib.symbols.SDL_PauseAudioDevice;
  *
  * @from SDL_audio.h:822 bool SDL_ResumeAudioDevice(SDL_AudioDeviceID devid);
  */
-export const resumeAudioDevice = lib.symbols.SDL_ResumeAudioDevice;
+export function resumeAudioDevice(devid: number): boolean {
+  return lib.symbols.SDL_ResumeAudioDevice(devid);
+}
 
 /**
  * Use this function to query if an audio device is paused.
@@ -550,7 +586,9 @@ export const resumeAudioDevice = lib.symbols.SDL_ResumeAudioDevice;
  *
  * @from SDL_audio.h:844 bool SDL_AudioDevicePaused(SDL_AudioDeviceID devid);
  */
-export const audioDevicePaused = lib.symbols.SDL_AudioDevicePaused;
+export function audioDevicePaused(devid: number): boolean {
+  return lib.symbols.SDL_AudioDevicePaused(devid);
+}
 
 /**
  * Get the gain of an audio device.
@@ -575,7 +613,9 @@ export const audioDevicePaused = lib.symbols.SDL_AudioDevicePaused;
  *
  * @from SDL_audio.h:867 float SDL_GetAudioDeviceGain(SDL_AudioDeviceID devid);
  */
-export const getAudioDeviceGain = lib.symbols.SDL_GetAudioDeviceGain;
+export function getAudioDeviceGain(devid: number): number {
+  return lib.symbols.SDL_GetAudioDeviceGain(devid);
+}
 
 /**
  * Change the gain of an audio device.
@@ -612,7 +652,9 @@ export const getAudioDeviceGain = lib.symbols.SDL_GetAudioDeviceGain;
  *
  * @from SDL_audio.h:902 bool SDL_SetAudioDeviceGain(SDL_AudioDeviceID devid, float gain);
  */
-export const setAudioDeviceGain = lib.symbols.SDL_SetAudioDeviceGain;
+export function setAudioDeviceGain(devid: number, gain: number): boolean {
+  return lib.symbols.SDL_SetAudioDeviceGain(devid, gain);
+}
 
 /**
  * Close a previously-opened audio device.
@@ -635,7 +677,9 @@ export const setAudioDeviceGain = lib.symbols.SDL_SetAudioDeviceGain;
  *
  * @from SDL_audio.h:923 void SDL_CloseAudioDevice(SDL_AudioDeviceID devid);
  */
-export const closeAudioDevice = lib.symbols.SDL_CloseAudioDevice;
+export function closeAudioDevice(devid: number): void {
+  return lib.symbols.SDL_CloseAudioDevice(devid);
+}
 
 /**
  * Bind a list of audio streams to an audio device.
@@ -656,7 +700,10 @@ export const closeAudioDevice = lib.symbols.SDL_CloseAudioDevice;
  * Binding a stream to a device will set its output format for playback
  * devices, and its input format for recording devices, so they match the
  * device's settings. The caller is welcome to change the other end of the
- * stream's format at any time with SDL_SetAudioStreamFormat().
+ * stream's format at any time with SDL_SetAudioStreamFormat(). If the other
+ * end of the stream's format has never been set (the audio stream was created
+ * with a NULL audio spec), this function will set it to match the device
+ * end's format.
  *
  * @param devid an audio device to bind a stream to.
  * @param streams an array of audio streams to bind.
@@ -672,9 +719,11 @@ export const closeAudioDevice = lib.symbols.SDL_CloseAudioDevice;
  * @sa SDL_UnbindAudioStream
  * @sa SDL_GetAudioStreamDevice
  *
- * @from SDL_audio.h:960 bool SDL_BindAudioStreams(SDL_AudioDeviceID devid, SDL_AudioStream * const *streams, int num_streams);
+ * @from SDL_audio.h:963 bool SDL_BindAudioStreams(SDL_AudioDeviceID devid, SDL_AudioStream * const *streams, int num_streams);
  */
-export const bindAudioStreams = lib.symbols.SDL_BindAudioStreams;
+export function bindAudioStreams(devid: number, streams: Deno.PointerValue, num_streams: number): boolean {
+  return lib.symbols.SDL_BindAudioStreams(devid, streams, num_streams);
+}
 
 /**
  * Bind a single audio stream to an audio device.
@@ -695,9 +744,11 @@ export const bindAudioStreams = lib.symbols.SDL_BindAudioStreams;
  * @sa SDL_UnbindAudioStream
  * @sa SDL_GetAudioStreamDevice
  *
- * @from SDL_audio.h:981 bool SDL_BindAudioStream(SDL_AudioDeviceID devid, SDL_AudioStream *stream);
+ * @from SDL_audio.h:984 bool SDL_BindAudioStream(SDL_AudioDeviceID devid, SDL_AudioStream *stream);
  */
-export const bindAudioStream = lib.symbols.SDL_BindAudioStream;
+export function bindAudioStream(devid: number, stream: Deno.PointerValue<"SDL_AudioStream">): boolean {
+  return lib.symbols.SDL_BindAudioStream(devid, stream);
+}
 
 /**
  * Unbind a list of audio streams from their audio devices.
@@ -718,9 +769,11 @@ export const bindAudioStream = lib.symbols.SDL_BindAudioStream;
  *
  * @sa SDL_BindAudioStreams
  *
- * @from SDL_audio.h:1002 void SDL_UnbindAudioStreams(SDL_AudioStream * const *streams, int num_streams);
+ * @from SDL_audio.h:1005 void SDL_UnbindAudioStreams(SDL_AudioStream * const *streams, int num_streams);
  */
-export const unbindAudioStreams = lib.symbols.SDL_UnbindAudioStreams;
+export function unbindAudioStreams(streams: Deno.PointerValue, num_streams: number): void {
+  return lib.symbols.SDL_UnbindAudioStreams(streams, num_streams);
+}
 
 /**
  * Unbind a single audio stream from its audio device.
@@ -736,14 +789,16 @@ export const unbindAudioStreams = lib.symbols.SDL_UnbindAudioStreams;
  *
  * @sa SDL_BindAudioStream
  *
- * @from SDL_audio.h:1018 void SDL_UnbindAudioStream(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1021 void SDL_UnbindAudioStream(SDL_AudioStream *stream);
  */
-export const unbindAudioStream = lib.symbols.SDL_UnbindAudioStream;
+export function unbindAudioStream(stream: Deno.PointerValue<"SDL_AudioStream">): void {
+  return lib.symbols.SDL_UnbindAudioStream(stream);
+}
 
 /**
  * Query an audio stream for its currently-bound device.
  *
- * This reports the audio device that an audio stream is currently bound to.
+ * This reports the logical audio device that an audio stream is currently bound to.
  *
  * If not bound, or invalid, this returns zero, which is not a valid device
  * ID.
@@ -758,9 +813,11 @@ export const unbindAudioStream = lib.symbols.SDL_UnbindAudioStream;
  * @sa SDL_BindAudioStream
  * @sa SDL_BindAudioStreams
  *
- * @from SDL_audio.h:1038 SDL_AudioDeviceID SDL_GetAudioStreamDevice(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1041 SDL_AudioDeviceID SDL_GetAudioStreamDevice(SDL_AudioStream *stream);
  */
-export const getAudioStreamDevice = lib.symbols.SDL_GetAudioStreamDevice;
+export function getAudioStreamDevice(stream: Deno.PointerValue<"SDL_AudioStream">): number {
+  return lib.symbols.SDL_GetAudioStreamDevice(stream);
+}
 
 /**
  * Create a new audio stream.
@@ -782,9 +839,11 @@ export const getAudioStreamDevice = lib.symbols.SDL_GetAudioStreamDevice;
  * @sa SDL_SetAudioStreamFormat
  * @sa SDL_DestroyAudioStream
  *
- * @from SDL_audio.h:1060 SDL_AudioStream * SDL_CreateAudioStream(const SDL_AudioSpec *src_spec, const SDL_AudioSpec *dst_spec);
+ * @from SDL_audio.h:1063 SDL_AudioStream * SDL_CreateAudioStream(const SDL_AudioSpec *src_spec, const SDL_AudioSpec *dst_spec);
  */
-export const createAudioStream = lib.symbols.SDL_CreateAudioStream;
+export function createAudioStream(src_spec: Deno.PointerValue<"SDL_AudioSpec">, dst_spec: Deno.PointerValue<"SDL_AudioSpec">): Deno.PointerValue<"SDL_AudioStream"> {
+  return lib.symbols.SDL_CreateAudioStream(src_spec, dst_spec) as Deno.PointerValue<"SDL_AudioStream">;
+}
 
 /**
  * Get the properties associated with an audio stream.
@@ -797,9 +856,11 @@ export const createAudioStream = lib.symbols.SDL_CreateAudioStream;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_audio.h:1073 SDL_PropertiesID SDL_GetAudioStreamProperties(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1076 SDL_PropertiesID SDL_GetAudioStreamProperties(SDL_AudioStream *stream);
  */
-export const getAudioStreamProperties = lib.symbols.SDL_GetAudioStreamProperties;
+export function getAudioStreamProperties(stream: Deno.PointerValue<"SDL_AudioStream">): number {
+  return lib.symbols.SDL_GetAudioStreamProperties(stream);
+}
 
 /**
  * Query the current format of an audio stream.
@@ -817,9 +878,11 @@ export const getAudioStreamProperties = lib.symbols.SDL_GetAudioStreamProperties
  *
  * @sa SDL_SetAudioStreamFormat
  *
- * @from SDL_audio.h:1091 bool SDL_GetAudioStreamFormat(SDL_AudioStream *stream, SDL_AudioSpec *src_spec, SDL_AudioSpec *dst_spec);
+ * @from SDL_audio.h:1094 bool SDL_GetAudioStreamFormat(SDL_AudioStream *stream, SDL_AudioSpec *src_spec, SDL_AudioSpec *dst_spec);
  */
-export const getAudioStreamFormat = lib.symbols.SDL_GetAudioStreamFormat;
+export function getAudioStreamFormat(stream: Deno.PointerValue<"SDL_AudioStream">, src_spec: Deno.PointerValue<"SDL_AudioSpec">, dst_spec: Deno.PointerValue<"SDL_AudioSpec">): boolean {
+  return lib.symbols.SDL_GetAudioStreamFormat(stream, src_spec, dst_spec);
+}
 
 /**
  * Change the input and output formats of an audio stream.
@@ -856,9 +919,11 @@ export const getAudioStreamFormat = lib.symbols.SDL_GetAudioStreamFormat;
  * @sa SDL_GetAudioStreamFormat
  * @sa SDL_SetAudioStreamFrequencyRatio
  *
- * @from SDL_audio.h:1128 bool SDL_SetAudioStreamFormat(SDL_AudioStream *stream, const SDL_AudioSpec *src_spec, const SDL_AudioSpec *dst_spec);
+ * @from SDL_audio.h:1131 bool SDL_SetAudioStreamFormat(SDL_AudioStream *stream, const SDL_AudioSpec *src_spec, const SDL_AudioSpec *dst_spec);
  */
-export const setAudioStreamFormat = lib.symbols.SDL_SetAudioStreamFormat;
+export function setAudioStreamFormat(stream: Deno.PointerValue<"SDL_AudioStream">, src_spec: Deno.PointerValue<"SDL_AudioSpec">, dst_spec: Deno.PointerValue<"SDL_AudioSpec">): boolean {
+  return lib.symbols.SDL_SetAudioStreamFormat(stream, src_spec, dst_spec);
+}
 
 /**
  * Get the frequency ratio of an audio stream.
@@ -874,9 +939,11 @@ export const setAudioStreamFormat = lib.symbols.SDL_SetAudioStreamFormat;
  *
  * @sa SDL_SetAudioStreamFrequencyRatio
  *
- * @from SDL_audio.h:1144 float SDL_GetAudioStreamFrequencyRatio(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1147 float SDL_GetAudioStreamFrequencyRatio(SDL_AudioStream *stream);
  */
-export const getAudioStreamFrequencyRatio = lib.symbols.SDL_GetAudioStreamFrequencyRatio;
+export function getAudioStreamFrequencyRatio(stream: Deno.PointerValue<"SDL_AudioStream">): number {
+  return lib.symbols.SDL_GetAudioStreamFrequencyRatio(stream);
+}
 
 /**
  * Change the frequency ratio of an audio stream.
@@ -904,9 +971,11 @@ export const getAudioStreamFrequencyRatio = lib.symbols.SDL_GetAudioStreamFreque
  * @sa SDL_GetAudioStreamFrequencyRatio
  * @sa SDL_SetAudioStreamFormat
  *
- * @from SDL_audio.h:1172 bool SDL_SetAudioStreamFrequencyRatio(SDL_AudioStream *stream, float ratio);
+ * @from SDL_audio.h:1175 bool SDL_SetAudioStreamFrequencyRatio(SDL_AudioStream *stream, float ratio);
  */
-export const setAudioStreamFrequencyRatio = lib.symbols.SDL_SetAudioStreamFrequencyRatio;
+export function setAudioStreamFrequencyRatio(stream: Deno.PointerValue<"SDL_AudioStream">, ratio: number): boolean {
+  return lib.symbols.SDL_SetAudioStreamFrequencyRatio(stream, ratio);
+}
 
 /**
  * Get the gain of an audio stream.
@@ -927,9 +996,11 @@ export const setAudioStreamFrequencyRatio = lib.symbols.SDL_SetAudioStreamFreque
  *
  * @sa SDL_SetAudioStreamGain
  *
- * @from SDL_audio.h:1193 float SDL_GetAudioStreamGain(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1196 float SDL_GetAudioStreamGain(SDL_AudioStream *stream);
  */
-export const getAudioStreamGain = lib.symbols.SDL_GetAudioStreamGain;
+export function getAudioStreamGain(stream: Deno.PointerValue<"SDL_AudioStream">): number {
+  return lib.symbols.SDL_GetAudioStreamGain(stream);
+}
 
 /**
  * Change the gain of an audio stream.
@@ -954,9 +1025,11 @@ export const getAudioStreamGain = lib.symbols.SDL_GetAudioStreamGain;
  *
  * @sa SDL_GetAudioStreamGain
  *
- * @from SDL_audio.h:1218 bool SDL_SetAudioStreamGain(SDL_AudioStream *stream, float gain);
+ * @from SDL_audio.h:1221 bool SDL_SetAudioStreamGain(SDL_AudioStream *stream, float gain);
  */
-export const setAudioStreamGain = lib.symbols.SDL_SetAudioStreamGain;
+export function setAudioStreamGain(stream: Deno.PointerValue<"SDL_AudioStream">, gain: number): boolean {
+  return lib.symbols.SDL_SetAudioStreamGain(stream, gain);
+}
 
 /**
  * Get the current input channel map of an audio stream.
@@ -980,9 +1053,13 @@ export const setAudioStreamGain = lib.symbols.SDL_SetAudioStreamGain;
  *
  * @sa SDL_SetAudioStreamInputChannelMap
  *
- * @from SDL_audio.h:1242 int * SDL_GetAudioStreamInputChannelMap(SDL_AudioStream *stream, int *count);
+ * @from SDL_audio.h:1245 int * SDL_GetAudioStreamInputChannelMap(SDL_AudioStream *stream, int *count);
  */
-export const getAudioStreamInputChannelMap = lib.symbols.SDL_GetAudioStreamInputChannelMap;
+export function getAudioStreamInputChannelMap(stream: Deno.PointerValue<"SDL_AudioStream">): { count: number; ret: Deno.PointerValue } {
+  const ret = lib.symbols.SDL_GetAudioStreamInputChannelMap(stream, _p.i32.p0) as Deno.PointerValue;
+  if(!ret) throw new Error(`SDL_GetAudioStreamInputChannelMap: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { count: _p.i32.v0, ret };
+}
 
 /**
  * Get the current output channel map of an audio stream.
@@ -1006,9 +1083,13 @@ export const getAudioStreamInputChannelMap = lib.symbols.SDL_GetAudioStreamInput
  *
  * @sa SDL_SetAudioStreamInputChannelMap
  *
- * @from SDL_audio.h:1266 int * SDL_GetAudioStreamOutputChannelMap(SDL_AudioStream *stream, int *count);
+ * @from SDL_audio.h:1269 int * SDL_GetAudioStreamOutputChannelMap(SDL_AudioStream *stream, int *count);
  */
-export const getAudioStreamOutputChannelMap = lib.symbols.SDL_GetAudioStreamOutputChannelMap;
+export function getAudioStreamOutputChannelMap(stream: Deno.PointerValue<"SDL_AudioStream">): { count: number; ret: Deno.PointerValue } {
+  const ret = lib.symbols.SDL_GetAudioStreamOutputChannelMap(stream, _p.i32.p0) as Deno.PointerValue;
+  if(!ret) throw new Error(`SDL_GetAudioStreamOutputChannelMap: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { count: _p.i32.v0, ret };
+}
 
 /**
  * Set the current input channel map of an audio stream.
@@ -1068,9 +1149,14 @@ export const getAudioStreamOutputChannelMap = lib.symbols.SDL_GetAudioStreamOutp
  *
  * @sa SDL_SetAudioStreamInputChannelMap
  *
- * @from SDL_audio.h:1326 bool SDL_SetAudioStreamInputChannelMap(SDL_AudioStream *stream, const int *chmap, int count);
+ * @from SDL_audio.h:1329 bool SDL_SetAudioStreamInputChannelMap(SDL_AudioStream *stream, const int *chmap, int count);
  */
-export const setAudioStreamInputChannelMap = lib.symbols.SDL_SetAudioStreamInputChannelMap;
+export function setAudioStreamInputChannelMap(stream: Deno.PointerValue<"SDL_AudioStream">, chmap: number, count: number): number {
+  _p.i32.arr[0] = chmap;
+  if(!lib.symbols.SDL_SetAudioStreamInputChannelMap(stream, _p.i32.p0, count))
+    throw new Error(`SDL_SetAudioStreamInputChannelMap: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.i32.v0;
+}
 
 /**
  * Set the current output channel map of an audio stream.
@@ -1128,9 +1214,14 @@ export const setAudioStreamInputChannelMap = lib.symbols.SDL_SetAudioStreamInput
  *
  * @sa SDL_SetAudioStreamInputChannelMap
  *
- * @from SDL_audio.h:1384 bool SDL_SetAudioStreamOutputChannelMap(SDL_AudioStream *stream, const int *chmap, int count);
+ * @from SDL_audio.h:1387 bool SDL_SetAudioStreamOutputChannelMap(SDL_AudioStream *stream, const int *chmap, int count);
  */
-export const setAudioStreamOutputChannelMap = lib.symbols.SDL_SetAudioStreamOutputChannelMap;
+export function setAudioStreamOutputChannelMap(stream: Deno.PointerValue<"SDL_AudioStream">, chmap: number, count: number): number {
+  _p.i32.arr[0] = chmap;
+  if(!lib.symbols.SDL_SetAudioStreamOutputChannelMap(stream, _p.i32.p0, count))
+    throw new Error(`SDL_SetAudioStreamOutputChannelMap: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.i32.v0;
+}
 
 /**
  * Add data to the stream.
@@ -1160,9 +1251,11 @@ export const setAudioStreamOutputChannelMap = lib.symbols.SDL_SetAudioStreamOutp
  * @sa SDL_GetAudioStreamData
  * @sa SDL_GetAudioStreamQueued
  *
- * @from SDL_audio.h:1414 bool SDL_PutAudioStreamData(SDL_AudioStream *stream, const void *buf, int len);
+ * @from SDL_audio.h:1417 bool SDL_PutAudioStreamData(SDL_AudioStream *stream, const void *buf, int len);
  */
-export const putAudioStreamData = lib.symbols.SDL_PutAudioStreamData;
+export function putAudioStreamData(stream: Deno.PointerValue<"SDL_AudioStream">, buf: Deno.PointerValue, len: number): boolean {
+  return lib.symbols.SDL_PutAudioStreamData(stream, buf, len);
+}
 
 /**
  * Get converted/resampled data from the stream.
@@ -1192,9 +1285,11 @@ export const putAudioStreamData = lib.symbols.SDL_PutAudioStreamData;
  * @sa SDL_GetAudioStreamAvailable
  * @sa SDL_PutAudioStreamData
  *
- * @from SDL_audio.h:1444 int SDL_GetAudioStreamData(SDL_AudioStream *stream, void *buf, int len);
+ * @from SDL_audio.h:1447 int SDL_GetAudioStreamData(SDL_AudioStream *stream, void *buf, int len);
  */
-export const getAudioStreamData = lib.symbols.SDL_GetAudioStreamData;
+export function getAudioStreamData(stream: Deno.PointerValue<"SDL_AudioStream">, buf: Deno.PointerValue, len: number): number {
+  return lib.symbols.SDL_GetAudioStreamData(stream, buf, len);
+}
 
 /**
  * Get the number of converted/resampled bytes available.
@@ -1220,9 +1315,11 @@ export const getAudioStreamData = lib.symbols.SDL_GetAudioStreamData;
  * @sa SDL_GetAudioStreamData
  * @sa SDL_PutAudioStreamData
  *
- * @from SDL_audio.h:1470 int SDL_GetAudioStreamAvailable(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1473 int SDL_GetAudioStreamAvailable(SDL_AudioStream *stream);
  */
-export const getAudioStreamAvailable = lib.symbols.SDL_GetAudioStreamAvailable;
+export function getAudioStreamAvailable(stream: Deno.PointerValue<"SDL_AudioStream">): number {
+  return lib.symbols.SDL_GetAudioStreamAvailable(stream);
+}
 
 /**
  * Get the number of bytes currently queued.
@@ -1260,9 +1357,11 @@ export const getAudioStreamAvailable = lib.symbols.SDL_GetAudioStreamAvailable;
  * @sa SDL_PutAudioStreamData
  * @sa SDL_ClearAudioStream
  *
- * @from SDL_audio.h:1509 int SDL_GetAudioStreamQueued(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1512 int SDL_GetAudioStreamQueued(SDL_AudioStream *stream);
  */
-export const getAudioStreamQueued = lib.symbols.SDL_GetAudioStreamQueued;
+export function getAudioStreamQueued(stream: Deno.PointerValue<"SDL_AudioStream">): number {
+  return lib.symbols.SDL_GetAudioStreamQueued(stream);
+}
 
 /**
  * Tell the stream that you're done sending data, and anything being buffered
@@ -1282,9 +1381,11 @@ export const getAudioStreamQueued = lib.symbols.SDL_GetAudioStreamQueued;
  *
  * @sa SDL_PutAudioStreamData
  *
- * @from SDL_audio.h:1530 bool SDL_FlushAudioStream(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1533 bool SDL_FlushAudioStream(SDL_AudioStream *stream);
  */
-export const flushAudioStream = lib.symbols.SDL_FlushAudioStream;
+export function flushAudioStream(stream: Deno.PointerValue<"SDL_AudioStream">): boolean {
+  return lib.symbols.SDL_FlushAudioStream(stream);
+}
 
 /**
  * Clear any pending data in the stream.
@@ -1305,9 +1406,11 @@ export const flushAudioStream = lib.symbols.SDL_FlushAudioStream;
  * @sa SDL_GetAudioStreamQueued
  * @sa SDL_PutAudioStreamData
  *
- * @from SDL_audio.h:1551 bool SDL_ClearAudioStream(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1554 bool SDL_ClearAudioStream(SDL_AudioStream *stream);
  */
-export const clearAudioStream = lib.symbols.SDL_ClearAudioStream;
+export function clearAudioStream(stream: Deno.PointerValue<"SDL_AudioStream">): boolean {
+  return lib.symbols.SDL_ClearAudioStream(stream);
+}
 
 /**
  * Use this function to pause audio playback on the audio device associated
@@ -1331,9 +1434,11 @@ export const clearAudioStream = lib.symbols.SDL_ClearAudioStream;
  *
  * @sa SDL_ResumeAudioStreamDevice
  *
- * @from SDL_audio.h:1575 bool SDL_PauseAudioStreamDevice(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1578 bool SDL_PauseAudioStreamDevice(SDL_AudioStream *stream);
  */
-export const pauseAudioStreamDevice = lib.symbols.SDL_PauseAudioStreamDevice;
+export function pauseAudioStreamDevice(stream: Deno.PointerValue<"SDL_AudioStream">): boolean {
+  return lib.symbols.SDL_PauseAudioStreamDevice(stream);
+}
 
 /**
  * Use this function to unpause audio playback on the audio device associated
@@ -1356,9 +1461,11 @@ export const pauseAudioStreamDevice = lib.symbols.SDL_PauseAudioStreamDevice;
  *
  * @sa SDL_PauseAudioStreamDevice
  *
- * @from SDL_audio.h:1598 bool SDL_ResumeAudioStreamDevice(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1601 bool SDL_ResumeAudioStreamDevice(SDL_AudioStream *stream);
  */
-export const resumeAudioStreamDevice = lib.symbols.SDL_ResumeAudioStreamDevice;
+export function resumeAudioStreamDevice(stream: Deno.PointerValue<"SDL_AudioStream">): boolean {
+  return lib.symbols.SDL_ResumeAudioStreamDevice(stream);
+}
 
 /**
  * Use this function to query if an audio device associated with a stream is
@@ -1377,9 +1484,11 @@ export const resumeAudioStreamDevice = lib.symbols.SDL_ResumeAudioStreamDevice;
  * @sa SDL_PauseAudioStreamDevice
  * @sa SDL_ResumeAudioStreamDevice
  *
- * @from SDL_audio.h:1617 bool SDL_AudioStreamDevicePaused(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1620 bool SDL_AudioStreamDevicePaused(SDL_AudioStream *stream);
  */
-export const audioStreamDevicePaused = lib.symbols.SDL_AudioStreamDevicePaused;
+export function audioStreamDevicePaused(stream: Deno.PointerValue<"SDL_AudioStream">): boolean {
+  return lib.symbols.SDL_AudioStreamDevicePaused(stream);
+}
 
 /**
  * Lock an audio stream for serialized access.
@@ -1407,9 +1516,11 @@ export const audioStreamDevicePaused = lib.symbols.SDL_AudioStreamDevicePaused;
  *
  * @sa SDL_UnlockAudioStream
  *
- * @from SDL_audio.h:1646 bool SDL_LockAudioStream(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1649 bool SDL_LockAudioStream(SDL_AudioStream *stream);
  */
-export const lockAudioStream = lib.symbols.SDL_LockAudioStream;
+export function lockAudioStream(stream: Deno.PointerValue<"SDL_AudioStream">): boolean {
+  return lib.symbols.SDL_LockAudioStream(stream);
+}
 
 /**
  * Unlock an audio stream for serialized access.
@@ -1427,9 +1538,11 @@ export const lockAudioStream = lib.symbols.SDL_LockAudioStream;
  *
  * @sa SDL_LockAudioStream
  *
- * @from SDL_audio.h:1665 bool SDL_UnlockAudioStream(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1668 bool SDL_UnlockAudioStream(SDL_AudioStream *stream);
  */
-export const unlockAudioStream = lib.symbols.SDL_UnlockAudioStream;
+export function unlockAudioStream(stream: Deno.PointerValue<"SDL_AudioStream">): boolean {
+  return lib.symbols.SDL_UnlockAudioStream(stream);
+}
 
 /**
  * Set a callback that runs when data is requested from an audio stream.
@@ -1475,9 +1588,11 @@ export const unlockAudioStream = lib.symbols.SDL_UnlockAudioStream;
  *
  * @sa SDL_SetAudioStreamPutCallback
  *
- * @from SDL_audio.h:1753 bool SDL_SetAudioStreamGetCallback(SDL_AudioStream *stream, SDL_AudioStreamCallback callback, void *userdata);
+ * @from SDL_audio.h:1756 bool SDL_SetAudioStreamGetCallback(SDL_AudioStream *stream, SDL_AudioStreamCallback callback, void *userdata);
  */
-export const setAudioStreamGetCallback = lib.symbols.SDL_SetAudioStreamGetCallback;
+export function setAudioStreamGetCallback(stream: Deno.PointerValue<"SDL_AudioStream">, callback: Deno.PointerValue, userdata: Deno.PointerValue): boolean {
+  return lib.symbols.SDL_SetAudioStreamGetCallback(stream, callback, userdata);
+}
 
 /**
  * Set a callback that runs when data is added to an audio stream.
@@ -1526,9 +1641,11 @@ export const setAudioStreamGetCallback = lib.symbols.SDL_SetAudioStreamGetCallba
  *
  * @sa SDL_SetAudioStreamGetCallback
  *
- * @from SDL_audio.h:1802 bool SDL_SetAudioStreamPutCallback(SDL_AudioStream *stream, SDL_AudioStreamCallback callback, void *userdata);
+ * @from SDL_audio.h:1805 bool SDL_SetAudioStreamPutCallback(SDL_AudioStream *stream, SDL_AudioStreamCallback callback, void *userdata);
  */
-export const setAudioStreamPutCallback = lib.symbols.SDL_SetAudioStreamPutCallback;
+export function setAudioStreamPutCallback(stream: Deno.PointerValue<"SDL_AudioStream">, callback: Deno.PointerValue, userdata: Deno.PointerValue): boolean {
+  return lib.symbols.SDL_SetAudioStreamPutCallback(stream, callback, userdata);
+}
 
 /**
  * Free an audio stream.
@@ -1549,9 +1666,11 @@ export const setAudioStreamPutCallback = lib.symbols.SDL_SetAudioStreamPutCallba
  *
  * @sa SDL_CreateAudioStream
  *
- * @from SDL_audio.h:1824 void SDL_DestroyAudioStream(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1827 void SDL_DestroyAudioStream(SDL_AudioStream *stream);
  */
-export const destroyAudioStream = lib.symbols.SDL_DestroyAudioStream;
+export function destroyAudioStream(stream: Deno.PointerValue<"SDL_AudioStream">): void {
+  return lib.symbols.SDL_DestroyAudioStream(stream);
+}
 
 /**
  * Convenience function for straightforward audio init for the common case.
@@ -1613,9 +1732,16 @@ export const destroyAudioStream = lib.symbols.SDL_DestroyAudioStream;
  * @sa SDL_GetAudioStreamDevice
  * @sa SDL_ResumeAudioStreamDevice
  *
- * @from SDL_audio.h:1887 SDL_AudioStream * SDL_OpenAudioDeviceStream(SDL_AudioDeviceID devid, const SDL_AudioSpec *spec, SDL_AudioStreamCallback callback, void *userdata);
+ * @from SDL_audio.h:1890 SDL_AudioStream * SDL_OpenAudioDeviceStream(SDL_AudioDeviceID devid, const SDL_AudioSpec *spec, SDL_AudioStreamCallback callback, void *userdata);
  */
-export const openAudioDeviceStream = lib.symbols.SDL_OpenAudioDeviceStream;
+export function openAudioDeviceStream(
+    devid: number,
+    spec: Deno.PointerValue<"SDL_AudioSpec">,
+    callback: Deno.PointerValue,
+    userdata: Deno.PointerValue,
+): Deno.PointerValue<"SDL_AudioStream"> {
+  return lib.symbols.SDL_OpenAudioDeviceStream(devid, spec, callback, userdata) as Deno.PointerValue<"SDL_AudioStream">;
+}
 
 /**
  * Set a callback that fires when data is about to be fed to an audio device.
@@ -1669,9 +1795,11 @@ export const openAudioDeviceStream = lib.symbols.SDL_OpenAudioDeviceStream;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_audio.h:1978 bool SDL_SetAudioPostmixCallback(SDL_AudioDeviceID devid, SDL_AudioPostmixCallback callback, void *userdata);
+ * @from SDL_audio.h:1981 bool SDL_SetAudioPostmixCallback(SDL_AudioDeviceID devid, SDL_AudioPostmixCallback callback, void *userdata);
  */
-export const setAudioPostmixCallback = lib.symbols.SDL_SetAudioPostmixCallback;
+export function setAudioPostmixCallback(devid: number, callback: Deno.PointerValue, userdata: Deno.PointerValue): boolean {
+  return lib.symbols.SDL_SetAudioPostmixCallback(devid, callback, userdata);
+}
 
 /**
  * Load the audio data of a WAVE file into memory.
@@ -1751,9 +1879,18 @@ export const setAudioPostmixCallback = lib.symbols.SDL_SetAudioPostmixCallback;
  * @sa SDL_free
  * @sa SDL_LoadWAV
  *
- * @from SDL_audio.h:2059 bool SDL_LoadWAV_IO(SDL_IOStream *src, bool closeio, SDL_AudioSpec *spec, Uint8 **audio_buf, Uint32 *audio_len);
+ * @from SDL_audio.h:2062 bool SDL_LoadWAV_IO(SDL_IOStream *src, bool closeio, SDL_AudioSpec *spec, Uint8 **audio_buf, Uint32 *audio_len);
  */
-export const loadWavIo = lib.symbols.SDL_LoadWAV_IO;
+export function loadWavIo(
+    src: Deno.PointerValue<"SDL_IOStream">,
+    closeio: boolean,
+    spec: Deno.PointerValue<"SDL_AudioSpec">,
+    audio_buf: Deno.PointerValue,
+): number {
+  if(!lib.symbols.SDL_LoadWAV_IO(src, closeio, spec, audio_buf, _p.u32.p0))
+    throw new Error(`SDL_LoadWAV_IO: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.u32.v0;
+}
 
 /**
  * Loads a WAV from a file path.
@@ -1789,9 +1926,13 @@ export const loadWavIo = lib.symbols.SDL_LoadWAV_IO;
  * @sa SDL_free
  * @sa SDL_LoadWAV_IO
  *
- * @from SDL_audio.h:2095 bool SDL_LoadWAV(const char *path, SDL_AudioSpec *spec, Uint8 **audio_buf, Uint32 *audio_len);
+ * @from SDL_audio.h:2098 bool SDL_LoadWAV(const char *path, SDL_AudioSpec *spec, Uint8 **audio_buf, Uint32 *audio_len);
  */
-export const loadWav = lib.symbols.SDL_LoadWAV;
+export function loadWav(path: string, spec: Deno.PointerValue<"SDL_AudioSpec">, audio_buf: Deno.PointerValue): number {
+  if(!lib.symbols.SDL_LoadWAV(_p.toCstr(path), spec, audio_buf, _p.u32.p0))
+    throw new Error(`SDL_LoadWAV: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.u32.v0;
+}
 
 /**
  * Mix audio data in a specified format.
@@ -1827,9 +1968,19 @@ export const loadWav = lib.symbols.SDL_LoadWAV;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_audio.h:2131 bool SDL_MixAudio(Uint8 *dst, const Uint8 *src, SDL_AudioFormat format, Uint32 len, float volume);
+ * @from SDL_audio.h:2134 bool SDL_MixAudio(Uint8 *dst, const Uint8 *src, SDL_AudioFormat format, Uint32 len, float volume);
  */
-export const mixAudio = lib.symbols.SDL_MixAudio;
+export function mixAudio(
+    src: number,
+    format: number,
+    len: number,
+    volume: number,
+): { dst: number; src: number } {
+  _p.u8.arr[1] = src;
+  if(!lib.symbols.SDL_MixAudio(_p.u8.p0, _p.u8.p1, format, len, volume))
+    throw new Error(`SDL_MixAudio: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { dst: _p.u8.v0, src: _p.u8.v1 };
+}
 
 /**
  * Convert some audio data of one format to another format.
@@ -1859,9 +2010,20 @@ export const mixAudio = lib.symbols.SDL_MixAudio;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_audio.h:2161 bool SDL_ConvertAudioSamples(const SDL_AudioSpec *src_spec, const Uint8 *src_data, int src_len, const SDL_AudioSpec *dst_spec, Uint8 **dst_data, int *dst_len);
+ * @from SDL_audio.h:2164 bool SDL_ConvertAudioSamples(const SDL_AudioSpec *src_spec, const Uint8 *src_data, int src_len, const SDL_AudioSpec *dst_spec, Uint8 **dst_data, int *dst_len);
  */
-export const convertAudioSamples = lib.symbols.SDL_ConvertAudioSamples;
+export function convertAudioSamples(
+    src_spec: Deno.PointerValue<"SDL_AudioSpec">,
+    src_data: number,
+    src_len: number,
+    dst_spec: Deno.PointerValue<"SDL_AudioSpec">,
+    dst_data: Deno.PointerValue,
+): { src_data: number; dst_len: number } {
+  _p.u8.arr[0] = src_data;
+  if(!lib.symbols.SDL_ConvertAudioSamples(src_spec, _p.u8.p0, src_len, dst_spec, dst_data, _p.i32.p0))
+    throw new Error(`SDL_ConvertAudioSamples: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { src_data: _p.u8.v0, dst_len: _p.i32.v0 };
+}
 
 /**
  * Get the human readable name of an audio format.
@@ -1874,9 +2036,11 @@ export const convertAudioSamples = lib.symbols.SDL_ConvertAudioSamples;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_audio.h:2174 const char * SDL_GetAudioFormatName(SDL_AudioFormat format);
+ * @from SDL_audio.h:2177 const char * SDL_GetAudioFormatName(SDL_AudioFormat format);
  */
-export const getAudioFormatName = lib.symbols.SDL_GetAudioFormatName;
+export function getAudioFormatName(format: number): string {
+  return _p.getCstr2(lib.symbols.SDL_GetAudioFormatName(format));
+}
 
 /**
  * Get the appropriate memset value for silencing an audio format.
@@ -1892,7 +2056,9 @@ export const getAudioFormatName = lib.symbols.SDL_GetAudioFormatName;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_audio.h:2190 int SDL_GetSilenceValueForFormat(SDL_AudioFormat format);
+ * @from SDL_audio.h:2193 int SDL_GetSilenceValueForFormat(SDL_AudioFormat format);
  */
-export const getSilenceValueForFormat = lib.symbols.SDL_GetSilenceValueForFormat;
+export function getSilenceValueForFormat(format: number): number {
+  return lib.symbols.SDL_GetSilenceValueForFormat(format);
+}
 

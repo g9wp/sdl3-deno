@@ -32,6 +32,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   TRAYENTRY as TRAYENTRY,
@@ -61,7 +63,9 @@ export {
  *
  * @from SDL_tray.h:120 SDL_Tray * SDL_CreateTray(SDL_Surface *icon, const char *tooltip);
  */
-export const createTray = lib.symbols.SDL_CreateTray;
+export function createTray(icon: Deno.PointerValue<"SDL_Surface">, tooltip: string): Deno.PointerValue<"SDL_Tray"> {
+  return lib.symbols.SDL_CreateTray(icon, _p.toCstr(tooltip)) as Deno.PointerValue<"SDL_Tray">;
+}
 
 /**
  * Updates the system tray icon's icon.
@@ -78,7 +82,9 @@ export const createTray = lib.symbols.SDL_CreateTray;
  *
  * @from SDL_tray.h:135 void SDL_SetTrayIcon(SDL_Tray *tray, SDL_Surface *icon);
  */
-export const setTrayIcon = lib.symbols.SDL_SetTrayIcon;
+export function setTrayIcon(tray: Deno.PointerValue<"SDL_Tray">, icon: Deno.PointerValue<"SDL_Surface">): void {
+  return lib.symbols.SDL_SetTrayIcon(tray, icon);
+}
 
 /**
  * Updates the system tray icon's tooltip.
@@ -95,7 +101,9 @@ export const setTrayIcon = lib.symbols.SDL_SetTrayIcon;
  *
  * @from SDL_tray.h:150 void SDL_SetTrayTooltip(SDL_Tray *tray, const char *tooltip);
  */
-export const setTrayTooltip = lib.symbols.SDL_SetTrayTooltip;
+export function setTrayTooltip(tray: Deno.PointerValue<"SDL_Tray">, tooltip: string): void {
+  return lib.symbols.SDL_SetTrayTooltip(tray, _p.toCstr(tooltip));
+}
 
 /**
  * Create a menu for a system tray.
@@ -121,7 +129,9 @@ export const setTrayTooltip = lib.symbols.SDL_SetTrayTooltip;
  *
  * @from SDL_tray.h:174 SDL_TrayMenu * SDL_CreateTrayMenu(SDL_Tray *tray);
  */
-export const createTrayMenu = lib.symbols.SDL_CreateTrayMenu;
+export function createTrayMenu(tray: Deno.PointerValue<"SDL_Tray">): Deno.PointerValue<"SDL_TrayMenu"> {
+  return lib.symbols.SDL_CreateTrayMenu(tray) as Deno.PointerValue<"SDL_TrayMenu">;
+}
 
 /**
  * Create a submenu for a system tray entry.
@@ -147,7 +157,9 @@ export const createTrayMenu = lib.symbols.SDL_CreateTrayMenu;
  *
  * @from SDL_tray.h:198 SDL_TrayMenu * SDL_CreateTraySubmenu(SDL_TrayEntry *entry);
  */
-export const createTraySubmenu = lib.symbols.SDL_CreateTraySubmenu;
+export function createTraySubmenu(entry: Deno.PointerValue<"SDL_TrayEntry">): Deno.PointerValue<"SDL_TrayMenu"> {
+  return lib.symbols.SDL_CreateTraySubmenu(entry) as Deno.PointerValue<"SDL_TrayMenu">;
+}
 
 /**
  * Gets a previously created tray menu.
@@ -173,7 +185,9 @@ export const createTraySubmenu = lib.symbols.SDL_CreateTraySubmenu;
  *
  * @from SDL_tray.h:222 SDL_TrayMenu * SDL_GetTrayMenu(SDL_Tray *tray);
  */
-export const getTrayMenu = lib.symbols.SDL_GetTrayMenu;
+export function getTrayMenu(tray: Deno.PointerValue<"SDL_Tray">): Deno.PointerValue<"SDL_TrayMenu"> {
+  return lib.symbols.SDL_GetTrayMenu(tray) as Deno.PointerValue<"SDL_TrayMenu">;
+}
 
 /**
  * Gets a previously created tray entry submenu.
@@ -199,7 +213,9 @@ export const getTrayMenu = lib.symbols.SDL_GetTrayMenu;
  *
  * @from SDL_tray.h:246 SDL_TrayMenu * SDL_GetTraySubmenu(SDL_TrayEntry *entry);
  */
-export const getTraySubmenu = lib.symbols.SDL_GetTraySubmenu;
+export function getTraySubmenu(entry: Deno.PointerValue<"SDL_TrayEntry">): Deno.PointerValue<"SDL_TrayMenu"> {
+  return lib.symbols.SDL_GetTraySubmenu(entry) as Deno.PointerValue<"SDL_TrayMenu">;
+}
 
 /**
  * Returns a list of entries in the menu, in order.
@@ -221,7 +237,11 @@ export const getTraySubmenu = lib.symbols.SDL_GetTraySubmenu;
  *
  * @from SDL_tray.h:266 const SDL_TrayEntry ** SDL_GetTrayEntries(SDL_TrayMenu *menu, int *count);
  */
-export const getTrayEntries = lib.symbols.SDL_GetTrayEntries;
+export function getTrayEntries(menu: Deno.PointerValue<"SDL_TrayMenu">): { count: number; ret: Deno.PointerValue } {
+  const ret = lib.symbols.SDL_GetTrayEntries(menu, _p.i32.p0) as Deno.PointerValue;
+  if(!ret) throw new Error(`SDL_GetTrayEntries: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { count: _p.i32.v0, ret };
+}
 
 /**
  * Removes a tray entry.
@@ -238,7 +258,9 @@ export const getTrayEntries = lib.symbols.SDL_GetTrayEntries;
  *
  * @from SDL_tray.h:281 void SDL_RemoveTrayEntry(SDL_TrayEntry *entry);
  */
-export const removeTrayEntry = lib.symbols.SDL_RemoveTrayEntry;
+export function removeTrayEntry(entry: Deno.PointerValue<"SDL_TrayEntry">): void {
+  return lib.symbols.SDL_RemoveTrayEntry(entry);
+}
 
 /**
  * Insert a tray entry at a given position.
@@ -268,7 +290,14 @@ export const removeTrayEntry = lib.symbols.SDL_RemoveTrayEntry;
  *
  * @from SDL_tray.h:309 SDL_TrayEntry * SDL_InsertTrayEntryAt(SDL_TrayMenu *menu, int pos, const char *label, SDL_TrayEntryFlags flags);
  */
-export const insertTrayEntryAt = lib.symbols.SDL_InsertTrayEntryAt;
+export function insertTrayEntryAt(
+    menu: Deno.PointerValue<"SDL_TrayMenu">,
+    pos: number,
+    label: string,
+    flags: number,
+): Deno.PointerValue<"SDL_TrayEntry"> {
+  return lib.symbols.SDL_InsertTrayEntryAt(menu, pos, _p.toCstr(label), flags) as Deno.PointerValue<"SDL_TrayEntry">;
+}
 
 /**
  * Sets the label of an entry.
@@ -292,7 +321,9 @@ export const insertTrayEntryAt = lib.symbols.SDL_InsertTrayEntryAt;
  *
  * @from SDL_tray.h:331 void SDL_SetTrayEntryLabel(SDL_TrayEntry *entry, const char *label);
  */
-export const setTrayEntryLabel = lib.symbols.SDL_SetTrayEntryLabel;
+export function setTrayEntryLabel(entry: Deno.PointerValue<"SDL_TrayEntry">, label: string): void {
+  return lib.symbols.SDL_SetTrayEntryLabel(entry, _p.toCstr(label));
+}
 
 /**
  * Gets the label of an entry.
@@ -313,7 +344,9 @@ export const setTrayEntryLabel = lib.symbols.SDL_SetTrayEntryLabel;
  *
  * @from SDL_tray.h:350 const char * SDL_GetTrayEntryLabel(SDL_TrayEntry *entry);
  */
-export const getTrayEntryLabel = lib.symbols.SDL_GetTrayEntryLabel;
+export function getTrayEntryLabel(entry: Deno.PointerValue<"SDL_TrayEntry">): string {
+  return _p.getCstr2(lib.symbols.SDL_GetTrayEntryLabel(entry));
+}
 
 /**
  * Sets whether or not an entry is checked.
@@ -334,7 +367,9 @@ export const getTrayEntryLabel = lib.symbols.SDL_GetTrayEntryLabel;
  *
  * @from SDL_tray.h:369 void SDL_SetTrayEntryChecked(SDL_TrayEntry *entry, bool checked);
  */
-export const setTrayEntryChecked = lib.symbols.SDL_SetTrayEntryChecked;
+export function setTrayEntryChecked(entry: Deno.PointerValue<"SDL_TrayEntry">, checked: boolean): void {
+  return lib.symbols.SDL_SetTrayEntryChecked(entry, checked);
+}
 
 /**
  * Gets whether or not an entry is checked.
@@ -355,7 +390,9 @@ export const setTrayEntryChecked = lib.symbols.SDL_SetTrayEntryChecked;
  *
  * @from SDL_tray.h:388 bool SDL_GetTrayEntryChecked(SDL_TrayEntry *entry);
  */
-export const getTrayEntryChecked = lib.symbols.SDL_GetTrayEntryChecked;
+export function getTrayEntryChecked(entry: Deno.PointerValue<"SDL_TrayEntry">): boolean {
+  return lib.symbols.SDL_GetTrayEntryChecked(entry);
+}
 
 /**
  * Sets whether or not an entry is enabled.
@@ -374,7 +411,9 @@ export const getTrayEntryChecked = lib.symbols.SDL_GetTrayEntryChecked;
  *
  * @from SDL_tray.h:405 void SDL_SetTrayEntryEnabled(SDL_TrayEntry *entry, bool enabled);
  */
-export const setTrayEntryEnabled = lib.symbols.SDL_SetTrayEntryEnabled;
+export function setTrayEntryEnabled(entry: Deno.PointerValue<"SDL_TrayEntry">, enabled: boolean): void {
+  return lib.symbols.SDL_SetTrayEntryEnabled(entry, enabled);
+}
 
 /**
  * Gets whether or not an entry is enabled.
@@ -393,7 +432,9 @@ export const setTrayEntryEnabled = lib.symbols.SDL_SetTrayEntryEnabled;
  *
  * @from SDL_tray.h:422 bool SDL_GetTrayEntryEnabled(SDL_TrayEntry *entry);
  */
-export const getTrayEntryEnabled = lib.symbols.SDL_GetTrayEntryEnabled;
+export function getTrayEntryEnabled(entry: Deno.PointerValue<"SDL_TrayEntry">): boolean {
+  return lib.symbols.SDL_GetTrayEntryEnabled(entry);
+}
 
 /**
  * Sets a callback to be invoked when the entry is selected.
@@ -413,7 +454,9 @@ export const getTrayEntryEnabled = lib.symbols.SDL_GetTrayEntryEnabled;
  *
  * @from SDL_tray.h:440 void SDL_SetTrayEntryCallback(SDL_TrayEntry *entry, SDL_TrayCallback callback, void *userdata);
  */
-export const setTrayEntryCallback = lib.symbols.SDL_SetTrayEntryCallback;
+export function setTrayEntryCallback(entry: Deno.PointerValue<"SDL_TrayEntry">, callback: Deno.PointerValue, userdata: Deno.PointerValue): void {
+  return lib.symbols.SDL_SetTrayEntryCallback(entry, callback, userdata);
+}
 
 /**
  * Simulate a click on a tray entry.
@@ -427,7 +470,9 @@ export const setTrayEntryCallback = lib.symbols.SDL_SetTrayEntryCallback;
  *
  * @from SDL_tray.h:452 void SDL_ClickTrayEntry(SDL_TrayEntry *entry);
  */
-export const clickTrayEntry = lib.symbols.SDL_ClickTrayEntry;
+export function clickTrayEntry(entry: Deno.PointerValue<"SDL_TrayEntry">): void {
+  return lib.symbols.SDL_ClickTrayEntry(entry);
+}
 
 /**
  * Destroys a tray object.
@@ -445,7 +490,9 @@ export const clickTrayEntry = lib.symbols.SDL_ClickTrayEntry;
  *
  * @from SDL_tray.h:468 void SDL_DestroyTray(SDL_Tray *tray);
  */
-export const destroyTray = lib.symbols.SDL_DestroyTray;
+export function destroyTray(tray: Deno.PointerValue<"SDL_Tray">): void {
+  return lib.symbols.SDL_DestroyTray(tray);
+}
 
 /**
  * Gets the menu containing a certain tray entry.
@@ -462,7 +509,9 @@ export const destroyTray = lib.symbols.SDL_DestroyTray;
  *
  * @from SDL_tray.h:483 SDL_TrayMenu * SDL_GetTrayEntryParent(SDL_TrayEntry *entry);
  */
-export const getTrayEntryParent = lib.symbols.SDL_GetTrayEntryParent;
+export function getTrayEntryParent(entry: Deno.PointerValue<"SDL_TrayEntry">): Deno.PointerValue<"SDL_TrayMenu"> {
+  return lib.symbols.SDL_GetTrayEntryParent(entry) as Deno.PointerValue<"SDL_TrayMenu">;
+}
 
 /**
  * Gets the entry for which the menu is a submenu, if the current menu is a
@@ -484,7 +533,9 @@ export const getTrayEntryParent = lib.symbols.SDL_GetTrayEntryParent;
  *
  * @from SDL_tray.h:503 SDL_TrayEntry * SDL_GetTrayMenuParentEntry(SDL_TrayMenu *menu);
  */
-export const getTrayMenuParentEntry = lib.symbols.SDL_GetTrayMenuParentEntry;
+export function getTrayMenuParentEntry(menu: Deno.PointerValue<"SDL_TrayMenu">): Deno.PointerValue<"SDL_TrayEntry"> {
+  return lib.symbols.SDL_GetTrayMenuParentEntry(menu) as Deno.PointerValue<"SDL_TrayEntry">;
+}
 
 /**
  * Gets the tray for which this menu is the first-level menu, if the current
@@ -506,7 +557,9 @@ export const getTrayMenuParentEntry = lib.symbols.SDL_GetTrayMenuParentEntry;
  *
  * @from SDL_tray.h:523 SDL_Tray * SDL_GetTrayMenuParentTray(SDL_TrayMenu *menu);
  */
-export const getTrayMenuParentTray = lib.symbols.SDL_GetTrayMenuParentTray;
+export function getTrayMenuParentTray(menu: Deno.PointerValue<"SDL_TrayMenu">): Deno.PointerValue<"SDL_Tray"> {
+  return lib.symbols.SDL_GetTrayMenuParentTray(menu) as Deno.PointerValue<"SDL_Tray">;
+}
 
 /**
  * Update the trays.
@@ -520,5 +573,7 @@ export const getTrayMenuParentTray = lib.symbols.SDL_GetTrayMenuParentTray;
  *
  * @from SDL_tray.h:535 void SDL_UpdateTrays(void);
  */
-export const updateTrays = lib.symbols.SDL_UpdateTrays;
+export function updateTrays(): void {
+  return lib.symbols.SDL_UpdateTrays();
+}
 

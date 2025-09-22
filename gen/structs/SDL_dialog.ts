@@ -62,8 +62,8 @@ import * as _b from "../_structs/SDL_dialog.ts";
  * @from SDL_dialog.h:69
  */
 export interface DialogFileFilter {
-  name: string; /* const char * */
-  pattern: string; /* const char * */
+  name: Deno.PointerValue; /* const char * */
+  pattern: Deno.PointerValue; /* const char * */
 }
 
 export function read_DialogFileFilter(dt: DataView): DialogFileFilter {

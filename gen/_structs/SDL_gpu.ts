@@ -201,8 +201,8 @@
  * - `drawIndirectFirstInstance`
  *
  * **D3D12:** Supported on Windows 10 or newer, Xbox One (GDK), and Xbox
- * Series X|S (GDK). Requires a GPU that supports DirectX 12 Feature Level
- * 11_1.
+ * Series X|S (GDK). Requires a GPU that supports DirectX 12 Feature Level 11_0 and
+ * Resource Binding Tier 2 or above.
  *
  * **Metal:** Supported on macOS 10.14+ and iOS/tvOS 13.0+. Hardware
  * requirements vary by operating system:
@@ -601,7 +601,7 @@ export const SDL_GPUSamplerCreateInfo = new _.Struct({
  */
 export const SDL_GPUVertexBufferDescription = new _.Struct({
   slot: _.u32, /**< Uint32 : The binding slot of the vertex buffer. */
-  pitch: _.u32, /**< Uint32 : The byte pitch between consecutive elements of the vertex buffer. */
+  pitch: _.u32, /**< Uint32 : The size of a single element + the offset between elements. */
   input_rate: _.u32, /**< SDL_GPUVertexInputRate : Whether attribute addressing is a function of the vertex index or instance index. */
   instance_step_rate: _.u32, /**< Uint32 : Reserved for future use. Must be set to 0. */
 });

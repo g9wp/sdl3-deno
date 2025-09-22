@@ -156,7 +156,7 @@ SDL_hid_device_change_count: {
  * @from SDL_hidapi.h:239 SDL_hid_device_info * SDL_hid_enumerate(unsigned short vendor_id, unsigned short product_id);
  */
 SDL_hid_enumerate: {
-      parameters: ["u32", "u32"],
+      parameters: ["i16", "i16"],
       result: "pointer"
     },
 
@@ -198,7 +198,7 @@ SDL_hid_free_enumeration: {
  * @from SDL_hidapi.h:269 SDL_hid_device * SDL_hid_open(unsigned short vendor_id, unsigned short product_id, const wchar_t *serial_number);
  */
 SDL_hid_open: {
-      parameters: ["u32", "u32", "pointer"],
+      parameters: ["i16", "i16", "pointer"],
       result: "pointer"
     },
 
@@ -251,7 +251,7 @@ SDL_hid_open_path: {
  * @from SDL_hidapi.h:310 int SDL_hid_write(SDL_hid_device *dev, const unsigned char *data, size_t length);
  */
 SDL_hid_write: {
-      parameters: ["pointer", "u32", "usize"],
+      parameters: ["pointer", "pointer", "usize"],
       result: "i32"
     },
 
@@ -278,7 +278,7 @@ SDL_hid_write: {
  * @from SDL_hidapi.h:331 int SDL_hid_read_timeout(SDL_hid_device *dev, unsigned char *data, size_t length, int milliseconds);
  */
 SDL_hid_read_timeout: {
-      parameters: ["pointer", "u32", "usize", "i32"],
+      parameters: ["pointer", "pointer", "usize", "i32"],
       result: "i32"
     },
 
@@ -305,7 +305,7 @@ SDL_hid_read_timeout: {
  * @from SDL_hidapi.h:352 int SDL_hid_read(SDL_hid_device *dev, unsigned char *data, size_t length);
  */
 SDL_hid_read: {
-      parameters: ["pointer", "u32", "usize"],
+      parameters: ["pointer", "pointer", "usize"],
       result: "i32"
     },
 
@@ -361,7 +361,7 @@ SDL_hid_set_nonblocking: {
  * @from SDL_hidapi.h:396 int SDL_hid_send_feature_report(SDL_hid_device *dev, const unsigned char *data, size_t length);
  */
 SDL_hid_send_feature_report: {
-      parameters: ["pointer", "u32", "usize"],
+      parameters: ["pointer", "pointer", "usize"],
       result: "i32"
     },
 
@@ -390,7 +390,7 @@ SDL_hid_send_feature_report: {
  * @from SDL_hidapi.h:419 int SDL_hid_get_feature_report(SDL_hid_device *dev, unsigned char *data, size_t length);
  */
 SDL_hid_get_feature_report: {
-      parameters: ["pointer", "u32", "usize"],
+      parameters: ["pointer", "pointer", "usize"],
       result: "i32"
     },
 
@@ -419,7 +419,7 @@ SDL_hid_get_feature_report: {
  * @from SDL_hidapi.h:442 int SDL_hid_get_input_report(SDL_hid_device *dev, unsigned char *data, size_t length);
  */
 SDL_hid_get_input_report: {
-      parameters: ["pointer", "u32", "usize"],
+      parameters: ["pointer", "pointer", "usize"],
       result: "i32"
     },
 
@@ -553,7 +553,7 @@ SDL_hid_get_device_info: {
  * @from SDL_hidapi.h:534 int SDL_hid_get_report_descriptor(SDL_hid_device *dev, unsigned char *buf, size_t buf_size);
  */
 SDL_hid_get_report_descriptor: {
-      parameters: ["pointer", "u32", "usize"],
+      parameters: ["pointer", "pointer", "usize"],
       result: "i32"
     },
 

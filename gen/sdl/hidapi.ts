@@ -51,6 +51,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 export {
   SDL_hid_bus_type as HID_API_BUS,
@@ -76,7 +78,9 @@ export {
  *
  * @from SDL_hidapi.h:175 int SDL_hid_init(void);
  */
-export const hidInit = lib.symbols.SDL_hid_init;
+export function hidInit(): number {
+  return lib.symbols.SDL_hid_init();
+}
 
 /**
  * Finalize the HIDAPI library.
@@ -93,7 +97,9 @@ export const hidInit = lib.symbols.SDL_hid_init;
  *
  * @from SDL_hidapi.h:190 int SDL_hid_exit(void);
  */
-export const hidExit = lib.symbols.SDL_hid_exit;
+export function hidExit(): number {
+  return lib.symbols.SDL_hid_exit();
+}
 
 /**
  * Check to see if devices may have been added or removed.
@@ -116,7 +122,9 @@ export const hidExit = lib.symbols.SDL_hid_exit;
  *
  * @from SDL_hidapi.h:211 Uint32 SDL_hid_device_change_count(void);
  */
-export const hidDeviceChangeCount = lib.symbols.SDL_hid_device_change_count;
+export function hidDeviceChangeCount(): number {
+  return lib.symbols.SDL_hid_device_change_count();
+}
 
 /**
  * Enumerate the HID Devices.
@@ -146,7 +154,9 @@ export const hidDeviceChangeCount = lib.symbols.SDL_hid_device_change_count;
  *
  * @from SDL_hidapi.h:239 SDL_hid_device_info * SDL_hid_enumerate(unsigned short vendor_id, unsigned short product_id);
  */
-export const hidEnumerate = lib.symbols.SDL_hid_enumerate;
+export function hidEnumerate(vendor_id: number, product_id: number): Deno.PointerValue<"SDL_hid_device_info"> {
+  return lib.symbols.SDL_hid_enumerate(vendor_id, product_id) as Deno.PointerValue<"SDL_hid_device_info">;
+}
 
 /**
  * Free an enumeration linked list.
@@ -160,7 +170,9 @@ export const hidEnumerate = lib.symbols.SDL_hid_enumerate;
  *
  * @from SDL_hidapi.h:251 void SDL_hid_free_enumeration(SDL_hid_device_info *devs);
  */
-export const hidFreeEnumeration = lib.symbols.SDL_hid_free_enumeration;
+export function hidFreeEnumeration(devs: Deno.PointerValue<"SDL_hid_device_info">): void {
+  return lib.symbols.SDL_hid_free_enumeration(devs);
+}
 
 /**
  * Open a HID device using a Vendor ID (VID), Product ID (PID) and optionally
@@ -180,7 +192,12 @@ export const hidFreeEnumeration = lib.symbols.SDL_hid_free_enumeration;
  *
  * @from SDL_hidapi.h:269 SDL_hid_device * SDL_hid_open(unsigned short vendor_id, unsigned short product_id, const wchar_t *serial_number);
  */
-export const hidOpen = lib.symbols.SDL_hid_open;
+export function hidOpen(vendor_id: number, product_id: number, serial_number: wchar_t): { serial_number: wchar_t; ret: Deno.PointerValue<"SDL_hid_device"> } {
+  _p.i16.arr[0] = serial_number;
+  const ret = lib.symbols.SDL_hid_open(vendor_id, product_id, _p.i16.p0) as Deno.PointerValue<"SDL_hid_device">;
+  if(!ret) throw new Error(`SDL_hid_open: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { serial_number: _p.i16.v0, ret };
+}
 
 /**
  * Open a HID device by its path name.
@@ -196,7 +213,9 @@ export const hidOpen = lib.symbols.SDL_hid_open;
  *
  * @from SDL_hidapi.h:283 SDL_hid_device * SDL_hid_open_path(const char *path);
  */
-export const hidOpenPath = lib.symbols.SDL_hid_open_path;
+export function hidOpenPath(path: string): Deno.PointerValue<"SDL_hid_device"> {
+  return lib.symbols.SDL_hid_open_path(_p.toCstr(path)) as Deno.PointerValue<"SDL_hid_device">;
+}
 
 /**
  * Write an Output report to a HID device.
@@ -225,7 +244,11 @@ export const hidOpenPath = lib.symbols.SDL_hid_open_path;
  *
  * @from SDL_hidapi.h:310 int SDL_hid_write(SDL_hid_device *dev, const unsigned char *data, size_t length);
  */
-export const hidWrite = lib.symbols.SDL_hid_write;
+export function hidWrite(dev: Deno.PointerValue<"SDL_hid_device">, length: bigint): string {
+  if(!lib.symbols.SDL_hid_write(dev, _p.cstr.p0, length))
+    throw new Error(`SDL_hid_write: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.cstr.v0;
+}
 
 /**
  * Read an Input report from a HID device with timeout.
@@ -248,7 +271,11 @@ export const hidWrite = lib.symbols.SDL_hid_write;
  *
  * @from SDL_hidapi.h:331 int SDL_hid_read_timeout(SDL_hid_device *dev, unsigned char *data, size_t length, int milliseconds);
  */
-export const hidReadTimeout = lib.symbols.SDL_hid_read_timeout;
+export function hidReadTimeout(dev: Deno.PointerValue<"SDL_hid_device">, length: bigint, milliseconds: number): string {
+  if(!lib.symbols.SDL_hid_read_timeout(dev, _p.cstr.p0, length, milliseconds))
+    throw new Error(`SDL_hid_read_timeout: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.cstr.v0;
+}
 
 /**
  * Read an Input report from a HID device.
@@ -271,7 +298,11 @@ export const hidReadTimeout = lib.symbols.SDL_hid_read_timeout;
  *
  * @from SDL_hidapi.h:352 int SDL_hid_read(SDL_hid_device *dev, unsigned char *data, size_t length);
  */
-export const hidRead = lib.symbols.SDL_hid_read;
+export function hidRead(dev: Deno.PointerValue<"SDL_hid_device">, length: bigint): string {
+  if(!lib.symbols.SDL_hid_read(dev, _p.cstr.p0, length))
+    throw new Error(`SDL_hid_read: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.cstr.v0;
+}
 
 /**
  * Set the device handle to be non-blocking.
@@ -292,7 +323,9 @@ export const hidRead = lib.symbols.SDL_hid_read;
  *
  * @from SDL_hidapi.h:371 int SDL_hid_set_nonblocking(SDL_hid_device *dev, int nonblock);
  */
-export const hidSetNonblocking = lib.symbols.SDL_hid_set_nonblocking;
+export function hidSetNonblocking(dev: Deno.PointerValue<"SDL_hid_device">, nonblock: number): number {
+  return lib.symbols.SDL_hid_set_nonblocking(dev, nonblock);
+}
 
 /**
  * Send a Feature report to the device.
@@ -319,7 +352,11 @@ export const hidSetNonblocking = lib.symbols.SDL_hid_set_nonblocking;
  *
  * @from SDL_hidapi.h:396 int SDL_hid_send_feature_report(SDL_hid_device *dev, const unsigned char *data, size_t length);
  */
-export const hidSendFeatureReport = lib.symbols.SDL_hid_send_feature_report;
+export function hidSendFeatureReport(dev: Deno.PointerValue<"SDL_hid_device">, length: bigint): string {
+  if(!lib.symbols.SDL_hid_send_feature_report(dev, _p.cstr.p0, length))
+    throw new Error(`SDL_hid_send_feature_report: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.cstr.v0;
+}
 
 /**
  * Get a feature report from a HID device.
@@ -344,7 +381,11 @@ export const hidSendFeatureReport = lib.symbols.SDL_hid_send_feature_report;
  *
  * @from SDL_hidapi.h:419 int SDL_hid_get_feature_report(SDL_hid_device *dev, unsigned char *data, size_t length);
  */
-export const hidGetFeatureReport = lib.symbols.SDL_hid_get_feature_report;
+export function hidGetFeatureReport(dev: Deno.PointerValue<"SDL_hid_device">, length: bigint): string {
+  if(!lib.symbols.SDL_hid_get_feature_report(dev, _p.cstr.p0, length))
+    throw new Error(`SDL_hid_get_feature_report: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.cstr.v0;
+}
 
 /**
  * Get an input report from a HID device.
@@ -369,7 +410,11 @@ export const hidGetFeatureReport = lib.symbols.SDL_hid_get_feature_report;
  *
  * @from SDL_hidapi.h:442 int SDL_hid_get_input_report(SDL_hid_device *dev, unsigned char *data, size_t length);
  */
-export const hidGetInputReport = lib.symbols.SDL_hid_get_input_report;
+export function hidGetInputReport(dev: Deno.PointerValue<"SDL_hid_device">, length: bigint): string {
+  if(!lib.symbols.SDL_hid_get_input_report(dev, _p.cstr.p0, length))
+    throw new Error(`SDL_hid_get_input_report: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.cstr.v0;
+}
 
 /**
  * Close a HID device.
@@ -382,7 +427,9 @@ export const hidGetInputReport = lib.symbols.SDL_hid_get_input_report;
  *
  * @from SDL_hidapi.h:453 int SDL_hid_close(SDL_hid_device *dev);
  */
-export const hidClose = lib.symbols.SDL_hid_close;
+export function hidClose(dev: Deno.PointerValue<"SDL_hid_device">): number {
+  return lib.symbols.SDL_hid_close(dev);
+}
 
 /**
  * Get The Manufacturer String from a HID device.
@@ -397,7 +444,11 @@ export const hidClose = lib.symbols.SDL_hid_close;
  *
  * @from SDL_hidapi.h:466 int SDL_hid_get_manufacturer_string(SDL_hid_device *dev, wchar_t *string, size_t maxlen);
  */
-export const hidGetManufacturerString = lib.symbols.SDL_hid_get_manufacturer_string;
+export function hidGetManufacturerString(dev: Deno.PointerValue<"SDL_hid_device">, maxlen: bigint): wchar_t {
+  if(!lib.symbols.SDL_hid_get_manufacturer_string(dev, _p.i16.p0, maxlen))
+    throw new Error(`SDL_hid_get_manufacturer_string: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.i16.v0;
+}
 
 /**
  * Get The Product String from a HID device.
@@ -412,7 +463,11 @@ export const hidGetManufacturerString = lib.symbols.SDL_hid_get_manufacturer_str
  *
  * @from SDL_hidapi.h:479 int SDL_hid_get_product_string(SDL_hid_device *dev, wchar_t *string, size_t maxlen);
  */
-export const hidGetProductString = lib.symbols.SDL_hid_get_product_string;
+export function hidGetProductString(dev: Deno.PointerValue<"SDL_hid_device">, maxlen: bigint): wchar_t {
+  if(!lib.symbols.SDL_hid_get_product_string(dev, _p.i16.p0, maxlen))
+    throw new Error(`SDL_hid_get_product_string: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.i16.v0;
+}
 
 /**
  * Get The Serial Number String from a HID device.
@@ -427,7 +482,11 @@ export const hidGetProductString = lib.symbols.SDL_hid_get_product_string;
  *
  * @from SDL_hidapi.h:492 int SDL_hid_get_serial_number_string(SDL_hid_device *dev, wchar_t *string, size_t maxlen);
  */
-export const hidGetSerialNumberString = lib.symbols.SDL_hid_get_serial_number_string;
+export function hidGetSerialNumberString(dev: Deno.PointerValue<"SDL_hid_device">, maxlen: bigint): wchar_t {
+  if(!lib.symbols.SDL_hid_get_serial_number_string(dev, _p.i16.p0, maxlen))
+    throw new Error(`SDL_hid_get_serial_number_string: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.i16.v0;
+}
 
 /**
  * Get a string from a HID device, based on its string index.
@@ -443,7 +502,11 @@ export const hidGetSerialNumberString = lib.symbols.SDL_hid_get_serial_number_st
  *
  * @from SDL_hidapi.h:506 int SDL_hid_get_indexed_string(SDL_hid_device *dev, int string_index, wchar_t *string, size_t maxlen);
  */
-export const hidGetIndexedString = lib.symbols.SDL_hid_get_indexed_string;
+export function hidGetIndexedString(dev: Deno.PointerValue<"SDL_hid_device">, string_index: number, maxlen: bigint): wchar_t {
+  if(!lib.symbols.SDL_hid_get_indexed_string(dev, string_index, _p.i16.p0, maxlen))
+    throw new Error(`SDL_hid_get_indexed_string: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.i16.v0;
+}
 
 /**
  * Get the device info from a HID device.
@@ -457,7 +520,9 @@ export const hidGetIndexedString = lib.symbols.SDL_hid_get_indexed_string;
  *
  * @from SDL_hidapi.h:518 SDL_hid_device_info * SDL_hid_get_device_info(SDL_hid_device *dev);
  */
-export const hidGetDeviceInfo = lib.symbols.SDL_hid_get_device_info;
+export function hidGetDeviceInfo(dev: Deno.PointerValue<"SDL_hid_device">): Deno.PointerValue<"SDL_hid_device_info"> {
+  return lib.symbols.SDL_hid_get_device_info(dev) as Deno.PointerValue<"SDL_hid_device_info">;
+}
 
 /**
  * Get a report descriptor from a HID device.
@@ -475,7 +540,11 @@ export const hidGetDeviceInfo = lib.symbols.SDL_hid_get_device_info;
  *
  * @from SDL_hidapi.h:534 int SDL_hid_get_report_descriptor(SDL_hid_device *dev, unsigned char *buf, size_t buf_size);
  */
-export const hidGetReportDescriptor = lib.symbols.SDL_hid_get_report_descriptor;
+export function hidGetReportDescriptor(dev: Deno.PointerValue<"SDL_hid_device">, buf_size: bigint): string {
+  if(!lib.symbols.SDL_hid_get_report_descriptor(dev, _p.cstr.p0, buf_size))
+    throw new Error(`SDL_hid_get_report_descriptor: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.cstr.v0;
+}
 
 /**
  * Start or stop a BLE scan on iOS and tvOS to pair Steam Controllers.
@@ -486,5 +555,7 @@ export const hidGetReportDescriptor = lib.symbols.SDL_hid_get_report_descriptor;
  *
  * @from SDL_hidapi.h:543 void SDL_hid_ble_scan(bool active);
  */
-export const hidBleScan = lib.symbols.SDL_hid_ble_scan;
+export function hidBleScan(active: boolean): void {
+  return lib.symbols.SDL_hid_ble_scan(active);
+}
 

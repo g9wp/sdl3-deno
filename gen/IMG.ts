@@ -15,6 +15,9 @@ export const lib = Deno.dlopen(libSdlPath("SDL3_image"), symbols);
 
 /*--- SDL_image ---*/
 
+import * as _p from "@g9wp/ptr";
+
+
 export {
   IMAGE as SDL_IMAGE,
 } from "./enums/SDL_image.ts"
@@ -28,7 +31,9 @@ export {
  *
  * @from SDL_image.h:70 int IMG_Version(void);
  */
-export const version = lib.symbols.IMG_Version;
+export function version(): number {
+  return lib.symbols.IMG_Version();
+}
 
 /**
  * Load an image from an SDL data source into a software surface.
@@ -92,7 +97,9 @@ export const version = lib.symbols.IMG_Version;
  *
  * @from SDL_image.h:132 SDL_Surface * IMG_LoadTyped_IO(SDL_IOStream *src, bool closeio, const char *type);
  */
-export const loadTypedIo = lib.symbols.IMG_LoadTyped_IO;
+export function loadTypedIo(src: Deno.PointerValue<"SDL_IOStream">, closeio: boolean, type: string): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.IMG_LoadTyped_IO(src, closeio, _p.toCstr(type)) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Load an image from a filesystem path into a software surface.
@@ -139,7 +146,9 @@ export const loadTypedIo = lib.symbols.IMG_LoadTyped_IO;
  *
  * @from SDL_image.h:177 SDL_Surface * IMG_Load(const char *file);
  */
-export const load = lib.symbols.IMG_Load;
+export function load(file: string): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.IMG_Load(_p.toCstr(file)) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Load an image from an SDL data source into a software surface.
@@ -195,7 +204,9 @@ export const load = lib.symbols.IMG_Load;
  *
  * @from SDL_image.h:231 SDL_Surface * IMG_Load_IO(SDL_IOStream *src, bool closeio);
  */
-export const loadIo = lib.symbols.IMG_Load_IO;
+export function loadIo(src: Deno.PointerValue<"SDL_IOStream">, closeio: boolean): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.IMG_Load_IO(src, closeio) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Load an image from a filesystem path into a GPU texture.
@@ -232,7 +243,9 @@ export const loadIo = lib.symbols.IMG_Load_IO;
  *
  * @from SDL_image.h:266 SDL_Texture * IMG_LoadTexture(SDL_Renderer *renderer, const char *file);
  */
-export const loadTexture = lib.symbols.IMG_LoadTexture;
+export function loadTexture(renderer: Deno.PointerValue<"SDL_Renderer">, file: string): Deno.PointerValue<"SDL_Texture"> {
+  return lib.symbols.IMG_LoadTexture(renderer, _p.toCstr(file)) as Deno.PointerValue<"SDL_Texture">;
+}
 
 /**
  * Load an image from an SDL data source into a GPU texture.
@@ -281,7 +294,9 @@ export const loadTexture = lib.symbols.IMG_LoadTexture;
  *
  * @from SDL_image.h:313 SDL_Texture * IMG_LoadTexture_IO(SDL_Renderer *renderer, SDL_IOStream *src, bool closeio);
  */
-export const loadTextureIo = lib.symbols.IMG_LoadTexture_IO;
+export function loadTextureIo(renderer: Deno.PointerValue<"SDL_Renderer">, src: Deno.PointerValue<"SDL_IOStream">, closeio: boolean): Deno.PointerValue<"SDL_Texture"> {
+  return lib.symbols.IMG_LoadTexture_IO(renderer, src, closeio) as Deno.PointerValue<"SDL_Texture">;
+}
 
 /**
  * Load an image from an SDL data source into a GPU texture.
@@ -338,7 +353,14 @@ export const loadTextureIo = lib.symbols.IMG_LoadTexture_IO;
  *
  * @from SDL_image.h:368 SDL_Texture * IMG_LoadTextureTyped_IO(SDL_Renderer *renderer, SDL_IOStream *src, bool closeio, const char *type);
  */
-export const loadTextureTypedIo = lib.symbols.IMG_LoadTextureTyped_IO;
+export function loadTextureTypedIo(
+    renderer: Deno.PointerValue<"SDL_Renderer">,
+    src: Deno.PointerValue<"SDL_IOStream">,
+    closeio: boolean,
+    type: string,
+): Deno.PointerValue<"SDL_Texture"> {
+  return lib.symbols.IMG_LoadTextureTyped_IO(renderer, src, closeio, _p.toCstr(type)) as Deno.PointerValue<"SDL_Texture">;
+}
 
 /**
  * Detect AVIF image data on a readable/seekable SDL_IOStream.
@@ -384,7 +406,9 @@ export const loadTextureTypedIo = lib.symbols.IMG_LoadTextureTyped_IO;
  *
  * @from SDL_image.h:412 bool IMG_isAVIF(SDL_IOStream *src);
  */
-export const isAvif = lib.symbols.IMG_isAVIF;
+export function isAvif(src: Deno.PointerValue<"SDL_IOStream">): boolean {
+  return lib.symbols.IMG_isAVIF(src);
+}
 
 /**
  * Detect ICO image data on a readable/seekable SDL_IOStream.
@@ -429,7 +453,9 @@ export const isAvif = lib.symbols.IMG_isAVIF;
  *
  * @from SDL_image.h:455 bool IMG_isICO(SDL_IOStream *src);
  */
-export const isIco = lib.symbols.IMG_isICO;
+export function isIco(src: Deno.PointerValue<"SDL_IOStream">): boolean {
+  return lib.symbols.IMG_isICO(src);
+}
 
 /**
  * Detect CUR image data on a readable/seekable SDL_IOStream.
@@ -474,7 +500,9 @@ export const isIco = lib.symbols.IMG_isICO;
  *
  * @from SDL_image.h:498 bool IMG_isCUR(SDL_IOStream *src);
  */
-export const isCur = lib.symbols.IMG_isCUR;
+export function isCur(src: Deno.PointerValue<"SDL_IOStream">): boolean {
+  return lib.symbols.IMG_isCUR(src);
+}
 
 /**
  * Detect BMP image data on a readable/seekable SDL_IOStream.
@@ -519,7 +547,9 @@ export const isCur = lib.symbols.IMG_isCUR;
  *
  * @from SDL_image.h:541 bool IMG_isBMP(SDL_IOStream *src);
  */
-export const isBmp = lib.symbols.IMG_isBMP;
+export function isBmp(src: Deno.PointerValue<"SDL_IOStream">): boolean {
+  return lib.symbols.IMG_isBMP(src);
+}
 
 /**
  * Detect GIF image data on a readable/seekable SDL_IOStream.
@@ -564,7 +594,9 @@ export const isBmp = lib.symbols.IMG_isBMP;
  *
  * @from SDL_image.h:584 bool IMG_isGIF(SDL_IOStream *src);
  */
-export const isGif = lib.symbols.IMG_isGIF;
+export function isGif(src: Deno.PointerValue<"SDL_IOStream">): boolean {
+  return lib.symbols.IMG_isGIF(src);
+}
 
 /**
  * Detect JPG image data on a readable/seekable SDL_IOStream.
@@ -609,7 +641,9 @@ export const isGif = lib.symbols.IMG_isGIF;
  *
  * @from SDL_image.h:627 bool IMG_isJPG(SDL_IOStream *src);
  */
-export const isJpg = lib.symbols.IMG_isJPG;
+export function isJpg(src: Deno.PointerValue<"SDL_IOStream">): boolean {
+  return lib.symbols.IMG_isJPG(src);
+}
 
 /**
  * Detect JXL image data on a readable/seekable SDL_IOStream.
@@ -654,7 +688,9 @@ export const isJpg = lib.symbols.IMG_isJPG;
  *
  * @from SDL_image.h:670 bool IMG_isJXL(SDL_IOStream *src);
  */
-export const isJxl = lib.symbols.IMG_isJXL;
+export function isJxl(src: Deno.PointerValue<"SDL_IOStream">): boolean {
+  return lib.symbols.IMG_isJXL(src);
+}
 
 /**
  * Detect LBM image data on a readable/seekable SDL_IOStream.
@@ -699,7 +735,9 @@ export const isJxl = lib.symbols.IMG_isJXL;
  *
  * @from SDL_image.h:713 bool IMG_isLBM(SDL_IOStream *src);
  */
-export const isLbm = lib.symbols.IMG_isLBM;
+export function isLbm(src: Deno.PointerValue<"SDL_IOStream">): boolean {
+  return lib.symbols.IMG_isLBM(src);
+}
 
 /**
  * Detect PCX image data on a readable/seekable SDL_IOStream.
@@ -744,7 +782,9 @@ export const isLbm = lib.symbols.IMG_isLBM;
  *
  * @from SDL_image.h:756 bool IMG_isPCX(SDL_IOStream *src);
  */
-export const isPcx = lib.symbols.IMG_isPCX;
+export function isPcx(src: Deno.PointerValue<"SDL_IOStream">): boolean {
+  return lib.symbols.IMG_isPCX(src);
+}
 
 /**
  * Detect PNG image data on a readable/seekable SDL_IOStream.
@@ -789,7 +829,9 @@ export const isPcx = lib.symbols.IMG_isPCX;
  *
  * @from SDL_image.h:799 bool IMG_isPNG(SDL_IOStream *src);
  */
-export const isPng = lib.symbols.IMG_isPNG;
+export function isPng(src: Deno.PointerValue<"SDL_IOStream">): boolean {
+  return lib.symbols.IMG_isPNG(src);
+}
 
 /**
  * Detect PNM image data on a readable/seekable SDL_IOStream.
@@ -834,7 +876,9 @@ export const isPng = lib.symbols.IMG_isPNG;
  *
  * @from SDL_image.h:842 bool IMG_isPNM(SDL_IOStream *src);
  */
-export const isPnm = lib.symbols.IMG_isPNM;
+export function isPnm(src: Deno.PointerValue<"SDL_IOStream">): boolean {
+  return lib.symbols.IMG_isPNM(src);
+}
 
 /**
  * Detect SVG image data on a readable/seekable SDL_IOStream.
@@ -879,7 +923,9 @@ export const isPnm = lib.symbols.IMG_isPNM;
  *
  * @from SDL_image.h:885 bool IMG_isSVG(SDL_IOStream *src);
  */
-export const isSvg = lib.symbols.IMG_isSVG;
+export function isSvg(src: Deno.PointerValue<"SDL_IOStream">): boolean {
+  return lib.symbols.IMG_isSVG(src);
+}
 
 /**
  * Detect QOI image data on a readable/seekable SDL_IOStream.
@@ -924,7 +970,9 @@ export const isSvg = lib.symbols.IMG_isSVG;
  *
  * @from SDL_image.h:928 bool IMG_isQOI(SDL_IOStream *src);
  */
-export const isQoi = lib.symbols.IMG_isQOI;
+export function isQoi(src: Deno.PointerValue<"SDL_IOStream">): boolean {
+  return lib.symbols.IMG_isQOI(src);
+}
 
 /**
  * Detect TIFF image data on a readable/seekable SDL_IOStream.
@@ -969,7 +1017,9 @@ export const isQoi = lib.symbols.IMG_isQOI;
  *
  * @from SDL_image.h:971 bool IMG_isTIF(SDL_IOStream *src);
  */
-export const isTif = lib.symbols.IMG_isTIF;
+export function isTif(src: Deno.PointerValue<"SDL_IOStream">): boolean {
+  return lib.symbols.IMG_isTIF(src);
+}
 
 /**
  * Detect XCF image data on a readable/seekable SDL_IOStream.
@@ -1014,7 +1064,9 @@ export const isTif = lib.symbols.IMG_isTIF;
  *
  * @from SDL_image.h:1014 bool IMG_isXCF(SDL_IOStream *src);
  */
-export const isXcf = lib.symbols.IMG_isXCF;
+export function isXcf(src: Deno.PointerValue<"SDL_IOStream">): boolean {
+  return lib.symbols.IMG_isXCF(src);
+}
 
 /**
  * Detect XPM image data on a readable/seekable SDL_IOStream.
@@ -1059,7 +1111,9 @@ export const isXcf = lib.symbols.IMG_isXCF;
  *
  * @from SDL_image.h:1057 bool IMG_isXPM(SDL_IOStream *src);
  */
-export const isXpm = lib.symbols.IMG_isXPM;
+export function isXpm(src: Deno.PointerValue<"SDL_IOStream">): boolean {
+  return lib.symbols.IMG_isXPM(src);
+}
 
 /**
  * Detect XV image data on a readable/seekable SDL_IOStream.
@@ -1104,7 +1158,9 @@ export const isXpm = lib.symbols.IMG_isXPM;
  *
  * @from SDL_image.h:1100 bool IMG_isXV(SDL_IOStream *src);
  */
-export const isXv = lib.symbols.IMG_isXV;
+export function isXv(src: Deno.PointerValue<"SDL_IOStream">): boolean {
+  return lib.symbols.IMG_isXV(src);
+}
 
 /**
  * Detect WEBP image data on a readable/seekable SDL_IOStream.
@@ -1149,7 +1205,9 @@ export const isXv = lib.symbols.IMG_isXV;
  *
  * @from SDL_image.h:1143 bool IMG_isWEBP(SDL_IOStream *src);
  */
-export const isWebp = lib.symbols.IMG_isWEBP;
+export function isWebp(src: Deno.PointerValue<"SDL_IOStream">): boolean {
+  return lib.symbols.IMG_isWEBP(src);
+}
 
 /**
  * Load a AVIF image directly.
@@ -1185,7 +1243,9 @@ export const isWebp = lib.symbols.IMG_isWEBP;
  *
  * @from SDL_image.h:1177 SDL_Surface * IMG_LoadAVIF_IO(SDL_IOStream *src);
  */
-export const loadAvifIo = lib.symbols.IMG_LoadAVIF_IO;
+export function loadAvifIo(src: Deno.PointerValue<"SDL_IOStream">): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.IMG_LoadAVIF_IO(src) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Load a ICO image directly.
@@ -1221,7 +1281,9 @@ export const loadAvifIo = lib.symbols.IMG_LoadAVIF_IO;
  *
  * @from SDL_image.h:1211 SDL_Surface * IMG_LoadICO_IO(SDL_IOStream *src);
  */
-export const loadIcoIo = lib.symbols.IMG_LoadICO_IO;
+export function loadIcoIo(src: Deno.PointerValue<"SDL_IOStream">): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.IMG_LoadICO_IO(src) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Load a CUR image directly.
@@ -1257,7 +1319,9 @@ export const loadIcoIo = lib.symbols.IMG_LoadICO_IO;
  *
  * @from SDL_image.h:1245 SDL_Surface * IMG_LoadCUR_IO(SDL_IOStream *src);
  */
-export const loadCurIo = lib.symbols.IMG_LoadCUR_IO;
+export function loadCurIo(src: Deno.PointerValue<"SDL_IOStream">): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.IMG_LoadCUR_IO(src) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Load a BMP image directly.
@@ -1293,7 +1357,9 @@ export const loadCurIo = lib.symbols.IMG_LoadCUR_IO;
  *
  * @from SDL_image.h:1279 SDL_Surface * IMG_LoadBMP_IO(SDL_IOStream *src);
  */
-export const loadBmpIo = lib.symbols.IMG_LoadBMP_IO;
+export function loadBmpIo(src: Deno.PointerValue<"SDL_IOStream">): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.IMG_LoadBMP_IO(src) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Load a GIF image directly.
@@ -1329,7 +1395,9 @@ export const loadBmpIo = lib.symbols.IMG_LoadBMP_IO;
  *
  * @from SDL_image.h:1313 SDL_Surface * IMG_LoadGIF_IO(SDL_IOStream *src);
  */
-export const loadGifIo = lib.symbols.IMG_LoadGIF_IO;
+export function loadGifIo(src: Deno.PointerValue<"SDL_IOStream">): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.IMG_LoadGIF_IO(src) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Load a JPG image directly.
@@ -1365,7 +1433,9 @@ export const loadGifIo = lib.symbols.IMG_LoadGIF_IO;
  *
  * @from SDL_image.h:1347 SDL_Surface * IMG_LoadJPG_IO(SDL_IOStream *src);
  */
-export const loadJpgIo = lib.symbols.IMG_LoadJPG_IO;
+export function loadJpgIo(src: Deno.PointerValue<"SDL_IOStream">): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.IMG_LoadJPG_IO(src) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Load a JXL image directly.
@@ -1401,7 +1471,9 @@ export const loadJpgIo = lib.symbols.IMG_LoadJPG_IO;
  *
  * @from SDL_image.h:1381 SDL_Surface * IMG_LoadJXL_IO(SDL_IOStream *src);
  */
-export const loadJxlIo = lib.symbols.IMG_LoadJXL_IO;
+export function loadJxlIo(src: Deno.PointerValue<"SDL_IOStream">): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.IMG_LoadJXL_IO(src) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Load a LBM image directly.
@@ -1437,7 +1509,9 @@ export const loadJxlIo = lib.symbols.IMG_LoadJXL_IO;
  *
  * @from SDL_image.h:1415 SDL_Surface * IMG_LoadLBM_IO(SDL_IOStream *src);
  */
-export const loadLbmIo = lib.symbols.IMG_LoadLBM_IO;
+export function loadLbmIo(src: Deno.PointerValue<"SDL_IOStream">): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.IMG_LoadLBM_IO(src) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Load a PCX image directly.
@@ -1473,7 +1547,9 @@ export const loadLbmIo = lib.symbols.IMG_LoadLBM_IO;
  *
  * @from SDL_image.h:1449 SDL_Surface * IMG_LoadPCX_IO(SDL_IOStream *src);
  */
-export const loadPcxIo = lib.symbols.IMG_LoadPCX_IO;
+export function loadPcxIo(src: Deno.PointerValue<"SDL_IOStream">): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.IMG_LoadPCX_IO(src) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Load a PNG image directly.
@@ -1509,7 +1585,9 @@ export const loadPcxIo = lib.symbols.IMG_LoadPCX_IO;
  *
  * @from SDL_image.h:1483 SDL_Surface * IMG_LoadPNG_IO(SDL_IOStream *src);
  */
-export const loadPngIo = lib.symbols.IMG_LoadPNG_IO;
+export function loadPngIo(src: Deno.PointerValue<"SDL_IOStream">): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.IMG_LoadPNG_IO(src) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Load a PNM image directly.
@@ -1545,7 +1623,9 @@ export const loadPngIo = lib.symbols.IMG_LoadPNG_IO;
  *
  * @from SDL_image.h:1517 SDL_Surface * IMG_LoadPNM_IO(SDL_IOStream *src);
  */
-export const loadPnmIo = lib.symbols.IMG_LoadPNM_IO;
+export function loadPnmIo(src: Deno.PointerValue<"SDL_IOStream">): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.IMG_LoadPNM_IO(src) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Load a SVG image directly.
@@ -1581,7 +1661,9 @@ export const loadPnmIo = lib.symbols.IMG_LoadPNM_IO;
  *
  * @from SDL_image.h:1551 SDL_Surface * IMG_LoadSVG_IO(SDL_IOStream *src);
  */
-export const loadSvgIo = lib.symbols.IMG_LoadSVG_IO;
+export function loadSvgIo(src: Deno.PointerValue<"SDL_IOStream">): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.IMG_LoadSVG_IO(src) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Load a QOI image directly.
@@ -1617,7 +1699,9 @@ export const loadSvgIo = lib.symbols.IMG_LoadSVG_IO;
  *
  * @from SDL_image.h:1585 SDL_Surface * IMG_LoadQOI_IO(SDL_IOStream *src);
  */
-export const loadQoiIo = lib.symbols.IMG_LoadQOI_IO;
+export function loadQoiIo(src: Deno.PointerValue<"SDL_IOStream">): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.IMG_LoadQOI_IO(src) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Load a TGA image directly.
@@ -1653,7 +1737,9 @@ export const loadQoiIo = lib.symbols.IMG_LoadQOI_IO;
  *
  * @from SDL_image.h:1619 SDL_Surface * IMG_LoadTGA_IO(SDL_IOStream *src);
  */
-export const loadTgaIo = lib.symbols.IMG_LoadTGA_IO;
+export function loadTgaIo(src: Deno.PointerValue<"SDL_IOStream">): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.IMG_LoadTGA_IO(src) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Load a TIFF image directly.
@@ -1689,7 +1775,9 @@ export const loadTgaIo = lib.symbols.IMG_LoadTGA_IO;
  *
  * @from SDL_image.h:1653 SDL_Surface * IMG_LoadTIF_IO(SDL_IOStream *src);
  */
-export const loadTifIo = lib.symbols.IMG_LoadTIF_IO;
+export function loadTifIo(src: Deno.PointerValue<"SDL_IOStream">): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.IMG_LoadTIF_IO(src) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Load a XCF image directly.
@@ -1725,7 +1813,9 @@ export const loadTifIo = lib.symbols.IMG_LoadTIF_IO;
  *
  * @from SDL_image.h:1687 SDL_Surface * IMG_LoadXCF_IO(SDL_IOStream *src);
  */
-export const loadXcfIo = lib.symbols.IMG_LoadXCF_IO;
+export function loadXcfIo(src: Deno.PointerValue<"SDL_IOStream">): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.IMG_LoadXCF_IO(src) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Load a XPM image directly.
@@ -1761,7 +1851,9 @@ export const loadXcfIo = lib.symbols.IMG_LoadXCF_IO;
  *
  * @from SDL_image.h:1721 SDL_Surface * IMG_LoadXPM_IO(SDL_IOStream *src);
  */
-export const loadXpmIo = lib.symbols.IMG_LoadXPM_IO;
+export function loadXpmIo(src: Deno.PointerValue<"SDL_IOStream">): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.IMG_LoadXPM_IO(src) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Load a XV image directly.
@@ -1797,7 +1889,9 @@ export const loadXpmIo = lib.symbols.IMG_LoadXPM_IO;
  *
  * @from SDL_image.h:1755 SDL_Surface * IMG_LoadXV_IO(SDL_IOStream *src);
  */
-export const loadXvIo = lib.symbols.IMG_LoadXV_IO;
+export function loadXvIo(src: Deno.PointerValue<"SDL_IOStream">): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.IMG_LoadXV_IO(src) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Load a WEBP image directly.
@@ -1833,7 +1927,9 @@ export const loadXvIo = lib.symbols.IMG_LoadXV_IO;
  *
  * @from SDL_image.h:1789 SDL_Surface * IMG_LoadWEBP_IO(SDL_IOStream *src);
  */
-export const loadWebpIo = lib.symbols.IMG_LoadWEBP_IO;
+export function loadWebpIo(src: Deno.PointerValue<"SDL_IOStream">): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.IMG_LoadWEBP_IO(src) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Load an SVG image, scaled to a specific size.
@@ -1856,7 +1952,9 @@ export const loadWebpIo = lib.symbols.IMG_LoadWEBP_IO;
  *
  * @from SDL_image.h:1810 SDL_Surface * IMG_LoadSizedSVG_IO(SDL_IOStream *src, int width, int height);
  */
-export const loadSizedSvgIo = lib.symbols.IMG_LoadSizedSVG_IO;
+export function loadSizedSvgIo(src: Deno.PointerValue<"SDL_IOStream">, width: number, height: number): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.IMG_LoadSizedSVG_IO(src, width, height) as Deno.PointerValue<"SDL_Surface">;
+}
 
 /**
  * Load an XPM image from a memory array.
@@ -1877,7 +1975,11 @@ export const loadSizedSvgIo = lib.symbols.IMG_LoadSizedSVG_IO;
  *
  * @from SDL_image.h:1829 SDL_Surface * IMG_ReadXPMFromArray(char **xpm);
  */
-export const readXpmFromArray = lib.symbols.IMG_ReadXPMFromArray;
+export function readXpmFromArray(): { xpm: string; ret: Deno.PointerValue<"SDL_Surface"> } {
+  const ret = lib.symbols.IMG_ReadXPMFromArray(_p.ptr.p0) as Deno.PointerValue<"SDL_Surface">;
+  if(!ret) throw new Error(`IMG_ReadXPMFromArray: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { xpm: _p.ptr.v0, ret };
+}
 
 /**
  * Load an XPM image from a memory array.
@@ -1898,7 +2000,11 @@ export const readXpmFromArray = lib.symbols.IMG_ReadXPMFromArray;
  *
  * @from SDL_image.h:1848 SDL_Surface * IMG_ReadXPMFromArrayToRGB888(char **xpm);
  */
-export const readXpmFromArrayToRgb888 = lib.symbols.IMG_ReadXPMFromArrayToRGB888;
+export function readXpmFromArrayToRgb888(): { xpm: string; ret: Deno.PointerValue<"SDL_Surface"> } {
+  const ret = lib.symbols.IMG_ReadXPMFromArrayToRGB888(_p.ptr.p0) as Deno.PointerValue<"SDL_Surface">;
+  if(!ret) throw new Error(`IMG_ReadXPMFromArrayToRGB888: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { xpm: _p.ptr.v0, ret };
+}
 
 /**
  * Save an SDL_Surface into a AVIF image file.
@@ -1918,7 +2024,9 @@ export const readXpmFromArrayToRgb888 = lib.symbols.IMG_ReadXPMFromArrayToRGB888
  *
  * @from SDL_image.h:1866 bool IMG_SaveAVIF(SDL_Surface *surface, const char *file, int quality);
  */
-export const saveAvif = lib.symbols.IMG_SaveAVIF;
+export function saveAvif(surface: Deno.PointerValue<"SDL_Surface">, file: string, quality: number): boolean {
+  return lib.symbols.IMG_SaveAVIF(surface, _p.toCstr(file), quality);
+}
 
 /**
  * Save an SDL_Surface into AVIF image data, via an SDL_IOStream.
@@ -1943,7 +2051,14 @@ export const saveAvif = lib.symbols.IMG_SaveAVIF;
  *
  * @from SDL_image.h:1889 bool IMG_SaveAVIF_IO(SDL_Surface *surface, SDL_IOStream *dst, bool closeio, int quality);
  */
-export const saveAvifIo = lib.symbols.IMG_SaveAVIF_IO;
+export function saveAvifIo(
+    surface: Deno.PointerValue<"SDL_Surface">,
+    dst: Deno.PointerValue<"SDL_IOStream">,
+    closeio: boolean,
+    quality: number,
+): boolean {
+  return lib.symbols.IMG_SaveAVIF_IO(surface, dst, closeio, quality);
+}
 
 /**
  * Save an SDL_Surface into a PNG image file.
@@ -1961,7 +2076,9 @@ export const saveAvifIo = lib.symbols.IMG_SaveAVIF_IO;
  *
  * @from SDL_image.h:1905 bool IMG_SavePNG(SDL_Surface *surface, const char *file);
  */
-export const savePng = lib.symbols.IMG_SavePNG;
+export function savePng(surface: Deno.PointerValue<"SDL_Surface">, file: string): boolean {
+  return lib.symbols.IMG_SavePNG(surface, _p.toCstr(file));
+}
 
 /**
  * Save an SDL_Surface into PNG image data, via an SDL_IOStream.
@@ -1984,7 +2101,9 @@ export const savePng = lib.symbols.IMG_SavePNG;
  *
  * @from SDL_image.h:1926 bool IMG_SavePNG_IO(SDL_Surface *surface, SDL_IOStream *dst, bool closeio);
  */
-export const savePngIo = lib.symbols.IMG_SavePNG_IO;
+export function savePngIo(surface: Deno.PointerValue<"SDL_Surface">, dst: Deno.PointerValue<"SDL_IOStream">, closeio: boolean): boolean {
+  return lib.symbols.IMG_SavePNG_IO(surface, dst, closeio);
+}
 
 /**
  * Save an SDL_Surface into a JPEG image file.
@@ -2004,7 +2123,9 @@ export const savePngIo = lib.symbols.IMG_SavePNG_IO;
  *
  * @from SDL_image.h:1944 bool IMG_SaveJPG(SDL_Surface *surface, const char *file, int quality);
  */
-export const saveJpg = lib.symbols.IMG_SaveJPG;
+export function saveJpg(surface: Deno.PointerValue<"SDL_Surface">, file: string, quality: number): boolean {
+  return lib.symbols.IMG_SaveJPG(surface, _p.toCstr(file), quality);
+}
 
 /**
  * Save an SDL_Surface into JPEG image data, via an SDL_IOStream.
@@ -2029,7 +2150,14 @@ export const saveJpg = lib.symbols.IMG_SaveJPG;
  *
  * @from SDL_image.h:1967 bool IMG_SaveJPG_IO(SDL_Surface *surface, SDL_IOStream *dst, bool closeio, int quality);
  */
-export const saveJpgIo = lib.symbols.IMG_SaveJPG_IO;
+export function saveJpgIo(
+    surface: Deno.PointerValue<"SDL_Surface">,
+    dst: Deno.PointerValue<"SDL_IOStream">,
+    closeio: boolean,
+    quality: number,
+): boolean {
+  return lib.symbols.IMG_SaveJPG_IO(surface, dst, closeio, quality);
+}
 
 /**
  * Load an animation from a file.
@@ -2046,7 +2174,9 @@ export const saveJpgIo = lib.symbols.IMG_SaveJPG_IO;
  *
  * @from SDL_image.h:1995 IMG_Animation * IMG_LoadAnimation(const char *file);
  */
-export const loadAnimation = lib.symbols.IMG_LoadAnimation;
+export function loadAnimation(file: string): Deno.PointerValue<"IMG_Animation"> {
+  return lib.symbols.IMG_LoadAnimation(_p.toCstr(file)) as Deno.PointerValue<"IMG_Animation">;
+}
 
 /**
  * Load an animation from an SDL_IOStream.
@@ -2069,7 +2199,9 @@ export const loadAnimation = lib.symbols.IMG_LoadAnimation;
  *
  * @from SDL_image.h:2016 IMG_Animation * IMG_LoadAnimation_IO(SDL_IOStream *src, bool closeio);
  */
-export const loadAnimationIo = lib.symbols.IMG_LoadAnimation_IO;
+export function loadAnimationIo(src: Deno.PointerValue<"SDL_IOStream">, closeio: boolean): Deno.PointerValue<"IMG_Animation"> {
+  return lib.symbols.IMG_LoadAnimation_IO(src, closeio) as Deno.PointerValue<"IMG_Animation">;
+}
 
 /**
  * Load an animation from an SDL datasource
@@ -2101,7 +2233,9 @@ export const loadAnimationIo = lib.symbols.IMG_LoadAnimation_IO;
  *
  * @from SDL_image.h:2046 IMG_Animation * IMG_LoadAnimationTyped_IO(SDL_IOStream *src, bool closeio, const char *type);
  */
-export const loadAnimationTypedIo = lib.symbols.IMG_LoadAnimationTyped_IO;
+export function loadAnimationTypedIo(src: Deno.PointerValue<"SDL_IOStream">, closeio: boolean, type: string): Deno.PointerValue<"IMG_Animation"> {
+  return lib.symbols.IMG_LoadAnimationTyped_IO(src, closeio, _p.toCstr(type)) as Deno.PointerValue<"IMG_Animation">;
+}
 
 /**
  * Dispose of an IMG_Animation and free its resources.
@@ -2118,7 +2252,9 @@ export const loadAnimationTypedIo = lib.symbols.IMG_LoadAnimationTyped_IO;
  *
  * @from SDL_image.h:2061 void IMG_FreeAnimation(IMG_Animation *anim);
  */
-export const freeAnimation = lib.symbols.IMG_FreeAnimation;
+export function freeAnimation(anim: Deno.PointerValue<"IMG_Animation">): void {
+  return lib.symbols.IMG_FreeAnimation(anim);
+}
 
 /**
  * Load a GIF animation directly.
@@ -2140,7 +2276,9 @@ export const freeAnimation = lib.symbols.IMG_FreeAnimation;
  *
  * @from SDL_image.h:2081 IMG_Animation * IMG_LoadGIFAnimation_IO(SDL_IOStream *src);
  */
-export const loadGifAnimationIo = lib.symbols.IMG_LoadGIFAnimation_IO;
+export function loadGifAnimationIo(src: Deno.PointerValue<"SDL_IOStream">): Deno.PointerValue<"IMG_Animation"> {
+  return lib.symbols.IMG_LoadGIFAnimation_IO(src) as Deno.PointerValue<"IMG_Animation">;
+}
 
 /**
  * Load a WEBP animation directly.
@@ -2162,5 +2300,7 @@ export const loadGifAnimationIo = lib.symbols.IMG_LoadGIFAnimation_IO;
  *
  * @from SDL_image.h:2101 IMG_Animation * IMG_LoadWEBPAnimation_IO(SDL_IOStream *src);
  */
-export const loadWebpAnimationIo = lib.symbols.IMG_LoadWEBPAnimation_IO;
+export function loadWebpAnimationIo(src: Deno.PointerValue<"SDL_IOStream">): Deno.PointerValue<"IMG_Animation"> {
+  return lib.symbols.IMG_LoadWEBPAnimation_IO(src) as Deno.PointerValue<"IMG_Animation">;
+}
 

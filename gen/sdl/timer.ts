@@ -41,6 +41,8 @@
 */
 
 import { lib } from "./lib.ts";
+import * as _p from "@g9wp/ptr";
+
 
 /**
  * Get the number of milliseconds since SDL library initialization.
@@ -54,7 +56,9 @@ import { lib } from "./lib.ts";
  *
  * @from SDL_timer.h:196 Uint64 SDL_GetTicks(void);
  */
-export const getTicks = lib.symbols.SDL_GetTicks;
+export function getTicks(): bigint {
+  return lib.symbols.SDL_GetTicks();
+}
 
 /**
  * Get the number of nanoseconds since SDL library initialization.
@@ -68,7 +72,9 @@ export const getTicks = lib.symbols.SDL_GetTicks;
  *
  * @from SDL_timer.h:208 Uint64 SDL_GetTicksNS(void);
  */
-export const getTicksNs = lib.symbols.SDL_GetTicksNS;
+export function getTicksNs(): bigint {
+  return lib.symbols.SDL_GetTicksNS();
+}
 
 /**
  * Get the current value of the high resolution counter.
@@ -89,7 +95,9 @@ export const getTicksNs = lib.symbols.SDL_GetTicksNS;
  *
  * @from SDL_timer.h:227 Uint64 SDL_GetPerformanceCounter(void);
  */
-export const getPerformanceCounter = lib.symbols.SDL_GetPerformanceCounter;
+export function getPerformanceCounter(): bigint {
+  return lib.symbols.SDL_GetPerformanceCounter();
+}
 
 /**
  * Get the count per second of the high resolution counter.
@@ -104,7 +112,9 @@ export const getPerformanceCounter = lib.symbols.SDL_GetPerformanceCounter;
  *
  * @from SDL_timer.h:240 Uint64 SDL_GetPerformanceFrequency(void);
  */
-export const getPerformanceFrequency = lib.symbols.SDL_GetPerformanceFrequency;
+export function getPerformanceFrequency(): bigint {
+  return lib.symbols.SDL_GetPerformanceFrequency();
+}
 
 /**
  * Wait a specified number of milliseconds before returning.
@@ -124,7 +134,9 @@ export const getPerformanceFrequency = lib.symbols.SDL_GetPerformanceFrequency;
  *
  * @from SDL_timer.h:258 void SDL_Delay(Uint32 ms);
  */
-export const delay = lib.symbols.SDL_Delay;
+export function delay(ms: number): void {
+  return lib.symbols.SDL_Delay(ms);
+}
 
 /**
  * Wait a specified number of nanoseconds before returning.
@@ -144,7 +156,9 @@ export const delay = lib.symbols.SDL_Delay;
  *
  * @from SDL_timer.h:276 void SDL_DelayNS(Uint64 ns);
  */
-export const delayNs = lib.symbols.SDL_DelayNS;
+export function delayNs(ns: bigint): void {
+  return lib.symbols.SDL_DelayNS(ns);
+}
 
 /**
  * Wait a specified number of nanoseconds before returning.
@@ -164,7 +178,9 @@ export const delayNs = lib.symbols.SDL_DelayNS;
  *
  * @from SDL_timer.h:294 void SDL_DelayPrecise(Uint64 ns);
  */
-export const delayPrecise = lib.symbols.SDL_DelayPrecise;
+export function delayPrecise(ns: bigint): void {
+  return lib.symbols.SDL_DelayPrecise(ns);
+}
 
 /**
  * Call a callback function at a future time.
@@ -202,7 +218,9 @@ export const delayPrecise = lib.symbols.SDL_DelayPrecise;
  *
  * @from SDL_timer.h:363 SDL_TimerID SDL_AddTimer(Uint32 interval, SDL_TimerCallback callback, void *userdata);
  */
-export const addTimer = lib.symbols.SDL_AddTimer;
+export function addTimer(interval: number, callback: Deno.PointerValue, userdata: Deno.PointerValue): number {
+  return lib.symbols.SDL_AddTimer(interval, callback, userdata);
+}
 
 /**
  * Call a callback function at a future time.
@@ -240,7 +258,9 @@ export const addTimer = lib.symbols.SDL_AddTimer;
  *
  * @from SDL_timer.h:425 SDL_TimerID SDL_AddTimerNS(Uint64 interval, SDL_NSTimerCallback callback, void *userdata);
  */
-export const addTimerNs = lib.symbols.SDL_AddTimerNS;
+export function addTimerNs(interval: bigint, callback: Deno.PointerValue, userdata: Deno.PointerValue): number {
+  return lib.symbols.SDL_AddTimerNS(interval, callback, userdata);
+}
 
 /**
  * Remove a timer created with SDL_AddTimer().
@@ -257,5 +277,7 @@ export const addTimerNs = lib.symbols.SDL_AddTimerNS;
  *
  * @from SDL_timer.h:440 bool SDL_RemoveTimer(SDL_TimerID id);
  */
-export const removeTimer = lib.symbols.SDL_RemoveTimer;
+export function removeTimer(id: number): boolean {
+  return lib.symbols.SDL_RemoveTimer(id);
+}
 

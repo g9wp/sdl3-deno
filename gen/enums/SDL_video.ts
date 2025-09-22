@@ -135,11 +135,12 @@ export enum PROP_DISPLAY {
 
 
 /**
- * @from SDL_video:1321 SDL_PROP_WINDOW_CREATE_
+ * @from SDL_video:1333 SDL_PROP_WINDOW_CREATE_
  */
 export enum PROP_WINDOW_CREATE {
   ALWAYS_ON_TOP_BOOLEAN = "SDL.window.create.always_on_top", 
   BORDERLESS_BOOLEAN = "SDL.window.create.borderless", 
+  CONSTRAIN_POPUP_BOOLEAN = "SDL.window.create.constrain_popup", 
   FOCUSABLE_BOOLEAN = "SDL.window.create.focusable", 
   EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN = "SDL.window.create.external_graphics_context", 
   FLAGS_NUMBER = "SDL.window.create.flags", 
@@ -177,7 +178,7 @@ export enum PROP_WINDOW_CREATE {
 
 
 /**
- * @from SDL_video:1529 SDL_PROP_WINDOW_
+ * @from SDL_video:1542 SDL_PROP_WINDOW_
  */
 export enum PROP_WINDOW {
   SHAPE_POINTER = "SDL.window.shape", 
@@ -220,7 +221,7 @@ export enum PROP_WINDOW {
 
 
 /**
- * @from SDL_video:2324 SDL_WINDOW_SURFACE_VSYNC_
+ * @from SDL_video:2337 SDL_WINDOW_SURFACE_VSYNC_
  */
 export enum WINDOW_SURFACE_VSYNC {
   DISABLED = 0, 
@@ -337,7 +338,7 @@ export enum SDL_GLAttr {
  *
  * @sa SDL_HitTest
  *
- * @from SDL_video.h:2690 SDL_HITTEST_
+ * @from SDL_video.h:2703 SDL_HITTEST_
  */
 export enum SDL_HitTestResult {
   NORMAL, /**< Region is normal. No special properties. */
