@@ -201,13 +201,9 @@ export function free(mem: Deno.PointerValue): void {
  *
  * @from SDL_stdinc.h:1502 void SDL_GetOriginalMemoryFunctions(SDL_malloc_func *malloc_func, SDL_calloc_func *calloc_func, SDL_realloc_func *realloc_func, SDL_free_func *free_func);
  */
-export function getOriginalMemoryFunctions(
-    malloc_func: Deno.PointerValue<"SDL_malloc_func">,
-    calloc_func: Deno.PointerValue<"SDL_calloc_func">,
-    realloc_func: Deno.PointerValue<"SDL_realloc_func">,
-    free_func: Deno.PointerValue<"SDL_free_func">,
-): void {
-  return lib.symbols.SDL_GetOriginalMemoryFunctions(malloc_func, calloc_func, realloc_func, free_func);
+export function getOriginalMemoryFunctions(): { malloc_func: Deno.PointerValue; calloc_func: Deno.PointerValue; realloc_func: Deno.PointerValue; free_func: Deno.PointerValue } {
+  lib.symbols.SDL_GetOriginalMemoryFunctions(_p.u64.p0, _p.u64.p1, _p.u64.p2, _p.u64.p3);
+  return {malloc_func: _p.u64.v0, calloc_func: _p.u64.v1, realloc_func: _p.u64.v2, free_func: _p.u64.v3};
 }
 
 /**
@@ -229,13 +225,9 @@ export function getOriginalMemoryFunctions(
  *
  * @from SDL_stdinc.h:1524 void SDL_GetMemoryFunctions(SDL_malloc_func *malloc_func, SDL_calloc_func *calloc_func, SDL_realloc_func *realloc_func, SDL_free_func *free_func);
  */
-export function getMemoryFunctions(
-    malloc_func: Deno.PointerValue<"SDL_malloc_func">,
-    calloc_func: Deno.PointerValue<"SDL_calloc_func">,
-    realloc_func: Deno.PointerValue<"SDL_realloc_func">,
-    free_func: Deno.PointerValue<"SDL_free_func">,
-): void {
-  return lib.symbols.SDL_GetMemoryFunctions(malloc_func, calloc_func, realloc_func, free_func);
+export function getMemoryFunctions(): { malloc_func: Deno.PointerValue; calloc_func: Deno.PointerValue; realloc_func: Deno.PointerValue; free_func: Deno.PointerValue } {
+  lib.symbols.SDL_GetMemoryFunctions(_p.u64.p0, _p.u64.p1, _p.u64.p2, _p.u64.p3);
+  return {malloc_func: _p.u64.v0, calloc_func: _p.u64.v1, realloc_func: _p.u64.v2, free_func: _p.u64.v3};
 }
 
 /**
@@ -2214,7 +2206,7 @@ export function strcasestr(haystack: string, needle: string): string {
  *
  * @from SDL_stdinc.h:3361 char * SDL_strtok_r(char *str, const char *delim, char **saveptr);
  */
-export function strtokR(delim: string): { str: string; saveptr: string; ret: string } {
+export function strtokR(delim: string): { str: string; saveptr: Deno.PointerValue; ret: string } {
   const ret = lib.symbols.SDL_strtok_r(_p.cstr.p0, _p.toCstr(delim), _p.ptr.p0) as string;
   if(!ret) throw new Error(`SDL_strtok_r: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return { str: _p.cstr.v0, saveptr: _p.ptr.v0, ret };
@@ -2580,7 +2572,7 @@ export function atof(str: string): number {
  *
  * @from SDL_stdinc.h:3672 long SDL_strtol(const char *str, char **endp, int base);
  */
-export function strtol(str: string, base: number): string {
+export function strtol(str: string, base: number): Deno.PointerValue {
   if(!lib.symbols.SDL_strtol(_p.toCstr(str), _p.ptr.p0, base))
     throw new Error(`SDL_strtol: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return _p.ptr.v0;
@@ -2619,7 +2611,7 @@ export function strtol(str: string, base: number): string {
  *
  * @from SDL_stdinc.h:3705 unsigned long SDL_strtoul(const char *str, char **endp, int base);
  */
-export function strtoul(str: string, base: number): string {
+export function strtoul(str: string, base: number): Deno.PointerValue {
   if(!lib.symbols.SDL_strtoul(_p.toCstr(str), _p.ptr.p0, base))
     throw new Error(`SDL_strtoul: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return _p.ptr.v0;
@@ -2658,7 +2650,7 @@ export function strtoul(str: string, base: number): string {
  *
  * @from SDL_stdinc.h:3740 long long SDL_strtoll(const char *str, char **endp, int base);
  */
-export function strtoll(str: string, base: number): string {
+export function strtoll(str: string, base: number): Deno.PointerValue {
   if(!lib.symbols.SDL_strtoll(_p.toCstr(str), _p.ptr.p0, base))
     throw new Error(`SDL_strtoll: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return _p.ptr.v0;
@@ -2698,7 +2690,7 @@ export function strtoll(str: string, base: number): string {
  *
  * @from SDL_stdinc.h:3774 unsigned long long SDL_strtoull(const char *str, char **endp, int base);
  */
-export function strtoull(str: string, base: number): string {
+export function strtoull(str: string, base: number): Deno.PointerValue {
   if(!lib.symbols.SDL_strtoull(_p.toCstr(str), _p.ptr.p0, base))
     throw new Error(`SDL_strtoull: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return _p.ptr.v0;
@@ -2733,7 +2725,7 @@ export function strtoull(str: string, base: number): string {
  *
  * @from SDL_stdinc.h:3804 double SDL_strtod(const char *str, char **endp);
  */
-export function strtod(str: string): string {
+export function strtod(str: string): Deno.PointerValue {
   if(!lib.symbols.SDL_strtod(_p.toCstr(str), _p.ptr.p0))
     throw new Error(`SDL_strtod: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return _p.ptr.v0;

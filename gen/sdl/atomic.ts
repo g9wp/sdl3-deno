@@ -71,8 +71,10 @@ import * as _p from "@g9wp/ptr";
  *
  * @from SDL_atomic.h:99 bool SDL_TryLockSpinlock(SDL_SpinLock *lock);
  */
-export function tryLockSpinlock(lock: Deno.PointerValue<"SDL_SpinLock">): boolean {
-  return lib.symbols.SDL_TryLockSpinlock(lock);
+export function tryLockSpinlock(): number {
+  if(!lib.symbols.SDL_TryLockSpinlock(_p.i32.p0))
+    throw new Error(`SDL_TryLockSpinlock: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.i32.v0;
 }
 
 /**
@@ -92,8 +94,9 @@ export function tryLockSpinlock(lock: Deno.PointerValue<"SDL_SpinLock">): boolea
  *
  * @from SDL_atomic.h:116 void SDL_LockSpinlock(SDL_SpinLock *lock);
  */
-export function lockSpinlock(lock: Deno.PointerValue<"SDL_SpinLock">): void {
-  return lib.symbols.SDL_LockSpinlock(lock);
+export function lockSpinlock(): number {
+  lib.symbols.SDL_LockSpinlock(_p.i32.p0);
+  return _p.i32.v0;
 }
 
 /**
@@ -115,8 +118,9 @@ export function lockSpinlock(lock: Deno.PointerValue<"SDL_SpinLock">): void {
  *
  * @from SDL_atomic.h:135 void SDL_UnlockSpinlock(SDL_SpinLock *lock);
  */
-export function unlockSpinlock(lock: Deno.PointerValue<"SDL_SpinLock">): void {
-  return lib.symbols.SDL_UnlockSpinlock(lock);
+export function unlockSpinlock(): number {
+  lib.symbols.SDL_UnlockSpinlock(_p.i32.p0);
+  return _p.i32.v0;
 }
 
 /**

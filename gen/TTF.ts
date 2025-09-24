@@ -1188,8 +1188,10 @@ export function fontHasGlyph(font: Deno.PointerValue<"TTF_Font">, ch: number): b
  *
  * @from SDL_ttf.h:1122 SDL_Surface * TTF_GetGlyphImage(TTF_Font *font, Uint32 ch, TTF_ImageType *image_type);
  */
-export function getGlyphImage(font: Deno.PointerValue<"TTF_Font">, ch: number, image_type: Deno.PointerValue<"TTF_ImageType">): Deno.PointerValue<"SDL_Surface"> {
-  return lib.symbols.TTF_GetGlyphImage(font, ch, image_type) as Deno.PointerValue<"SDL_Surface">;
+export function getGlyphImage(font: Deno.PointerValue<"TTF_Font">, ch: number): { image_type: number; ret: Deno.PointerValue<"SDL_Surface"> } {
+  const ret = lib.symbols.TTF_GetGlyphImage(font, ch, _p.u32.p0) as Deno.PointerValue<"SDL_Surface">;
+  if(!ret) throw new Error(`TTF_GetGlyphImage: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { image_type: _p.u32.v0, ret };
 }
 
 /**
@@ -1212,8 +1214,10 @@ export function getGlyphImage(font: Deno.PointerValue<"TTF_Font">, ch: number, i
  *
  * @from SDL_ttf.h:1142 SDL_Surface * TTF_GetGlyphImageForIndex(TTF_Font *font, Uint32 glyph_index, TTF_ImageType *image_type);
  */
-export function getGlyphImageForIndex(font: Deno.PointerValue<"TTF_Font">, glyph_index: number, image_type: Deno.PointerValue<"TTF_ImageType">): Deno.PointerValue<"SDL_Surface"> {
-  return lib.symbols.TTF_GetGlyphImageForIndex(font, glyph_index, image_type) as Deno.PointerValue<"SDL_Surface">;
+export function getGlyphImageForIndex(font: Deno.PointerValue<"TTF_Font">, glyph_index: number): { image_type: number; ret: Deno.PointerValue<"SDL_Surface"> } {
+  const ret = lib.symbols.TTF_GetGlyphImageForIndex(font, glyph_index, _p.u32.p0) as Deno.PointerValue<"SDL_Surface">;
+  if(!ret) throw new Error(`TTF_GetGlyphImageForIndex: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { image_type: _p.u32.v0, ret };
 }
 
 /**

@@ -1061,8 +1061,10 @@ export function setTextureBlendMode(texture: Deno.PointerValue<"SDL_Texture">, b
  *
  * @from SDL_render.h:1087 bool SDL_GetTextureBlendMode(SDL_Texture *texture, SDL_BlendMode *blendMode);
  */
-export function getTextureBlendMode(texture: Deno.PointerValue<"SDL_Texture">, blendMode: Deno.PointerValue<"SDL_BlendMode">): boolean {
-  return lib.symbols.SDL_GetTextureBlendMode(texture, blendMode);
+export function getTextureBlendMode(texture: Deno.PointerValue<"SDL_Texture">): number {
+  if(!lib.symbols.SDL_GetTextureBlendMode(texture, _p.u32.p0))
+    throw new Error(`SDL_GetTextureBlendMode: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.u32.v0;
 }
 
 /**
@@ -1105,8 +1107,10 @@ export function setTextureScaleMode(texture: Deno.PointerValue<"SDL_Texture">, s
  *
  * @from SDL_render.h:1123 bool SDL_GetTextureScaleMode(SDL_Texture *texture, SDL_ScaleMode *scaleMode);
  */
-export function getTextureScaleMode(texture: Deno.PointerValue<"SDL_Texture">, scaleMode: Deno.PointerValue<"SDL_ScaleMode">): boolean {
-  return lib.symbols.SDL_GetTextureScaleMode(texture, scaleMode);
+export function getTextureScaleMode(texture: Deno.PointerValue<"SDL_Texture">): number {
+  if(!lib.symbols.SDL_GetTextureScaleMode(texture, _p.u32.p0))
+    throw new Error(`SDL_GetTextureScaleMode: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.u32.v0;
 }
 
 /**
@@ -1495,10 +1499,10 @@ export function setRenderLogicalPresentation(
  *
  * @from SDL_render.h:1438 bool SDL_GetRenderLogicalPresentation(SDL_Renderer *renderer, int *w, int *h, SDL_RendererLogicalPresentation *mode);
  */
-export function getRenderLogicalPresentation(renderer: Deno.PointerValue<"SDL_Renderer">, mode: Deno.PointerValue<"SDL_RendererLogicalPresentation">): { w: number; h: number } {
-  if(!lib.symbols.SDL_GetRenderLogicalPresentation(renderer, _p.i32.p0, _p.i32.p1, mode))
+export function getRenderLogicalPresentation(renderer: Deno.PointerValue<"SDL_Renderer">): { w: number; h: number; mode: number } {
+  if(!lib.symbols.SDL_GetRenderLogicalPresentation(renderer, _p.i32.p0, _p.i32.p1, _p.u32.p0))
     throw new Error(`SDL_GetRenderLogicalPresentation: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { w: _p.i32.v0, h: _p.i32.v1 };
+  return { w: _p.i32.v0, h: _p.i32.v1, mode: _p.u32.v0 };
 }
 
 /**
@@ -2105,8 +2109,10 @@ export function setRenderDrawBlendMode(renderer: Deno.PointerValue<"SDL_Renderer
  *
  * @from SDL_render.h:1928 bool SDL_GetRenderDrawBlendMode(SDL_Renderer *renderer, SDL_BlendMode *blendMode);
  */
-export function getRenderDrawBlendMode(renderer: Deno.PointerValue<"SDL_Renderer">, blendMode: Deno.PointerValue<"SDL_BlendMode">): boolean {
-  return lib.symbols.SDL_GetRenderDrawBlendMode(renderer, blendMode);
+export function getRenderDrawBlendMode(renderer: Deno.PointerValue<"SDL_Renderer">): number {
+  if(!lib.symbols.SDL_GetRenderDrawBlendMode(renderer, _p.u32.p0))
+    throw new Error(`SDL_GetRenderDrawBlendMode: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.u32.v0;
 }
 
 /**

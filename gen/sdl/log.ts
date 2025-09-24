@@ -213,8 +213,9 @@ export function getDefaultLogOutputFunction(): Deno.PointerValue {
  *
  * @from SDL_log.h:513 void SDL_GetLogOutputFunction(SDL_LogOutputFunction *callback, void **userdata);
  */
-export function getLogOutputFunction(callback: Deno.PointerValue<"SDL_LogOutputFunction">, userdata: Deno.PointerValue): void {
-  return lib.symbols.SDL_GetLogOutputFunction(callback, userdata);
+export function getLogOutputFunction(userdata: Deno.PointerValue): Deno.PointerValue {
+  lib.symbols.SDL_GetLogOutputFunction(_p.u64.p0, userdata);
+  return _p.u64.v0;
 }
 
 /**

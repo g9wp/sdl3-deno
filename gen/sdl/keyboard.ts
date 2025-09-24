@@ -273,8 +273,10 @@ export function getKeyFromScancode(scancode: number, modstate: number, key_event
  *
  * @from SDL_keyboard.h:252 SDL_Scancode SDL_GetScancodeFromKey(SDL_Keycode key, SDL_Keymod *modstate);
  */
-export function getScancodeFromKey(key: number, modstate: Deno.PointerValue<"SDL_Keymod">): number {
-  return lib.symbols.SDL_GetScancodeFromKey(key, modstate);
+export function getScancodeFromKey(key: number): number {
+  if(!lib.symbols.SDL_GetScancodeFromKey(key, _p.u16.p0))
+    throw new Error(`SDL_GetScancodeFromKey: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.u16.v0;
 }
 
 /**
