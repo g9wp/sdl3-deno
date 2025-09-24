@@ -243,7 +243,7 @@ export function setPaletteColors(
     ncolors: number,
 ): boolean {
   if (colors) _p.u8.arr.set([colors.r, colors.g, colors.b, colors.a], 0);
-  return lib.symbols.SDL_SetPaletteColors(palette, _p.u8.p0, firstcolor, ncolors);
+  return lib.symbols.SDL_SetPaletteColors(palette, colors ? _p.u8.p0 : null, firstcolor, ncolors);
 }
 
 /**

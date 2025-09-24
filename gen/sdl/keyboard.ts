@@ -570,7 +570,7 @@ export function clearComposition(window: Deno.PointerValue<"SDL_Window">): boole
  */
 export function setTextInputArea(window: Deno.PointerValue<"SDL_Window">, rect: { x: number; y: number; w: number; h: number; } | null, cursor: number): boolean {
   if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
-  return lib.symbols.SDL_SetTextInputArea(window, _p.i32.p0, cursor);
+  return lib.symbols.SDL_SetTextInputArea(window, rect ? _p.i32.p0 : null, cursor);
 }
 
 /**

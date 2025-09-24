@@ -860,7 +860,7 @@ export function getSurfaceBlendMode(surface: Deno.PointerValue<"SDL_Surface">): 
  */
 export function setSurfaceClipRect(surface: Deno.PointerValue<"SDL_Surface">, rect: { x: number; y: number; w: number; h: number; } | null): boolean {
   if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
-  return lib.symbols.SDL_SetSurfaceClipRect(surface, _p.i32.p0);
+  return lib.symbols.SDL_SetSurfaceClipRect(surface, rect ? _p.i32.p0 : null);
 }
 
 /**
@@ -1241,7 +1241,7 @@ export function clearSurface(
  */
 export function fillSurfaceRect(dst: Deno.PointerValue<"SDL_Surface">, rect: { x: number; y: number; w: number; h: number; } | null, color: number): boolean {
   if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
-  return lib.symbols.SDL_FillSurfaceRect(dst, _p.i32.p0, color);
+  return lib.symbols.SDL_FillSurfaceRect(dst, rect ? _p.i32.p0 : null, color);
 }
 
 /**
@@ -1278,7 +1278,7 @@ export function fillSurfaceRects(
     color: number,
 ): boolean {
   if (rects) _p.i32.arr.set([rects.x, rects.y, rects.w, rects.h], 0);
-  return lib.symbols.SDL_FillSurfaceRects(dst, _p.i32.p0, count, color);
+  return lib.symbols.SDL_FillSurfaceRects(dst, rects ? _p.i32.p0 : null, count, color);
 }
 
 /**
@@ -1362,7 +1362,7 @@ export function blitSurface(
 ): boolean {
   if (srcrect) _p.i32.arr.set([srcrect.x, srcrect.y, srcrect.w, srcrect.h], 0);
   if (dstrect) _p.i32.arr.set([dstrect.x, dstrect.y, dstrect.w, dstrect.h], 4);
-  return lib.symbols.SDL_BlitSurface(src, _p.i32.p0, dst, _p.i32.p4);
+  return lib.symbols.SDL_BlitSurface(src, srcrect ? _p.i32.p0 : null, dst, dstrect ? _p.i32.p4 : null);
 }
 
 /**
@@ -1397,7 +1397,7 @@ export function blitSurfaceUnchecked(
 ): boolean {
   if (srcrect) _p.i32.arr.set([srcrect.x, srcrect.y, srcrect.w, srcrect.h], 0);
   if (dstrect) _p.i32.arr.set([dstrect.x, dstrect.y, dstrect.w, dstrect.h], 4);
-  return lib.symbols.SDL_BlitSurfaceUnchecked(src, _p.i32.p0, dst, _p.i32.p4);
+  return lib.symbols.SDL_BlitSurfaceUnchecked(src, srcrect ? _p.i32.p0 : null, dst, dstrect ? _p.i32.p4 : null);
 }
 
 /**
@@ -1433,7 +1433,7 @@ export function blitSurfaceScaled(
 ): boolean {
   if (srcrect) _p.i32.arr.set([srcrect.x, srcrect.y, srcrect.w, srcrect.h], 0);
   if (dstrect) _p.i32.arr.set([dstrect.x, dstrect.y, dstrect.w, dstrect.h], 4);
-  return lib.symbols.SDL_BlitSurfaceScaled(src, _p.i32.p0, dst, _p.i32.p4, scaleMode);
+  return lib.symbols.SDL_BlitSurfaceScaled(src, srcrect ? _p.i32.p0 : null, dst, dstrect ? _p.i32.p4 : null, scaleMode);
 }
 
 /**
@@ -1470,7 +1470,7 @@ export function blitSurfaceUncheckedScaled(
 ): boolean {
   if (srcrect) _p.i32.arr.set([srcrect.x, srcrect.y, srcrect.w, srcrect.h], 0);
   if (dstrect) _p.i32.arr.set([dstrect.x, dstrect.y, dstrect.w, dstrect.h], 4);
-  return lib.symbols.SDL_BlitSurfaceUncheckedScaled(src, _p.i32.p0, dst, _p.i32.p4, scaleMode);
+  return lib.symbols.SDL_BlitSurfaceUncheckedScaled(src, srcrect ? _p.i32.p0 : null, dst, dstrect ? _p.i32.p4 : null, scaleMode);
 }
 
 /**
@@ -1505,7 +1505,7 @@ export function stretchSurface(
 ): boolean {
   if (srcrect) _p.i32.arr.set([srcrect.x, srcrect.y, srcrect.w, srcrect.h], 0);
   if (dstrect) _p.i32.arr.set([dstrect.x, dstrect.y, dstrect.w, dstrect.h], 4);
-  return lib.symbols.SDL_StretchSurface(src, _p.i32.p0, dst, _p.i32.p4, scaleMode);
+  return lib.symbols.SDL_StretchSurface(src, srcrect ? _p.i32.p0 : null, dst, dstrect ? _p.i32.p4 : null, scaleMode);
 }
 
 /**
@@ -1541,7 +1541,7 @@ export function blitSurfaceTiled(
 ): boolean {
   if (srcrect) _p.i32.arr.set([srcrect.x, srcrect.y, srcrect.w, srcrect.h], 0);
   if (dstrect) _p.i32.arr.set([dstrect.x, dstrect.y, dstrect.w, dstrect.h], 4);
-  return lib.symbols.SDL_BlitSurfaceTiled(src, _p.i32.p0, dst, _p.i32.p4);
+  return lib.symbols.SDL_BlitSurfaceTiled(src, srcrect ? _p.i32.p0 : null, dst, dstrect ? _p.i32.p4 : null);
 }
 
 /**
@@ -1583,7 +1583,7 @@ export function blitSurfaceTiledWithScale(
 ): boolean {
   if (srcrect) _p.i32.arr.set([srcrect.x, srcrect.y, srcrect.w, srcrect.h], 0);
   if (dstrect) _p.i32.arr.set([dstrect.x, dstrect.y, dstrect.w, dstrect.h], 4);
-  return lib.symbols.SDL_BlitSurfaceTiledWithScale(src, _p.i32.p0, scale, scaleMode, dst, _p.i32.p4);
+  return lib.symbols.SDL_BlitSurfaceTiledWithScale(src, srcrect ? _p.i32.p0 : null, scale, scaleMode, dst, dstrect ? _p.i32.p4 : null);
 }
 
 /**
@@ -1636,7 +1636,7 @@ export function blitSurface9Grid(
 ): boolean {
   if (srcrect) _p.i32.arr.set([srcrect.x, srcrect.y, srcrect.w, srcrect.h], 0);
   if (dstrect) _p.i32.arr.set([dstrect.x, dstrect.y, dstrect.w, dstrect.h], 4);
-  return lib.symbols.SDL_BlitSurface9Grid(src, _p.i32.p0, left_width, right_width, top_height, bottom_height, scale, scaleMode, dst, _p.i32.p4);
+  return lib.symbols.SDL_BlitSurface9Grid(src, srcrect ? _p.i32.p0 : null, left_width, right_width, top_height, bottom_height, scale, scaleMode, dst, dstrect ? _p.i32.p4 : null);
 }
 
 /**

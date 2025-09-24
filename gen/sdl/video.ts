@@ -510,7 +510,7 @@ export function getCurrentDisplayMode(displayID: number): Deno.PointerValue<"SDL
  */
 export function getDisplayForPoint(point: { x: number; y: number; } | null): number {
   if (point) _p.i32.arr.set([point.x, point.y], 0);
-  return lib.symbols.SDL_GetDisplayForPoint(_p.i32.p0);
+  return lib.symbols.SDL_GetDisplayForPoint(point ? _p.i32.p0 : null);
 }
 
 /**
@@ -532,7 +532,7 @@ export function getDisplayForPoint(point: { x: number; y: number; } | null): num
  */
 export function getDisplayForRect(rect: { x: number; y: number; w: number; h: number; } | null): number {
   if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
-  return lib.symbols.SDL_GetDisplayForRect(_p.i32.p0);
+  return lib.symbols.SDL_GetDisplayForRect(rect ? _p.i32.p0 : null);
 }
 
 /**
@@ -2211,7 +2211,7 @@ export function updateWindowSurface(window: Deno.PointerValue<"SDL_Window">): bo
  */
 export function updateWindowSurfaceRects(window: Deno.PointerValue<"SDL_Window">, rects: { x: number; y: number; w: number; h: number; } | null, numrects: number): boolean {
   if (rects) _p.i32.arr.set([rects.x, rects.y, rects.w, rects.h], 0);
-  return lib.symbols.SDL_UpdateWindowSurfaceRects(window, _p.i32.p0, numrects);
+  return lib.symbols.SDL_UpdateWindowSurfaceRects(window, rects ? _p.i32.p0 : null, numrects);
 }
 
 /**
@@ -2377,7 +2377,7 @@ export function getGrabbedWindow(): Deno.PointerValue<"SDL_Window"> {
  */
 export function setWindowMouseRect(window: Deno.PointerValue<"SDL_Window">, rect: { x: number; y: number; w: number; h: number; } | null): boolean {
   if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
-  return lib.symbols.SDL_SetWindowMouseRect(window, _p.i32.p0);
+  return lib.symbols.SDL_SetWindowMouseRect(window, rect ? _p.i32.p0 : null);
 }
 
 /**
