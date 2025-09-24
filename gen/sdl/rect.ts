@@ -52,7 +52,7 @@ import * as _p from "@g9wp/ptr";
 export function hasRectIntersection(A: { x: number; y: number; w: number; h: number; } | null, B: { x: number; y: number; w: number; h: number; } | null): boolean {
   if (A) _p.i32.arr.set([A.x, A.y, A.w, A.h], 0);
   if (B) _p.i32.arr.set([B.x, B.y, B.w, B.h], 4);
-  return lib.symbols.SDL_HasRectIntersection(_p.i32.p0, _p.i32.p4);
+  return lib.symbols.SDL_HasRectIntersection(A ? _p.i32.p0 : null, B ? _p.i32.p4 : null);
 }
 
 /**
@@ -75,7 +75,7 @@ export function hasRectIntersection(A: { x: number; y: number; w: number; h: num
 export function getRectIntersection(A: { x: number; y: number; w: number; h: number; } | null, B: { x: number; y: number; w: number; h: number; } | null): { x: number; y: number; w: number; h: number; } | null {
   if (A) _p.i32.arr.set([A.x, A.y, A.w, A.h], 0);
   if (B) _p.i32.arr.set([B.x, B.y, B.w, B.h], 4);
-  if(!lib.symbols.SDL_GetRectIntersection(_p.i32.p0, _p.i32.p4, _p.i32.p(8)))
+  if(!lib.symbols.SDL_GetRectIntersection(A ? _p.i32.p0 : null, B ? _p.i32.p4 : null, _p.i32.p(8)))
     throw new Error(`SDL_GetRectIntersection: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return { x: _p.i32.v(8), y: _p.i32.v(9), w: _p.i32.v(10), h: _p.i32.v(11), };
 }
@@ -97,7 +97,7 @@ export function getRectIntersection(A: { x: number; y: number; w: number; h: num
 export function getRectUnion(A: { x: number; y: number; w: number; h: number; } | null, B: { x: number; y: number; w: number; h: number; } | null): { x: number; y: number; w: number; h: number; } | null {
   if (A) _p.i32.arr.set([A.x, A.y, A.w, A.h], 0);
   if (B) _p.i32.arr.set([B.x, B.y, B.w, B.h], 4);
-  if(!lib.symbols.SDL_GetRectUnion(_p.i32.p0, _p.i32.p4, _p.i32.p(8)))
+  if(!lib.symbols.SDL_GetRectUnion(A ? _p.i32.p0 : null, B ? _p.i32.p4 : null, _p.i32.p(8)))
     throw new Error(`SDL_GetRectUnion: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return { x: _p.i32.v(8), y: _p.i32.v(9), w: _p.i32.v(10), h: _p.i32.v(11), };
 }
@@ -124,7 +124,7 @@ export function getRectUnion(A: { x: number; y: number; w: number; h: number; } 
 export function getRectEnclosingPoints(points: { x: number; y: number; } | null, count: number, clip: { x: number; y: number; w: number; h: number; } | null): { x: number; y: number; w: number; h: number; } | null {
   if (points) _p.i32.arr.set([points.x, points.y], 0);
   if (clip) _p.i32.arr.set([clip.x, clip.y, clip.w, clip.h], 2);
-  if(!lib.symbols.SDL_GetRectEnclosingPoints(_p.i32.p0, count, _p.i32.p2, _p.i32.p6))
+  if(!lib.symbols.SDL_GetRectEnclosingPoints(points ? _p.i32.p0 : null, count, clip ? _p.i32.p2 : null, _p.i32.p6))
     throw new Error(`SDL_GetRectEnclosingPoints: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return { x: _p.i32.v6, y: _p.i32.v7, w: _p.i32.v(8), h: _p.i32.v(9), };
 }
@@ -161,7 +161,7 @@ export function getRectAndLineIntersection(
   _p.i32.arr[5] = Y1;
   _p.i32.arr[6] = X2;
   _p.i32.arr[7] = Y2;
-  if(!lib.symbols.SDL_GetRectAndLineIntersection(_p.i32.p0, _p.i32.p4, _p.i32.p5, _p.i32.p6, _p.i32.p7))
+  if(!lib.symbols.SDL_GetRectAndLineIntersection(rect ? _p.i32.p0 : null, _p.i32.p4, _p.i32.p5, _p.i32.p6, _p.i32.p7))
     throw new Error(`SDL_GetRectAndLineIntersection: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return { X1: _p.i32.v4, Y1: _p.i32.v5, X2: _p.i32.v6, Y2: _p.i32.v7 };
 }
@@ -184,7 +184,7 @@ export function getRectAndLineIntersection(
 export function hasRectIntersectionFloat(A: { x: number; y: number; w: number; h: number; } | null, B: { x: number; y: number; w: number; h: number; } | null): boolean {
   if (A) _p.f32.arr.set([A.x, A.y, A.w, A.h], 0);
   if (B) _p.f32.arr.set([B.x, B.y, B.w, B.h], 4);
-  return lib.symbols.SDL_HasRectIntersectionFloat(_p.f32.p0, _p.f32.p4);
+  return lib.symbols.SDL_HasRectIntersectionFloat(A ? _p.f32.p0 : null, B ? _p.f32.p4 : null);
 }
 
 /**
@@ -207,7 +207,7 @@ export function hasRectIntersectionFloat(A: { x: number; y: number; w: number; h
 export function getRectIntersectionFloat(A: { x: number; y: number; w: number; h: number; } | null, B: { x: number; y: number; w: number; h: number; } | null): { x: number; y: number; w: number; h: number; } | null {
   if (A) _p.f32.arr.set([A.x, A.y, A.w, A.h], 0);
   if (B) _p.f32.arr.set([B.x, B.y, B.w, B.h], 4);
-  if(!lib.symbols.SDL_GetRectIntersectionFloat(_p.f32.p0, _p.f32.p4, _p.f32.p(8)))
+  if(!lib.symbols.SDL_GetRectIntersectionFloat(A ? _p.f32.p0 : null, B ? _p.f32.p4 : null, _p.f32.p(8)))
     throw new Error(`SDL_GetRectIntersectionFloat: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return { x: _p.f32.v(8), y: _p.f32.v(9), w: _p.f32.v(10), h: _p.f32.v(11), };
 }
@@ -229,7 +229,7 @@ export function getRectIntersectionFloat(A: { x: number; y: number; w: number; h
 export function getRectUnionFloat(A: { x: number; y: number; w: number; h: number; } | null, B: { x: number; y: number; w: number; h: number; } | null): { x: number; y: number; w: number; h: number; } | null {
   if (A) _p.f32.arr.set([A.x, A.y, A.w, A.h], 0);
   if (B) _p.f32.arr.set([B.x, B.y, B.w, B.h], 4);
-  if(!lib.symbols.SDL_GetRectUnionFloat(_p.f32.p0, _p.f32.p4, _p.f32.p(8)))
+  if(!lib.symbols.SDL_GetRectUnionFloat(A ? _p.f32.p0 : null, B ? _p.f32.p4 : null, _p.f32.p(8)))
     throw new Error(`SDL_GetRectUnionFloat: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return { x: _p.f32.v(8), y: _p.f32.v(9), w: _p.f32.v(10), h: _p.f32.v(11), };
 }
@@ -257,7 +257,7 @@ export function getRectUnionFloat(A: { x: number; y: number; w: number; h: numbe
 export function getRectEnclosingPointsFloat(points: { x: number; y: number; } | null, count: number, clip: { x: number; y: number; w: number; h: number; } | null): { x: number; y: number; w: number; h: number; } | null {
   if (points) _p.f32.arr.set([points.x, points.y], 0);
   if (clip) _p.f32.arr.set([clip.x, clip.y, clip.w, clip.h], 2);
-  if(!lib.symbols.SDL_GetRectEnclosingPointsFloat(_p.f32.p0, count, _p.f32.p2, _p.f32.p6))
+  if(!lib.symbols.SDL_GetRectEnclosingPointsFloat(points ? _p.f32.p0 : null, count, clip ? _p.f32.p2 : null, _p.f32.p6))
     throw new Error(`SDL_GetRectEnclosingPointsFloat: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return { x: _p.f32.v6, y: _p.f32.v7, w: _p.f32.v(8), h: _p.f32.v(9), };
 }
@@ -295,7 +295,7 @@ export function getRectAndLineIntersectionFloat(
   _p.f32.arr[5] = Y1;
   _p.f32.arr[6] = X2;
   _p.f32.arr[7] = Y2;
-  if(!lib.symbols.SDL_GetRectAndLineIntersectionFloat(_p.f32.p0, _p.f32.p4, _p.f32.p5, _p.f32.p6, _p.f32.p7))
+  if(!lib.symbols.SDL_GetRectAndLineIntersectionFloat(rect ? _p.f32.p0 : null, _p.f32.p4, _p.f32.p5, _p.f32.p6, _p.f32.p7))
     throw new Error(`SDL_GetRectAndLineIntersectionFloat: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return { X1: _p.f32.v4, Y1: _p.f32.v5, X2: _p.f32.v6, Y2: _p.f32.v7 };
 }

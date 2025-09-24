@@ -1154,7 +1154,7 @@ export function updateTexture(
     pitch: number,
 ): boolean {
   if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
-  return lib.symbols.SDL_UpdateTexture(texture, _p.i32.p0, pixels, pitch);
+  return lib.symbols.SDL_UpdateTexture(texture, rect ? _p.i32.p0 : null, pixels, pitch);
 }
 
 /**
@@ -1203,7 +1203,7 @@ export function updateYuvTexture(
   _p.u8.arr[0] = Yplane;
   _p.u8.arr[1] = Uplane;
   _p.u8.arr[2] = Vplane;
-  if(!lib.symbols.SDL_UpdateYUVTexture(texture, _p.i32.p0, _p.u8.p0, Ypitch, _p.u8.p1, Upitch, _p.u8.p2, Vpitch))
+  if(!lib.symbols.SDL_UpdateYUVTexture(texture, rect ? _p.i32.p0 : null, _p.u8.p0, Ypitch, _p.u8.p1, Upitch, _p.u8.p2, Vpitch))
     throw new Error(`SDL_UpdateYUVTexture: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return { Yplane: _p.u8.v0, Uplane: _p.u8.v1, Vplane: _p.u8.v2 };
 }
@@ -1247,7 +1247,7 @@ export function updateNvTexture(
   if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
   _p.u8.arr[0] = Yplane;
   _p.u8.arr[1] = UVplane;
-  if(!lib.symbols.SDL_UpdateNVTexture(texture, _p.i32.p0, _p.u8.p0, Ypitch, _p.u8.p1, UVpitch))
+  if(!lib.symbols.SDL_UpdateNVTexture(texture, rect ? _p.i32.p0 : null, _p.u8.p0, Ypitch, _p.u8.p1, UVpitch))
     throw new Error(`SDL_UpdateNVTexture: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return { Yplane: _p.u8.v0, UVplane: _p.u8.v1 };
 }
@@ -1286,7 +1286,7 @@ export function updateNvTexture(
  */
 export function lockTexture(texture: Deno.PointerValue<"SDL_Texture">, rect: { x: number; y: number; w: number; h: number; } | null, pixels: Deno.PointerValue): number {
   if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
-  if(!lib.symbols.SDL_LockTexture(texture, _p.i32.p0, pixels, _p.i32.p4))
+  if(!lib.symbols.SDL_LockTexture(texture, rect ? _p.i32.p0 : null, pixels, _p.i32.p4))
     throw new Error(`SDL_LockTexture: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return _p.i32.v4;
 }
@@ -1329,7 +1329,7 @@ export function lockTexture(texture: Deno.PointerValue<"SDL_Texture">, rect: { x
  */
 export function lockTextureToSurface(texture: Deno.PointerValue<"SDL_Texture">, rect: { x: number; y: number; w: number; h: number; } | null): Deno.PointerValue<"SDL_Surface"> {
   if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
-  if(!lib.symbols.SDL_LockTextureToSurface(texture, _p.i32.p0, _p.ptr.p0))
+  if(!lib.symbols.SDL_LockTextureToSurface(texture, rect ? _p.i32.p0 : null, _p.ptr.p0))
     throw new Error(`SDL_LockTextureToSurface: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return _p.ptr.v0 as Deno.PointerValue<"SDL_Surface">;
 }
@@ -1674,7 +1674,7 @@ export function convertEventToRenderCoordinates(renderer: Deno.PointerValue<"SDL
  */
 export function setRenderViewport(renderer: Deno.PointerValue<"SDL_Renderer">, rect: { x: number; y: number; w: number; h: number; } | null): boolean {
   if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
-  return lib.symbols.SDL_SetRenderViewport(renderer, _p.i32.p0);
+  return lib.symbols.SDL_SetRenderViewport(renderer, rect ? _p.i32.p0 : null);
 }
 
 /**
@@ -1780,7 +1780,7 @@ export function getRenderSafeArea(renderer: Deno.PointerValue<"SDL_Renderer">): 
  */
 export function setRenderClipRect(renderer: Deno.PointerValue<"SDL_Renderer">, rect: { x: number; y: number; w: number; h: number; } | null): boolean {
   if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
-  return lib.symbols.SDL_SetRenderClipRect(renderer, _p.i32.p0);
+  return lib.symbols.SDL_SetRenderClipRect(renderer, rect ? _p.i32.p0 : null);
 }
 
 /**
@@ -2179,7 +2179,7 @@ export function renderPoint(renderer: Deno.PointerValue<"SDL_Renderer">, x: numb
  */
 export function renderPoints(renderer: Deno.PointerValue<"SDL_Renderer">, points: { x: number; y: number; } | null, count: number): boolean {
   if (points) _p.f32.arr.set([points.x, points.y], 0);
-  return lib.symbols.SDL_RenderPoints(renderer, _p.f32.p0, count);
+  return lib.symbols.SDL_RenderPoints(renderer, points ? _p.f32.p0 : null, count);
 }
 
 /**
@@ -2231,7 +2231,7 @@ export function renderLine(
  */
 export function renderLines(renderer: Deno.PointerValue<"SDL_Renderer">, points: { x: number; y: number; } | null, count: number): boolean {
   if (points) _p.f32.arr.set([points.x, points.y], 0);
-  return lib.symbols.SDL_RenderLines(renderer, _p.f32.p0, count);
+  return lib.symbols.SDL_RenderLines(renderer, points ? _p.f32.p0 : null, count);
 }
 
 /**
@@ -2253,7 +2253,7 @@ export function renderLines(renderer: Deno.PointerValue<"SDL_Renderer">, points:
  */
 export function renderRect(renderer: Deno.PointerValue<"SDL_Renderer">, rect: { x: number; y: number; w: number; h: number; } | null): boolean {
   if (rect) _p.f32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
-  return lib.symbols.SDL_RenderRect(renderer, _p.f32.p0);
+  return lib.symbols.SDL_RenderRect(renderer, rect ? _p.f32.p0 : null);
 }
 
 /**
@@ -2276,7 +2276,7 @@ export function renderRect(renderer: Deno.PointerValue<"SDL_Renderer">, rect: { 
  */
 export function renderRects(renderer: Deno.PointerValue<"SDL_Renderer">, rects: { x: number; y: number; w: number; h: number; } | null, count: number): boolean {
   if (rects) _p.f32.arr.set([rects.x, rects.y, rects.w, rects.h], 0);
-  return lib.symbols.SDL_RenderRects(renderer, _p.f32.p0, count);
+  return lib.symbols.SDL_RenderRects(renderer, rects ? _p.f32.p0 : null, count);
 }
 
 /**
@@ -2299,7 +2299,7 @@ export function renderRects(renderer: Deno.PointerValue<"SDL_Renderer">, rects: 
  */
 export function renderFillRect(renderer: Deno.PointerValue<"SDL_Renderer">, rect: { x: number; y: number; w: number; h: number; } | null): boolean {
   if (rect) _p.f32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
-  return lib.symbols.SDL_RenderFillRect(renderer, _p.f32.p0);
+  return lib.symbols.SDL_RenderFillRect(renderer, rect ? _p.f32.p0 : null);
 }
 
 /**
@@ -2322,7 +2322,7 @@ export function renderFillRect(renderer: Deno.PointerValue<"SDL_Renderer">, rect
  */
 export function renderFillRects(renderer: Deno.PointerValue<"SDL_Renderer">, rects: { x: number; y: number; w: number; h: number; } | null, count: number): boolean {
   if (rects) _p.f32.arr.set([rects.x, rects.y, rects.w, rects.h], 0);
-  return lib.symbols.SDL_RenderFillRects(renderer, _p.f32.p0, count);
+  return lib.symbols.SDL_RenderFillRects(renderer, rects ? _p.f32.p0 : null, count);
 }
 
 /**
@@ -2355,7 +2355,7 @@ export function renderTexture(
 ): boolean {
   if (srcrect) _p.f32.arr.set([srcrect.x, srcrect.y, srcrect.w, srcrect.h], 0);
   if (dstrect) _p.f32.arr.set([dstrect.x, dstrect.y, dstrect.w, dstrect.h], 4);
-  return lib.symbols.SDL_RenderTexture(renderer, texture, _p.f32.p0, _p.f32.p4);
+  return lib.symbols.SDL_RenderTexture(renderer, texture, srcrect ? _p.f32.p0 : null, dstrect ? _p.f32.p4 : null);
 }
 
 /**
@@ -2398,7 +2398,7 @@ export function renderTextureRotated(
   if (srcrect) _p.f32.arr.set([srcrect.x, srcrect.y, srcrect.w, srcrect.h], 0);
   if (dstrect) _p.f32.arr.set([dstrect.x, dstrect.y, dstrect.w, dstrect.h], 4);
   if (center) _p.f32.arr.set([center.x, center.y], 8);
-  return lib.symbols.SDL_RenderTextureRotated(renderer, texture, _p.f32.p0, _p.f32.p4, angle, _p.f32.p(8), flip);
+  return lib.symbols.SDL_RenderTextureRotated(renderer, texture, srcrect ? _p.f32.p0 : null, dstrect ? _p.f32.p4 : null, angle, center ? _p.f32.p(8) : null, flip);
 }
 
 /**
@@ -2441,7 +2441,7 @@ export function renderTextureAffine(
   if (origin) _p.f32.arr.set([origin.x, origin.y], 4);
   if (right) _p.f32.arr.set([right.x, right.y], 6);
   if (down) _p.f32.arr.set([down.x, down.y], 8);
-  return lib.symbols.SDL_RenderTextureAffine(renderer, texture, _p.f32.p0, _p.f32.p4, _p.f32.p6, _p.f32.p(8));
+  return lib.symbols.SDL_RenderTextureAffine(renderer, texture, srcrect ? _p.f32.p0 : null, origin ? _p.f32.p4 : null, right ? _p.f32.p6 : null, down ? _p.f32.p(8) : null);
 }
 
 /**
@@ -2480,7 +2480,7 @@ export function renderTextureTiled(
 ): boolean {
   if (srcrect) _p.f32.arr.set([srcrect.x, srcrect.y, srcrect.w, srcrect.h], 0);
   if (dstrect) _p.f32.arr.set([dstrect.x, dstrect.y, dstrect.w, dstrect.h], 4);
-  return lib.symbols.SDL_RenderTextureTiled(renderer, texture, _p.f32.p0, scale, _p.f32.p4);
+  return lib.symbols.SDL_RenderTextureTiled(renderer, texture, srcrect ? _p.f32.p0 : null, scale, dstrect ? _p.f32.p4 : null);
 }
 
 /**
@@ -2530,7 +2530,7 @@ export function renderTexture9Grid(
 ): boolean {
   if (srcrect) _p.f32.arr.set([srcrect.x, srcrect.y, srcrect.w, srcrect.h], 0);
   if (dstrect) _p.f32.arr.set([dstrect.x, dstrect.y, dstrect.w, dstrect.h], 4);
-  return lib.symbols.SDL_RenderTexture9Grid(renderer, texture, _p.f32.p0, left_width, right_width, top_height, bottom_height, scale, _p.f32.p4);
+  return lib.symbols.SDL_RenderTexture9Grid(renderer, texture, srcrect ? _p.f32.p0 : null, left_width, right_width, top_height, bottom_height, scale, dstrect ? _p.f32.p4 : null);
 }
 
 /**
@@ -2617,7 +2617,7 @@ export function renderGeometryRaw(
   _p.f32.arr[0] = xy;
   if (color) _p.f32.arr.set([color.r, color.g, color.b, color.a], 1);
   _p.f32.arr[5] = uv;
-  if(!lib.symbols.SDL_RenderGeometryRaw(renderer, texture, _p.f32.p0, xy_stride, _p.f32.p1, color_stride, _p.f32.p5, uv_stride, num_vertices, indices, num_indices, size_indices))
+  if(!lib.symbols.SDL_RenderGeometryRaw(renderer, texture, _p.f32.p0, xy_stride, color ? _p.f32.p1 : null, color_stride, _p.f32.p5, uv_stride, num_vertices, indices, num_indices, size_indices))
     throw new Error(`SDL_RenderGeometryRaw: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return { xy: _p.f32.v0, uv: _p.f32.v5 };
 }
@@ -2651,7 +2651,7 @@ export function renderGeometryRaw(
  */
 export function renderReadPixels(renderer: Deno.PointerValue<"SDL_Renderer">, rect: { x: number; y: number; w: number; h: number; } | null): Deno.PointerValue<"SDL_Surface"> {
   if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
-  return lib.symbols.SDL_RenderReadPixels(renderer, _p.i32.p0) as Deno.PointerValue<"SDL_Surface">;
+  return lib.symbols.SDL_RenderReadPixels(renderer, rect ? _p.i32.p0 : null) as Deno.PointerValue<"SDL_Surface">;
 }
 
 /**

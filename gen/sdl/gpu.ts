@@ -1264,7 +1264,7 @@ export function setGpuViewport(render_pass: Deno.PointerValue<"SDL_GPURenderPass
  */
 export function setGpuScissor(render_pass: Deno.PointerValue<"SDL_GPURenderPass">, scissor: { x: number; y: number; w: number; h: number; } | null): void {
   if (scissor) _p.i32.arr.set([scissor.x, scissor.y, scissor.w, scissor.h], 0);
-  return lib.symbols.SDL_SetGPUScissor(render_pass, _p.i32.p0);
+  return lib.symbols.SDL_SetGPUScissor(render_pass, scissor ? _p.i32.p0 : null);
 }
 
 /**
