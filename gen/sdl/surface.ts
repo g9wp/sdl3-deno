@@ -829,8 +829,10 @@ export function setSurfaceBlendMode(surface: Deno.PointerValue<"SDL_Surface">, b
  *
  * @from SDL_surface.h:797 bool SDL_GetSurfaceBlendMode(SDL_Surface *surface, SDL_BlendMode *blendMode);
  */
-export function getSurfaceBlendMode(surface: Deno.PointerValue<"SDL_Surface">, blendMode: Deno.PointerValue<"SDL_BlendMode">): boolean {
-  return lib.symbols.SDL_GetSurfaceBlendMode(surface, blendMode);
+export function getSurfaceBlendMode(surface: Deno.PointerValue<"SDL_Surface">): number {
+  if(!lib.symbols.SDL_GetSurfaceBlendMode(surface, _p.u32.p0))
+    throw new Error(`SDL_GetSurfaceBlendMode: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.u32.v0;
 }
 
 /**

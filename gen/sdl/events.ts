@@ -463,8 +463,10 @@ export function setEventFilter(filter: Deno.PointerValue, userdata: Deno.Pointer
  *
  * @from SDL_events.h:1438 bool SDL_GetEventFilter(SDL_EventFilter *filter, void **userdata);
  */
-export function getEventFilter(filter: Deno.PointerValue<"SDL_EventFilter">, userdata: Deno.PointerValue): boolean {
-  return lib.symbols.SDL_GetEventFilter(filter, userdata);
+export function getEventFilter(userdata: Deno.PointerValue): Deno.PointerValue {
+  if(!lib.symbols.SDL_GetEventFilter(_p.u64.p0, userdata))
+    throw new Error(`SDL_GetEventFilter: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.u64.v0;
 }
 
 /**

@@ -1975,7 +1975,7 @@ export function loadSizedSvgIo(src: Deno.PointerValue<"SDL_IOStream">, width: nu
  *
  * @from SDL_image.h:1829 SDL_Surface * IMG_ReadXPMFromArray(char **xpm);
  */
-export function readXpmFromArray(): { xpm: string; ret: Deno.PointerValue<"SDL_Surface"> } {
+export function readXpmFromArray(): { xpm: Deno.PointerValue; ret: Deno.PointerValue<"SDL_Surface"> } {
   const ret = lib.symbols.IMG_ReadXPMFromArray(_p.ptr.p0) as Deno.PointerValue<"SDL_Surface">;
   if(!ret) throw new Error(`IMG_ReadXPMFromArray: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return { xpm: _p.ptr.v0, ret };
@@ -2000,7 +2000,7 @@ export function readXpmFromArray(): { xpm: string; ret: Deno.PointerValue<"SDL_S
  *
  * @from SDL_image.h:1848 SDL_Surface * IMG_ReadXPMFromArrayToRGB888(char **xpm);
  */
-export function readXpmFromArrayToRgb888(): { xpm: string; ret: Deno.PointerValue<"SDL_Surface"> } {
+export function readXpmFromArrayToRgb888(): { xpm: Deno.PointerValue; ret: Deno.PointerValue<"SDL_Surface"> } {
   const ret = lib.symbols.IMG_ReadXPMFromArrayToRGB888(_p.ptr.p0) as Deno.PointerValue<"SDL_Surface">;
   if(!ret) throw new Error(`IMG_ReadXPMFromArrayToRGB888: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return { xpm: _p.ptr.v0, ret };

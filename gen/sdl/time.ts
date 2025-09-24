@@ -63,8 +63,10 @@ export {
  *
  * @from SDL_time.h:110 bool SDL_GetDateTimeLocalePreferences(SDL_DateFormat *dateFormat, SDL_TimeFormat *timeFormat);
  */
-export function getDateTimeLocalePreferences(dateFormat: Deno.PointerValue<"SDL_DateFormat">, timeFormat: Deno.PointerValue<"SDL_TimeFormat">): boolean {
-  return lib.symbols.SDL_GetDateTimeLocalePreferences(dateFormat, timeFormat);
+export function getDateTimeLocalePreferences(): { dateFormat: number; timeFormat: number } {
+  if(!lib.symbols.SDL_GetDateTimeLocalePreferences(_p.u32.p0, _p.u32.p1))
+    throw new Error(`SDL_GetDateTimeLocalePreferences: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { dateFormat: _p.u32.v0, timeFormat: _p.u32.v1 };
 }
 
 /**
@@ -79,8 +81,10 @@ export function getDateTimeLocalePreferences(dateFormat: Deno.PointerValue<"SDL_
  *
  * @from SDL_time.h:122 bool SDL_GetCurrentTime(SDL_Time *ticks);
  */
-export function getCurrentTime(ticks: Deno.PointerValue<"SDL_Time">): boolean {
-  return lib.symbols.SDL_GetCurrentTime(ticks);
+export function getCurrentTime(): bigint {
+  if(!lib.symbols.SDL_GetCurrentTime(_p.i64.p0))
+    throw new Error(`SDL_GetCurrentTime: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.i64.v0;
 }
 
 /**
@@ -118,8 +122,10 @@ export function timeToDateTime(ticks: bigint, dt: Deno.PointerValue<"SDL_DateTim
  *
  * @from SDL_time.h:153 bool SDL_DateTimeToTime(const SDL_DateTime *dt, SDL_Time *ticks);
  */
-export function dateTimeToTime(dt: Deno.PointerValue<"SDL_DateTime">, ticks: Deno.PointerValue<"SDL_Time">): boolean {
-  return lib.symbols.SDL_DateTimeToTime(dt, ticks);
+export function dateTimeToTime(dt: Deno.PointerValue<"SDL_DateTime">): bigint {
+  if(!lib.symbols.SDL_DateTimeToTime(dt, _p.i64.p0))
+    throw new Error(`SDL_DateTimeToTime: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.i64.v0;
 }
 
 /**
