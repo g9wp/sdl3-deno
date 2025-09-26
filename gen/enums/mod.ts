@@ -10,6 +10,7 @@ export * from "./SDL_gamepad.ts";
 export * from "./SDL_gpu.ts";
 export * from "./SDL_hidapi.ts";
 export * from "./SDL_hints.ts";
+export * from "./SDL_init.ts";
 export * from "./SDL_intrin.ts";
 export * from "./SDL_iostream.ts";
 export * from "./SDL_joystick.ts";
