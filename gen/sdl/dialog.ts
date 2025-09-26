@@ -102,10 +102,10 @@ export function showOpenFileDialog(
     window: Deno.PointerValue<"SDL_Window">,
     filters: Deno.PointerValue<"SDL_DialogFileFilter">,
     nfilters: number,
-    default_location: string,
+    default_location: string | undefined,
     allow_many: boolean,
 ): void {
-  return lib.symbols.SDL_ShowOpenFileDialog(callback, userdata, window, filters, nfilters, _p.toCstr(default_location), allow_many);
+  return lib.symbols.SDL_ShowOpenFileDialog(callback, userdata, window, filters, nfilters, _p.toCstr2(default_location), allow_many);
 }
 
 /**
@@ -163,9 +163,9 @@ export function showSaveFileDialog(
     window: Deno.PointerValue<"SDL_Window">,
     filters: Deno.PointerValue<"SDL_DialogFileFilter">,
     nfilters: number,
-    default_location: string,
+    default_location?: string,
 ): void {
-  return lib.symbols.SDL_ShowSaveFileDialog(callback, userdata, window, filters, nfilters, _p.toCstr(default_location));
+  return lib.symbols.SDL_ShowSaveFileDialog(callback, userdata, window, filters, nfilters, _p.toCstr2(default_location));
 }
 
 /**
@@ -217,10 +217,10 @@ export function showOpenFolderDialog(
     callback: Deno.PointerValue,
     userdata: Deno.PointerValue,
     window: Deno.PointerValue<"SDL_Window">,
-    default_location: string,
+    default_location: string | undefined,
     allow_many: boolean,
 ): void {
-  return lib.symbols.SDL_ShowOpenFolderDialog(callback, userdata, window, _p.toCstr(default_location), allow_many);
+  return lib.symbols.SDL_ShowOpenFolderDialog(callback, userdata, window, _p.toCstr2(default_location), allow_many);
 }
 
 /**
@@ -280,4 +280,3 @@ export function showFileDialogWithProperties(
 ): void {
   return lib.symbols.SDL_ShowFileDialogWithProperties(type, callback, userdata, props);
 }
-

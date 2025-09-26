@@ -63,8 +63,8 @@ export {
  *
  * @from SDL_tray.h:120 SDL_Tray * SDL_CreateTray(SDL_Surface *icon, const char *tooltip);
  */
-export function createTray(icon: Deno.PointerValue<"SDL_Surface">, tooltip: string): Deno.PointerValue<"SDL_Tray"> {
-  return lib.symbols.SDL_CreateTray(icon, _p.toCstr(tooltip)) as Deno.PointerValue<"SDL_Tray">;
+export function createTray(icon: Deno.PointerValue<"SDL_Surface">, tooltip?: string): Deno.PointerValue<"SDL_Tray"> {
+  return lib.symbols.SDL_CreateTray(icon, _p.toCstr2(tooltip)) as Deno.PointerValue<"SDL_Tray">;
 }
 
 /**
@@ -101,8 +101,8 @@ export function setTrayIcon(tray: Deno.PointerValue<"SDL_Tray">, icon: Deno.Poin
  *
  * @from SDL_tray.h:150 void SDL_SetTrayTooltip(SDL_Tray *tray, const char *tooltip);
  */
-export function setTrayTooltip(tray: Deno.PointerValue<"SDL_Tray">, tooltip: string): void {
-  return lib.symbols.SDL_SetTrayTooltip(tray, _p.toCstr(tooltip));
+export function setTrayTooltip(tray: Deno.PointerValue<"SDL_Tray">, tooltip?: string): void {
+  return lib.symbols.SDL_SetTrayTooltip(tray, _p.toCstr2(tooltip));
 }
 
 /**
@@ -293,10 +293,10 @@ export function removeTrayEntry(entry: Deno.PointerValue<"SDL_TrayEntry">): void
 export function insertTrayEntryAt(
     menu: Deno.PointerValue<"SDL_TrayMenu">,
     pos: number,
-    label: string,
+    label: string | undefined,
     flags: number,
 ): Deno.PointerValue<"SDL_TrayEntry"> {
-  return lib.symbols.SDL_InsertTrayEntryAt(menu, pos, _p.toCstr(label), flags) as Deno.PointerValue<"SDL_TrayEntry">;
+  return lib.symbols.SDL_InsertTrayEntryAt(menu, pos, _p.toCstr2(label), flags) as Deno.PointerValue<"SDL_TrayEntry">;
 }
 
 /**
@@ -576,4 +576,3 @@ export function getTrayMenuParentTray(menu: Deno.PointerValue<"SDL_TrayMenu">): 
 export function updateTrays(): void {
   return lib.symbols.SDL_UpdateTrays();
 }
-

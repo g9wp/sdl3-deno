@@ -183,8 +183,8 @@ export function createWindowAndRenderer(
  *
  * @from SDL_render.h:245 SDL_Renderer * SDL_CreateRenderer(SDL_Window *window, const char *name);
  */
-export function createRenderer(window: Deno.PointerValue<"SDL_Window">, name: string): Deno.PointerValue<"SDL_Renderer"> {
-  return lib.symbols.SDL_CreateRenderer(window, _p.toCstr(name)) as Deno.PointerValue<"SDL_Renderer">;
+export function createRenderer(window: Deno.PointerValue<"SDL_Window">, name?: string): Deno.PointerValue<"SDL_Renderer"> {
+  return lib.symbols.SDL_CreateRenderer(window, _p.toCstr2(name)) as Deno.PointerValue<"SDL_Renderer">;
 }
 
 /**
@@ -1192,20 +1192,15 @@ export function updateTexture(
 export function updateYuvTexture(
     texture: Deno.PointerValue<"SDL_Texture">,
     rect: { x: number; y: number; w: number; h: number; } | null,
-    Yplane: number,
+    Yplane: Uint8Array<ArrayBuffer>,
     Ypitch: number,
-    Uplane: number,
+    Uplane: Uint8Array<ArrayBuffer>,
     Upitch: number,
-    Vplane: number,
+    Vplane: Uint8Array<ArrayBuffer>,
     Vpitch: number,
-): { Yplane: number; Uplane: number; Vplane: number } {
+): boolean {
   if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
-  _p.u8.arr[0] = Yplane;
-  _p.u8.arr[1] = Uplane;
-  _p.u8.arr[2] = Vplane;
-  if(!lib.symbols.SDL_UpdateYUVTexture(texture, rect ? _p.i32.p0 : null, _p.u8.p0, Ypitch, _p.u8.p1, Upitch, _p.u8.p2, Vpitch))
-    throw new Error(`SDL_UpdateYUVTexture: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { Yplane: _p.u8.v0, Uplane: _p.u8.v1, Vplane: _p.u8.v2 };
+  return lib.symbols.SDL_UpdateYUVTexture(texture, rect ? _p.i32.p0 : null, Deno.UnsafePointer.of(Yplane), Ypitch,  Deno.UnsafePointer.of(Uplane), Upitch, Deno.UnsafePointer.of(Vplane), Vpitch);
 }
 
 /**
@@ -1239,17 +1234,13 @@ export function updateYuvTexture(
 export function updateNvTexture(
     texture: Deno.PointerValue<"SDL_Texture">,
     rect: { x: number; y: number; w: number; h: number; } | null,
-    Yplane: number,
+    Yplane: Uint8Array<ArrayBuffer>,
     Ypitch: number,
-    UVplane: number,
+    UVplane: Uint8Array<ArrayBuffer>,
     UVpitch: number,
-): { Yplane: number; UVplane: number } {
+): boolean {
   if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
-  _p.u8.arr[0] = Yplane;
-  _p.u8.arr[1] = UVplane;
-  if(!lib.symbols.SDL_UpdateNVTexture(texture, rect ? _p.i32.p0 : null, _p.u8.p0, Ypitch, _p.u8.p1, UVpitch))
-    throw new Error(`SDL_UpdateNVTexture: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { Yplane: _p.u8.v0, UVplane: _p.u8.v1 };
+  return lib.symbols.SDL_UpdateNVTexture(texture, rect ? _p.i32.p0 : null, Deno.UnsafePointer.of(Yplane), Ypitch, Deno.UnsafePointer.of(UVplane), UVpitch);
 }
 
 /**
@@ -1530,7 +1521,7 @@ export function getRenderLogicalPresentation(renderer: Deno.PointerValue<"SDL_Re
  *
  * @from SDL_render.h:1463 bool SDL_GetRenderLogicalPresentationRect(SDL_Renderer *renderer, SDL_FRect *rect);
  */
-export function getRenderLogicalPresentationRect(renderer: Deno.PointerValue<"SDL_Renderer">): { x: number; y: number; w: number; h: number; } | null {
+export function getRenderLogicalPresentationRect(renderer: Deno.PointerValue<"SDL_Renderer">): { x: number; y: number; w: number; h: number; } {
   if(!lib.symbols.SDL_GetRenderLogicalPresentationRect(renderer, _p.f32.p0))
     throw new Error(`SDL_GetRenderLogicalPresentationRect: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return { x: _p.f32.v0, y: _p.f32.v1, w: _p.f32.v2, h: _p.f32.v3, };
@@ -1697,7 +1688,7 @@ export function setRenderViewport(renderer: Deno.PointerValue<"SDL_Renderer">, r
  *
  * @from SDL_render.h:1603 bool SDL_GetRenderViewport(SDL_Renderer *renderer, SDL_Rect *rect);
  */
-export function getRenderViewport(renderer: Deno.PointerValue<"SDL_Renderer">): { x: number; y: number; w: number; h: number; } | null {
+export function getRenderViewport(renderer: Deno.PointerValue<"SDL_Renderer">): { x: number; y: number; w: number; h: number; } {
   if(!lib.symbols.SDL_GetRenderViewport(renderer, _p.i32.p0))
     throw new Error(`SDL_GetRenderViewport: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return { x: _p.i32.v0, y: _p.i32.v1, w: _p.i32.v2, h: _p.i32.v3, };
@@ -1751,7 +1742,7 @@ export function renderViewportSet(renderer: Deno.PointerValue<"SDL_Renderer">): 
  *
  * @from SDL_render.h:1647 bool SDL_GetRenderSafeArea(SDL_Renderer *renderer, SDL_Rect *rect);
  */
-export function getRenderSafeArea(renderer: Deno.PointerValue<"SDL_Renderer">): { x: number; y: number; w: number; h: number; } | null {
+export function getRenderSafeArea(renderer: Deno.PointerValue<"SDL_Renderer">): { x: number; y: number; w: number; h: number; } {
   if(!lib.symbols.SDL_GetRenderSafeArea(renderer, _p.i32.p0))
     throw new Error(`SDL_GetRenderSafeArea: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return { x: _p.i32.v0, y: _p.i32.v1, w: _p.i32.v2, h: _p.i32.v3, };
@@ -1804,7 +1795,7 @@ export function setRenderClipRect(renderer: Deno.PointerValue<"SDL_Renderer">, r
  *
  * @from SDL_render.h:1689 bool SDL_GetRenderClipRect(SDL_Renderer *renderer, SDL_Rect *rect);
  */
-export function getRenderClipRect(renderer: Deno.PointerValue<"SDL_Renderer">): { x: number; y: number; w: number; h: number; } | null {
+export function getRenderClipRect(renderer: Deno.PointerValue<"SDL_Renderer">): { x: number; y: number; w: number; h: number; } {
   if(!lib.symbols.SDL_GetRenderClipRect(renderer, _p.i32.p0))
     throw new Error(`SDL_GetRenderClipRect: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return { x: _p.i32.v0, y: _p.i32.v1, w: _p.i32.v2, h: _p.i32.v3, };
@@ -2177,9 +2168,10 @@ export function renderPoint(renderer: Deno.PointerValue<"SDL_Renderer">, x: numb
  *
  * @from SDL_render.h:1982 bool SDL_RenderPoints(SDL_Renderer *renderer, const SDL_FPoint *points, int count);
  */
-export function renderPoints(renderer: Deno.PointerValue<"SDL_Renderer">, points: { x: number; y: number; } | null, count: number): boolean {
-  if (points) _p.f32.arr.set([points.x, points.y], 0);
-  return lib.symbols.SDL_RenderPoints(renderer, points ? _p.f32.p0 : null, count);
+export function renderPoints(renderer: Deno.PointerValue<"SDL_Renderer">, points: { x: number; y: number; }[]): boolean {
+  const arr = (points.length * 2 > _p.f32.arr.length) ? new Float32Array(points.length * 2) : _p.f32.arr;
+  points.forEach((p, i) => _p.f32.arr.set([p.x, p.y], i * 2));
+  return lib.symbols.SDL_RenderPoints(renderer, Deno.UnsafePointer.of(arr), points.length);
 }
 
 /**
@@ -2229,9 +2221,10 @@ export function renderLine(
  *
  * @from SDL_render.h:2019 bool SDL_RenderLines(SDL_Renderer *renderer, const SDL_FPoint *points, int count);
  */
-export function renderLines(renderer: Deno.PointerValue<"SDL_Renderer">, points: { x: number; y: number; } | null, count: number): boolean {
-  if (points) _p.f32.arr.set([points.x, points.y], 0);
-  return lib.symbols.SDL_RenderLines(renderer, points ? _p.f32.p0 : null, count);
+export function renderLines(renderer: Deno.PointerValue<"SDL_Renderer">, points: { x: number; y: number; }[]): boolean {
+  const arr = (points.length * 2 > _p.f32.arr.length) ? new Float32Array(points.length * 2) : _p.f32.arr;
+  points.forEach((p, i) => _p.f32.arr.set([p.x, p.y], i * 2));
+  return lib.symbols.SDL_RenderLines(renderer, Deno.UnsafePointer.of(arr), points.length);
 }
 
 /**
@@ -2274,9 +2267,10 @@ export function renderRect(renderer: Deno.PointerValue<"SDL_Renderer">, rect: { 
  *
  * @from SDL_render.h:2054 bool SDL_RenderRects(SDL_Renderer *renderer, const SDL_FRect *rects, int count);
  */
-export function renderRects(renderer: Deno.PointerValue<"SDL_Renderer">, rects: { x: number; y: number; w: number; h: number; } | null, count: number): boolean {
-  if (rects) _p.f32.arr.set([rects.x, rects.y, rects.w, rects.h], 0);
-  return lib.symbols.SDL_RenderRects(renderer, rects ? _p.f32.p0 : null, count);
+export function renderRects(renderer: Deno.PointerValue<"SDL_Renderer">, rects: { x: number; y: number; w: number; h: number; }[]): boolean {
+  const arr = (rects.length * 4 > _p.f32.arr.length) ? new Float32Array(rects.length * 4) : _p.f32.arr;
+  rects.forEach((p, i) => _p.f32.arr.set([p.x, p.y, p.w, p.h], i * 4));
+  return lib.symbols.SDL_RenderRects(renderer, Deno.UnsafePointer.of(arr), rects.length);
 }
 
 /**
@@ -2320,9 +2314,10 @@ export function renderFillRect(renderer: Deno.PointerValue<"SDL_Renderer">, rect
  *
  * @from SDL_render.h:2090 bool SDL_RenderFillRects(SDL_Renderer *renderer, const SDL_FRect *rects, int count);
  */
-export function renderFillRects(renderer: Deno.PointerValue<"SDL_Renderer">, rects: { x: number; y: number; w: number; h: number; } | null, count: number): boolean {
-  if (rects) _p.f32.arr.set([rects.x, rects.y, rects.w, rects.h], 0);
-  return lib.symbols.SDL_RenderFillRects(renderer, rects ? _p.f32.p0 : null, count);
+export function renderFillRects(renderer: Deno.PointerValue<"SDL_Renderer">, rects: { x: number; y: number; w: number; h: number; }[]): boolean {
+  const arr = (rects.length * 4 > _p.f32.arr.length) ? new Float32Array(rects.length * 4) : _p.f32.arr;
+  rects.forEach((p, i) => _p.f32.arr.set([p.x, p.y, p.w, p.h], i * 4));
+  return lib.symbols.SDL_RenderFillRects(renderer, Deno.UnsafePointer.of(arr), rects.length);
 }
 
 /**
@@ -2562,13 +2557,9 @@ export function renderGeometry(
     texture: Deno.PointerValue<"SDL_Texture">,
     vertices: Deno.PointerValue<"SDL_Vertex">,
     num_vertices: number,
-    indices: number,
-    num_indices: number,
-): number {
-  _p.i32.arr[0] = indices;
-  if(!lib.symbols.SDL_RenderGeometry(renderer, texture, vertices, num_vertices, _p.i32.p0, num_indices))
-    throw new Error(`SDL_RenderGeometry: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return _p.i32.v0;
+    indices: Int32Array<ArrayBuffer> | null,
+): boolean {
+  return lib.symbols.SDL_RenderGeometry(renderer, texture, vertices, num_vertices, indices ? Deno.UnsafePointer.of(indices) : null, indices?.length ?? 0);
 }
 
 /**
@@ -2603,23 +2594,20 @@ export function renderGeometry(
 export function renderGeometryRaw(
     renderer: Deno.PointerValue<"SDL_Renderer">,
     texture: Deno.PointerValue<"SDL_Texture">,
-    xy: number,
+    xy: Float32Array<ArrayBuffer>,
     xy_stride: number,
-    color: { r: number; g: number; b: number; a: number; } | null,
+    color: { r: number; g: number; b: number; a: number; }[],
     color_stride: number,
-    uv: number,
+    uv: Float32Array<ArrayBuffer>,
     uv_stride: number,
     num_vertices: number,
     indices: Deno.PointerValue,
     num_indices: number,
     size_indices: number,
-): { xy: number; uv: number } {
-  _p.f32.arr[0] = xy;
-  if (color) _p.f32.arr.set([color.r, color.g, color.b, color.a], 1);
-  _p.f32.arr[5] = uv;
-  if(!lib.symbols.SDL_RenderGeometryRaw(renderer, texture, _p.f32.p0, xy_stride, color ? _p.f32.p1 : null, color_stride, _p.f32.p5, uv_stride, num_vertices, indices, num_indices, size_indices))
-    throw new Error(`SDL_RenderGeometryRaw: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { xy: _p.f32.v0, uv: _p.f32.v5 };
+) {
+  const arr = color.length > _p.f32.arr.length ? new Float32Array(color.length * 4) : _p.f32.arr;
+  if (color) arr.set(color.flatMap(c => [c.r, c.g, c.b, c.a]), 0);
+  return !lib.symbols.SDL_RenderGeometryRaw(renderer, texture, Deno.UnsafePointer.of(xy), xy_stride, Deno.UnsafePointer.of(arr), color_stride, Deno.UnsafePointer.of(uv), uv_stride, num_vertices, indices, num_indices, size_indices);
 }
 
 /**
@@ -2975,4 +2963,3 @@ export function renderDebugText(
 ): boolean {
   return lib.symbols.SDL_RenderDebugText(renderer, x, y, _p.toCstr(str));
 }
-

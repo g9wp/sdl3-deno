@@ -139,8 +139,8 @@ export function write_MessageBoxColorScheme(t: MessageBoxColorScheme, dt: DataVi
 export interface MessageBoxData {
   flags: number; /* SDL_MessageBoxFlags */
   window: Deno.PointerValue; /**< SDL_Window * : Parent window, can be NULL */
-  title: Deno.PointerValue; /**< const char * : UTF-8 title */
-  message: Deno.PointerValue; /**< const char * : UTF-8 message text */
+  title: string; /**< const char * : UTF-8 title */
+  message: string; /**< const char * : UTF-8 message text */
   numbuttons: number; /* int */
   buttons: Deno.PointerValue; /* const SDL_MessageBoxButtonData * */
   colorScheme: Deno.PointerValue; /**< const SDL_MessageBoxColorScheme * : SDL_MessageBoxColorScheme, can be NULL to use system settings */
@@ -170,5 +170,3 @@ export function write_MessageBoxData(t: MessageBoxData, dt: DataView) {
     colorScheme: Deno.UnsafePointer.value(t.colorScheme), /** const SDL_MessageBoxColorScheme * */
   }, dt);
 }
-
-

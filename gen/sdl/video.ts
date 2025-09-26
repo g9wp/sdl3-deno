@@ -1494,7 +1494,7 @@ export function getWindowSize(window: Deno.PointerValue<"SDL_Window">): { w: num
  *
  * @from SDL_video.h:1801 bool SDL_GetWindowSafeArea(SDL_Window *window, SDL_Rect *rect);
  */
-export function getWindowSafeArea(window: Deno.PointerValue<"SDL_Window">): { x: number; y: number; w: number; h: number; } | null {
+export function getWindowSafeArea(window: Deno.PointerValue<"SDL_Window">): { x: number; y: number; w: number; h: number; } {
   if(!lib.symbols.SDL_GetWindowSafeArea(window, _p.i32.p0))
     throw new Error(`SDL_GetWindowSafeArea: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return { x: _p.i32.v0, y: _p.i32.v1, w: _p.i32.v2, h: _p.i32.v3, };
@@ -2209,9 +2209,10 @@ export function updateWindowSurface(window: Deno.PointerValue<"SDL_Window">): bo
  *
  * @from SDL_video.h:2405 bool SDL_UpdateWindowSurfaceRects(SDL_Window *window, const SDL_Rect *rects, int numrects);
  */
-export function updateWindowSurfaceRects(window: Deno.PointerValue<"SDL_Window">, rects: { x: number; y: number; w: number; h: number; } | null, numrects: number): boolean {
-  if (rects) _p.i32.arr.set([rects.x, rects.y, rects.w, rects.h], 0);
-  return lib.symbols.SDL_UpdateWindowSurfaceRects(window, rects ? _p.i32.p0 : null, numrects);
+export function updateWindowSurfaceRects(window: Deno.PointerValue<"SDL_Window">, rects: { x: number; y: number; w: number; h: number; }[]): boolean {
+  const arr = (rects.length * 4 > _p.f32.arr.length) ? new Float32Array(rects.length * 4) : _p.f32.arr;
+  rects.forEach((p, i) => _p.f32.arr.set([p.x, p.y, p.w, p.h], i * 4));
+  return lib.symbols.SDL_UpdateWindowSurfaceRects(window, Deno.UnsafePointer.of(arr), rects.length);
 }
 
 /**
@@ -3052,4 +3053,3 @@ export function glGetSwapInterval(): number {
 export function glSwapWindow(window: Deno.PointerValue<"SDL_Window">): boolean {
   return lib.symbols.SDL_GL_SwapWindow(window);
 }
-

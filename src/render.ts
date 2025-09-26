@@ -55,15 +55,7 @@ import * as _r from "../gen/structs/SDL_rect.ts";
 import { Window } from "./video.ts";
 import { cstr, read_cstr, SdlError } from "./_utils.ts";
 import { type Size, writeFPoint, writeFRect, writeRect } from "./rect.ts";
-import {
-  Buf,
-  f32 as _f32,
-  i32 as _i32,
-  ptr as _ptr,
-  toDataView,
-  u32 as _u32,
-  u8 as _u8,
-} from "@g9wp/ptr";
+import * as _p from "@g9wp/ptr";
 import { Surface } from "./surface.ts";
 
 import type {
@@ -128,9 +120,7 @@ export class RenderDriver {
    * @from SDL_render.h:188 const char * SDL_GetRenderDriver(int index);
    */
   static get(index: number): string {
-    const r = SDL.getRenderDriver(index);
-    if (!r) throw SdlError("getRenderDriver");
-    return read_cstr(r);
+    return SDL.getRenderDriver(index);
   }
 }
 
@@ -174,20 +164,15 @@ export class Render {
     render: Render;
     [Symbol.dispose](): void;
   } {
-    if (
-      !SDL.createWindowAndRenderer(
-        cstr(title),
-        width,
-        height,
-        window_flags,
-        _ptr.p0,
-        _ptr.p1,
-      )
-    ) throw SdlError("createWindowAndRenderer");
-
+    const { window, renderer } = SDL.createWindowAndRenderer(
+      title,
+      width,
+      height,
+      window_flags,
+    );
     return {
-      window: new Window(_ptr.v0 as WindowPointer),
-      render: new Render(_ptr.v1 as RendererPointer),
+      window: new Window(window),
+      render: new Render(renderer),
       [Symbol.dispose]() {
         this.render.destroy();
         this.window.destroy();
@@ -236,7 +221,7 @@ export class Render {
     }
     const r = SDL.createRenderer(
       window.pointer,
-      name ? cstr(name.join(",")) : null,
+      name && name.join(","),
     ) as RendererPointer;
     if (!r) throw SdlError("createRenderer");
     return new Render(r);
@@ -383,9 +368,7 @@ export class Render {
    * @from SDL_render.h:373 const char * SDL_GetRendererName(SDL_Renderer *renderer);
    */
   get name(): string {
-    const r = SDL.getRendererName(this.pointer);
-    if (!r) throw SdlError("getRendererName");
-    return read_cstr(r);
+    return SDL.getRendererName(this.pointer);
   }
 
   /**
@@ -502,10 +485,7 @@ export class Render {
    * @from SDL_render.h:507 bool SDL_GetRenderOutputSize(SDL_Renderer *renderer, int *w, int *h);
    */
   get outputSize(): Size {
-    if (!SDL.getRenderOutputSize(this.pointer, _i32.p0, _i32.p1)) {
-      throw SdlError("getRenderOutputSize");
-    }
-    return { w: _i32.v0, h: _i32.v1 };
+    return SDL.getRenderOutputSize(this.pointer);
   }
 
   /**
@@ -532,10 +512,7 @@ export class Render {
    * @from SDL_render.h:530 bool SDL_GetCurrentRenderOutputSize(SDL_Renderer *renderer, int *w, int *h);
    */
   get currentOutputSize(): Size {
-    if (!SDL.getCurrentRenderOutputSize(this.pointer, _i32.p0, _i32.p1)) {
-      throw SdlError("getCurrentRenderOutputSize");
-    }
-    return { w: _i32.v0, h: _i32.v1 };
+    return SDL.getCurrentRenderOutputSize(this.pointer);
   }
 
   /**
@@ -571,7 +548,7 @@ export class Render {
   ): Texture {
     const r = SDL.createTexture(this.pointer, format, access, w, h);
     if (!r) throw SdlError("createTexture");
-    return new Texture(r as TexturePointer);
+    return new Texture(r);
   }
 
   /**
@@ -605,7 +582,7 @@ export class Render {
   createTextureFromSurface(surface: SurfacePointer): Texture {
     const r = SDL.createTextureFromSurface(this.pointer, surface);
     if (!r) throw SdlError("createTextureFromSurface");
-    return new Texture(r as TexturePointer);
+    return new Texture(r);
   }
 
   /**
@@ -868,15 +845,7 @@ export class Render {
    * @from SDL_render.h:1438 bool SDL_GetRenderLogicalPresentation(SDL_Renderer *renderer, int *w, int *h, SDL_RendererLogicalPresentation *mode);
    */
   get logicalPresentation(): { w: number; h: number; mode: number } {
-    if (
-      !SDL.getRenderLogicalPresentation(
-        this.pointer,
-        _i32.p0,
-        _i32.p1,
-        _i32.p2,
-      )
-    ) throw SdlError("getRenderLogicalPresentation");
-    return { w: _i32.v0, h: _i32.v1, mode: _i32.v2 };
+    return SDL.getRenderLogicalPresentation(this.pointer)
   }
 
   /**
@@ -905,10 +874,7 @@ export class Render {
    * @from SDL_render.h:1463 bool SDL_GetRenderLogicalPresentationRect(SDL_Renderer *renderer, SDL_FRect *rect);
    */
   get logicalPresentationRect(): _r.FRect {
-    if (!SDL.getRenderLogicalPresentationRect(this.pointer, _f32.p0)) {
-      throw SdlError("getRenderLogicalPresentationRect");
-    }
-    return _r.read_FRect(_f32.dataView);
+    return SDL.getRenderLogicalPresentationRect(this.pointer);
   }
 
   /**
@@ -942,16 +908,11 @@ export class Render {
     window_x: number,
     window_y: number,
   ): _r.FPoint {
-    if (
-      !SDL.renderCoordinatesFromWindow(
+    return SDL.renderCoordinatesFromWindow(
         this.pointer,
         window_x,
         window_y,
-        _f32.p0,
-        _f32.p1,
       )
-    ) throw SdlError("renderCoordinatesFromWindow");
-    return { x: _f32.v0, y: _f32.v1 };
   }
 
   /**
@@ -988,16 +949,12 @@ export class Render {
     x: number,
     y: number,
   ): _r.FPoint {
-    if (
-      !SDL.renderCoordinatesToWindow(
+    const { window_x, window_y } = SDL.renderCoordinatesToWindow(
         this.pointer,
         x,
         y,
-        _f32.p0,
-        _f32.p1,
-      )
-    ) throw SdlError("renderCoordinatesToWindow");
-    return { x: _f32.v0, y: _f32.v1 };
+    );
+    return { x: window_x, y: window_y };
   }
 
   /**
@@ -1094,10 +1051,7 @@ export class Render {
    * @from SDL_render.h:1603 bool SDL_GetRenderViewport(SDL_Renderer *renderer, SDL_Rect *rect);
    */
   get viewport(): _r.Rect {
-    if (!SDL.getRenderViewport(this.pointer, _i32.p0)) {
-      throw SdlError("getRenderViewport");
-    }
-    return _r.read_Rect(_i32.dataView);
+    return SDL.getRenderViewport(this.pointer);
   }
 
   /**
@@ -1150,10 +1104,7 @@ export class Render {
    * @from SDL_render.h:1648 bool SDL_GetRenderSafeArea(SDL_Renderer *renderer, SDL_Rect *rect);
    */
   get safeArea(): _r.Rect {
-    if (!SDL.getRenderSafeArea(this.pointer, _i32.p0)) {
-      throw SdlError("getRenderSafeArea");
-    }
-    return _r.read_Rect(_i32.dataView);
+    return SDL.getRenderSafeArea(this.pointer);
   }
 
   /**
@@ -1178,7 +1129,7 @@ export class Render {
    * @from SDL_render.h:1669 bool SDL_SetRenderClipRect(SDL_Renderer *renderer, const SDL_Rect *rect);
    */
   setClipRect(rect: _r.Rect | null): boolean {
-    return SDL.setRenderClipRect(this.pointer, rect ? writeRect(rect) : null);
+    return SDL.setRenderClipRect(this.pointer, rect);
   }
 
   /**
@@ -1203,10 +1154,7 @@ export class Render {
    * @from SDL_render.h:1690 bool SDL_GetRenderClipRect(SDL_Renderer *renderer, SDL_Rect *rect);
    */
   get clipRect(): _r.Rect {
-    if (!SDL.getRenderClipRect(this.pointer, _i32.p0)) {
-      throw SdlError("getRenderClipRect");
-    }
-    return _r.read_Rect(_i32.dataView);
+    return SDL.getRenderClipRect(this.pointer);
   }
 
   /**
@@ -1285,14 +1233,7 @@ export class Render {
    * @from SDL_render.h:1757 bool SDL_GetRenderScale(SDL_Renderer *renderer, float *scaleX, float *scaleY);
    */
   get scale(): { scaleX: number; scaleY: number } {
-    if (
-      !SDL.getRenderScale(
-        this.pointer,
-        _f32.p0,
-        _f32.p1,
-      )
-    ) throw SdlError("getRenderScale");
-    return { scaleX: _f32.v0, scaleY: _f32.v1 };
+    return SDL.getRenderScale(this.pointer);
   }
 
   /**
@@ -1378,16 +1319,7 @@ export class Render {
    * @from SDL_render.h:1831 bool SDL_GetRenderDrawColor(SDL_Renderer *renderer, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);
    */
   get drawColor(): { r: number; g: number; b: number; a: number } {
-    if (
-      !SDL.getRenderDrawColor(
-        this.pointer,
-        _u8.p0,
-        _u8.p1,
-        _u8.p2,
-        _u8.p3,
-      )
-    ) throw SdlError("getRenderDrawColor");
-    return { r: _u8.v0, g: _u8.v1, b: _u8.v2, a: _u8.v3 };
+    return SDL.getRenderDrawColor(this.pointer);
   }
 
   /**
@@ -1415,16 +1347,7 @@ export class Render {
    * @from SDL_render.h:1855 bool SDL_GetRenderDrawColorFloat(SDL_Renderer *renderer, float *r, float *g, float *b, float *a);
    */
   get drawColorFloat(): { r: number; g: number; b: number; a: number } {
-    if (
-      !SDL.getRenderDrawColorFloat(
-        this.pointer,
-        _f32.p0,
-        _f32.p1,
-        _f32.p2,
-        _f32.p3,
-      )
-    ) throw SdlError("getRenderDrawColorFloat");
-    return { r: _f32.v0, g: _f32.v1, b: _f32.v2, a: _f32.v3 };
+    return SDL.getRenderDrawColorFloat(this.pointer);
   }
 
   /**
@@ -1472,10 +1395,7 @@ export class Render {
    * @from SDL_render.h:1895 bool SDL_GetRenderColorScale(SDL_Renderer *renderer, float *scale);
    */
   get colorScale(): number {
-    if (!SDL.getRenderColorScale(this.pointer, _f32.p0)) {
-      throw SdlError("getRenderColorScale");
-    }
-    return _f32.v0;
+    return SDL.getRenderColorScale(this.pointer);
   }
 
   /**
@@ -1517,13 +1437,7 @@ export class Render {
    * @from SDL_render.h:1929 bool SDL_GetRenderDrawBlendMode(SDL_Renderer *renderer, SDL_BlendMode *blendMode);
    */
   get drawBlendMode(): number {
-    if (
-      !SDL.getRenderDrawBlendMode(
-        this.pointer,
-        _i32.p0,
-      )
-    ) throw SdlError("getRenderDrawBlendMode");
-    return _i32.v0;
+    return SDL.getRenderDrawBlendMode(this.pointer);
   }
 
   /**
@@ -1589,12 +1503,7 @@ export class Render {
    * @from SDL_render.h:1983 bool SDL_RenderPoints(SDL_Renderer *renderer, const SDL_FPoint *points, int count);
    */
   points(points: _r.FPoint[]): boolean {
-    const buf = Buf.of(Float32Array, points.length * 2);
-    points.forEach((point, i) => {
-      buf.arr[i * 2] = point.x;
-      buf.arr[i * 2 + 1] = point.y;
-    });
-    return SDL.renderPoints(this.pointer, buf.pointer, points.length);
+    return SDL.renderPoints(this.pointer, points);
   }
 
   /**
@@ -1639,12 +1548,7 @@ export class Render {
    * @from SDL_render.h:2020 bool SDL_RenderLines(SDL_Renderer *renderer, const SDL_FPoint *points, int count);
    */
   lines(points: _r.FPoint[]): boolean {
-    const buf = Buf.of(Float32Array, points.length * 2);
-    points.forEach((point, i) => {
-      buf.arr[i * 2] = point.x;
-      buf.arr[i * 2 + 1] = point.y;
-    });
-    return SDL.renderLines(this.pointer, buf.pointer, points.length);
+    return SDL.renderLines(this.pointer, points);
   }
 
   /**

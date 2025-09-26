@@ -10,6 +10,7 @@ import { symbols } from "./funcs/SDL_ttf.ts";
 import { libSdlPath } from './_utils.ts';
 
 export const lib = Deno.dlopen(libSdlPath("SDL3_ttf"), symbols);
+import { lib as sdl } from "../gen/sdl/lib.ts"
 
 
 
@@ -470,7 +471,7 @@ export function getFontSize(font: Deno.PointerValue<"TTF_Font">): number {
  */
 export function getFontDpi(font: Deno.PointerValue<"TTF_Font">): { hdpi: number; vdpi: number } {
   if(!lib.symbols.TTF_GetFontDPI(font, _p.i32.p0, _p.i32.p1))
-    throw new Error(`TTF_GetFontDPI: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+    throw new Error(`TTF_GetFontDPI: ${_p.getCstr2(sdl.symbols.SDL_GetError())}`);
   return { hdpi: _p.i32.v0, vdpi: _p.i32.v1 };
 }
 
@@ -1055,8 +1056,10 @@ export function stringToTag(string: string): number {
  * @from SDL_ttf.h:1000 void TTF_TagToString(Uint32 tag, char *string, size_t size);
  */
 export function tagToString(tag: number, size: bigint): string {
-  lib.symbols.TTF_TagToString(tag, _p.cstr.p0, size);
-  return _p.cstr.v0;
+  const arr = size <= _p.cstr.buf[0].length ? _p.cstr.buf[0].slice(0, Number(size)) : new Uint8Array(Number(size)+1);
+  arr[Number(size)] = 0;
+  lib.symbols.TTF_TagToString(tag, Deno.UnsafePointer.of(arr), size);
+  return Deno.UnsafePointerView.getCString(Deno.UnsafePointer.of(arr)!);
 }
 
 /**
@@ -1149,8 +1152,8 @@ export function getGlyphScript(ch: number): number {
  *
  * @from SDL_ttf.h:1078 bool TTF_SetFontLanguage(TTF_Font *font, const char *language_bcp47);
  */
-export function setFontLanguage(font: Deno.PointerValue<"TTF_Font">, language_bcp47: string): boolean {
-  return lib.symbols.TTF_SetFontLanguage(font, _p.toCstr(language_bcp47));
+export function setFontLanguage(font: Deno.PointerValue<"TTF_Font">, language_bcp47?: string): boolean {
+  return lib.symbols.TTF_SetFontLanguage(font, _p.toCstr2(language_bcp47));
 }
 
 /**
@@ -1190,7 +1193,7 @@ export function fontHasGlyph(font: Deno.PointerValue<"TTF_Font">, ch: number): b
  */
 export function getGlyphImage(font: Deno.PointerValue<"TTF_Font">, ch: number): { image_type: number; ret: Deno.PointerValue<"SDL_Surface"> } {
   const ret = lib.symbols.TTF_GetGlyphImage(font, ch, _p.u32.p0) as Deno.PointerValue<"SDL_Surface">;
-  if(!ret) throw new Error(`TTF_GetGlyphImage: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  if(!ret) throw new Error(`TTF_GetGlyphImage: ${_p.getCstr2(sdl.symbols.SDL_GetError())}`);
   return { image_type: _p.u32.v0, ret };
 }
 
@@ -1216,7 +1219,7 @@ export function getGlyphImage(font: Deno.PointerValue<"TTF_Font">, ch: number): 
  */
 export function getGlyphImageForIndex(font: Deno.PointerValue<"TTF_Font">, glyph_index: number): { image_type: number; ret: Deno.PointerValue<"SDL_Surface"> } {
   const ret = lib.symbols.TTF_GetGlyphImageForIndex(font, glyph_index, _p.u32.p0) as Deno.PointerValue<"SDL_Surface">;
-  if(!ret) throw new Error(`TTF_GetGlyphImageForIndex: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  if(!ret) throw new Error(`TTF_GetGlyphImageForIndex: ${_p.getCstr2(sdl.symbols.SDL_GetError())}`);
   return { image_type: _p.u32.v0, ret };
 }
 
@@ -1253,7 +1256,7 @@ export function getGlyphImageForIndex(font: Deno.PointerValue<"TTF_Font">, glyph
  */
 export function getGlyphMetrics(font: Deno.PointerValue<"TTF_Font">, ch: number): { minx: number; maxx: number; miny: number; maxy: number; advance: number } {
   if(!lib.symbols.TTF_GetGlyphMetrics(font, ch, _p.i32.p0, _p.i32.p1, _p.i32.p2, _p.i32.p3, _p.i32.p4))
-    throw new Error(`TTF_GetGlyphMetrics: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+    throw new Error(`TTF_GetGlyphMetrics: ${_p.getCstr2(sdl.symbols.SDL_GetError())}`);
   return { minx: _p.i32.v0, maxx: _p.i32.v1, miny: _p.i32.v2, maxy: _p.i32.v3, advance: _p.i32.v4 };
 }
 
@@ -1277,7 +1280,7 @@ export function getGlyphMetrics(font: Deno.PointerValue<"TTF_Font">, ch: number)
  */
 export function getGlyphKerning(font: Deno.PointerValue<"TTF_Font">, previous_ch: number, ch: number): number {
   if(!lib.symbols.TTF_GetGlyphKerning(font, previous_ch, ch, _p.i32.p0))
-    throw new Error(`TTF_GetGlyphKerning: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+    throw new Error(`TTF_GetGlyphKerning: ${_p.getCstr2(sdl.symbols.SDL_GetError())}`);
   return _p.i32.v0;
 }
 
@@ -1303,9 +1306,9 @@ export function getGlyphKerning(font: Deno.PointerValue<"TTF_Font">, previous_ch
  *
  * @from SDL_ttf.h:1213 bool TTF_GetStringSize(TTF_Font *font, const char *text, size_t length, int *w, int *h);
  */
-export function getStringSize(font: Deno.PointerValue<"TTF_Font">, text: string, length: bigint): { w: number; h: number } {
-  if(!lib.symbols.TTF_GetStringSize(font, _p.toCstr(text), length, _p.i32.p0, _p.i32.p1))
-    throw new Error(`TTF_GetStringSize: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+export function getStringSize(font: Deno.PointerValue<"TTF_Font">, text: string): { w: number; h: number } {
+  if(!lib.symbols.TTF_GetStringSize(font, _p.toCstr(text), 0n, _p.i32.p0, _p.i32.p1))
+    throw new Error(`TTF_GetStringSize: ${_p.getCstr2(sdl.symbols.SDL_GetError())}`);
   return { w: _p.i32.v0, h: _p.i32.v1 };
 }
 
@@ -1340,11 +1343,10 @@ export function getStringSize(font: Deno.PointerValue<"TTF_Font">, text: string,
 export function getStringSizeWrapped(
     font: Deno.PointerValue<"TTF_Font">,
     text: string,
-    length: bigint,
     wrap_width: number,
 ): { w: number; h: number } {
-  if(!lib.symbols.TTF_GetStringSizeWrapped(font, _p.toCstr(text), length, wrap_width, _p.i32.p0, _p.i32.p1))
-    throw new Error(`TTF_GetStringSizeWrapped: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  if(!lib.symbols.TTF_GetStringSizeWrapped(font, _p.toCstr(text), 0n, wrap_width, _p.i32.p0, _p.i32.p1))
+    throw new Error(`TTF_GetStringSizeWrapped: ${_p.getCstr2(sdl.symbols.SDL_GetError())}`);
   return { w: _p.i32.v0, h: _p.i32.v1 };
 }
 
@@ -1379,11 +1381,10 @@ export function getStringSizeWrapped(
 export function measureString(
     font: Deno.PointerValue<"TTF_Font">,
     text: string,
-    length: bigint,
     max_width: number,
 ): { measured_width: number; measured_length: bigint } {
-  if(!lib.symbols.TTF_MeasureString(font, _p.toCstr(text), length, max_width, _p.i32.p0, _p.u64.p0))
-    throw new Error(`TTF_MeasureString: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  if(!lib.symbols.TTF_MeasureString(font, _p.toCstr(text), 0n, max_width, _p.i32.p0, _p.u64.p0))
+    throw new Error(`TTF_MeasureString: ${_p.getCstr2(sdl.symbols.SDL_GetError())}`);
   return { measured_width: _p.i32.v0, measured_length: _p.u64.v0 };
 }
 
@@ -1427,10 +1428,10 @@ export function measureString(
 export function renderTextSolid(
     font: Deno.PointerValue<"TTF_Font">,
     text: string,
-    length: bigint,
     fg: { r: number; g: number; b: number; a: number; },
 ): Deno.PointerValue<"SDL_Surface"> {
-  return lib.symbols.TTF_RenderText_Solid(font, _p.toCstr(text), length, fg) as Deno.PointerValue<"SDL_Surface">;
+  _p.u8.arr.set([fg.r, fg.g, fg.b, fg.a], 0);
+  return lib.symbols.TTF_RenderText_Solid(font, _p.toCstr(text), 0n, _p.u8.arr.slice(0, 4)) as Deno.PointerValue<"SDL_Surface">;
 }
 
 /**
@@ -1472,11 +1473,11 @@ export function renderTextSolid(
 export function renderTextSolidWrapped(
     font: Deno.PointerValue<"TTF_Font">,
     text: string,
-    length: bigint,
     fg: { r: number; g: number; b: number; a: number; },
     wrapLength: number,
 ): Deno.PointerValue<"SDL_Surface"> {
-  return lib.symbols.TTF_RenderText_Solid_Wrapped(font, _p.toCstr(text), length, fg, wrapLength) as Deno.PointerValue<"SDL_Surface">;
+  _p.u8.arr.set([fg.r, fg.g, fg.b, fg.a], 0);
+  return lib.symbols.TTF_RenderText_Solid_Wrapped(font, _p.toCstr(text), 0n, _p.u8.arr.slice(0, 4), wrapLength) as Deno.PointerValue<"SDL_Surface">;
 }
 
 /**
@@ -1509,7 +1510,8 @@ export function renderTextSolidWrapped(
  * @from SDL_ttf.h:1371 SDL_Surface * TTF_RenderGlyph_Solid(TTF_Font *font, Uint32 ch, SDL_Color fg);
  */
 export function renderGlyphSolid(font: Deno.PointerValue<"TTF_Font">, ch: number, fg: { r: number; g: number; b: number; a: number; }): Deno.PointerValue<"SDL_Surface"> {
-  return lib.symbols.TTF_RenderGlyph_Solid(font, ch, fg) as Deno.PointerValue<"SDL_Surface">;
+  _p.u8.arr.set([fg.r, fg.g, fg.b, fg.a], 0);
+  return lib.symbols.TTF_RenderGlyph_Solid(font, ch, _p.u8.arr.slice(0, 4)) as Deno.PointerValue<"SDL_Surface">;
 }
 
 /**
@@ -1553,11 +1555,12 @@ export function renderGlyphSolid(font: Deno.PointerValue<"TTF_Font">, ch: number
 export function renderTextShaded(
     font: Deno.PointerValue<"TTF_Font">,
     text: string,
-    length: bigint,
     fg: { r: number; g: number; b: number; a: number; },
     bg: { r: number; g: number; b: number; a: number; },
 ): Deno.PointerValue<"SDL_Surface"> {
-  return lib.symbols.TTF_RenderText_Shaded(font, _p.toCstr(text), length, fg, bg) as Deno.PointerValue<"SDL_Surface">;
+  _p.u8.arr.set([fg.r, fg.g, fg.b, fg.a], 0);
+  _p.u8.arr.set([bg.r, bg.g, bg.b, bg.a], 4);
+  return lib.symbols.TTF_RenderText_Shaded(font, _p.toCstr(text), 0n, _p.u8.arr.slice(0, 4), _p.u8.arr.slice(4, 8)) as Deno.PointerValue<"SDL_Surface">;
 }
 
 /**
@@ -1601,12 +1604,13 @@ export function renderTextShaded(
 export function renderTextShadedWrapped(
     font: Deno.PointerValue<"TTF_Font">,
     text: string,
-    length: bigint,
     fg: { r: number; g: number; b: number; a: number; },
     bg: { r: number; g: number; b: number; a: number; },
     wrap_width: number,
 ): Deno.PointerValue<"SDL_Surface"> {
-  return lib.symbols.TTF_RenderText_Shaded_Wrapped(font, _p.toCstr(text), length, fg, bg, wrap_width) as Deno.PointerValue<"SDL_Surface">;
+  _p.u8.arr.set([fg.r, fg.g, fg.b, fg.a], 0);
+  _p.u8.arr.set([bg.r, bg.g, bg.b, bg.a], 4);
+  return lib.symbols.TTF_RenderText_Shaded_Wrapped(font, _p.toCstr(text), 0n, _p.u8.arr.slice(0, 4), _p.u8.arr.slice(4, 8), wrap_width) as Deno.PointerValue<"SDL_Surface">;
 }
 
 /**
@@ -1646,7 +1650,9 @@ export function renderGlyphShaded(
     fg: { r: number; g: number; b: number; a: number; },
     bg: { r: number; g: number; b: number; a: number; },
 ): Deno.PointerValue<"SDL_Surface"> {
-  return lib.symbols.TTF_RenderGlyph_Shaded(font, ch, fg, bg) as Deno.PointerValue<"SDL_Surface">;
+  _p.u8.arr.set([fg.r, fg.g, fg.b, fg.a], 0);
+  _p.u8.arr.set([bg.r, bg.g, bg.b, bg.a], 4);
+  return lib.symbols.TTF_RenderGlyph_Shaded(font, ch, _p.u8.arr.slice(0, 4), _p.u8.arr.slice(4, 8)) as Deno.PointerValue<"SDL_Surface">;
 }
 
 /**
@@ -1691,7 +1697,8 @@ export function renderTextBlended(
     length: bigint,
     fg: { r: number; g: number; b: number; a: number; },
 ): Deno.PointerValue<"SDL_Surface"> {
-  return lib.symbols.TTF_RenderText_Blended(font, _p.toCstr(text), length, fg) as Deno.PointerValue<"SDL_Surface">;
+  _p.u8.arr.set([fg.r, fg.g, fg.b, fg.a], 0);
+  return lib.symbols.TTF_RenderText_Blended(font, _p.toCstr(text), length,  _p.u8.arr.slice(0, 4)) as Deno.PointerValue<"SDL_Surface">;
 }
 
 /**
@@ -1733,11 +1740,11 @@ export function renderTextBlended(
 export function renderTextBlendedWrapped(
     font: Deno.PointerValue<"TTF_Font">,
     text: string,
-    length: bigint,
     fg: { r: number; g: number; b: number; a: number; },
     wrap_width: number,
 ): Deno.PointerValue<"SDL_Surface"> {
-  return lib.symbols.TTF_RenderText_Blended_Wrapped(font, _p.toCstr(text), length, fg, wrap_width) as Deno.PointerValue<"SDL_Surface">;
+  _p.u8.arr.set([fg.r, fg.g, fg.b, fg.a], 0);
+  return lib.symbols.TTF_RenderText_Blended_Wrapped(font, _p.toCstr(text), 0n,  _p.u8.arr.slice(0, 4), wrap_width) as Deno.PointerValue<"SDL_Surface">;
 }
 
 /**
@@ -1770,7 +1777,8 @@ export function renderTextBlendedWrapped(
  * @from SDL_ttf.h:1579 SDL_Surface * TTF_RenderGlyph_Blended(TTF_Font *font, Uint32 ch, SDL_Color fg);
  */
 export function renderGlyphBlended(font: Deno.PointerValue<"TTF_Font">, ch: number, fg: { r: number; g: number; b: number; a: number; }): Deno.PointerValue<"SDL_Surface"> {
-  return lib.symbols.TTF_RenderGlyph_Blended(font, ch, fg) as Deno.PointerValue<"SDL_Surface">;
+  _p.u8.arr.set([fg.r, fg.g, fg.b, fg.a], 0);
+  return lib.symbols.TTF_RenderGlyph_Blended(font, ch, _p.u8.arr.slice(0, 4)) as Deno.PointerValue<"SDL_Surface">;
 }
 
 /**
@@ -1817,7 +1825,9 @@ export function renderTextLcd(
     fg: { r: number; g: number; b: number; a: number; },
     bg: { r: number; g: number; b: number; a: number; },
 ): Deno.PointerValue<"SDL_Surface"> {
-  return lib.symbols.TTF_RenderText_LCD(font, _p.toCstr(text), length, fg, bg) as Deno.PointerValue<"SDL_Surface">;
+  _p.u8.arr.set([fg.r, fg.g, fg.b, fg.a], 0);
+  _p.u8.arr.set([bg.r, bg.g, bg.b, bg.a], 4);
+  return lib.symbols.TTF_RenderText_LCD(font, _p.toCstr(text), length, _p.u8.arr.slice(0, 4), _p.u8.arr.slice(4, 8)) as Deno.PointerValue<"SDL_Surface">;
 }
 
 /**
@@ -1866,7 +1876,9 @@ export function renderTextLcdWrapped(
     bg: { r: number; g: number; b: number; a: number; },
     wrap_width: number,
 ): Deno.PointerValue<"SDL_Surface"> {
-  return lib.symbols.TTF_RenderText_LCD_Wrapped(font, _p.toCstr(text), length, fg, bg, wrap_width) as Deno.PointerValue<"SDL_Surface">;
+  _p.u8.arr.set([fg.r, fg.g, fg.b, fg.a], 0);
+  _p.u8.arr.set([bg.r, bg.g, bg.b, bg.a], 4);
+  return lib.symbols.TTF_RenderText_LCD_Wrapped(font, _p.toCstr(text), length, _p.u8.arr.slice(0, 4), _p.u8.arr.slice(4, 8), wrap_width) as Deno.PointerValue<"SDL_Surface">;
 }
 
 /**
@@ -1906,7 +1918,9 @@ export function renderGlyphLcd(
     fg: { r: number; g: number; b: number; a: number; },
     bg: { r: number; g: number; b: number; a: number; },
 ): Deno.PointerValue<"SDL_Surface"> {
-  return lib.symbols.TTF_RenderGlyph_LCD(font, ch, fg, bg) as Deno.PointerValue<"SDL_Surface">;
+  _p.u8.arr.set([fg.r, fg.g, fg.b, fg.a], 0);
+  _p.u8.arr.set([bg.r, bg.g, bg.b, bg.a], 4);
+  return lib.symbols.TTF_RenderGlyph_LCD(font, ch, _p.u8.arr.slice(0, 4), _p.u8.arr.slice(4, 8)) as Deno.PointerValue<"SDL_Surface">;
 }
 
 /**
@@ -2559,7 +2573,7 @@ export function setTextColorFloat(
  */
 export function getTextColor(text: Deno.PointerValue<"TTF_Text">): { r: number; g: number; b: number; a: number } {
   if(!lib.symbols.TTF_GetTextColor(text, _p.u8.p0, _p.u8.p1, _p.u8.p2, _p.u8.p3))
-    throw new Error(`TTF_GetTextColor: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+    throw new Error(`TTF_GetTextColor: ${_p.getCstr2(sdl.symbols.SDL_GetError())}`);
   return { r: _p.u8.v0, g: _p.u8.v1, b: _p.u8.v2, a: _p.u8.v3 };
 }
 
@@ -2590,7 +2604,7 @@ export function getTextColor(text: Deno.PointerValue<"TTF_Text">): { r: number; 
  */
 export function getTextColorFloat(text: Deno.PointerValue<"TTF_Text">): { r: number; g: number; b: number; a: number } {
   if(!lib.symbols.TTF_GetTextColorFloat(text, _p.f32.p0, _p.f32.p1, _p.f32.p2, _p.f32.p3))
-    throw new Error(`TTF_GetTextColorFloat: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+    throw new Error(`TTF_GetTextColorFloat: ${_p.getCstr2(sdl.symbols.SDL_GetError())}`);
   return { r: _p.f32.v0, g: _p.f32.v1, b: _p.f32.v2, a: _p.f32.v3 };
 }
 
@@ -2639,7 +2653,7 @@ export function setTextPosition(text: Deno.PointerValue<"TTF_Text">, x: number, 
  */
 export function getTextPosition(text: Deno.PointerValue<"TTF_Text">): { x: number; y: number } {
   if(!lib.symbols.TTF_GetTextPosition(text, _p.i32.p0, _p.i32.p1))
-    throw new Error(`TTF_GetTextPosition: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+    throw new Error(`TTF_GetTextPosition: ${_p.getCstr2(sdl.symbols.SDL_GetError())}`);
   return { x: _p.i32.v0, y: _p.i32.v1 };
 }
 
@@ -2687,7 +2701,7 @@ export function setTextWrapWidth(text: Deno.PointerValue<"TTF_Text">, wrap_width
  */
 export function getTextWrapWidth(text: Deno.PointerValue<"TTF_Text">): number {
   if(!lib.symbols.TTF_GetTextWrapWidth(text, _p.i32.p0))
-    throw new Error(`TTF_GetTextWrapWidth: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+    throw new Error(`TTF_GetTextWrapWidth: ${_p.getCstr2(sdl.symbols.SDL_GetError())}`);
   return _p.i32.v0;
 }
 
@@ -2883,7 +2897,7 @@ export function deleteTextString(text: Deno.PointerValue<"TTF_Text">, offset: nu
  */
 export function getTextSize(text: Deno.PointerValue<"TTF_Text">): { w: number; h: number } {
   if(!lib.symbols.TTF_GetTextSize(text, _p.i32.p0, _p.i32.p1))
-    throw new Error(`TTF_GetTextSize: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+    throw new Error(`TTF_GetTextSize: ${_p.getCstr2(sdl.symbols.SDL_GetError())}`);
   return { w: _p.i32.v0, h: _p.i32.v1 };
 }
 
@@ -2964,7 +2978,7 @@ export function getTextSubStringForLine(text: Deno.PointerValue<"TTF_Text">, lin
  */
 export function getTextSubStringsForRange(text: Deno.PointerValue<"TTF_Text">, offset: number, length: number): { count: number; ret: Deno.PointerValue } {
   const ret = lib.symbols.TTF_GetTextSubStringsForRange(text, offset, length, _p.i32.p0) as Deno.PointerValue;
-  if(!ret) throw new Error(`TTF_GetTextSubStringsForRange: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  if(!ret) throw new Error(`TTF_GetTextSubStringsForRange: ${_p.getCstr2(sdl.symbols.SDL_GetError())}`);
   return { count: _p.i32.v0, ret };
 }
 
@@ -3165,4 +3179,3 @@ export function quit(): void {
 export function wasInit(): number {
   return lib.symbols.TTF_WasInit();
 }
-

@@ -555,4 +555,3 @@ export function enumerateProperties(props: number, callback: Deno.PointerValue, 
 export function destroyProperties(props: number): void {
   return lib.symbols.SDL_DestroyProperties(props);
 }
-

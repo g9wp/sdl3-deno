@@ -53,7 +53,7 @@ import { cstr, read_cstr, SdlError } from "./_utils.ts";
 
 import { SDL_PropertyType as PropertyType } from "../gen/enums/SDL_properties.ts";
 
-import { callbacks as CB } from "../gen/callbacks/SDL_properties.ts";
+import * as _cb from "../gen/callbacks/SDL_properties.ts";
 export { PropertyType };
 
 const cbholder = {
@@ -247,22 +247,19 @@ export class Properties {
     if (!cleanup) {
       return SDL.setPointerPropertyWithCleanup(
         this.id,
-        cstr(name),
+        name,
         value,
         null,
         userdata ?? null,
       );
     }
 
-    const cb = new Deno.UnsafeCallback(
-      CB.SDL_EnumeratePropertiesCallback,
-      cleanup,
-    );
+    const cb = _cb.EnumeratePropertiesCallback(cleanup);
     cbholder.set(this.id, cb as Deno.UnsafeCallback);
 
     return SDL.setPointerPropertyWithCleanup(
       this.id,
-      cstr(name),
+      name,
       value,
       cb.pointer,
       userdata ?? null,
@@ -293,7 +290,7 @@ export class Properties {
    * @from SDL_properties.h:240 bool SDL_SetPointerProperty(SDL_PropertiesID props, const char *name, void *value);
    */
   setPointer(name: string, value: Deno.PointerValue): boolean {
-    return SDL.setPointerProperty(this.id, cstr(name), value);
+    return SDL.setPointerProperty(this.id, name, value);
   }
 
   /**
@@ -317,7 +314,7 @@ export class Properties {
    * @from SDL_properties.h:260 bool SDL_SetStringProperty(SDL_PropertiesID props, const char *name, const char *value);
    */
   setString(name: string, value: string): boolean {
-    return SDL.setPointerProperty(this.id, cstr(name), cstr(value));
+    return SDL.setStringProperty(this.id, name, value);
   }
 
   /**
@@ -339,7 +336,7 @@ export class Properties {
    */
 
   setNumber(name: string, value: bigint): boolean {
-    return SDL.setNumberProperty(this.id, cstr(name), value);
+    return SDL.setNumberProperty(this.id, name, value);
   }
 
   /**
@@ -360,7 +357,7 @@ export class Properties {
    * @from SDL_properties.h:294 bool SDL_SetFloatProperty(SDL_PropertiesID props, const char *name, float value);
    */
   setFloat(name: string, value: number): boolean {
-    return SDL.setFloatProperty(this.id, cstr(name), value);
+    return SDL.setFloatProperty(this.id, name, value);
   }
 
   /**
@@ -381,7 +378,7 @@ export class Properties {
    * @from SDL_properties.h:311 bool SDL_SetBooleanProperty(SDL_PropertiesID props, const char *name, bool value);
    */
   setBoolean(name: string, value: boolean): boolean {
-    return SDL.setBooleanProperty(this.id, cstr(name), value);
+    return SDL.setBooleanProperty(this.id, name, value);
   }
 
   /**
@@ -400,7 +397,7 @@ export class Properties {
    * @from SDL_properties.h:326 bool SDL_HasProperty(SDL_PropertiesID props, const char *name);
    */
   has(name: string): boolean {
-    return SDL.hasProperty(this.id, cstr(name));
+    return SDL.hasProperty(this.id, name);
   }
 
   /**
@@ -420,7 +417,7 @@ export class Properties {
    * @from SDL_properties.h:342 SDL_PropertyType SDL_GetPropertyType(SDL_PropertiesID props, const char *name);
    */
   get type(): PropertyType {
-    return SDL.getPropertyType(this.id, cstr(name));
+    return SDL.getPropertyType(this.id, name);
   }
 
   /**
@@ -460,7 +457,7 @@ export class Properties {
     name: string,
     default_value: Deno.PointerValue,
   ): Deno.PointerValue {
-    return SDL.getPointerProperty(this.id, cstr(name), default_value);
+    return SDL.getPointerProperty(this.id, name, default_value);
   }
 
   /**
@@ -487,10 +484,8 @@ export class Properties {
    *
    * @from SDL_properties.h:399 const char * SDL_GetStringProperty(SDL_PropertiesID props, const char *name, const char *default_value);
    */
-  getString(name: string, default_value: string): string | null {
-    const s = SDL.getStringProperty(this.id, cstr(name), cstr(default_value));
-    if (!s) return null;
-    return read_cstr(s);
+  getString(name: string, default_value: string): string {
+    return SDL.getStringProperty(this.id, name, default_value);
   }
 
   /**
@@ -516,7 +511,7 @@ export class Properties {
    * @from SDL_properties.h:421 Sint64 SDL_GetNumberProperty(SDL_PropertiesID props, const char *name, Sint64 default_value);
    */
   getNumber(name: string, default_value: bigint): bigint | null {
-    return SDL.getNumberProperty(this.id, cstr(name), default_value);
+    return SDL.getNumberProperty(this.id, name, default_value);
   }
 
   /**
@@ -542,7 +537,7 @@ export class Properties {
    * @from SDL_properties.h:443 float SDL_GetFloatProperty(SDL_PropertiesID props, const char *name, float default_value);
    */
   getFloat(name: string, default_value: number): number | null {
-    return SDL.getFloatProperty(this.id, cstr(name), default_value);
+    return SDL.getFloatProperty(this.id, name, default_value);
   }
 
   /**
@@ -568,7 +563,7 @@ export class Properties {
    * @from SDL_properties.h:465 bool SDL_GetBooleanProperty(SDL_PropertiesID props, const char *name, bool default_value);
    */
   getBoolean(name: string, default_value: boolean): boolean | null {
-    return SDL.getBooleanProperty(this.id, cstr(name), default_value);
+    return SDL.getBooleanProperty(this.id, name, default_value);
   }
 
   /**
@@ -586,7 +581,7 @@ export class Properties {
    * @from SDL_properties.h:479 bool SDL_ClearProperty(SDL_PropertiesID props, const char *name);
    */
   clear(name: string): boolean {
-    return SDL.clearProperty(this.id, cstr(name));
+    return SDL.clearProperty(this.id, name);
   }
 
   /**
@@ -615,11 +610,8 @@ export class Properties {
     ) => void,
     userdata: Deno.PointerValue,
   ): boolean {
-    const cb = new Deno.UnsafeCallback(
-      CB.SDL_EnumeratePropertiesCallback,
-      (userdata: Deno.PointerValue, id: number, name: Deno.PointerValue) =>
-        callback(userdata, id, name ? read_cstr(name!) : null),
-    );
+    const cb = _cb.EnumeratePropertiesCallback(
+      (userdata: Deno.PointerValue, id: number, name: Deno.PointerValue) => callback(userdata, id, name ? read_cstr(name!) : null));
     const r = SDL.enumerateProperties(this.id, cb.pointer, userdata);
     cb.close();
     return r;
