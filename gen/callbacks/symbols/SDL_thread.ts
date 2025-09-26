@@ -39,7 +39,28 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
-import { symbols } from './symbols/SDL_thread.ts';
+export const symbols = {
+/**
+ * The callback used to cleanup data passed to SDL_SetTLS.
+ *
+ * This is called when a thread exits, to allow an app to free any resources.
+ *
+ * @param value a pointer previously handed to SDL_SetTLS.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa SDL_SetTLS
+ *
+ * @from SDL_thread.h:528 typedef void (*SDL_TLSDestructorCallback)(void *value);
+ */
+SDL_TLSDestructorCallback: {
+      parameters: ["pointer"],
+      result: "void"
+    },
+
+} as const satisfies Deno.ForeignLibraryInterface;
+
+
 /**
  * The callback used to cleanup data passed to SDL_SetTLS.
  *

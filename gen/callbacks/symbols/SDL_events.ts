@@ -51,7 +51,36 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
-import { symbols } from './symbols/SDL_events.ts';
+export const symbols = {
+/**
+ * A function pointer used for callbacks that watch the event queue.
+ *
+ * @param userdata what was passed as `userdata` to SDL_SetEventFilter() or
+ *                 SDL_AddEventWatch, etc.
+ * @param event the event that triggered the callback.
+ * @returns true to permit event to be added to the queue, and false to
+ *          disallow it. When used with SDL_AddEventWatch, the return value is
+ *          ignored.
+ *
+ * @threadsafety SDL may call this callback at any time from any thread; the
+ *               application is responsible for locking resources the callback
+ *               touches that need to be protected.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa SDL_SetEventFilter
+ * @sa SDL_AddEventWatch
+ *
+ * @from SDL_events.h:1378 typedef bool (*SDL_EventFilter)(void *userdata, SDL_Event *event);
+ */
+SDL_EventFilter: {
+      parameters: ["pointer", "pointer"],
+      result: "bool"
+    },
+
+} as const satisfies Deno.ForeignLibraryInterface;
+
+
 /**
  * A function pointer used for callbacks that watch the event queue.
  *

@@ -40,7 +40,72 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
-import { symbols } from './symbols/SDL_timer.ts';
+export const symbols = {
+/**
+ * Function prototype for the millisecond timer callback function.
+ *
+ * The callback function is passed the current timer interval and returns the
+ * next timer interval, in milliseconds. If the returned value is the same as
+ * the one passed in, the periodic alarm continues, otherwise a new alarm is
+ * scheduled. If the callback returns 0, the periodic alarm is canceled and
+ * will be removed.
+ *
+ * @param userdata an arbitrary pointer provided by the app through
+ *                 SDL_AddTimer, for its own use.
+ * @param timerID the current timer being processed.
+ * @param interval the current callback time interval.
+ * @returns the new callback time interval, or 0 to disable further runs of
+ *          the callback.
+ *
+ * @threadsafety SDL may call this callback at any time from a background
+ *               thread; the application is responsible for locking resources
+ *               the callback touches that need to be protected.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa SDL_AddTimer
+ *
+ * @from SDL_timer.h:327 typedef Uint32 (*SDL_TimerCallback)(void *userdata, SDL_TimerID timerID, Uint32 interval);
+ */
+SDL_TimerCallback: {
+      parameters: ["pointer", "u32", "u32"],
+      result: "u32"
+    },
+
+/**
+ * Function prototype for the nanosecond timer callback function.
+ *
+ * The callback function is passed the current timer interval and returns the
+ * next timer interval, in nanoseconds. If the returned value is the same as
+ * the one passed in, the periodic alarm continues, otherwise a new alarm is
+ * scheduled. If the callback returns 0, the periodic alarm is canceled and
+ * will be removed.
+ *
+ * @param userdata an arbitrary pointer provided by the app through
+ *                 SDL_AddTimer, for its own use.
+ * @param timerID the current timer being processed.
+ * @param interval the current callback time interval.
+ * @returns the new callback time interval, or 0 to disable further runs of
+ *          the callback.
+ *
+ * @threadsafety SDL may call this callback at any time from a background
+ *               thread; the application is responsible for locking resources
+ *               the callback touches that need to be protected.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa SDL_AddTimerNS
+ *
+ * @from SDL_timer.h:389 typedef Uint64 (*SDL_NSTimerCallback)(void *userdata, SDL_TimerID timerID, Uint64 interval);
+ */
+SDL_NSTimerCallback: {
+      parameters: ["pointer", "u32", "u64"],
+      result: "u64"
+    },
+
+} as const satisfies Deno.ForeignLibraryInterface;
+
+
 /**
  * Function prototype for the millisecond timer callback function.
  *

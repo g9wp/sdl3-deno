@@ -47,7 +47,63 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
-import { symbols } from './symbols/SDL_properties.ts';
+export const symbols = {
+/**
+ * A callback used to free resources when a property is deleted.
+ *
+ * This should release any resources associated with `value` that are no
+ * longer needed.
+ *
+ * This callback is set per-property. Different properties in the same group
+ * can have different cleanup callbacks.
+ *
+ * This callback will be called _during_ SDL_SetPointerPropertyWithCleanup if
+ * the function fails for any reason.
+ *
+ * @param userdata an app-defined pointer passed to the callback.
+ * @param value the pointer assigned to the property to clean up.
+ *
+ * @threadsafety This callback may fire without any locks held; if this is a
+ *               concern, the app should provide its own locking.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa SDL_SetPointerPropertyWithCleanup
+ *
+ * @from SDL_properties.h:186 typedef void (*SDL_CleanupPropertyCallback)(void *userdata, void *value);
+ */
+SDL_CleanupPropertyCallback: {
+      parameters: ["pointer", "pointer"],
+      result: "void"
+    },
+
+/**
+ * A callback used to enumerate all the properties in a group of properties.
+ *
+ * This callback is called from SDL_EnumerateProperties(), and is called once
+ * per property in the set.
+ *
+ * @param userdata an app-defined pointer passed to the callback.
+ * @param props the SDL_PropertiesID that is being enumerated.
+ * @param name the next property name in the enumeration.
+ *
+ * @threadsafety SDL_EnumerateProperties holds a lock on `props` during this
+ *               callback.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa SDL_EnumerateProperties
+ *
+ * @from SDL_properties.h:498 typedef void (*SDL_EnumeratePropertiesCallback)(void *userdata, SDL_PropertiesID props, const char *name);
+ */
+SDL_EnumeratePropertiesCallback: {
+      parameters: ["pointer", "u32", "pointer"],
+      result: "void"
+    },
+
+} as const satisfies Deno.ForeignLibraryInterface;
+
+
 /**
  * A callback used to free resources when a property is deleted.
  *
