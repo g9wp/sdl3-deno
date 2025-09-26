@@ -51,10 +51,10 @@
 
 import * as SDL from "../gen/sdl/render.ts";
 import { type Vertex, write_Vertex } from "../gen/structs/SDL_render.ts";
-import * as _r from "../gen/structs/SDL_rect.ts";
+import type * as _r from "../gen/structs/SDL_rect.ts";
 import { Window } from "./video.ts";
-import { cstr, read_cstr, SdlError } from "./_utils.ts";
-import { type Size, writeFPoint, writeFRect, writeRect } from "./rect.ts";
+import { SdlError } from "./_utils.ts";
+import type { Size } from "./rect.ts";
 import * as _p from "@g9wp/ptr";
 import { Surface } from "./surface.ts";
 

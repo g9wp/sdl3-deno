@@ -20,7 +20,6 @@
 import * as _ from "../gen/structs/SDL_messagebox.ts";
 import * as SDL from "../gen/sdl/messagebox.ts";
 
-import { cstr } from "./_utils.ts";
 import type * as _p from "@g9wp/ptr";
 import type { WindowPointer } from "./pointer_type.ts";
 
