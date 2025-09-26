@@ -21,7 +21,7 @@ import * as _ from "../gen/structs/SDL_messagebox.ts";
 import * as SDL from "../gen/sdl/messagebox.ts";
 
 import { cstr } from "./_utils.ts";
-import * as _p from "@g9wp/ptr";
+import type * as _p from "@g9wp/ptr";
 import type { WindowPointer } from "./pointer_type.ts";
 
 /** informational dialog  */
@@ -188,7 +188,7 @@ export function show(opt: MsgBoxOption): number {
     _.write_MessageBoxButtonData({
       flags: btnFlag(button.flags),
       buttonID: button.id,
-      text: cstr(button.text),
+      text: button.text,
     }, new DataView(buttonBuf.buffer, 4 * 4 * i))
   );
 

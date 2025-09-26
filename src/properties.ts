@@ -49,7 +49,7 @@
 
 import * as SDL from "../gen/sdl/properties.ts";
 
-import { cstr, read_cstr, SdlError } from "./_utils.ts";
+import { read_cstr, SdlError } from "./_utils.ts";
 
 import { SDL_PropertyType as PropertyType } from "../gen/enums/SDL_properties.ts";
 

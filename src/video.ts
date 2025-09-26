@@ -50,20 +50,16 @@
 
 import {
   Cursor,
-  f32 as _f32,
-  i32 as _i32,
-  u32 as _u32,
-  u64 as _u64,
   UnsafeDataView,
 } from "@g9wp/ptr";
 import * as SDL from "../gen/sdl/video.ts";
 import { free } from "../gen/sdl/stdinc.ts";
-import * as _r from "../gen/structs/SDL_rect.ts";
+import type * as _r from "../gen/structs/SDL_rect.ts";
 import * as _ from "../gen/structs/SDL_video.ts";
 import type { Size } from "./rect.ts";
 import { SDL_DisplayOrientation as DisplayOrientation } from "../gen/enums/SDL_video.ts";
 export { DisplayOrientation };
-import { cstr, read_cstr, SdlError } from "./_utils.ts";
+import { SdlError } from "./_utils.ts";
 
 import type { SurfacePointer, WindowPointer } from "./pointer_type.ts";
 type DisplayModePointer = Deno.PointerObject<"SDL_DisplayMode">;

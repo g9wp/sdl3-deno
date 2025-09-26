@@ -34,7 +34,7 @@ import { EventType, EventUnion } from "../gen/events.ts";
 import * as SDL from "../gen/sdl/events.ts";
 import type { WindowPointer } from "./pointer_type.ts";
 import { callbacks as CB } from "../gen/callbacks/SDL_events.ts";
-import { Buf, UnsafeDataView } from "@g9wp/ptr";
+import { UnsafeDataView } from "@g9wp/ptr";
 import { SdlError } from "./_utils.ts";
 
 export { EventType };
