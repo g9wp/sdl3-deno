@@ -100,6 +100,3 @@ export const SDL_MessageBoxData = new _.Struct({
   buttons: _.u64, /* const SDL_MessageBoxButtonData * */
   colorScheme: _.u64, /**< const SDL_MessageBoxColorScheme * : SDL_MessageBoxColorScheme, can be NULL to use system settings */
 });
-
-
-

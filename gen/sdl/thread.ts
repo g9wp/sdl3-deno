@@ -115,9 +115,9 @@ export {
  *
  * @from SDL_thread.h:280 SDL_Thread * SDL_CreateThreadWithProperties(SDL_PropertiesID props);
  */
-export function createThreadWithProperties(props: number): Deno.PointerValue<"SDL_Thread"> {
+/*export function createThreadWithProperties(props: number): Deno.PointerValue<"SDL_Thread"> {
   return lib.symbols.SDL_CreateThreadWithProperties(props) as Deno.PointerValue<"SDL_Thread">;
-}
+}*/
 
 /**
  * The actual entry point for SDL_CreateThreadWithProperties.
@@ -378,4 +378,3 @@ export function setTls(id: Deno.PointerValue<"SDL_TLSID">, value: Deno.PointerVa
 export function cleanupTls(): void {
   return lib.symbols.SDL_CleanupTLS();
 }
-

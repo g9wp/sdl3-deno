@@ -52,7 +52,7 @@ import * as _b from "../_structs/SDL_messagebox.ts";
 export interface MessageBoxButtonData {
   flags: number; /* SDL_MessageBoxButtonFlags */
   buttonID: number; /**< int : User defined button id (value returned via SDL_ShowMessageBox) */
-  text: Deno.PointerValue; /**< const char * : The UTF-8 button text */
+  text: string; /**< const char * : The UTF-8 button text */
 }
 
 export function read_MessageBoxButtonData(dt: DataView): MessageBoxButtonData {
