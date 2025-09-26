@@ -192,11 +192,13 @@ export function hidFreeEnumeration(devs: Deno.PointerValue<"SDL_hid_device_info"
  *
  * @from SDL_hidapi.h:269 SDL_hid_device * SDL_hid_open(unsigned short vendor_id, unsigned short product_id, const wchar_t *serial_number);
  */
-export function hidOpen(vendor_id: number, product_id: number, serial_number: wchar_t): { serial_number: wchar_t; ret: Deno.PointerValue<"SDL_hid_device"> } {
-  _p.i16.arr[0] = serial_number;
-  const ret = lib.symbols.SDL_hid_open(vendor_id, product_id, _p.i16.p0) as Deno.PointerValue<"SDL_hid_device">;
+export function hidOpen(vendor_id: number, product_id: number, serial_number: string): Deno.PointerValue<"SDL_hid_device"> {
+  const s = new TextEncoder().encode(serial_number);
+  const wide = lib.symbols.SDL_iconv_string(_p.toCstr("UTF-8"), _p.toCstr(wide_encoding()), Deno.UnsafePointer.of(s), BigInt(s.length))
+  const ret = lib.symbols.SDL_hid_open(vendor_id, product_id, wide) as Deno.PointerValue<"SDL_hid_device">;
+  lib.symbols.SDL_free(wide);
   if(!ret) throw new Error(`SDL_hid_open: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { serial_number: _p.i16.v0, ret };
+  return ret;
 }
 
 /**
@@ -244,10 +246,11 @@ export function hidOpenPath(path: string): Deno.PointerValue<"SDL_hid_device"> {
  *
  * @from SDL_hidapi.h:310 int SDL_hid_write(SDL_hid_device *dev, const unsigned char *data, size_t length);
  */
-export function hidWrite(dev: Deno.PointerValue<"SDL_hid_device">, length: bigint): string {
-  if(!lib.symbols.SDL_hid_write(dev, _p.cstr.p0, length))
+export function hidWrite(dev: Deno.PointerValue<"SDL_hid_device">, data: Uint8Array<ArrayBuffer>, length: number = data.length): number {
+  const n = lib.symbols.SDL_hid_write(dev, Deno.UnsafePointer.of(data), BigInt(length));
+  if (n === -1)
     throw new Error(`SDL_hid_write: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return _p.cstr.v0;
+  return n;
 }
 
 /**
@@ -271,8 +274,9 @@ export function hidWrite(dev: Deno.PointerValue<"SDL_hid_device">, length: bigin
  *
  * @from SDL_hidapi.h:331 int SDL_hid_read_timeout(SDL_hid_device *dev, unsigned char *data, size_t length, int milliseconds);
  */
-export function hidReadTimeout(dev: Deno.PointerValue<"SDL_hid_device">, length: bigint, milliseconds: number): string {
-  if(!lib.symbols.SDL_hid_read_timeout(dev, _p.cstr.p0, length, milliseconds))
+export function hidReadTimeout(dev: Deno.PointerValue<"SDL_hid_device">, data: Uint8Array<ArrayBuffer>, length: bigint, milliseconds: number): string {
+  const n = lib.symbols.SDL_hid_read_timeout(dev, Deno.UnsafePointer.of(data), BigInt(length), milliseconds);
+  if (n == -1)
     throw new Error(`SDL_hid_read_timeout: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return _p.cstr.v0;
 }
@@ -298,10 +302,11 @@ export function hidReadTimeout(dev: Deno.PointerValue<"SDL_hid_device">, length:
  *
  * @from SDL_hidapi.h:352 int SDL_hid_read(SDL_hid_device *dev, unsigned char *data, size_t length);
  */
-export function hidRead(dev: Deno.PointerValue<"SDL_hid_device">, length: bigint): string {
-  if(!lib.symbols.SDL_hid_read(dev, _p.cstr.p0, length))
+export function hidRead(dev: Deno.PointerValue<"SDL_hid_device">, data: Uint8Array<ArrayBuffer>, length: number = data.length): number {
+  const n = lib.symbols.SDL_hid_read(dev, Deno.UnsafePointer.of(data), BigInt(length));
+  if (n == -1)
     throw new Error(`SDL_hid_read: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return _p.cstr.v0;
+  return n;
 }
 
 /**
@@ -352,10 +357,11 @@ export function hidSetNonblocking(dev: Deno.PointerValue<"SDL_hid_device">, nonb
  *
  * @from SDL_hidapi.h:396 int SDL_hid_send_feature_report(SDL_hid_device *dev, const unsigned char *data, size_t length);
  */
-export function hidSendFeatureReport(dev: Deno.PointerValue<"SDL_hid_device">, length: bigint): string {
-  if(!lib.symbols.SDL_hid_send_feature_report(dev, _p.cstr.p0, length))
+export function hidSendFeatureReport(dev: Deno.PointerValue<"SDL_hid_device">, data: Uint8Array<ArrayBuffer>, length: number = data.length): number {
+  const n = lib.symbols.SDL_hid_send_feature_report(dev, Deno.UnsafePointer.of(data), BigInt(length));
+ if (n === -1)
     throw new Error(`SDL_hid_send_feature_report: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return _p.cstr.v0;
+  return n;
 }
 
 /**
@@ -381,10 +387,11 @@ export function hidSendFeatureReport(dev: Deno.PointerValue<"SDL_hid_device">, l
  *
  * @from SDL_hidapi.h:419 int SDL_hid_get_feature_report(SDL_hid_device *dev, unsigned char *data, size_t length);
  */
-export function hidGetFeatureReport(dev: Deno.PointerValue<"SDL_hid_device">, length: bigint): string {
-  if(!lib.symbols.SDL_hid_get_feature_report(dev, _p.cstr.p0, length))
+export function hidGetFeatureReport(dev: Deno.PointerValue<"SDL_hid_device">, data: Uint8Array<ArrayBuffer>, length: number = data.length): number {
+  const n = lib.symbols.SDL_hid_get_feature_report(dev, Deno.UnsafePointer.of(data), BigInt(length));
+  if (n == -1)
     throw new Error(`SDL_hid_get_feature_report: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return _p.cstr.v0;
+  return n;
 }
 
 /**
@@ -410,10 +417,11 @@ export function hidGetFeatureReport(dev: Deno.PointerValue<"SDL_hid_device">, le
  *
  * @from SDL_hidapi.h:442 int SDL_hid_get_input_report(SDL_hid_device *dev, unsigned char *data, size_t length);
  */
-export function hidGetInputReport(dev: Deno.PointerValue<"SDL_hid_device">, length: bigint): string {
-  if(!lib.symbols.SDL_hid_get_input_report(dev, _p.cstr.p0, length))
+export function hidGetInputReport(dev: Deno.PointerValue<"SDL_hid_device">, data: Uint8Array<ArrayBuffer>, length: number = data.length): number {
+  const n = lib.symbols.SDL_hid_get_input_report(dev, Deno.UnsafePointer.of(data), BigInt(length));
+  if (n == -1)
     throw new Error(`SDL_hid_get_input_report: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return _p.cstr.v0;
+  return n;
 }
 
 /**
@@ -444,10 +452,12 @@ export function hidClose(dev: Deno.PointerValue<"SDL_hid_device">): number {
  *
  * @from SDL_hidapi.h:466 int SDL_hid_get_manufacturer_string(SDL_hid_device *dev, wchar_t *string, size_t maxlen);
  */
-export function hidGetManufacturerString(dev: Deno.PointerValue<"SDL_hid_device">, maxlen: bigint): wchar_t {
-  if(!lib.symbols.SDL_hid_get_manufacturer_string(dev, _p.i16.p0, maxlen))
+export function hidGetManufacturerString(dev: Deno.PointerValue<"SDL_hid_device">, maxlen: number): string {
+  const b = wide_buffer(maxlen);
+  const n = lib.symbols.SDL_hid_get_manufacturer_string(dev, Deno.UnsafePointer.of(b), BigInt(maxlen));
+  if (n == 0)
     throw new Error(`SDL_hid_get_manufacturer_string: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return _p.i16.v0;
+  return from_wide_buffer(b);
 }
 
 /**
@@ -463,10 +473,12 @@ export function hidGetManufacturerString(dev: Deno.PointerValue<"SDL_hid_device"
  *
  * @from SDL_hidapi.h:479 int SDL_hid_get_product_string(SDL_hid_device *dev, wchar_t *string, size_t maxlen);
  */
-export function hidGetProductString(dev: Deno.PointerValue<"SDL_hid_device">, maxlen: bigint): wchar_t {
-  if(!lib.symbols.SDL_hid_get_product_string(dev, _p.i16.p0, maxlen))
+export function hidGetProductString(dev: Deno.PointerValue<"SDL_hid_device">, maxlen: number): string {
+  const b = wide_buffer(maxlen);
+  const n = lib.symbols.SDL_hid_get_product_string(dev, Deno.UnsafePointer.of(b), BigInt(maxlen));
+  if (n == 0)
     throw new Error(`SDL_hid_get_product_string: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return _p.i16.v0;
+  return from_wide_buffer(b);
 }
 
 /**
@@ -482,10 +494,12 @@ export function hidGetProductString(dev: Deno.PointerValue<"SDL_hid_device">, ma
  *
  * @from SDL_hidapi.h:492 int SDL_hid_get_serial_number_string(SDL_hid_device *dev, wchar_t *string, size_t maxlen);
  */
-export function hidGetSerialNumberString(dev: Deno.PointerValue<"SDL_hid_device">, maxlen: bigint): wchar_t {
-  if(!lib.symbols.SDL_hid_get_serial_number_string(dev, _p.i16.p0, maxlen))
+export function hidGetSerialNumberString(dev: Deno.PointerValue<"SDL_hid_device">, maxlen: number): string {
+  const b = wide_buffer(maxlen);
+  const n = lib.symbols.SDL_hid_get_serial_number_string(dev, Deno.UnsafePointer.of(b), BigInt(maxlen));
+  if (n == 0)
     throw new Error(`SDL_hid_get_serial_number_string: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return _p.i16.v0;
+  return from_wide_buffer(b);
 }
 
 /**
@@ -502,10 +516,11 @@ export function hidGetSerialNumberString(dev: Deno.PointerValue<"SDL_hid_device"
  *
  * @from SDL_hidapi.h:506 int SDL_hid_get_indexed_string(SDL_hid_device *dev, int string_index, wchar_t *string, size_t maxlen);
  */
-export function hidGetIndexedString(dev: Deno.PointerValue<"SDL_hid_device">, string_index: number, maxlen: bigint): wchar_t {
-  if(!lib.symbols.SDL_hid_get_indexed_string(dev, string_index, _p.i16.p0, maxlen))
+export function hidGetIndexedString(dev: Deno.PointerValue<"SDL_hid_device">, string_index: number, maxlen: number): string {
+  const b = wide_buffer(maxlen);
+  if(lib.symbols.SDL_hid_get_indexed_string(dev, string_index, Deno.UnsafePointer.of(b), BigInt(maxlen)) !== 0)
     throw new Error(`SDL_hid_get_indexed_string: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return _p.i16.v0;
+  return from_wide_buffer(b);
 }
 
 /**
@@ -540,10 +555,11 @@ export function hidGetDeviceInfo(dev: Deno.PointerValue<"SDL_hid_device">): Deno
  *
  * @from SDL_hidapi.h:534 int SDL_hid_get_report_descriptor(SDL_hid_device *dev, unsigned char *buf, size_t buf_size);
  */
-export function hidGetReportDescriptor(dev: Deno.PointerValue<"SDL_hid_device">, buf_size: bigint): string {
-  if(!lib.symbols.SDL_hid_get_report_descriptor(dev, _p.cstr.p0, buf_size))
+export function hidGetReportDescriptor(dev: Deno.PointerValue<"SDL_hid_device">, buf: Uint8Array<ArrayBuffer>, buf_size: number = buf.length): number {
+  const n = lib.symbols.SDL_hid_get_report_descriptor(dev, Deno.UnsafePointer.of(buf), BigInt(buf_size));
+  if (n == -1)
     throw new Error(`SDL_hid_get_report_descriptor: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return _p.cstr.v0;
+  return n;
 }
 
 /**
@@ -559,3 +575,14 @@ export function hidBleScan(active: boolean): void {
   return lib.symbols.SDL_hid_ble_scan(active);
 }
 
+
+function wide_buffer(len: number): Uint32Array<ArrayBuffer> {
+  return new Uint32Array(((Deno.build.os === "windows") ? 2 : 4) * len);
+}
+function from_wide_buffer(b: Uint32Array<ArrayBuffer>): string {
+  return new TextDecoder(wide_encoding()).decode(b);
+}
+
+function wide_encoding(): "UTF-16LE" | "UTF-32" {
+  return (Deno.build.os === "windows") ? "UTF-16LE" : "UTF-32";
+}

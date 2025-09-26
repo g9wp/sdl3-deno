@@ -23,8 +23,7 @@ export function read_cstr(p: Deno.PointerValue): string {
 }
 
 export function getErr(): string {
-  const e = getError();
-  return read_cstr(e);
+  return getError();
 }
 
 export function SdlError(s?: string): Error {
