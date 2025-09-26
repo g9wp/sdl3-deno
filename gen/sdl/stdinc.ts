@@ -1605,6 +1605,7 @@ export function wcscmp(str1: Deno.PointerValue, str2: Deno.PointerValue): number
  */
 export function wcsncmp(str1: Deno.PointerValue, str2: Deno.PointerValue, maxlen: bigint): number {
   return lib.symbols.SDL_wcsncmp(str1, str2, maxlen);
+}
 
 /**
  * Compare two null-terminated wide strings, case-insensitively.
