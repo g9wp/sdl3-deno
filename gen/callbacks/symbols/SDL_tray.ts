@@ -31,7 +31,28 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
-import { symbols } from './symbols/SDL_tray.ts';
+export const symbols = {
+/**
+ * A callback that is invoked when a tray entry is selected.
+ *
+ * @param userdata an optional pointer to pass extra data to the callback when
+ *                 it will be invoked.
+ * @param entry the tray entry that was selected.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa SDL_SetTrayEntryCallback
+ *
+ * @from SDL_tray.h:96 typedef void (*SDL_TrayCallback)(void *userdata, SDL_TrayEntry *entry);
+ */
+SDL_TrayCallback: {
+      parameters: ["pointer", "pointer"],
+      result: "void"
+    },
+
+} as const satisfies Deno.ForeignLibraryInterface;
+
+
 /**
  * A callback that is invoked when a tray entry is selected.
  *

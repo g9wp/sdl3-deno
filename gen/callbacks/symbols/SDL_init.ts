@@ -48,7 +48,110 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
-import { symbols } from './symbols/SDL_init.ts';
+export const symbols = {
+/**
+ * Function pointer typedef for SDL_AppInit.
+ *
+ * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * the scenes for apps using the optional main callbacks. Apps that want to
+ * use this should just implement SDL_AppInit directly.
+ *
+ * @param appstate a place where the app can optionally store a pointer for
+ *                 future use.
+ * @param argc the standard ANSI C main's argc; number of elements in `argv`.
+ * @param argv the standard ANSI C main's argv; array of command line
+ *             arguments.
+ * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
+ *          terminate with success, SDL_APP_CONTINUE to continue.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @from SDL_init.h:132 typedef SDL_AppResult (*SDL_AppInit_func)(void **appstate, int argc, char *argv[]);
+ */
+SDL_AppInit_func: {
+      parameters: ["pointer", "i32", "pointer"],
+      result: "u32"
+    },
+
+/**
+ * Function pointer typedef for SDL_AppIterate.
+ *
+ * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * the scenes for apps using the optional main callbacks. Apps that want to
+ * use this should just implement SDL_AppIterate directly.
+ *
+ * @param appstate an optional pointer, provided by the app in SDL_AppInit.
+ * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
+ *          terminate with success, SDL_APP_CONTINUE to continue.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @from SDL_init.h:147 typedef SDL_AppResult (*SDL_AppIterate_func)(void *appstate);
+ */
+SDL_AppIterate_func: {
+      parameters: ["pointer"],
+      result: "u32"
+    },
+
+/**
+ * Function pointer typedef for SDL_AppEvent.
+ *
+ * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * the scenes for apps using the optional main callbacks. Apps that want to
+ * use this should just implement SDL_AppEvent directly.
+ *
+ * @param appstate an optional pointer, provided by the app in SDL_AppInit.
+ * @param event the new event for the app to examine.
+ * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
+ *          terminate with success, SDL_APP_CONTINUE to continue.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @from SDL_init.h:163 typedef SDL_AppResult (*SDL_AppEvent_func)(void *appstate, SDL_Event *event);
+ */
+SDL_AppEvent_func: {
+      parameters: ["pointer", "pointer"],
+      result: "u32"
+    },
+
+/**
+ * Function pointer typedef for SDL_AppQuit.
+ *
+ * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * the scenes for apps using the optional main callbacks. Apps that want to
+ * use this should just implement SDL_AppEvent directly.
+ *
+ * @param appstate an optional pointer, provided by the app in SDL_AppInit.
+ * @param result the result code that terminated the app (success or failure).
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @from SDL_init.h:177 typedef void (*SDL_AppQuit_func)(void *appstate, SDL_AppResult result);
+ */
+SDL_AppQuit_func: {
+      parameters: ["pointer", "u32"],
+      result: "void"
+    },
+
+/**
+ * Callback run on the main thread.
+ *
+ * @param userdata an app-controlled pointer that is passed to the callback.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa SDL_RunOnMainThread
+ *
+ * @from SDL_init.h:330 typedef void (*SDL_MainThreadCallback)(void *userdata);
+ */
+SDL_MainThreadCallback: {
+      parameters: ["pointer"],
+      result: "void"
+    },
+
+} as const satisfies Deno.ForeignLibraryInterface;
+
+
 /**
  * Function pointer typedef for SDL_AppInit.
  *

@@ -69,7 +69,32 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
-import { symbols } from './symbols/SDL_log.ts';
+export const symbols = {
+/**
+ * The prototype for the log output callback function.
+ *
+ * This function is called by SDL when there is new text to be logged. A mutex
+ * is held so that this function is never called by more than one thread at
+ * once.
+ *
+ * @param userdata what was passed as `userdata` to
+ *                 SDL_SetLogOutputFunction().
+ * @param category the category of the message.
+ * @param priority the priority of the message.
+ * @param message the message being output.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @from SDL_log.h:482 typedef void (*SDL_LogOutputFunction)(void *userdata, int category, SDL_LogPriority priority, const char *message);
+ */
+SDL_LogOutputFunction: {
+      parameters: ["pointer", "i32", "u32", "pointer"],
+      result: "void"
+    },
+
+} as const satisfies Deno.ForeignLibraryInterface;
+
+
 /**
  * The prototype for the log output callback function.
  *

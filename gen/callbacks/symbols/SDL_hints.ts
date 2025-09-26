@@ -36,7 +36,36 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
-import { symbols } from './symbols/SDL_hints.ts';
+export const symbols = {
+/**
+ * A callback used to send notifications of hint value changes.
+ *
+ * This is called an initial time during SDL_AddHintCallback with the hint's
+ * current value, and then again each time the hint's value changes.
+ *
+ * @param userdata what was passed as `userdata` to SDL_AddHintCallback().
+ * @param name what was passed as `name` to SDL_AddHintCallback().
+ * @param oldValue the previous hint value.
+ * @param newValue the new value hint is to be set to.
+ *
+ * @threadsafety This callback is fired from whatever thread is setting a new
+ *               hint value. SDL holds a lock on the hint subsystem when
+ *               calling this callback.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa SDL_AddHintCallback
+ *
+ * @from SDL_hints.h:4438 typedef void(*SDL_HintCallback)(void *userdata, const char *name, const char *oldValue, const char *newValue);
+ */
+SDL_HintCallback: {
+      parameters: ["pointer", "pointer", "pointer", "pointer"],
+      result: "void"
+    },
+
+} as const satisfies Deno.ForeignLibraryInterface;
+
+
 /**
  * A callback used to send notifications of hint value changes.
  *

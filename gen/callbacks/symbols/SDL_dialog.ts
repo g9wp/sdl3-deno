@@ -36,7 +36,54 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
-import { symbols } from './symbols/SDL_dialog.ts';
+export const symbols = {
+/**
+ * Callback used by file dialog functions.
+ *
+ * The specific usage is described in each function.
+ *
+ * If `filelist` is:
+ *
+ * - NULL, an error occurred. Details can be obtained with SDL_GetError().
+ * - A pointer to NULL, the user either didn't choose any file or canceled the
+ *   dialog.
+ * - A pointer to non-`NULL`, the user chose one or more files. The argument
+ *   is a null-terminated array of pointers to UTF-8 encoded strings, each
+ *   containing a path.
+ *
+ * The filelist argument should not be freed; it will automatically be freed
+ * when the callback returns.
+ *
+ * The filter argument is the index of the filter that was selected, or -1 if
+ * no filter was selected or if the platform or method doesn't support
+ * fetching the selected filter.
+ *
+ * In Android, the `filelist` are `content://` URIs. They should be opened
+ * using SDL_IOFromFile() with appropriate modes. This applies both to open
+ * and save file dialog.
+ *
+ * @param userdata an app-provided pointer, for the callback's use.
+ * @param filelist the file(s) chosen by the user.
+ * @param filter index of the selected filter.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa SDL_DialogFileFilter
+ * @sa SDL_ShowOpenFileDialog
+ * @sa SDL_ShowSaveFileDialog
+ * @sa SDL_ShowOpenFolderDialog
+ * @sa SDL_ShowFileDialogWithProperties
+ *
+ * @from SDL_dialog.h:112 typedef void (*SDL_DialogFileCallback)(void *userdata, const char * const *filelist, int filter);
+ */
+SDL_DialogFileCallback: {
+      parameters: ["pointer", "pointer", "i32"],
+      result: "void"
+    },
+
+} as const satisfies Deno.ForeignLibraryInterface;
+
+
 /**
  * Callback used by file dialog functions.
  *
