@@ -46,5 +46,5 @@
 /**
  * @from SDL_filesystem:271
  */
-export const SDL_GLOB_CASEINSENSITIVE = (1u << 0);
+export const SDL_GLOB_CASEINSENSITIVE = (1 << 0);
 

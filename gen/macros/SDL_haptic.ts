@@ -118,102 +118,102 @@
 /**
  * @from SDL_haptic:173
  */
-export const SDL_HAPTIC_CONSTANT = (1u<<0);
+export const SDL_HAPTIC_CONSTANT = (1<<0);
 
 /**
  * @from SDL_haptic:184
  */
-export const SDL_HAPTIC_SINE = (1u<<1);
+export const SDL_HAPTIC_SINE = (1<<1);
 
 /**
  * @from SDL_haptic:195
  */
-export const SDL_HAPTIC_SQUARE = (1u<<2);
+export const SDL_HAPTIC_SQUARE = (1<<2);
 
 /**
  * @from SDL_haptic:206
  */
-export const SDL_HAPTIC_TRIANGLE = (1u<<3);
+export const SDL_HAPTIC_TRIANGLE = (1<<3);
 
 /**
  * @from SDL_haptic:217
  */
-export const SDL_HAPTIC_SAWTOOTHUP = (1u<<4);
+export const SDL_HAPTIC_SAWTOOTHUP = (1<<4);
 
 /**
  * @from SDL_haptic:228
  */
-export const SDL_HAPTIC_SAWTOOTHDOWN = (1u<<5);
+export const SDL_HAPTIC_SAWTOOTHDOWN = (1<<5);
 
 /**
  * @from SDL_haptic:239
  */
-export const SDL_HAPTIC_RAMP = (1u<<6);
+export const SDL_HAPTIC_RAMP = (1<<6);
 
 /**
  * @from SDL_haptic:251
  */
-export const SDL_HAPTIC_SPRING = (1u<<7);
+export const SDL_HAPTIC_SPRING = (1<<7);
 
 /**
  * @from SDL_haptic:263
  */
-export const SDL_HAPTIC_DAMPER = (1u<<8);
+export const SDL_HAPTIC_DAMPER = (1<<8);
 
 /**
  * @from SDL_haptic:275
  */
-export const SDL_HAPTIC_INERTIA = (1u<<9);
+export const SDL_HAPTIC_INERTIA = (1<<9);
 
 /**
  * @from SDL_haptic:287
  */
-export const SDL_HAPTIC_FRICTION = (1u<<10);
+export const SDL_HAPTIC_FRICTION = (1<<10);
 
 /**
  * @from SDL_haptic:298
  */
-export const SDL_HAPTIC_LEFTRIGHT = (1u<<11);
+export const SDL_HAPTIC_LEFTRIGHT = (1<<11);
 
 /**
  * @from SDL_haptic:305
  */
-export const SDL_HAPTIC_RESERVED1 = (1u<<12);
+export const SDL_HAPTIC_RESERVED1 = (1<<12);
 
 /**
  * @from SDL_haptic:312
  */
-export const SDL_HAPTIC_RESERVED2 = (1u<<13);
+export const SDL_HAPTIC_RESERVED2 = (1<<13);
 
 /**
  * @from SDL_haptic:319
  */
-export const SDL_HAPTIC_RESERVED3 = (1u<<14);
+export const SDL_HAPTIC_RESERVED3 = (1<<14);
 
 /**
  * @from SDL_haptic:328
  */
-export const SDL_HAPTIC_CUSTOM = (1u<<15);
+export const SDL_HAPTIC_CUSTOM = (1<<15);
 
 /**
  * @from SDL_haptic:343
  */
-export const SDL_HAPTIC_GAIN = (1u<<16);
+export const SDL_HAPTIC_GAIN = (1<<16);
 
 /**
  * @from SDL_haptic:354
  */
-export const SDL_HAPTIC_AUTOCENTER = (1u<<17);
+export const SDL_HAPTIC_AUTOCENTER = (1<<17);
 
 /**
  * @from SDL_haptic:365
  */
-export const SDL_HAPTIC_STATUS = (1u<<18);
+export const SDL_HAPTIC_STATUS = (1<<18);
 
 /**
  * @from SDL_haptic:377
  */
-export const SDL_HAPTIC_PAUSE = (1u<<19);
+export const SDL_HAPTIC_PAUSE = (1<<19);
 
 /**
  * @from SDL_haptic:392
@@ -238,5 +238,5 @@ export const SDL_HAPTIC_STEERING_AXIS = 3;
 /**
  * @from SDL_haptic:439
  */
-export const SDL_HAPTIC_INFINITY = 4294967295U;
+export const SDL_HAPTIC_INFINITY = 4294967295;
 

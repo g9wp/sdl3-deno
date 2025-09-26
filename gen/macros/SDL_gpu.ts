@@ -10,7 +10,7 @@
  * The app creates a GPU device with SDL_CreateGPUDevice(), and assigns it to
  * a window with SDL_ClaimWindowForGPUDevice()--although strictly speaking you
  * can render offscreen entirely, perhaps for image processing, and not use a
- * window at all.
+ * window at a.
  *
  * Next, the app prepares static data (things that are created once and used
  * over and over). For example:
@@ -31,7 +31,7 @@
  * parallel, as long as they are submitted in the correct order, but many apps
  * will just need one command buffer per frame.
  *
- * Rendering can happen to a texture (what other APIs call a "render target")
+ * Rendering can happen to a texture (what other APIs ca a "render target")
  * or it can happen to the swapchain texture (which is just a special texture
  * that represents a window's contents). The app can use
  * SDL_WaitAndAcquireGPUSwapchainTexture() to render to the window.
@@ -60,14 +60,14 @@
  * - SDL_DrawGPUIndexedPrimitivesIndirect()
  * - etc
  *
- * After all the drawing commands for a pass are complete, the app should call
- * SDL_EndGPURenderPass(). Once a render pass ends all render-related state is
+ * After a the drawing commands for a pass are complete, the app should ca
+ * SDL_EndGPURenderPass(). Once a render pass ends a render-related state is
  * reset.
  *
  * The app can begin new Render Passes and make new draws in the same command
  * buffer until the entire scene is rendered.
  *
- * Once all of the render commands for the scene are complete, the app calls
+ * Once a of the render commands for the scene are complete, the app calls
  * SDL_SubmitGPUCommandBuffer() to send it to the GPU for processing.
  *
  * If the app needs to read back data from texture or buffers, the API has an
@@ -77,7 +77,7 @@
  * SDL_SubmitGPUCommandBufferAndAcquireFence() will return a fence handle that
  * the app can poll or wait on in a thread. Once the fence indicates that the
  * command buffer is done processing, it is safe to read the downloaded data.
- * Make sure to call SDL_ReleaseGPUFence() when done with the fence.
+ * Make sure to ca SDL_ReleaseGPUFence() when done with the fence.
  *
  * The API also has "compute" support. The app calls SDL_BeginGPUComputePass()
  * with compute-writeable textures and/or buffers, which can be written to in
@@ -102,7 +102,7 @@
  * When creating shaders, the app must provide the correct shader format for
  * the selected backend. If you would like to learn more about why the API
  * works this way, there is a detailed
- * [blog post](https://moonside.games/posts/layers-all-the-way-down/)
+ * [blog post](https://moonside.games/posts/layers-a-the-way-down/)
  * explaining this situation.
  *
  * It is optimal for apps to pre-compile the shader formats they might use,
@@ -216,21 +216,21 @@
  * ## Uniform Data
  *
  * Uniforms are for passing data to shaders. The uniform data will be constant
- * across all executions of the shader.
+ * across a executions of the shader.
  *
  * There are 4 available uniform slots per shader stage (where the stages are
  * vertex, fragment, and compute). Uniform data pushed to a slot on a stage
- * keeps its value throughout the command buffer until you call the relevant
+ * keeps its value throughout the command buffer until you ca the relevant
  * Push function on that slot again.
  *
  * For example, you could write your vertex shaders to read a camera matrix
  * from uniform binding slot 0, push the camera matrix at the start of the
- * command buffer, and that data will be used for every subsequent draw call.
+ * command buffer, and that data will be used for every subsequent draw ca.
  *
  * It is valid to push uniform data during a render or compute pass.
  *
  * Uniforms are best for pushing small amounts of data. If you are pushing
- * more than a matrix or two per call you should consider using a storage
+ * more than a matrix or two per ca you should consider using a storage
  * buffer instead.
  *
  * ## A Note On Cycling
@@ -247,15 +247,15 @@
  * wait on it. However, this doesn't mean you need to track resource usage
  * manually.
  *
- * All of the functions and structs that involve writing to a resource have a
- * "cycle" bool. SDL_GPUTransferBuffer, SDL_GPUBuffer, and SDL_GPUTexture all
+ * A of the functions and structs that involve writing to a resource have a
+ * "cycle" bool. SDL_GPUTransferBuffer, SDL_GPUBuffer, and SDL_GPUTexture a
  * effectively function as ring buffers on internal resources. When cycle is
  * true, if the resource is bound, the cycle rotates to the next unbound
  * internal resource, or if none are available, a new one is created. This
  * means you don't have to worry about complex state tracking and
  * synchronization as long as cycling is correctly employed.
  *
- * For example: you can call SDL_MapGPUTransferBuffer(), write texture data,
+ * For example: you can ca SDL_MapGPUTransferBuffer(), write texture data,
  * SDL_UnmapGPUTransferBuffer(), and then SDL_UploadToGPUTexture(). The next
  * time you write texture data to the transfer buffer, if you set the cycle
  * param to true, you don't have to worry about overwriting any data that is
@@ -265,12 +265,12 @@
  * this can cause a data dependency between frames. If you set cycle to true
  * in the SDL_GPUColorTargetInfo struct, you can prevent this data dependency.
  *
- * Cycling will never undefine already bound data. When cycling, all data in
+ * Cycling will never undefine already bound data. When cycling, a data in
  * the resource is considered to be undefined for subsequent commands until
  * that data is written again. You must take care not to read undefined data.
  *
  * Note that when cycling a texture, the entire texture will be cycled, even
- * if only part of the texture is used in the call, so you must consider the
+ * if only part of the texture is used in the ca, so you must consider the
  * entire texture to contain undefined data after cycling.
  *
  * You must also take care not to overwrite a section of data that has been

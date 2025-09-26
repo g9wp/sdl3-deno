@@ -53,7 +53,7 @@ export const SDL_US_PER_SECOND = 1000000;
 /**
  * @from SDL_timer:79
  */
-export const SDL_NS_PER_SECOND = 1000000000LL;
+export const SDL_NS_PER_SECOND = 1000000000;
 
 /**
  * @from SDL_timer:88

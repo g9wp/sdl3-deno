@@ -36,5 +36,5 @@
 /**
  * @from SDL_sensor:75
  */
-export const SDL_STANDARD_GRAVITY = 9.80665f;
+export const SDL_STANDARD_GRAVITY = 9.80665;
 

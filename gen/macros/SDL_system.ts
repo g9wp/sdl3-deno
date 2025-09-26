@@ -1,7 +1,7 @@
 /**
  * # CategorySystem
  *
- * Platform-specific SDL API functions. These are functions that deal with
+ * Platform-specific SDL API functions. These are functions that dea with
  * needs of specific operating systems, that didn't make sense to offer as
  * platform-independent, generic APIs.
  *

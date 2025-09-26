@@ -3,11 +3,11 @@
  *
  * SDL offers facilities for pixel management.
  *
- * Largely these facilities deal with pixel _format_: what does this set of
+ * Largely these facilities dea with pixel _format_: what does this set of
  * bits represent?
  *
  * If you mostly want to think of a pixel as some combination of red, green,
- * blue, and maybe alpha intensities, this is all pretty straightforward, and
+ * blue, and maybe alpha intensities, this is a pretty straightforward, and
  * in many cases, is enough information to build a perfectly fine game.
  *
  * However, the actual definition of a pixel is more complex than that:
@@ -87,7 +87,7 @@ export const SDL_ALPHA_OPAQUE = 255;
 /**
  * @from SDL_pixels:108
  */
-export const SDL_ALPHA_OPAQUE_FLOAT = 1.0f;
+export const SDL_ALPHA_OPAQUE_FLOAT = 1.0;
 
 /**
  * @from SDL_pixels:117
@@ -97,5 +97,5 @@ export const SDL_ALPHA_TRANSPARENT = 0;
 /**
  * @from SDL_pixels:126
  */
-export const SDL_ALPHA_TRANSPARENT_FLOAT = 0.0f;
+export const SDL_ALPHA_TRANSPARENT_FLOAT = 0.0;
 
