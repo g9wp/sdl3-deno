@@ -16,7 +16,7 @@
  */
 
 import * as SDL from "../gen/sdl/dialog.ts";
-import { callbacks as CB } from "../gen/callbacks/SDL_dialog.ts";
+import * as CB from "../gen/callbacks/SDL_dialog.ts";
 import { Cursor } from "@g9wp/ptr";
 import type { WindowPointer } from "./pointer_type.ts";
 
@@ -316,15 +316,12 @@ type FileCallback = (
   filter: number,
 ) => void;
 
-type UnsafeFileCallback = Deno.UnsafeCallback<
-  typeof CB.SDL_DialogFileCallback
->;
+type UnsafeFileCallback = ReturnType<typeof CB.DialogFileCallback>;
 
 function createFileCallback(
   callback: FileCallback,
 ): UnsafeFileCallback {
-  const r = new Deno.UnsafeCallback(
-    CB.SDL_DialogFileCallback,
+  const r = CB.DialogFileCallback(
     (ud: Deno.PointerValue, fl: Deno.PointerValue, f: number) => {
       callback(ud, getFileList(fl), f);
       r.close();

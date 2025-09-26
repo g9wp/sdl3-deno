@@ -12,12 +12,12 @@
 
 import * as SDL from "../gen/sdl/tray.ts";
 
-import { callbacks as CB } from "../gen/callbacks/SDL_tray.ts";
+import * as CB from "../gen/callbacks/SDL_tray.ts";
 
 import { ptr_view, SdlError } from "./_utils.ts";
 import { Surface } from "./surface.ts";
 
-type TrayEntryUnsafeCallback = Deno.UnsafeCallback<typeof CB.SDL_TrayCallback>;
+type TrayEntryUnsafeCallback = ReturnType<typeof CB.TrayCallback>;
 
 type TrayEntryCallback = (
   userdata: Deno.PointerValue,
@@ -320,8 +320,7 @@ export class Tray {
     callback: TrayEntryCallback,
     userdata: Deno.PointerValue = null,
   ) {
-    const c = new Deno.UnsafeCallback(
-      CB.SDL_TrayCallback,
+    const c = CB.TrayCallback(
       callback as (
         userdata: Deno.PointerValue,
         entry: Deno.PointerValue,

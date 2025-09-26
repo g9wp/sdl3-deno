@@ -33,7 +33,7 @@
 import { EventType, EventUnion } from "../gen/events.ts";
 import * as SDL from "../gen/sdl/events.ts";
 import type { WindowPointer } from "./pointer_type.ts";
-import { callbacks as CB } from "../gen/callbacks/SDL_events.ts";
+import * as CB from "../gen/callbacks/SDL_events.ts";
 import { UnsafeDataView } from "@g9wp/ptr";
 import { SdlError } from "./_utils.ts";
 
@@ -48,15 +48,13 @@ type EventFilter = (
   event: EventPointer,
 ) => boolean;
 
-type EventFilterUnsafeCallback = Deno.UnsafeCallback<typeof CB.SDL_EventFilter>;
+type EventFilterUnsafeCallback = ReturnType<typeof CB.EventFilter>;
 
 function createCb(filter: EventFilter): EventFilterUnsafeCallback {
-  return new Deno.UnsafeCallback(
-    CB.SDL_EventFilter,
-    (userdata: Deno.PointerValue, event: Deno.PointerValue): boolean => {
-      return filter(userdata, event as EventPointer);
-    },
-  );
+  return CB.EventFilter(filter as (
+    userdata: Deno.PointerValue,
+    event: Deno.PointerValue,
+  ) => boolean);
 }
 
 const eventWatchers = {
