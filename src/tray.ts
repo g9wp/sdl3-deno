@@ -14,7 +14,7 @@ import * as SDL from "../gen/sdl/tray.ts";
 
 import { callbacks as CB } from "../gen/callbacks/SDL_tray.ts";
 
-import { cstr, ptr_view, read_cstr, SdlError } from "./_utils.ts";
+import { ptr_view, SdlError } from "./_utils.ts";
 import { Surface } from "./surface.ts";
 
 type TrayEntryUnsafeCallback = Deno.UnsafeCallback<typeof CB.SDL_TrayCallback>;
@@ -109,8 +109,8 @@ export interface TrayEntryOption {
 }
 
 type TrayPointer = Deno.PointerValue<"SDL_Tray">;
-type MenuPointer = Deno.PointerValue<"SDL_Menu">;
-type EntryPointer = Deno.PointerValue<"SDL_Entry">;
+type MenuPointer = Deno.PointerValue<"SDL_TrayMenu">;
+type EntryPointer = Deno.PointerValue<"SDL_TrayEntry">;
 
 /**
  * An opaque handle representing a toplevel system tray object.
@@ -173,7 +173,7 @@ export class Tray {
    */
   static create(icon?: string, tooltip?: string): TrayPointer {
     const s = new Surface(icon);
-    const tray = SDL.createTray(s.pointer, cstr(tooltip));
+    const tray = SDL.createTray(s.pointer, tooltip);
     s.destroy();
     if (!tray) throw SdlError(`Failed to create system tray`);
     return tray as TrayPointer;
@@ -239,7 +239,7 @@ export class Tray {
    * @from SDL_tray.h:150 void SDL_SetTrayTooltip(SDL_Tray *tray, const char *tooltip);
    */
   setTooltip(tooltip?: string) {
-    SDL.setTrayTooltip(this.pointer, cstr(tooltip));
+    SDL.setTrayTooltip(this.pointer, tooltip);
   }
   /**
    * Create a menu for a system tray.
@@ -265,7 +265,7 @@ export class Tray {
    * @from SDL_tray.h:174 SDL_TrayMenu * SDL_CreateTrayMenu(SDL_Tray *tray);
    */
   createMenu(): TrayMenu {
-    const menu = SDL.createTrayMenu(this.pointer) as MenuPointer;
+    const menu = SDL.createTrayMenu(this.pointer);
     if (!menu) throw SdlError(`Failed to create menu`);
     return TrayMenu.of(menu);
   }
@@ -361,7 +361,7 @@ export class TrayEntry {
    * @from SDL_tray.h:483 SDL_TrayMenu * SDL_GetTrayEntryParent(SDL_TrayEntry *entry);
    */
   get parentMenu(): TrayMenu {
-    return TrayMenu.of(SDL.getTrayEntryParent(this.pointer) as MenuPointer);
+    return TrayMenu.of(SDL.getTrayEntryParent(this.pointer));
   }
 
   /**
@@ -461,7 +461,7 @@ export class TrayEntry {
    * @from SDL_tray.h:331 void SDL_SetTrayEntryLabel(SDL_TrayEntry *entry, const char *label);
    */
   setLabel(label: string) {
-    SDL.setTrayEntryLabel(this.pointer, cstr(label));
+    SDL.setTrayEntryLabel(this.pointer, label);
   }
 
   /**
@@ -483,8 +483,7 @@ export class TrayEntry {
    * @from SDL_tray.h:350 const char * SDL_GetTrayEntryLabel(SDL_TrayEntry *entry);
    */
   get label(): string | null {
-    const label = SDL.getTrayEntryLabel(this.pointer);
-    return label ? read_cstr(label) : null;
+    return SDL.getTrayEntryLabel(this.pointer);
   }
 
   /**
@@ -751,7 +750,7 @@ export class TrayMenu {
    * @from SDL_tray.h:266 const SDL_TrayEntry ** SDL_GetTrayEntries(SDL_TrayMenu *menu, int *count);
    */
   get entries(): TrayEntry[] {
-    const a = SDL.getTrayEntries(this.pointer, null);
+    const { ret: a } = SDL.getTrayEntries(this.pointer);
     if (!a) return [];
 
     const entries: TrayEntry[] = [];
@@ -805,9 +804,9 @@ export class TrayMenu {
       SDL.insertTrayEntryAt(
         this.pointer,
         pos,
-        cstr(label),
+        label,
         flags,
-      ) as EntryPointer,
+      ),
     );
   }
 

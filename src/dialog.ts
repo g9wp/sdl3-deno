@@ -16,7 +16,6 @@
  */
 
 import * as SDL from "../gen/sdl/dialog.ts";
-import { cstr } from "./_utils.ts";
 import { callbacks as CB } from "../gen/callbacks/SDL_dialog.ts";
 import { Cursor } from "@g9wp/ptr";
 import type { WindowPointer } from "./pointer_type.ts";
@@ -98,7 +97,7 @@ export function openFile(
     window ?? null,
     cFileFilters(filters),
     filters?.length ?? 0,
-    cstr(default_location),
+    default_location,
     allow_many ?? false,
   );
 }
@@ -170,9 +169,9 @@ export function saveFile(
     createFileCallback(callback).pointer,
     userdata ?? null,
     window ?? null,
-    cFileFilters(filters),
+    cFileFilters(filters) as Deno.PointerValue<"SDL_DialogFileFilter">,
     filters?.length ?? 0,
-    cstr(default_location),
+    default_location,
   );
 }
 
@@ -239,7 +238,7 @@ export function openFolder(
     createFileCallback(callback).pointer,
     userdata ?? null,
     window ?? null,
-    cstr(default_location),
+    default_location,
     allow_many ?? false,
   );
 }
@@ -354,7 +353,7 @@ type FileFilter = [string, string] | {
 
 function cFileFilters(
   filters?: FileFilter[],
-): Deno.PointerValue {
+): Deno.PointerValue<"SDL_DialogFileFilter"> {
   if (filters === undefined || filters.length === 0) return null;
 
   const buf = new BigUint64Array(2 * filters.length);

@@ -665,13 +665,12 @@ export class Event extends EventUnion {
     return { filter: f.filter, userdata: f.userdata };
   }
   static getFilterRaw():
-    | { filter: Deno.PointerValue; userdata: Deno.PointerValue }
+    | {
+      filter: Deno.PointerValue<"SDL_EventFilter">;
+      userdata: Deno.PointerValue;
+    }
     | null {
-    const b = Buf.of(BigUint64Array, 2);
-    if (!SDL.getEventFilter(b.pointer, b.pointerOf(1))) return null;
-    const filter = b.pv;
-    const userdata = b.pvOf(1);
-    return { filter, userdata };
+    return SDL.getEventFilter();
   }
 
   /**

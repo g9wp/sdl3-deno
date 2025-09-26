@@ -611,7 +611,9 @@ export class Properties {
     userdata: Deno.PointerValue,
   ): boolean {
     const cb = _cb.EnumeratePropertiesCallback(
-      (userdata: Deno.PointerValue, id: number, name: Deno.PointerValue) => callback(userdata, id, name ? read_cstr(name!) : null));
+      (userdata: Deno.PointerValue, id: number, name: Deno.PointerValue) =>
+        callback(userdata, id, name ? read_cstr(name!) : null),
+    );
     const r = SDL.enumerateProperties(this.id, cb.pointer, userdata);
     cb.close();
     return r;

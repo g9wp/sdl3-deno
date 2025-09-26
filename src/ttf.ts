@@ -7,13 +7,9 @@
  */
 
 import * as TTF from "../gen/TTF.ts";
-import { cstr, read_cstr, SdlError } from "./_utils.ts";
+import { SdlError } from "./_utils.ts";
 import { Buf, Cursor } from "@g9wp/ptr";
-import {
-  type Color,
-  type FColor,
-  write_Color,
-} from "../gen/structs/SDL_pixels.ts";
+import type { Color, FColor } from "../gen/structs/SDL_pixels.ts";
 import type { Point, Size } from "./rect.ts";
 import { Surface } from "./surface.ts";
 import {
@@ -168,7 +164,7 @@ export class Font {
    * @from SDL_ttf.h:152 TTF_Font * TTF_OpenFont(const char *file, float ptsize);
    */
   static open(file: string, ptsize: number): Font {
-    const fontPointer = TTF.openFont(cstr(file), ptsize) as FontPointer;
+    const fontPointer = TTF.openFont(file ?? "", ptsize) as FontPointer;
     if (fontPointer === null) throw SdlError("openFont");
     return new Font(fontPointer);
   }
@@ -533,14 +529,7 @@ export class Font {
    * @from SDL_ttf.h:438 bool TTF_GetFontDPI(TTF_Font *font, int *hdpi, int *vdpi);
    */
   get dpi(): { hdpi: number; vdpi: number } {
-    const b = Buf.of(Int32Array, 2);
-    if (!TTF.getFontDpi(this.pointer, b.pointer, b.pointerOf(1))) {
-      throw SdlError("getFontDpi");
-    }
-    return {
-      hdpi: b.arr[0],
-      vdpi: b.arr[1],
-    };
+    return TTF.getFontDpi(this.pointer);
   }
 
   /**
@@ -1019,9 +1008,7 @@ export class Font {
    * @from SDL_ttf.h:896 const char * TTF_GetFontFamilyName(const TTF_Font *font);
    */
   get familyName(): string {
-    const p = TTF.getFontFamilyName(this.pointer);
-    if (!p) throw SdlError("getFontFamilyName");
-    return read_cstr(p);
+    return TTF.getFontFamilyName(this.pointer);
   }
 
   /**
@@ -1043,9 +1030,7 @@ export class Font {
    * @from SDL_ttf.h:914 const char * TTF_GetFontStyleName(const TTF_Font *font);
    */
   get styleName(): string {
-    const p = TTF.getFontStyleName(this.pointer);
-    if (!p) throw SdlError("getFontStyleName");
-    return read_cstr(p);
+    return TTF.getFontStyleName(this.pointer);
   }
 
   /**
@@ -1106,7 +1091,7 @@ export class Font {
    * @from SDL_ttf.h:983 Uint32 TTF_StringToTag(const char *string);
    */
   static stringToTag(string: string): number {
-    return TTF.stringToTag(cstr(string));
+    return TTF.stringToTag(string);
   }
 
   /**
@@ -1126,11 +1111,8 @@ export class Font {
    *
    * @from SDL_ttf.h:1000 void TTF_TagToString(Uint32 tag, char *string, size_t size);
    */
-  static tagToString(tag: number): string {
-    const b = new Uint8Array(16);
-    const p = Deno.UnsafePointer.of(b);
-    TTF.tagToString(tag, Deno.UnsafePointer.of(b), 15n);
-    return read_cstr(p);
+  static tagToString(tag: number, size: bigint): string {
+    return TTF.tagToString(tag, size);
   }
 
   /**
@@ -1222,8 +1204,8 @@ export class Font {
    *
    * @from SDL_ttf.h:1078 bool TTF_SetFontLanguage(TTF_Font *font, const char *language_bcp47);
    */
-  setLanguage(language: string | null): boolean {
-    return TTF.setFontLanguage(this.pointer, language ? cstr(language) : null);
+  setLanguage(language_bcp47?: string): boolean {
+    return TTF.setFontLanguage(this.pointer, language_bcp47);
   }
 
   /**
@@ -1264,14 +1246,8 @@ export class Font {
   getGlyphImage(
     ch: number,
   ): { surface: Surface; image_type: TTF.IMAGE } {
-    const image_type = new Uint32Array(1);
-    const surface = TTF.getGlyphImage(
-      this.pointer,
-      ch,
-      Deno.UnsafePointer.of(image_type),
-    ) as SurfacePointer;
-    if (!surface) throw SdlError("getGlyphImage");
-    return { surface: Surface.of(surface), image_type: image_type[0] };
+    const { ret: surface, image_type } = TTF.getGlyphImage(this.pointer, ch);
+    return { surface: Surface.of(surface), image_type };
   }
 
   /**
@@ -1297,14 +1273,11 @@ export class Font {
   getGlyphImageForIndex(
     glyph_index: number,
   ): { surface: Surface; image_type: TTF.IMAGE } {
-    const b = Buf.of(Uint32Array, 1);
-    const surface = TTF.getGlyphImageForIndex(
+    const { ret: surface, image_type } = TTF.getGlyphImageForIndex(
       this.pointer,
       glyph_index,
-      b.pointer,
-    ) as SurfacePointer;
-    if (!surface) throw SdlError("getGlyphImageForIndex");
-    return { surface: Surface.of(surface), image_type: b.arr[0] };
+    );
+    return { surface: Surface.of(surface), image_type };
   }
 
   /**
@@ -1345,24 +1318,7 @@ export class Font {
     maxy: number;
     advance: number;
   } {
-    const b = Buf.of(Int32Array, 5);
-    const r = TTF.getGlyphMetrics(
-      this.pointer,
-      ch,
-      b.pointerOf(0),
-      b.pointerOf(1),
-      b.pointerOf(2),
-      b.pointerOf(3),
-      b.pointerOf(4),
-    );
-    if (!r) throw SdlError("getGlyphMetrics");
-    return {
-      minx: b.arr[0],
-      maxx: b.arr[1],
-      miny: b.arr[2],
-      maxy: b.arr[3],
-      advance: b.arr[4],
-    };
+    return TTF.getGlyphMetrics(this.pointer, ch);
   }
 
   /**
@@ -1384,10 +1340,7 @@ export class Font {
    * @from SDL_ttf.h:1191 bool TTF_GetGlyphKerning(TTF_Font *font, Uint32 previous_ch, Uint32 ch, int *kerning);
    */
   getGlyphKerning(previous_ch: number, ch: number): number {
-    const b = Buf.of(Int32Array, 1);
-    const r = TTF.getGlyphKerning(this.pointer, previous_ch, ch, b.pointer);
-    if (!r) throw SdlError("getGlyphKerning");
-    return b.arr[0];
+    return TTF.getGlyphKerning(this.pointer, previous_ch, ch);
   }
 
   /**
@@ -1413,16 +1366,7 @@ export class Font {
    * @from SDL_ttf.h:1213 bool TTF_GetStringSize(TTF_Font *font, const char *text, size_t length, int *w, int *h);
    */
   getStringSize(text: string): Size {
-    const b = Buf.of(Int32Array, 2);
-    const r = TTF.getStringSize(
-      this.pointer,
-      cstr(text),
-      0n,
-      b.pointerOf(0),
-      b.pointerOf(1),
-    );
-    if (!r) throw SdlError("getStringSize");
-    return { w: b.arr[0], h: b.arr[1] };
+    return TTF.getStringSize(this.pointer, text);
   }
 
   /**
@@ -1454,17 +1398,7 @@ export class Font {
    * @from SDL_ttf.h:1241 bool TTF_GetStringSizeWrapped(TTF_Font *font, const char *text, size_t length, int wrap_width, int *w, int *h);
    */
   getStringSizeWrapped(text: string, wrap_width: number): Size {
-    const b = Buf.of(Int32Array, 2);
-    const r = TTF.getStringSizeWrapped(
-      this.pointer,
-      cstr(text),
-      0n,
-      wrap_width,
-      b.pointerOf(0),
-      b.pointerOf(1),
-    );
-    if (!r) throw SdlError("getStringSizeWrapped");
-    return { w: b.arr[0], h: b.arr[1] };
+    return TTF.getStringSizeWrapped(this.pointer, text, wrap_width);
   }
 
   /**
@@ -1498,18 +1432,8 @@ export class Font {
   measureString(
     text: string,
     max_width: number,
-  ): { measured_width: number; measured_length: number } {
-    const b = Buf.of(Int32Array, 2);
-    const r = TTF.measureString(
-      this.pointer,
-      cstr(text),
-      0n,
-      max_width,
-      b.pointerOf(0),
-      b.pointerOf(1),
-    );
-    if (!r) throw SdlError("measureString");
-    return { measured_width: b.arr[0], measured_length: b.arr[1] };
+  ): { measured_width: number; measured_length: bigint } {
+    return TTF.measureString(this.pointer, text, max_width);
   }
 
   /**
@@ -1550,16 +1474,11 @@ export class Font {
    * @from SDL_ttf.h:1306 SDL_Surface * TTF_RenderText_Solid(TTF_Font *font, const char *text, size_t length, SDL_Color fg);
    */
   renderSolid(text: string, color: Color): Surface {
-    const b = new Uint8Array(4);
-    write_Color(color, new DataView(b.buffer));
-    const p = TTF.renderTextSolid(
+    return Surface.of(TTF.renderTextSolid(
       this.pointer,
-      cstr(text),
-      0n,
-      b,
-    ) as SurfacePointer;
-    if (!p) throw SdlError("renderTextSolid");
-    return Surface.of(p);
+      text,
+      color,
+    ));
   }
 
   /**
@@ -1600,20 +1519,12 @@ export class Font {
    */
   renderSolidWrapped(
     text: string,
-    color: Color,
+    fg: Color,
     wrapLength: number,
   ): Surface {
-    const b = new Uint8Array(4);
-    write_Color(color, new DataView(b.buffer));
-    const p = TTF.renderTextSolidWrapped(
-      this.pointer,
-      cstr(text),
-      0n,
-      b,
-      wrapLength,
-    ) as SurfacePointer;
-    if (!p) throw SdlError("renderTextSolidWrapped");
-    return Surface.of(p);
+    return Surface.of(
+      TTF.renderTextSolidWrapped(this.pointer, text, fg, wrapLength),
+    );
   }
 
   /**
@@ -1645,11 +1556,8 @@ export class Font {
    *
    * @from SDL_ttf.h:1371 SDL_Surface * TTF_RenderGlyph_Solid(TTF_Font *font, Uint32 ch, SDL_Color fg);
    */
-  renderGlyphSolid(ch: number, color: Color): Surface {
-    const b = new Uint8Array(4);
-    write_Color(color, new DataView(b.buffer));
-    const p = TTF.renderGlyphSolid(this.pointer, ch, b) as SurfacePointer;
-    if (!p) throw SdlError("renderGlyphSolid");
+  renderGlyphSolid(ch: number, fg: Color): Surface {
+    const p = TTF.renderGlyphSolid(this.pointer, ch, fg);
     return Surface.of(p);
   }
 
@@ -1692,14 +1600,7 @@ export class Font {
    * @from SDL_ttf.h:1409 SDL_Surface * TTF_RenderText_Shaded(TTF_Font *font, const char *text, size_t length, SDL_Color fg, SDL_Color bg);
    */
   renderShaded(text: string, fg: Color, bg: Color): Surface {
-    const p = TTF.renderTextShaded(
-      this.pointer,
-      cstr(text),
-      0n,
-      sdl_color(fg),
-      sdl_color(bg),
-    ) as SurfacePointer;
-    if (!p) throw SdlError("renderTextShaded");
+    const p = TTF.renderTextShaded(this.pointer, text, fg, bg);
     return Surface.of(p);
   }
 
@@ -1749,13 +1650,11 @@ export class Font {
   ): Surface {
     const p = TTF.renderTextShadedWrapped(
       this.pointer,
-      cstr(text),
-      0n,
-      sdl_color(fg),
-      sdl_color(bg),
+      text,
+      fg,
+      bg,
       wrap_width,
-    ) as SurfacePointer;
-    if (!p) throw SdlError("renderTextShadedWrapped");
+    );
     return Surface.of(p);
   }
 
@@ -1794,8 +1693,8 @@ export class Font {
     const p = TTF.renderGlyphShaded(
       this.pointer,
       ch,
-      sdl_color(fg),
-      sdl_color(bg),
+      fg,
+      bg,
     ) as SurfacePointer;
     if (!p) throw SdlError("renderGlyphShaded");
     return Surface.of(p);
@@ -1840,9 +1739,9 @@ export class Font {
   renderBlended(text: string, fg: Color): Surface {
     const p = TTF.renderTextBlended(
       this.pointer,
-      cstr(text),
+      text,
       0n,
-      sdl_color(fg),
+      fg,
     ) as SurfacePointer;
     if (!p) throw SdlError("renderTextBlended");
     return Surface.of(p);
@@ -1889,13 +1788,7 @@ export class Font {
     fg: Color,
     wrap_width: number,
   ): Surface {
-    const p = TTF.renderTextBlendedWrapped(
-      this.pointer,
-      cstr(text),
-      0n,
-      sdl_color(fg),
-      wrap_width,
-    ) as SurfacePointer;
+    const p = TTF.renderTextBlendedWrapped(this.pointer, text, fg, wrap_width);
     if (!p) throw SdlError("renderTextBlendedWrapped");
     return Surface.of(p);
   }
@@ -1933,7 +1826,7 @@ export class Font {
     const p = TTF.renderGlyphBlended(
       this.pointer,
       ch,
-      sdl_color(fg),
+      fg,
     ) as SurfacePointer;
     if (!p) throw SdlError("renderGlyphBlended");
     return Surface.of(p);
@@ -1979,10 +1872,10 @@ export class Font {
   renderLcd(text: string, fg: Color, bg: Color): Surface {
     const p = TTF.renderTextLcd(
       this.pointer,
-      cstr(text),
+      text,
       0n,
-      sdl_color(fg),
-      sdl_color(bg),
+      fg,
+      bg,
     ) as SurfacePointer;
     if (!p) throw SdlError("renderTextLcd");
     return Surface.of(p);
@@ -2034,10 +1927,10 @@ export class Font {
   ): Surface {
     const p = TTF.renderTextLcdWrapped(
       this.pointer,
-      cstr(text),
+      text,
       0n,
-      sdl_color(fg),
-      sdl_color(bg),
+      fg,
+      bg,
       wrap_width,
     ) as SurfacePointer;
     if (!p) throw SdlError("renderTextLcdWrapped");
@@ -2079,8 +1972,8 @@ export class Font {
     const p = TTF.renderGlyphLcd(
       this.pointer,
       ch,
-      sdl_color(fg),
-      sdl_color(bg),
+      fg,
+      bg,
     ) as SurfacePointer;
     if (!p) throw SdlError("renderGlyphLcd");
     return Surface.of(p);
@@ -2121,12 +2014,7 @@ export class TextEngine {
    * @from SDL_ttf.h:2036 TTF_Text * TTF_CreateText(TTF_TextEngine *engine, TTF_Font *font, const char *text, size_t length);
    */
   createText(font: Font, text: string): Text {
-    const pointer = TTF.createText(
-      this.pointer,
-      font.pointer,
-      cstr(text),
-      0n,
-    ) as TextPointer;
+    const pointer = TTF.createText(this.pointer, font.pointer, text, 0n);
     if (!pointer) throw SdlError("createText");
     return new Text(pointer);
   }
@@ -2203,7 +2091,7 @@ export class RendererTextEngine extends TextEngine {
    * @from SDL_ttf.h:1807 TTF_TextEngine * TTF_CreateRendererTextEngine(SDL_Renderer *renderer);
    */
   static create(renderer: RendererPointer): RendererTextEngine {
-    const pointer = TTF.createRendererTextEngine(renderer) as TextEnginePointer;
+    const pointer = TTF.createRendererTextEngine(renderer);
     if (!pointer) throw SdlError("createRendererTextEngine");
     return new RendererTextEngine(pointer);
   }
@@ -2235,9 +2123,7 @@ export class RendererTextEngine extends TextEngine {
    * @from SDL_ttf.h:1833 TTF_TextEngine * TTF_CreateRendererTextEngineWithProperties(SDL_PropertiesID props);
    */
   static createWithProperties(props: number): RendererTextEngine {
-    const pointer = TTF.createRendererTextEngineWithProperties(
-      props,
-    ) as TextEnginePointer;
+    const pointer = TTF.createRendererTextEngineWithProperties(props);
     if (!pointer) throw SdlError("createRendererTextEngineWithProperties");
     return new RendererTextEngine(pointer);
   }
@@ -2292,7 +2178,7 @@ export class GpuTextEngine extends TextEngine {
    * @from SDL_ttf.h:1898 TTF_TextEngine * TTF_CreateGPUTextEngine(SDL_GPUDevice *device);
    */
   static create(device: Deno.PointerValue<"SDL_GPUDevice">): GpuTextEngine {
-    const pointer = TTF.createGpuTextEngine(device) as TextEnginePointer;
+    const pointer = TTF.createGpuTextEngine(device);
     if (!pointer) throw SdlError("createGpuTextEngine");
     return new GpuTextEngine(pointer);
   }
@@ -2324,9 +2210,7 @@ export class GpuTextEngine extends TextEngine {
    * @from SDL_ttf.h:1924 TTF_TextEngine * TTF_CreateGPUTextEngineWithProperties(SDL_PropertiesID props);
    */
   createWithProperties(props: number): GpuTextEngine {
-    const pointer = TTF.createRendererTextEngineWithProperties(
-      props,
-    ) as TextEnginePointer;
+    const pointer = TTF.createRendererTextEngineWithProperties(props);
     if (!pointer) throw SdlError("createRendererTextEngineWithProperties");
     return new GpuTextEngine(pointer);
   }
@@ -2796,16 +2680,7 @@ export class Text {
    * @from SDL_ttf.h:2295 bool TTF_GetTextColor(TTF_Text *text, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);
    */
   get color(): Color {
-    const b = Buf.of(Uint8Array, 4);
-    const r = TTF.getTextColor(
-      this.pointer,
-      b.pointer,
-      b.pointerOf(1),
-      b.pointerOf(2),
-      b.pointerOf(3),
-    );
-    if (!r) throw SdlError("getTextColor");
-    return { r: b.arr[0], g: b.arr[1], b: b.arr[2], a: b.arr[3] };
+    return TTF.getTextColor(this.pointer);
   }
 
   /**
@@ -2834,16 +2709,7 @@ export class Text {
    * @from SDL_ttf.h:2320 bool TTF_GetTextColorFloat(TTF_Text *text, float *r, float *g, float *b, float *a);
    */
   get colorFloat(): FColor {
-    const b = Buf.of(Float32Array, 4);
-    const r = TTF.getTextColorFloat(
-      this.pointer,
-      b.pointer,
-      b.pointerOf(1),
-      b.pointerOf(2),
-      b.pointerOf(3),
-    );
-    if (!r) throw SdlError("getTextColorFloat");
-    return { r: b.arr[0], g: b.arr[1], b: b.arr[2], a: b.arr[3] };
+    return TTF.getTextColorFloat(this.pointer);
   }
 
   /**
@@ -2890,10 +2756,7 @@ export class Text {
    * @from SDL_ttf.h:2359 bool TTF_GetTextPosition(TTF_Text *text, int *x, int *y);
    */
   get position(): Point {
-    const b = Buf.of(Float32Array, 2);
-    const r = TTF.getTextPosition(this.pointer, b.pointer, b.pointerOf(1));
-    if (!r) throw SdlError("getTextPosition");
-    return { x: b.arr[0], y: b.arr[1] };
+    return TTF.getTextPosition(this.pointer);
   }
 
   /**
@@ -2939,10 +2802,7 @@ export class Text {
    * @from SDL_ttf.h:2397 bool TTF_GetTextWrapWidth(TTF_Text *text, int *wrap_width);
    */
   get wrapWidth(): number {
-    const b = Buf.of(Int32Array, 1);
-    const r = TTF.getTextWrapWidth(this.pointer, b.pointer);
-    if (!r) throw SdlError("getTextWrapWidth");
-    return b.arr[0];
+    return TTF.getTextWrapWidth(this.pointer);
   }
 
   /**
@@ -3018,7 +2878,7 @@ export class Text {
    * @from SDL_ttf.h:2461 bool TTF_SetTextString(TTF_Text *text, const char *string, size_t length);
    */
   setString(string: string): boolean {
-    return TTF.setTextString(this.pointer, cstr(string), 0n);
+    return TTF.setTextString(this.pointer, string, 0n);
   }
 
   /**
@@ -3049,12 +2909,7 @@ export class Text {
    * @from SDL_ttf.h:2488 bool TTF_InsertTextString(TTF_Text *text, int offset, const char *string, size_t length);
    */
   insertString(offset: number, string: string): boolean {
-    return TTF.insertTextString(
-      this.pointer,
-      offset,
-      cstr(string),
-      0n,
-    );
+    return TTF.insertTextString(this.pointer, offset, string, 0n);
   }
 
   /**
@@ -3081,7 +2936,7 @@ export class Text {
    * @from SDL_ttf.h:2511 bool TTF_AppendTextString(TTF_Text *text, const char *string, size_t length);
    */
   appendString(s: string): boolean {
-    return TTF.appendTextString(this.pointer, cstr(s), 0n);
+    return TTF.appendTextString(this.pointer, s, 0n);
   }
 
   /**
@@ -3136,10 +2991,7 @@ export class Text {
    * @from SDL_ttf.h:2558 bool TTF_GetTextSize(TTF_Text *text, int *w, int *h);
    */
   get size(): Size {
-    const b = Buf.of(Int32Array, 2);
-    const r = TTF.getTextSize(this.pointer, b.pointer, b.pointerOf(1));
-    if (!r) throw SdlError("getTextSize");
-    return { w: b.arr[0], h: b.arr[1] };
+    return TTF.getTextSize(this.pointer);
   }
 
   /**
@@ -3167,7 +3019,11 @@ export class Text {
    */
   getSubString(offset: number): SubString {
     const b = Buf.of(Int32Array, 9);
-    const r = TTF.getTextSubString(this.pointer, offset, b.pointer);
+    const r = TTF.getTextSubString(
+      this.pointer,
+      offset,
+      b.pointer as Deno.PointerValue<"TTF_SubString">,
+    );
     if (!r) throw SdlError("getTextSubString");
     return read_SubString(b.dataView);
   }
@@ -3197,7 +3053,11 @@ export class Text {
    */
   getSubStringForLine(line: number): SubString {
     const b = Buf.of(Int32Array, 9);
-    const r = TTF.getTextSubStringForLine(this.pointer, line, b.pointer);
+    const r = TTF.getTextSubStringForLine(
+      this.pointer,
+      line,
+      b.pointer as Deno.PointerValue<"TTF_SubString">,
+    );
     if (!r) throw SdlError("getTextSubStringForLine");
     return read_SubString(b.dataView);
   }
@@ -3227,9 +3087,12 @@ export class Text {
     offset: number,
     length: number = -1,
   ): SubString[] {
-    const p = TTF.getTextSubStringsForRange(this.pointer, offset, length, null);
-    if (!p) throw SdlError("getTextSubStringsForRange");
-    const c = Cursor.Unsafe(p);
+    const { ret: p } = TTF.getTextSubStringsForRange(
+      this.pointer,
+      offset,
+      length,
+    );
+    const c = Cursor.Unsafe(p!);
     const r: SubString[] = [];
     while (true) {
       const q = c.ptr;
@@ -3265,7 +3128,12 @@ export class Text {
    */
   getSubStringForPoint(x: number, y: number): SubString {
     const b = Buf.of(Int32Array, 9);
-    const r = TTF.getTextSubStringForPoint(this.pointer, x, y, b.pointer);
+    const r = TTF.getTextSubStringForPoint(
+      this.pointer,
+      x,
+      y,
+      b.pointer as Deno.PointerValue<"TTF_SubString">,
+    );
     if (!r) throw SdlError("getTextSubStringForPoint");
     return read_SubString(b.dataView);
   }
@@ -3292,7 +3160,11 @@ export class Text {
     const s = Buf.of(Int32Array, 9);
     write_SubString(substring, s.dataView);
     const b = Buf.of(Int32Array, 9);
-    const r = TTF.getPreviousTextSubString(this.pointer, s.pointer, b.pointer);
+    const r = TTF.getPreviousTextSubString(
+      this.pointer,
+      s.pointer as Deno.PointerValue<"TTF_SubString">,
+      b.pointer as Deno.PointerValue<"TTF_SubString">,
+    );
     if (!r) throw SdlError("getPreviousTextSubString");
     return read_SubString(b.dataView);
   }
@@ -3320,7 +3192,11 @@ export class Text {
     const s = Buf.of(Int32Array, 9);
     write_SubString(substring, s.dataView);
     const b = Buf.of(Int32Array, 9);
-    const r = TTF.getNextTextSubString(this.pointer, s.pointer, b.pointer);
+    const r = TTF.getNextTextSubString(
+      this.pointer,
+      s.pointer as Deno.PointerValue<"TTF_SubString">,
+      b.pointer as Deno.PointerValue<"TTF_SubString">,
+    );
     if (!r) throw SdlError("getNextTextSubString");
     return read_SubString(b.dataView);
   }
@@ -3366,10 +3242,4 @@ export class Text {
     TTF.destroyText(this.pointer);
     this.pointer = null;
   }
-}
-
-export function sdl_color(color: Color): Uint8Array<ArrayBuffer> {
-  const b = new Uint8Array(4);
-  write_Color(color, new DataView(b.buffer));
-  return b;
 }

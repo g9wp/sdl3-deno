@@ -21,7 +21,7 @@ import * as _ from "../gen/structs/SDL_messagebox.ts";
 import * as SDL from "../gen/sdl/messagebox.ts";
 
 import { cstr } from "./_utils.ts";
-import * as _p from '@g9wp/ptr';
+import * as _p from "@g9wp/ptr";
 import type { WindowPointer } from "./pointer_type.ts";
 
 /** informational dialog  */
@@ -160,7 +160,7 @@ export function simple(
  *
  * @from SDL_messagebox.h:174 bool SDL_ShowMessageBox(const SDL_MessageBoxData *messageboxdata, int *buttonid);
  */
-export function show(opt: MsgBoxOption): number | undefined {
+export function show(opt: MsgBoxOption): number {
   const {
     type,
     direction,
@@ -215,11 +215,9 @@ export function show(opt: MsgBoxOption): number | undefined {
     colorScheme: colorScheme ?? null, // TODO
   }, new DataView(buf.buffer));
 
-  try {
-    return SDL.showMessageBox(Deno.UnsafePointer.of(buf) as Deno.PointerValue<"SDL_MessageBoxData">);
-  } catch {
-    return undefined;
-  }
+  return SDL.showMessageBox(
+    Deno.UnsafePointer.of(buf) as Deno.PointerValue<"SDL_MessageBoxData">,
+  );
 }
 
 export interface MsgBoxOptionSimple {

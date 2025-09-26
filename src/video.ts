@@ -139,7 +139,7 @@ export class VideoDriver {
    * @from SDL_video.h:540 const char * SDL_GetVideoDriver(int index);
    */
   static get(index: number): string {
-    return read_cstr(SDL.getVideoDriver(index));
+    return SDL.getVideoDriver(index);
   }
 
   /**
@@ -162,7 +162,7 @@ export class VideoDriver {
    * @from SDL_video.h:559 const char * SDL_GetCurrentVideoDriver(void);
    */
   static get current(): string {
-    return read_cstr(SDL.getCurrentVideoDriver());
+    return SDL.getCurrentVideoDriver();
   }
 }
 /**
@@ -229,7 +229,7 @@ export class Display {
    * @from SDL_video.h:585 SDL_DisplayID * SDL_GetDisplays(int *count);
    */
   static get list(): Display[] {
-    const displays = SDL.getDisplays(null);
+    const { ret: displays } = SDL.getDisplays();
     if (!displays) throw SdlError("getDisplays");
     const p = Cursor.Unsafe(displays);
     const r = [];
@@ -316,7 +316,7 @@ export class Display {
   get name(): string {
     const r = SDL.getDisplayName(this.id);
     if (!r) throw SdlError("getDisplayName");
-    return read_cstr(r);
+    return r;
   }
 
   /**
@@ -340,9 +340,7 @@ export class Display {
    * @from SDL_video.h:665 bool SDL_GetDisplayBounds(SDL_DisplayID displayID, SDL_Rect *rect);
    */
   get bounds(): _r.Rect {
-    const r = SDL.getDisplayBounds(this.id, _i32.p0);
-    if (!r) throw SdlError("getDisplayBounds");
-    return _r.read_Rect(_i32.dataView);
+    return SDL.getDisplayBounds(this.id)!;
   }
 
   /**
@@ -373,9 +371,7 @@ export class Display {
    */
 
   get usableBounds(): _r.Rect {
-    const r = SDL.getDisplayUsableBounds(this.id, _i32.p0);
-    if (!r) throw SdlError("getDisplayUsableBounds");
-    return _r.read_Rect(_i32.dataView);
+    return SDL.getDisplayUsableBounds(this.id)!;
   }
 
   /**
@@ -475,7 +471,7 @@ export class Display {
    * @from SDL_video.h:776 SDL_DisplayMode ** SDL_GetFullscreenDisplayModes(SDL_DisplayID displayID, int *count);
    */
   fullscreenDisplayModes(): DisplayModePtr[] {
-    const modes = SDL.getFullscreenDisplayModes(this.id, null);
+    const { ret: modes } = SDL.getFullscreenDisplayModes(this.id);
     if (!modes) throw SdlError("getFullscreenDisplayModes");
     const p = Cursor.Unsafe(modes);
     const r = [];
@@ -610,8 +606,7 @@ export class Display {
    * @from SDL_video.h:865 SDL_DisplayID SDL_GetDisplayForPoint(const SDL_Point *point);
    */
   static forPoint(point: _r.Point): Display {
-    _r.write_Point(point, _i32.dataView);
-    const r = SDL.getDisplayForPoint(_i32.p0);
+    const r = SDL.getDisplayForPoint(point);
     if (r === 0) throw SdlError("getDisplayForPoint");
     return new Display(r);
   }
@@ -634,9 +629,7 @@ export class Display {
    * @from SDL_video.h:882 SDL_DisplayID SDL_GetDisplayForRect(const SDL_Rect *rect);
    */
   static forRect(rect: _r.Rect): Display {
-    _r.write_Rect(rect, _i32.dataView);
-    const r = SDL.getDisplayForRect(_i32.p0);
-    if (r === 0) throw SdlError("getDisplayForRect");
+    const r = SDL.getDisplayForRect(rect);
     return new Display(r);
   }
 }
@@ -803,9 +796,9 @@ export class Window {
    * @from SDL_video.h:1008 void * SDL_GetWindowICCProfile(SDL_Window *window, size_t *size);
    */
   get IccProfile(): { data: Deno.PointerObject; size: bigint } {
-    const r = SDL.getWindowIccProfile(this.pointer, _u64.p0);
+    const { ret: r, size } = SDL.getWindowIccProfile(this.pointer);
     if (!r) throw SdlError("getWindowIccProfile");
-    return { data: r, size: _u64.v0 };
+    return { data: r, size };
   }
 
   /**
@@ -843,7 +836,7 @@ export class Window {
    * @from SDL_video.h:1038 SDL_Window ** SDL_GetWindows(int *count);
    */
   static get list(): Window[] {
-    const windows = SDL.getWindows(null) as WindowPointer;
+    const { ret: windows } = SDL.getWindows();
     if (!windows) throw SdlError("getWindows");
     const p = Cursor.Unsafe(windows);
     const r = [];
@@ -948,7 +941,7 @@ export class Window {
     h: number,
     flags: bigint,
   ): Window {
-    const r = SDL.createWindow(cstr(title), w, h, flags) as WindowPointer;
+    const r = SDL.createWindow(title, w, h, flags) as WindowPointer;
     if (!r) throw SdlError("createWindow");
     return new Window(r);
   }
@@ -1156,7 +1149,7 @@ export class Window {
    * @from SDL_video.h:1307 SDL_Window * SDL_CreateWindowWithProperties(SDL_PropertiesID props);
    */
   static createWithProperties(props: number): Window {
-    const r = SDL.createWindowWithProperties(props) as WindowPointer;
+    const r = SDL.createWindowWithProperties(props);
     if (!r) throw SdlError("createWindowWithProperties");
     return new Window(r);
   }
@@ -1406,7 +1399,7 @@ export class Window {
    * @from SDL_video.h:1589 bool SDL_SetWindowTitle(SDL_Window *window, const char *title);
    */
   setTitle(title: string): boolean {
-    return SDL.setWindowTitle(this.pointer, cstr(title));
+    return SDL.setWindowTitle(this.pointer, title);
   }
 
   /**
@@ -1425,7 +1418,7 @@ export class Window {
    * @from SDL_video.h:1604 const char * SDL_GetWindowTitle(SDL_Window *window);
    */
   get title(): string {
-    return read_cstr(SDL.getWindowTitle(this.pointer));
+    return SDL.getWindowTitle(this.pointer);
   }
 
   /**
@@ -1526,14 +1519,7 @@ export class Window {
    * @from SDL_video.h:1694 bool SDL_GetWindowPosition(SDL_Window *window, int *x, int *y);
    */
   get position(): { x: number; y: number } {
-    if (
-      !SDL.getWindowPosition(
-        this.pointer,
-        _i32.p0,
-        _i32.p1,
-      )
-    ) throw SdlError("getWindowPosition");
-    return { x: _i32.v0, y: _i32.v1 };
+    return SDL.getWindowPosition(this.pointer);
   }
 
   /**
@@ -1601,14 +1587,7 @@ export class Window {
    * @from SDL_video.h:1754 bool SDL_GetWindowSize(SDL_Window *window, int *w, int *h);
    */
   get size(): Size {
-    if (
-      !SDL.getWindowSize(
-        this.pointer,
-        _i32.p0,
-        _i32.p0,
-      )
-    ) throw SdlError("getWindowSize");
-    return { w: _i32.v0, h: _i32.v1 };
+    return SDL.getWindowSize(this.pointer);
   }
 
   /**
@@ -1634,10 +1613,7 @@ export class Window {
    * @from SDL_video.h:1776 bool SDL_GetWindowSafeArea(SDL_Window *window, SDL_Rect *rect);
    */
   safeArea(): _r.Rect {
-    if (!SDL.getWindowSafeArea(this.pointer, _u32.p0)) {
-      throw SdlError("getWindowSafeArea");
-    }
-    return _r.read_Rect(_u32.dataView);
+    return SDL.getWindowSafeArea(this.pointer);
   }
 
   /**
@@ -1705,14 +1681,7 @@ export class Window {
    * @from SDL_video.h:1836 bool SDL_GetWindowAspectRatio(SDL_Window *window, float *min_aspect, float *max_aspect);
    */
   get aspectRatio(): { min_aspect: number; max_aspect: number } {
-    if (
-      !SDL.getWindowAspectRatio(
-        this.pointer,
-        _f32.p0,
-        _f32.p1,
-      )
-    ) throw SdlError("getWindowAspectRatio");
-    return { min_aspect: _f32.v0, max_aspect: _f32.v1 };
+    return SDL.getWindowAspectRatio(this.pointer);
   }
 
   /**
@@ -1758,21 +1727,9 @@ export class Window {
     bottom: number;
     right: number;
   } {
-    if (
-      !SDL.getWindowBordersSize(
-        this.pointer,
-        _i32.p0,
-        _i32.p1,
-        _i32.p2,
-        _i32.p3,
-      )
-    ) throw SdlError("getWindowBordersSize");
-    return {
-      top: _i32.v0,
-      left: _i32.v1,
-      bottom: _i32.v2,
-      right: _i32.v3,
-    };
+    return SDL.getWindowBordersSize(
+      this.pointer,
+    );
   }
   /**
    * Get the size of a window's client area, in pixels.
@@ -1795,14 +1752,7 @@ export class Window {
    * @from SDL_video.h:1893 bool SDL_GetWindowSizeInPixels(SDL_Window *window, int *w, int *h);
    */
   get sizeInPixels(): Size {
-    if (
-      !SDL.getWindowSizeInPixels(
-        this.pointer,
-        _i32.p0,
-        _i32.p1,
-      )
-    ) throw SdlError("getWindowSizeInPixels");
-    return { w: _i32.v0, h: _i32.v1 };
+    return SDL.getWindowSizeInPixels(this.pointer);
   }
   /**
    * Set the minimum size of a window's client area.
@@ -1847,14 +1797,7 @@ export class Window {
    * @from SDL_video.h:1931 bool SDL_GetWindowMinimumSize(SDL_Window *window, int *w, int *h);
    */
   get minimumSize(): Size {
-    if (
-      !SDL.getWindowMinimumSize(
-        this.pointer,
-        _i32.p0,
-        _i32.p1,
-      )
-    ) throw SdlError("getWindowMinimumSize");
-    return { w: _i32.v0, h: _i32.v1 };
+    return SDL.getWindowMinimumSize(this.pointer);
   }
 
   /**
@@ -1900,14 +1843,7 @@ export class Window {
    * @from SDL_video.h:1969 bool SDL_GetWindowMaximumSize(SDL_Window *window, int *w, int *h);
    */
   get maximumSize(): Size {
-    if (
-      !SDL.getWindowMaximumSize(
-        this.pointer,
-        _i32.p0,
-        _i32.p1,
-      )
-    ) throw SdlError("getWindowMaximumSize");
-    return { w: _i32.v0, h: _i32.v1 };
+    return SDL.getWindowMaximumSize(this.pointer);
   }
 
   /**
@@ -2325,10 +2261,7 @@ export class Window {
    * @from SDL_video.h:2330 bool SDL_GetWindowSurfaceVSync(SDL_Window *window, int *vsync);
    */
   get surfaceVSync(): number {
-    if (
-      !SDL.getWindowSurfaceVSync(this.pointer, _i32.p0)
-    ) throw SdlError("getWindowSurfaceVSync");
-    return _i32.v0;
+    return SDL.getWindowSurfaceVSync(this.pointer);
   }
 
   /**
@@ -2386,16 +2319,7 @@ export class Window {
    * @from SDL_video.h:2380 bool SDL_UpdateWindowSurfaceRects(SDL_Window *window, const SDL_Rect *rects, int numrects);
    */
   updateSurfaceRects(rects: _r.Rect[]): boolean {
-    const buf = new Uint32Array(4 * rects.length);
-    const numrects = rects.length;
-    for (let i = 0; i < numrects; i++) {
-      _r.write_Rect(rects[i], new DataView(buf.buffer, i * 4));
-    }
-    return SDL.updateWindowSurfaceRects(
-      this.pointer,
-      Deno.UnsafePointer.of(buf),
-      numrects,
-    );
+    return SDL.updateWindowSurfaceRects(this.pointer, rects);
   }
   /**
    * Destroy the surface associated with the window.
@@ -2560,8 +2484,7 @@ export class Window {
    * @from SDL_video.h:2517 bool SDL_SetWindowMouseRect(SDL_Window *window, const SDL_Rect *rect);
    */
   setMouseRect(rect: _r.Rect): boolean {
-    _r.write_Rect(rect, _i32.dataView);
-    return SDL.setWindowMouseRect(this.pointer, _i32.p0);
+    return SDL.setWindowMouseRect(this.pointer, rect);
   }
 
   /**
@@ -2582,9 +2505,7 @@ export class Window {
    * @from SDL_video.h:2534 const SDL_Rect * SDL_GetWindowMouseRect(SDL_Window *window);
    */
   get mouseRect(): _r.Rect {
-    const r = SDL.getWindowMouseRect(this.pointer);
-    if (!r) throw SdlError("getWindowMouseRect");
-    return _r.read_Rect(UnsafeDataView(r, 16));
+    return SDL.getWindowMouseRect(this.pointer);
   }
 
   /**
@@ -2918,7 +2839,7 @@ export class GL {
    * @from SDL_video.h:2897 bool SDL_GL_LoadLibrary(const char *path);
    */
   static loadLibrary(path: string): boolean {
-    return SDL.glLoadLibrary(cstr(path));
+    return SDL.glLoadLibrary(path);
   }
   /**
    * Get an OpenGL function by name.
@@ -2976,7 +2897,7 @@ export class GL {
    * @from SDL_video.h:2952 SDL_FunctionPointer SDL_GL_GetProcAddress(const char *proc);
    */
   static getProcAddress(proc: string): Deno.PointerValue {
-    return SDL.glGetProcAddress(cstr(proc));
+    return SDL.glGetProcAddress(proc);
   }
 
   /**
@@ -2999,7 +2920,7 @@ export class GL {
    * @from SDL_video.h:2971 SDL_FunctionPointer SDL_EGL_GetProcAddress(const char *proc);
    */
   static eglGetProcAddress(proc: string): Deno.PointerValue {
-    return SDL.eglGetProcAddress(cstr(proc));
+    return SDL.eglGetProcAddress(proc);
   }
 
   /**
@@ -3041,7 +2962,7 @@ export class GL {
    * @from SDL_video.h:3005 bool SDL_GL_ExtensionSupported(const char *extension);
    */
   static extensionSupported(extension: string): boolean {
-    return SDL.glExtensionSupported(cstr(extension));
+    return SDL.glExtensionSupported(extension);
   }
 
   /**
@@ -3106,10 +3027,7 @@ export class GL {
    * @from SDL_video.h:3058 bool SDL_GL_GetAttribute(SDL_GLAttr attr, int *value);
    */
   static getAttribute(attr: number): number {
-    const buf = new Uint32Array(1);
-    const r = SDL.glGetAttribute(attr, Deno.UnsafePointer.of(buf));
-    if (!r) throw SdlError("glGetAttribute");
-    return buf[0];
+    return SDL.glGetAttribute(attr);
   }
 
   /**
@@ -3211,10 +3129,7 @@ export class GL {
    * @from SDL_video.h:3239 bool SDL_GL_GetSwapInterval(int *interval);
    */
   static glGetSwapInterval(): number {
-    const buf = new Uint32Array(1);
-    const r = SDL.glGetSwapInterval(Deno.UnsafePointer.of(buf));
-    if (!r) throw SdlError("glGetSwapInterval");
-    return buf[0];
+    return SDL.glGetSwapInterval();
   }
 
   /**

@@ -845,7 +845,7 @@ export class Render {
    * @from SDL_render.h:1438 bool SDL_GetRenderLogicalPresentation(SDL_Renderer *renderer, int *w, int *h, SDL_RendererLogicalPresentation *mode);
    */
   get logicalPresentation(): { w: number; h: number; mode: number } {
-    return SDL.getRenderLogicalPresentation(this.pointer)
+    return SDL.getRenderLogicalPresentation(this.pointer);
   }
 
   /**
@@ -909,10 +909,10 @@ export class Render {
     window_y: number,
   ): _r.FPoint {
     return SDL.renderCoordinatesFromWindow(
-        this.pointer,
-        window_x,
-        window_y,
-      )
+      this.pointer,
+      window_x,
+      window_y,
+    );
   }
 
   /**
@@ -950,9 +950,9 @@ export class Render {
     y: number,
   ): _r.FPoint {
     const { window_x, window_y } = SDL.renderCoordinatesToWindow(
-        this.pointer,
-        x,
-        y,
+      this.pointer,
+      x,
+      y,
     );
     return { x: window_x, y: window_y };
   }
@@ -1027,7 +1027,7 @@ export class Render {
    * @from SDL_render.h:1583 bool SDL_SetRenderViewport(SDL_Renderer *renderer, const SDL_Rect *rect);
    */
   setViewport(rect: _r.Rect | null): boolean {
-    return SDL.setRenderViewport(this.pointer, rect ? writeRect(rect) : null);
+    return SDL.setRenderViewport(this.pointer, rect);
   }
 
   /**
@@ -1569,7 +1569,7 @@ export class Render {
    * @from SDL_render.h:2037 bool SDL_RenderRect(SDL_Renderer *renderer, const SDL_FRect *rect);
    */
   rect(rect: _r.FRect | null): boolean {
-    return SDL.renderRect(this.pointer, rect ? writeFRect(rect) : null);
+    return SDL.renderRect(this.pointer, rect);
   }
 
   /**
@@ -1590,11 +1590,7 @@ export class Render {
    * @from SDL_render.h:2055 bool SDL_RenderRects(SDL_Renderer *renderer, const SDL_FRect *rects, int count);
    */
   rects(rects: _r.FRect[]): boolean {
-    const buf = Buf.of(Float32Array, rects.length * 4);
-    rects.forEach((rect, i) => {
-      _r.write_FRect(rect, toDataView(buf.arr.subarray(i * 4, i * 4 + 4)));
-    });
-    return SDL.renderRects(this.pointer, buf.pointer, rects.length);
+    return SDL.renderRects(this.pointer, rects);
   }
 
   /**
@@ -1614,7 +1610,7 @@ export class Render {
    * @from SDL_render.h:2073 bool SDL_RenderFillRect(SDL_Renderer *renderer, const SDL_FRect *rect);
    */
   fillRect(rect: _r.FRect | null): boolean {
-    return SDL.renderFillRect(this.pointer, rect ? writeFRect(rect) : null);
+    return SDL.renderFillRect(this.pointer, rect);
   }
 
   /**
@@ -1635,11 +1631,7 @@ export class Render {
    * @from SDL_render.h:2091 bool SDL_RenderFillRects(SDL_Renderer *renderer, const SDL_FRect *rects, int count);
    */
   fillRects(rects: _r.FRect[]): boolean {
-    const buf = Buf.of(Float32Array, rects.length * 4);
-    rects.forEach((rect, i) => {
-      _r.write_FRect(rect, toDataView(buf.arr.subarray(i * 4, i * 4 + 4)));
-    });
-    return SDL.renderFillRects(this.pointer, buf.pointer, rects.length);
+    return SDL.renderFillRects(this.pointer, rects);
   }
 
   /**
@@ -1669,8 +1661,8 @@ export class Render {
     return SDL.renderTexture(
       this.pointer,
       texture.pointer,
-      srcrect ? writeFRect(srcrect) : null,
-      dstrect ? writeFRect(dstrect) : null,
+      srcrect,
+      dstrect,
     );
   }
 
@@ -1709,10 +1701,10 @@ export class Render {
     return SDL.renderTextureRotated(
       this.pointer,
       texture.pointer,
-      srcrect ? writeFRect(srcrect) : null,
-      dstrect ? writeFRect(dstrect) : null,
+      srcrect,
+      dstrect,
       angle,
-      center ? writeFPoint(center) : null,
+      center,
       flip,
     );
   }
@@ -1755,10 +1747,10 @@ export class Render {
     return SDL.renderTextureAffine(
       this.pointer,
       texture.pointer,
-      srcrect ? writeFRect(srcrect) : null,
-      origin ? writeFPoint(origin) : null,
-      right ? writeFPoint(right) : null,
-      down ? writeFPoint(down) : null,
+      srcrect,
+      origin,
+      right,
+      down,
     );
   }
 
@@ -1798,9 +1790,9 @@ export class Render {
     return SDL.renderTextureTiled(
       this.pointer,
       texture.pointer,
-      srcrect ? writeFRect(srcrect) : null,
+      srcrect,
       scale,
-      dstrect ? writeFRect(dstrect) : null,
+      dstrect,
     );
   }
 
@@ -1851,13 +1843,13 @@ export class Render {
     return SDL.renderTexture9Grid(
       this.pointer,
       texture.pointer,
-      srcrect ? writeFRect(srcrect) : null,
+      srcrect,
       left_width,
       right_width,
       top_height,
       bottom_height,
       scale,
-      dstrect ? writeFRect(dstrect) : null,
+      dstrect,
     );
   }
 
@@ -1883,28 +1875,27 @@ export class Render {
    *
    * @sa SDL_RenderGeometryRaw
    *
-   * @from SDL_render.h:2259 bool SDL_RenderGeometry(SDL_Renderer *renderer,                                               SDL_Texture *texture,                                               const SDL_Vertex *vertices, int num_vertices,                                               const int *indices, int num_indices);
+   * @from SDL_render.h:2259 bool SDL_RenderGeometry(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_Vertex *vertices, int num_vertices, const int *indices, int num_indices);
    */
   geometry(
     texture: Texture | null,
     vertices: Vertex[],
     indices: Int32Array<ArrayBuffer> | null,
   ): boolean {
-    const vertexBuf = Buf.of(Float32Array, vertices.length * 8);
+    const vertexBuf = _p.OutBuf.of(Float32Array, vertices.length * 8);
     vertices.forEach((vertex, i) => {
       write_Vertex(
         vertex,
-        toDataView(vertexBuf.arr.subarray(i * 8, i * 8 + 8)),
+        _p.toDataView(vertexBuf.arr.subarray(i * 8, i * 8 + 8)),
       );
     });
 
     return SDL.renderGeometry(
       this.pointer,
       texture?.pointer ?? null,
-      vertexBuf.pointer,
+      vertexBuf.p0 as Deno.PointerValue<"SDL_Vertex">,
       vertices.length,
-      indices ? Deno.UnsafePointer.of(indices) : null,
-      indices?.length ?? 0,
+      indices,
     );
   }
 
@@ -1935,15 +1926,15 @@ export class Render {
    *
    * @sa SDL_RenderGeometry
    *
-   * @from SDL_render.h:2291 bool SDL_RenderGeometryRaw(SDL_Renderer *renderer,                                               SDL_Texture *texture,                                               const float *xy, int xy_stride,                                               const SDL_FColor *color, int color_stride,                                               const float *uv, int uv_stride,                                               int num_vertices,                                               const void *indices, int num_indices, int size_indices);
+   * @from SDL_render.h:2291 bool SDL_RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const SDL_FColor *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices);
    */
   geometryRaw(
     texture: Texture | null,
     xy: Float32Array<ArrayBuffer>,
     xy_stride: number,
-    color: Float32Array<ArrayBuffer> | null,
+    color: { r: number; g: number; b: number; a: number }[],
     color_stride: number,
-    uv: Float32Array<ArrayBuffer> | null,
+    uv: Float32Array<ArrayBuffer>,
     uv_stride: number,
     num_vertices: number,
     indices: ArrayBuffer | null,
@@ -1953,11 +1944,11 @@ export class Render {
     return SDL.renderGeometryRaw(
       this.pointer,
       texture?.pointer ?? null,
-      Deno.UnsafePointer.of(xy),
+      xy,
       xy_stride,
-      color ? Deno.UnsafePointer.of(color) : null,
+      color,
       color_stride,
-      uv ? Deno.UnsafePointer.of(uv) : null,
+      uv,
       uv_stride,
       num_vertices,
       indices ? Deno.UnsafePointer.of(indices) : null,
@@ -1996,8 +1987,8 @@ export class Render {
   readPixels(rect: _r.Rect | null): Surface {
     const r = SDL.renderReadPixels(
       this.pointer,
-      rect ? writeRect(rect) : null,
-    ) as SurfacePointer;
+      rect,
+    );
     if (!r) throw SdlError("renderReadPixels");
     return Surface.of(r);
   }
@@ -2257,11 +2248,7 @@ export class Render {
    * @from SDL_render.h:2557 bool SDL_GetRenderVSync(SDL_Renderer *renderer, int *vsync);
    */
   get vsync(): number {
-    const vsync = new Int32Array(1);
-    if (!SDL.getRenderVSync(this.pointer, Deno.UnsafePointer.of(vsync))) {
-      throw SdlError("getRenderVSync");
-    }
-    return vsync[0];
+    return SDL.getRenderVSync(this.pointer);
   }
 
   /**
@@ -2306,7 +2293,7 @@ export class Render {
    * @from SDL_render.h:2609 bool SDL_RenderDebugText(SDL_Renderer *renderer, float x, float y, const char *str);
    */
   debugText(x: number, y: number, str: string): boolean {
-    return SDL.renderDebugText(this.pointer, x, y, cstr(str));
+    return SDL.renderDebugText(this.pointer, x, y, str);
   }
 }
 
@@ -2452,16 +2439,7 @@ export class Texture {
    * @from SDL_render.h:864 bool SDL_GetTextureSize(SDL_Texture *texture, float *w, float *h);
    */
   get size(): Size {
-    const w = new Float32Array(1);
-    const h = new Float32Array(1);
-    if (
-      !SDL.getTextureSize(
-        this.pointer,
-        Deno.UnsafePointer.of(w),
-        Deno.UnsafePointer.of(h),
-      )
-    ) throw SdlError("getTextureSize");
-    return { w: w[0], h: h[0] };
+    return SDL.getTextureSize(this.pointer);
   }
 
   /**
@@ -2551,15 +2529,7 @@ export class Texture {
    * @from SDL_render.h:944 bool SDL_GetTextureColorMod(SDL_Texture *texture, Uint8 *r, Uint8 *g, Uint8 *b);
    */
   get colorMod(): { r: number; g: number; b: number } {
-    if (
-      !SDL.getTextureColorMod(
-        this.pointer,
-        _u8.p0,
-        _u8.p1,
-        _u8.p2,
-      )
-    ) throw SdlError("getTextureColorMod");
-    return { r: _u8.v0, g: _u8.v1, b: _u8.v2 };
+    return SDL.getTextureColorMod(this.pointer);
   }
 
   /**
@@ -2583,15 +2553,7 @@ export class Texture {
    * @from SDL_render.h:964 bool SDL_GetTextureColorModFloat(SDL_Texture *texture, float *r, float *g, float *b);
    */
   get colorModFloat(): { r: number; g: number; b: number } {
-    if (
-      !SDL.getTextureColorModFloat(
-        this.pointer,
-        _f32.p0,
-        _f32.p1,
-        _f32.p2,
-      )
-    ) throw SdlError("getTextureColorModFloat");
-    return { r: _f32.v0, g: _f32.v1, b: _f32.v2 };
+    return SDL.getTextureColorModFloat(this.pointer);
   }
 
   /**
@@ -2673,11 +2635,7 @@ export class Texture {
    * @from SDL_render.h:1034 bool SDL_GetTextureAlphaMod(SDL_Texture *texture, Uint8 *alpha);
    */
   get alphaMod(): number {
-    const alpha = new Uint8Array(1);
-    if (!SDL.getTextureAlphaMod(this.pointer, Deno.UnsafePointer.of(alpha))) {
-      throw SdlError("getTextureAlphaMod");
-    }
-    return alpha[0];
+    return SDL.getTextureAlphaMod(this.pointer);
   }
 
   /**
@@ -2699,11 +2657,7 @@ export class Texture {
    * @from SDL_render.h:1052 bool SDL_GetTextureAlphaModFloat(SDL_Texture *texture, float *alpha);
    */
   get alphaModFloat(): number {
-    const alpha = new Float32Array(1);
-    if (
-      !SDL.getTextureAlphaModFloat(this.pointer, Deno.UnsafePointer.of(alpha))
-    ) throw SdlError("getTextureAlphaModFloat");
-    return alpha[0];
+    return SDL.getTextureAlphaModFloat(this.pointer);
   }
 
   /**
@@ -2746,10 +2700,7 @@ export class Texture {
    * @from SDL_render.h:1087 bool SDL_GetTextureBlendMode(SDL_Texture *texture, SDL_BlendMode *blendMode);
    */
   get blendMode(): number {
-    if (
-      !SDL.getTextureBlendMode(this.pointer, _u32.p0)
-    ) throw SdlError("getTextureBlendMode");
-    return _u32.v0;
+    return SDL.getTextureBlendMode(this.pointer);
   }
 
   /**
@@ -2793,10 +2744,7 @@ export class Texture {
    * @from SDL_render.h:1123 bool SDL_GetTextureScaleMode(SDL_Texture *texture, SDL_ScaleMode *scaleMode);
    */
   get scaleMode(): number {
-    if (
-      !SDL.getTextureScaleMode(this.pointer, _i32.p0)
-    ) throw SdlError("getTextureScaleMode");
-    return _i32.v0;
+    return SDL.getTextureScaleMode(this.pointer);
   }
 
   /**
@@ -2834,7 +2782,7 @@ export class Texture {
    * @from SDL_render.h:1157 bool SDL_UpdateTexture(SDL_Texture *texture, const SDL_Rect *rect, const void *pixels, int pitch);
    */
   update(rect: _r.Rect, pixels: Deno.PointerValue, pitch: number): boolean {
-    return SDL.updateTexture(this.pointer, writeRect(rect), pixels, pitch);
+    return SDL.updateTexture(this.pointer, rect, pixels, pitch);
   }
 
   /**
@@ -2871,16 +2819,16 @@ export class Texture {
    */
   updateYuv(
     rect: _r.Rect,
-    Yplane: Deno.PointerValue,
+    Yplane: Uint8Array<ArrayBuffer>,
     Ypitch: number,
-    Uplane: Deno.PointerValue,
+    Uplane: Uint8Array<ArrayBuffer>,
     Upitch: number,
-    Vplane: Deno.PointerValue,
+    Vplane: Uint8Array<ArrayBuffer>,
     Vpitch: number,
   ): boolean {
     return SDL.updateYuvTexture(
       this.pointer,
-      writeRect(rect),
+      rect,
       Yplane,
       Ypitch,
       Uplane,
@@ -2916,18 +2864,18 @@ export class Texture {
    * @sa SDL_UpdateTexture
    * @sa SDL_UpdateYUVTexture
    *
-   * @from SDL_render.h:1221 bool SDL_UpdateNVTexture(SDL_Texture *texture,                                                 const SDL_Rect *rect,                                                 const Uint8 *Yplane, int Ypitch,                                                 const Uint8 *UVplane, int UVpitch);
+   * @from SDL_render.h:1221 bool SDL_UpdateNVTexture(SDL_Texture *texture, const SDL_Rect *rect, const Uint8 *Yplane, int Ypitch, const Uint8 *UVplane, int UVpitch);
    */
   updateNvTexture(
     rect: _r.Rect,
-    Yplane: Deno.PointerValue,
+    Yplane: Uint8Array<ArrayBuffer>,
     Ypitch: number,
-    UVplane: Deno.PointerValue,
+    UVplane: Uint8Array<ArrayBuffer>,
     UVpitch: number,
   ): boolean {
     return SDL.updateNvTexture(
       this.pointer,
-      writeRect(rect),
+      rect,
       Yplane,
       Ypitch,
       UVplane,
@@ -2965,18 +2913,10 @@ export class Texture {
    * @sa SDL_LockTextureToSurface
    * @sa SDL_UnlockTexture
    *
-   * @from SDL_render.h:1256 bool SDL_LockTexture(SDL_Texture *texture,                                            const SDL_Rect *rect,                                            void **pixels, int *pitch);
+   * @from SDL_render.h:1256 bool SDL_LockTexture(SDL_Texture *texture, const SDL_Rect *rect, void **pixels, int *pitch);
    */
-  lock(
-    rect: _r.Rect,
-  ): { pixels: Deno.PointerValue; pitch: number } {
-    if (!SDL.lockTexture(this.pointer, writeRect(rect), _ptr.p0, _i32.p0)) {
-      throw SdlError("lockTexture");
-    }
-    return {
-      pixels: _ptr.v0,
-      pitch: _i32.v0,
-    };
+  lock(rect: _r.Rect, pixels: Deno.PointerValue): number {
+    return SDL.lockTexture(this.pointer, rect, pixels);
   }
 
   /**
@@ -3016,10 +2956,7 @@ export class Texture {
    * @from SDL_render.h:1294 bool SDL_LockTextureToSurface(SDL_Texture *texture, const SDL_Rect *rect, SDL_Surface **surface);
    */
   lockToSurface(rect: _r.Rect): Surface {
-    if (!SDL.lockTextureToSurface(this.pointer, writeRect(rect), _ptr.p0)) {
-      throw SdlError("lockTextureToSurface");
-    }
-    return Surface.of(_ptr.v0 as SurfacePointer);
+    return Surface.of(SDL.lockTextureToSurface(this.pointer, rect));
   }
 
   /**
