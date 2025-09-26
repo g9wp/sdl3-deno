@@ -148,7 +148,7 @@ export interface VirtualJoystickDesc {
                              e.g. (1 << SDL_GAMEPAD_BUTTON_SOUTH) */
   axis_mask: number; /**< Uint32 : A mask of which axes are valid for this controller
                              e.g. (1 << SDL_GAMEPAD_AXIS_LEFTX) */
-  name: Deno.PointerValue; /**< const char * : the name of the joystick */
+  name: string; /**< const char * : the name of the joystick */
   touchpads: Deno.PointerValue; /**< const SDL_VirtualJoystickTouchpadDesc * : A pointer to an array of touchpad descriptions, required if `ntouchpads` is > 0 */
   sensors: Deno.PointerValue; /**< const SDL_VirtualJoystickSensorDesc * : A pointer to an array of sensor descriptions, required if `nsensors` is > 0 */
   userdata: Deno.PointerValue; /**< void * : User data pointer passed to callbacks */
@@ -224,5 +224,3 @@ export function write_VirtualJoystickDesc(t: VirtualJoystickDesc, dt: DataView) 
     Cleanup: Deno.UnsafePointer.value(t.Cleanup), /** void (SDLCALL *Cleanup)(void *userdata); */
   }, dt);
 }
-
-

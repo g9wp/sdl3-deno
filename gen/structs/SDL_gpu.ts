@@ -1080,7 +1080,7 @@ export function write_GPUColorTargetBlendState(t: GPUColorTargetBlendState, dt: 
 export interface GPUShaderCreateInfo {
   code_size: bigint; /**< size_t : The size in bytes of the code pointed to. */
   code: Deno.PointerValue; /**< const Uint8 * : A pointer to shader code. */
-  entrypoint: Deno.PointerValue; /**< const char * : A pointer to a null-terminated UTF-8 string specifying the entry point function name for the shader. */
+  entrypoint: string; /**< const char * : A pointer to a null-terminated UTF-8 string specifying the entry point function name for the shader. */
   format: number; /**< SDL_GPUShaderFormat : The format of the shader code. */
   stage: number; /**< SDL_GPUShaderStage : The stage the shader program corresponds to. */
   num_samplers: number; /**< Uint32 : The number of samplers defined in the shader. */
@@ -1571,7 +1571,7 @@ export function write_GPUGraphicsPipelineCreateInfo(t: GPUGraphicsPipelineCreate
 export interface GPUComputePipelineCreateInfo {
   code_size: bigint; /**< size_t : The size in bytes of the compute shader code pointed to. */
   code: Deno.PointerValue; /**< const Uint8 * : A pointer to compute shader code. */
-  entrypoint: Deno.PointerValue; /**< const char * : A pointer to a null-terminated UTF-8 string specifying the entry point function name for the shader. */
+  entrypoint: string; /**< const char * : A pointer to a null-terminated UTF-8 string specifying the entry point function name for the shader. */
   format: number; /**< SDL_GPUShaderFormat : The format of the compute shader code. */
   num_samplers: number; /**< Uint32 : The number of samplers defined in the shader. */
   num_readonly_storage_textures: number; /**< Uint32 : The number of readonly storage textures defined in the shader. */
@@ -2007,5 +2007,3 @@ export function write_GPUStorageTextureReadWriteBinding(t: GPUStorageTextureRead
     padding3: t.padding3, /** Uint8 */
   }, dt);
 }
-
-
