@@ -202,8 +202,8 @@ export function free(mem: Deno.PointerValue): void {
  * @from SDL_stdinc.h:1502 void SDL_GetOriginalMemoryFunctions(SDL_malloc_func *malloc_func, SDL_calloc_func *calloc_func, SDL_realloc_func *realloc_func, SDL_free_func *free_func);
  */
 export function getOriginalMemoryFunctions(): { malloc_func: Deno.PointerValue; calloc_func: Deno.PointerValue; realloc_func: Deno.PointerValue; free_func: Deno.PointerValue } {
-  lib.symbols.SDL_GetOriginalMemoryFunctions(_p.u64.p0, _p.u64.p1, _p.u64.p2, _p.u64.p3);
-  return {malloc_func: _p.u64.v0, calloc_func: _p.u64.v1, realloc_func: _p.u64.v2, free_func: _p.u64.v3};
+  lib.symbols.SDL_GetOriginalMemoryFunctions(_p.ptr.p0, _p.ptr.p1, _p.ptr.p2, _p.ptr.p3);
+  return {malloc_func: _p.ptr.v0, calloc_func: _p.ptr.v1, realloc_func: _p.ptr.v2, free_func: _p.ptr.v3};
 }
 
 /**
@@ -226,8 +226,8 @@ export function getOriginalMemoryFunctions(): { malloc_func: Deno.PointerValue; 
  * @from SDL_stdinc.h:1524 void SDL_GetMemoryFunctions(SDL_malloc_func *malloc_func, SDL_calloc_func *calloc_func, SDL_realloc_func *realloc_func, SDL_free_func *free_func);
  */
 export function getMemoryFunctions(): { malloc_func: Deno.PointerValue; calloc_func: Deno.PointerValue; realloc_func: Deno.PointerValue; free_func: Deno.PointerValue } {
-  lib.symbols.SDL_GetMemoryFunctions(_p.u64.p0, _p.u64.p1, _p.u64.p2, _p.u64.p3);
-  return {malloc_func: _p.u64.v0, calloc_func: _p.u64.v1, realloc_func: _p.u64.v2, free_func: _p.u64.v3};
+  lib.symbols.SDL_GetMemoryFunctions(_p.ptr.p0, _p.ptr.p1, _p.ptr.p2, _p.ptr.p3);
+  return {malloc_func: _p.ptr.v0, calloc_func: _p.ptr.v1, realloc_func: _p.ptr.v2, free_func: _p.ptr.v3};
 }
 
 /**
@@ -1371,11 +1371,8 @@ export function memcmp(s1: Deno.PointerValue, s2: Deno.PointerValue, len: bigint
  *
  * @from SDL_stdinc.h:2688 size_t SDL_wcslen(const wchar_t *wstr);
  */
-export function wcslen(wstr: wchar_t): wchar_t {
-  _p.i16.arr[0] = wstr;
-  if(!lib.symbols.SDL_wcslen(_p.i16.p0))
-    throw new Error(`SDL_wcslen: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return _p.i16.v0;
+export function wcslen(wstr: Deno.PointerValue): bigint {
+  return lib.symbols.SDL_wcslen(wstr);
 }
 
 /**
@@ -1409,11 +1406,8 @@ export function wcslen(wstr: wchar_t): wchar_t {
  *
  * @from SDL_stdinc.h:2719 size_t SDL_wcsnlen(const wchar_t *wstr, size_t maxlen);
  */
-export function wcsnlen(wstr: wchar_t, maxlen: bigint): wchar_t {
-  _p.i16.arr[0] = wstr;
-  if(!lib.symbols.SDL_wcsnlen(_p.i16.p0, maxlen))
-    throw new Error(`SDL_wcsnlen: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return _p.i16.v0;
+export function wcsnlen(wstr: Deno.PointerValue, maxlen: bigint): bigint {
+  return lib.symbols.SDL_wcsnlen(wstr, maxlen);
 }
 
 /**
@@ -1443,11 +1437,8 @@ export function wcsnlen(wstr: wchar_t, maxlen: bigint): wchar_t {
  *
  * @from SDL_stdinc.h:2746 size_t SDL_wcslcpy(SDL_OUT_Z_CAP(maxlen) wchar_t *dst, const wchar_t *src, size_t maxlen);
  */
-export function wcslcpy(src: wchar_t, maxlen: bigint): { dst: wchar_t; src: wchar_t } {
-  _p.i16.arr[1] = src;
-  if(!lib.symbols.SDL_wcslcpy(_p.i16.p0, _p.i16.p1, maxlen))
-    throw new Error(`SDL_wcslcpy: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { dst: _p.i16.v0, src: _p.i16.v1 };
+export function wcslcpy(src: Deno.PointerValue, dst: Deno.PointerValue, maxlen: bigint) {
+  return lib.symbols.SDL_wcslcpy(src, dst, maxlen);
 }
 
 /**
@@ -1479,11 +1470,8 @@ export function wcslcpy(src: wchar_t, maxlen: bigint): { dst: wchar_t; src: wcha
  *
  * @from SDL_stdinc.h:2775 size_t SDL_wcslcat(SDL_INOUT_Z_CAP(maxlen) wchar_t *dst, const wchar_t *src, size_t maxlen);
  */
-export function wcslcat(src: wchar_t, maxlen: bigint): { dst: wchar_t; src: wchar_t } {
-  _p.i16.arr[1] = src;
-  if(!lib.symbols.SDL_wcslcat(_p.i16.p0, _p.i16.p1, maxlen))
-    throw new Error(`SDL_wcslcat: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { dst: _p.i16.v0, src: _p.i16.v1 };
+export function wcslcat(dst: Deno.PointerValue, src: Deno.PointerValue, maxlen: bigint): bigint {
+  return lib.symbols.SDL_wcslcat(dst, src, maxlen);
 }
 
 /**
@@ -1504,11 +1492,8 @@ export function wcslcat(src: wchar_t, maxlen: bigint): { dst: wchar_t; src: wcha
  *
  * @from SDL_stdinc.h:2793 wchar_t * SDL_wcsdup(const wchar_t *wstr);
  */
-export function wcsdup(wstr: wchar_t): { wstr: wchar_t; ret: Deno.PointerValue } {
-  _p.i16.arr[0] = wstr;
-  const ret = lib.symbols.SDL_wcsdup(_p.i16.p0) as Deno.PointerValue;
-  if(!ret) throw new Error(`SDL_wcsdup: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { wstr: _p.i16.v0, ret };
+export function wcsdup(wstr: Deno.PointerValue): Deno.PointerValue {
+  return lib.symbols.SDL_wcsdup(wstr);
 }
 
 /**
@@ -1531,12 +1516,8 @@ export function wcsdup(wstr: wchar_t): { wstr: wchar_t; ret: Deno.PointerValue }
  *
  * @from SDL_stdinc.h:2813 wchar_t * SDL_wcsstr(const wchar_t *haystack, const wchar_t *needle);
  */
-export function wcsstr(haystack: wchar_t, needle: wchar_t): { haystack: wchar_t; needle: wchar_t; ret: Deno.PointerValue } {
-  _p.i16.arr[0] = haystack;
-  _p.i16.arr[1] = needle;
-  const ret = lib.symbols.SDL_wcsstr(_p.i16.p0, _p.i16.p1) as Deno.PointerValue;
-  if(!ret) throw new Error(`SDL_wcsstr: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { haystack: _p.i16.v0, needle: _p.i16.v1, ret };
+export function wcsstr(haystack: Deno.PointerValue, needle: Deno.PointerValue): Deno.PointerValue {
+  return lib.symbols.SDL_wcsstr(haystack, needle);
 }
 
 /**
@@ -1564,12 +1545,8 @@ export function wcsstr(haystack: wchar_t, needle: wchar_t): { haystack: wchar_t;
  *
  * @from SDL_stdinc.h:2838 wchar_t * SDL_wcsnstr(const wchar_t *haystack, const wchar_t *needle, size_t maxlen);
  */
-export function wcsnstr(haystack: wchar_t, needle: wchar_t, maxlen: bigint): { haystack: wchar_t; needle: wchar_t; ret: Deno.PointerValue } {
-  _p.i16.arr[0] = haystack;
-  _p.i16.arr[1] = needle;
-  const ret = lib.symbols.SDL_wcsnstr(_p.i16.p0, _p.i16.p1, maxlen) as Deno.PointerValue;
-  if(!ret) throw new Error(`SDL_wcsnstr: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { haystack: _p.i16.v0, needle: _p.i16.v1, ret };
+export function wcsnstr(haystack: Deno.PointerValue, needle: Deno.PointerValue, maxlen: bigint): Deno.PointerValue {
+  return lib.symbols.SDL_wcsnstr(haystack, needle, maxlen);
 }
 
 /**
@@ -1591,12 +1568,8 @@ export function wcsnstr(haystack: wchar_t, needle: wchar_t, maxlen: bigint): { h
  *
  * @from SDL_stdinc.h:2857 int SDL_wcscmp(const wchar_t *str1, const wchar_t *str2);
  */
-export function wcscmp(str1: wchar_t, str2: wchar_t): { str1: wchar_t; str2: wchar_t } {
-  _p.i16.arr[0] = str1;
-  _p.i16.arr[1] = str2;
-  if(!lib.symbols.SDL_wcscmp(_p.i16.p0, _p.i16.p1))
-    throw new Error(`SDL_wcscmp: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { str1: _p.i16.v0, str2: _p.i16.v1 };
+export function wcscmp(str1: Deno.PointerValue, str2: Deno.PointerValue): number {
+  return lib.symbols.SDL_wcscmp(str1, str2);
 }
 
 /**
@@ -1630,13 +1603,8 @@ export function wcscmp(str1: wchar_t, str2: wchar_t): { str1: wchar_t; str2: wch
  *
  * @from SDL_stdinc.h:2888 int SDL_wcsncmp(const wchar_t *str1, const wchar_t *str2, size_t maxlen);
  */
-export function wcsncmp(str1: wchar_t, str2: wchar_t, maxlen: bigint): { str1: wchar_t; str2: wchar_t } {
-  _p.i16.arr[0] = str1;
-  _p.i16.arr[1] = str2;
-  if(!lib.symbols.SDL_wcsncmp(_p.i16.p0, _p.i16.p1, maxlen))
-    throw new Error(`SDL_wcsncmp: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { str1: _p.i16.v0, str2: _p.i16.v1 };
-}
+export function wcsncmp(str1: Deno.PointerValue, str2: Deno.PointerValue, maxlen: bigint): number {
+  return lib.symbols.SDL_wcsncmp(str1, str2, maxlen);
 
 /**
  * Compare two null-terminated wide strings, case-insensitively.
@@ -1668,12 +1636,8 @@ export function wcsncmp(str1: wchar_t, str2: wchar_t, maxlen: bigint): { str1: w
  *
  * @from SDL_stdinc.h:2918 int SDL_wcscasecmp(const wchar_t *str1, const wchar_t *str2);
  */
-export function wcscasecmp(str1: wchar_t, str2: wchar_t): { str1: wchar_t; str2: wchar_t } {
-  _p.i16.arr[0] = str1;
-  _p.i16.arr[1] = str2;
-  if(!lib.symbols.SDL_wcscasecmp(_p.i16.p0, _p.i16.p1))
-    throw new Error(`SDL_wcscasecmp: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { str1: _p.i16.v0, str2: _p.i16.v1 };
+export function wcscasecmp(str1: Deno.PointerValue, str2: Deno.PointerValue): number {
+  return lib.symbols.SDL_wcscasecmp(str1, str2);
 }
 
 /**
@@ -1718,12 +1682,8 @@ export function wcscasecmp(str1: wchar_t, str2: wchar_t): { str1: wchar_t; str2:
  *
  * @from SDL_stdinc.h:2960 int SDL_wcsncasecmp(const wchar_t *str1, const wchar_t *str2, size_t maxlen);
  */
-export function wcsncasecmp(str1: wchar_t, str2: wchar_t, maxlen: bigint): { str1: wchar_t; str2: wchar_t } {
-  _p.i16.arr[0] = str1;
-  _p.i16.arr[1] = str2;
-  if(!lib.symbols.SDL_wcsncasecmp(_p.i16.p0, _p.i16.p1, maxlen))
-    throw new Error(`SDL_wcsncasecmp: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { str1: _p.i16.v0, str2: _p.i16.v1 };
+export function wcsncasecmp(str1: Deno.PointerValue, str2: Deno.PointerValue, maxlen: bigint): number {
+  return lib.symbols.SDL_wcsncasecmp(str1, str2, maxlen);
 }
 
 /**
@@ -1753,11 +1713,8 @@ export function wcsncasecmp(str1: wchar_t, str2: wchar_t, maxlen: bigint): { str
  *
  * @from SDL_stdinc.h:2987 long SDL_wcstol(const wchar_t *str, wchar_t **endp, int base);
  */
-export function wcstol(str: wchar_t, endp: Deno.PointerValue, base: number): wchar_t {
-  _p.i16.arr[0] = str;
-  if(!lib.symbols.SDL_wcstol(_p.i16.p0, endp, base))
-    throw new Error(`SDL_wcstol: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return _p.i16.v0;
+export function wcstol(str: Deno.PointerValue, endp: Deno.PointerValue, base: number): bigint {
+  return lib.symbols.SDL_wcstol(str, endp, base);
 }
 
 /**
@@ -1987,10 +1944,8 @@ export function strndup(str: string, maxlen: bigint): string {
  *
  * @from SDL_stdinc.h:3180 char * SDL_strrev(char *str);
  */
-export function strrev(): { str: string; ret: string } {
-  const ret = lib.symbols.SDL_strrev(_p.cstr.p0) as string;
-  if(!ret) throw new Error(`SDL_strrev: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { str: _p.cstr.v0, ret };
+export function strrev(str: Deno.PointerValue): Deno.PointerValue {
+  return lib.symbols.SDL_strrev(str);
 }
 
 /**
@@ -2014,10 +1969,8 @@ export function strrev(): { str: string; ret: string } {
  *
  * @from SDL_stdinc.h:3201 char * SDL_strupr(char *str);
  */
-export function strupr(): { str: string; ret: string } {
-  const ret = lib.symbols.SDL_strupr(_p.cstr.p0) as string;
-  if(!ret) throw new Error(`SDL_strupr: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { str: _p.cstr.v0, ret };
+export function strupr(str: Deno.PointerValue): Deno.PointerValue {
+  return lib.symbols.SDL_strupr(str);
 }
 
 /**
@@ -2041,10 +1994,8 @@ export function strupr(): { str: string; ret: string } {
  *
  * @from SDL_stdinc.h:3222 char * SDL_strlwr(char *str);
  */
-export function strlwr(): { str: string; ret: string } {
-  const ret = lib.symbols.SDL_strlwr(_p.cstr.p0) as string;
-  if(!ret) throw new Error(`SDL_strlwr: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { str: _p.cstr.v0, ret };
+export function strlwr(str: Deno.PointerValue): Deno.PointerValue {
+  return lib.symbols.SDL_strlwr(str);
 }
 
 /**
@@ -2206,10 +2157,8 @@ export function strcasestr(haystack: string, needle: string): string {
  *
  * @from SDL_stdinc.h:3361 char * SDL_strtok_r(char *str, const char *delim, char **saveptr);
  */
-export function strtokR(delim: string): { str: string; saveptr: Deno.PointerValue; ret: string } {
-  const ret = lib.symbols.SDL_strtok_r(_p.cstr.p0, _p.toCstr(delim), _p.ptr.p0) as string;
-  if(!ret) throw new Error(`SDL_strtok_r: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { str: _p.cstr.v0, saveptr: _p.ptr.v0, ret };
+export function strtokR(str: Deno.PointerValue, delim: Deno.PointerValue, saveptr: Deno.PointerValue): Deno.PointerValue {
+  return lib.symbols.SDL_strtok_r(str, delim, saveptr);
 }
 
 /**
@@ -2309,10 +2258,8 @@ export function utf8Strnlen(str: string, bytes: bigint): bigint {
  *
  * @from SDL_stdinc.h:3450 char * SDL_itoa(int value, char *str, int radix);
  */
-export function itoa(value: number, radix: number): { str: string; ret: string } {
-  const ret = lib.symbols.SDL_itoa(value, _p.cstr.p0, radix) as string;
-  if(!ret) throw new Error(`SDL_itoa: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { str: _p.cstr.v0, ret };
+export function itoa(value: number, str: Deno.PointerValue, radix: number): Deno.PointerValue {
+  return lib.symbols.SDL_itoa(value, str, radix);
 }
 
 /**
@@ -2343,10 +2290,8 @@ export function itoa(value: number, radix: number): { str: string; ret: string }
  *
  * @from SDL_stdinc.h:3478 char * SDL_uitoa(unsigned int value, char *str, int radix);
  */
-export function uitoa(value: number, radix: number): { str: string; ret: string } {
-  const ret = lib.symbols.SDL_uitoa(value, _p.cstr.p0, radix) as string;
-  if(!ret) throw new Error(`SDL_uitoa: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { str: _p.cstr.v0, ret };
+export function uitoa(value: number, str: Deno.PointerValue, radix: number): Deno.PointerValue {
+  return lib.symbols.SDL_uitoa(value, str, radix);
 }
 
 /**
@@ -2377,10 +2322,8 @@ export function uitoa(value: number, radix: number): { str: string; ret: string 
  *
  * @from SDL_stdinc.h:3506 char * SDL_ltoa(long value, char *str, int radix);
  */
-export function ltoa(value: bigint, radix: number): { str: string; ret: string } {
-  const ret = lib.symbols.SDL_ltoa(value, _p.cstr.p0, radix) as string;
-  if(!ret) throw new Error(`SDL_ltoa: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { str: _p.cstr.v0, ret };
+export function ltoa(value: bigint, str: Deno.PointerValue, radix: number): Deno.PointerValue {
+  return lib.symbols.SDL_ltoa(value, str, radix);
 }
 
 /**
@@ -2411,10 +2354,8 @@ export function ltoa(value: bigint, radix: number): { str: string; ret: string }
  *
  * @from SDL_stdinc.h:3534 char * SDL_ultoa(unsigned long value, char *str, int radix);
  */
-export function ultoa(value: bigint, radix: number): { str: string; ret: string } {
-  const ret = lib.symbols.SDL_ultoa(value, _p.cstr.p0, radix) as string;
-  if(!ret) throw new Error(`SDL_ultoa: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { str: _p.cstr.v0, ret };
+export function ultoa(value: bigint, str: Deno.PointerValue, radix: number): Deno.PointerValue {
+  return lib.symbols.SDL_ultoa(value, str, radix);
 }
 
 /**
@@ -2445,10 +2386,8 @@ export function ultoa(value: bigint, radix: number): { str: string; ret: string 
  *
  * @from SDL_stdinc.h:3564 char * SDL_lltoa(long long value, char *str, int radix);
  */
-export function lltoa(value: bigint, radix: number): { str: string; ret: string } {
-  const ret = lib.symbols.SDL_lltoa(value, _p.cstr.p0, radix) as string;
-  if(!ret) throw new Error(`SDL_lltoa: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { str: _p.cstr.v0, ret };
+export function lltoa(value: bigint, str: Deno.PointerValue, radix: number): Deno.PointerValue {
+  return lib.symbols.SDL_lltoa(value, str, radix);
 }
 
 /**
@@ -2479,10 +2418,8 @@ export function lltoa(value: bigint, radix: number): { str: string; ret: string 
  *
  * @from SDL_stdinc.h:3592 char * SDL_ulltoa(unsigned long long value, char *str, int radix);
  */
-export function ulltoa(value: bigint, radix: number): { str: string; ret: string } {
-  const ret = lib.symbols.SDL_ulltoa(value, _p.cstr.p0, radix) as string;
-  if(!ret) throw new Error(`SDL_ulltoa: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { str: _p.cstr.v0, ret };
+export function ulltoa(value: bigint, str: Deno.PointerValue, radix: number): Deno.PointerValue {
+  return lib.symbols.SDL_ulltoa(value, str, radix);
 }
 
 /**
@@ -3001,10 +2938,8 @@ export function stepBackUtf8(start: string, pstr: Deno.PointerValue): number {
  *
  * @from SDL_stdinc.h:4060 char * SDL_UCS4ToUTF8(Uint32 codepoint, char *dst);
  */
-export function ucs4ToUtf8(codepoint: number): { dst: string; ret: string } {
-  const ret = lib.symbols.SDL_UCS4ToUTF8(codepoint, _p.cstr.p0) as string;
-  if(!ret) throw new Error(`SDL_UCS4ToUTF8: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { dst: _p.cstr.v0, ret };
+export function ucs4ToUtf8(codepoint: number, dst: Deno.PointerValue<string>): Deno.PointerValue {
+  return lib.symbols.SDL_UCS4ToUTF8(codepoint, dst);
 }
 
 /**
@@ -4772,4 +4707,3 @@ export function iconvString(
 ): string {
   return _p.getCstr2(lib.symbols.SDL_iconv_string(_p.toCstr(tocode), _p.toCstr(fromcode), _p.toCstr(inbuf), inbytesleft));
 }
-
