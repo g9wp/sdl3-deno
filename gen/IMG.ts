@@ -10,6 +10,7 @@ import { symbols } from "./funcs/SDL_image.ts";
 import { libSdlPath } from './_utils.ts';
 
 export const lib = Deno.dlopen(libSdlPath("SDL3_image"), symbols);
+import { lib as sdl } from "../gen/sdl/lib.ts"
 
 
 
@@ -1975,10 +1976,10 @@ export function loadSizedSvgIo(src: Deno.PointerValue<"SDL_IOStream">, width: nu
  *
  * @from SDL_image.h:1829 SDL_Surface * IMG_ReadXPMFromArray(char **xpm);
  */
-export function readXpmFromArray(): { xpm: Deno.PointerValue; ret: Deno.PointerValue<"SDL_Surface"> } {
-  const ret = lib.symbols.IMG_ReadXPMFromArray(_p.ptr.p0) as Deno.PointerValue<"SDL_Surface">;
-  if(!ret) throw new Error(`IMG_ReadXPMFromArray: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { xpm: _p.ptr.v0, ret };
+export function readXpmFromArray(xpm: Deno.PointerValue): Deno.PointerValue<"SDL_Surface"> {
+  const ret = lib.symbols.IMG_ReadXPMFromArray(xpm) as Deno.PointerValue<"SDL_Surface">;
+  if(!ret) throw new Error(`IMG_ReadXPMFromArray: ${_p.getCstr2(sdl.symbols.SDL_GetError())}`);
+  return ret;
 }
 
 /**
@@ -2000,10 +2001,10 @@ export function readXpmFromArray(): { xpm: Deno.PointerValue; ret: Deno.PointerV
  *
  * @from SDL_image.h:1848 SDL_Surface * IMG_ReadXPMFromArrayToRGB888(char **xpm);
  */
-export function readXpmFromArrayToRgb888(): { xpm: Deno.PointerValue; ret: Deno.PointerValue<"SDL_Surface"> } {
-  const ret = lib.symbols.IMG_ReadXPMFromArrayToRGB888(_p.ptr.p0) as Deno.PointerValue<"SDL_Surface">;
-  if(!ret) throw new Error(`IMG_ReadXPMFromArrayToRGB888: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
-  return { xpm: _p.ptr.v0, ret };
+export function readXpmFromArrayToRgb888(xpm: Deno.PointerValue): Deno.PointerValue<"SDL_Surface"> {
+  const ret = lib.symbols.IMG_ReadXPMFromArrayToRGB888(xpm) as Deno.PointerValue<"SDL_Surface">;
+  if(!ret) throw new Error(`IMG_ReadXPMFromArrayToRGB888: ${_p.getCstr2(sdl.symbols.SDL_GetError())}`);
+  return ret;
 }
 
 /**
@@ -2303,4 +2304,3 @@ export function loadGifAnimationIo(src: Deno.PointerValue<"SDL_IOStream">): Deno
 export function loadWebpAnimationIo(src: Deno.PointerValue<"SDL_IOStream">): Deno.PointerValue<"IMG_Animation"> {
   return lib.symbols.IMG_LoadWEBPAnimation_IO(src) as Deno.PointerValue<"IMG_Animation">;
 }
-
