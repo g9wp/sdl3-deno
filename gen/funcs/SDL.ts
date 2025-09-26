@@ -16,6 +16,7 @@ import * as SDL_guid from './SDL_guid.ts';
 import * as SDL_haptic from './SDL_haptic.ts';
 import * as SDL_hidapi from './SDL_hidapi.ts';
 import * as SDL_hints from './SDL_hints.ts';
+import * as SDL_init from './SDL_init.ts';
 import * as SDL_iostream from './SDL_iostream.ts';
 import * as SDL_joystick from './SDL_joystick.ts';
 import * as SDL_keyboard from './SDL_keyboard.ts';
@@ -68,6 +69,7 @@ export const symbols = {
   ...SDL_haptic.symbols,
   ...SDL_hidapi.symbols,
   ...SDL_hints.symbols,
+  ...SDL_init.symbols,
   ...SDL_iostream.symbols,
   ...SDL_joystick.symbols,
   ...SDL_keyboard.symbols,

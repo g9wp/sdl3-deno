@@ -26,6 +26,7 @@ export * from "./sdl/guid.ts";
 export * from "./sdl/haptic.ts";
 export * from "./sdl/hidapi.ts";
 export * from "./sdl/hints.ts";
+export * from "./sdl/init.ts";
 export * from "./sdl/intrin.ts";
 export * from "./sdl/iostream.ts";
 export * from "./sdl/joystick.ts";
