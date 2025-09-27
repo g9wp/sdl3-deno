@@ -176,7 +176,7 @@ export class Tray {
     const tray = SDL.createTray(s.pointer, tooltip);
     s.destroy();
     if (!tray) throw SdlError(`Failed to create system tray`);
-    return tray as TrayPointer;
+    return tray;
   }
 
   /**
@@ -294,7 +294,7 @@ export class Tray {
    * @from SDL_tray.h:222 SDL_TrayMenu * SDL_GetTrayMenu(SDL_Tray *tray);
    */
   get menu(): TrayMenu {
-    return TrayMenu.of(SDL.getTrayMenu(this.pointer) as MenuPointer);
+    return TrayMenu.of(SDL.getTrayMenu(this.pointer));
   }
 
   /**
@@ -387,7 +387,7 @@ export class TrayEntry {
    * @from SDL_tray.h:198 SDL_TrayMenu * SDL_CreateTraySubmenu(SDL_TrayEntry *entry);
    */
   createSubmenu(): TrayMenu {
-    const menu = SDL.createTraySubmenu(this.pointer) as MenuPointer;
+    const menu = SDL.createTraySubmenu(this.pointer);
     if (!menu) throw SdlError(`Failed to create sub menu`);
     return new TrayMenu(menu);
   }
@@ -416,7 +416,7 @@ export class TrayEntry {
    * @from SDL_tray.h:246 SDL_TrayMenu * SDL_GetTraySubmenu(SDL_TrayEntry *entry);
    */
   get submenu(): TrayMenu {
-    return TrayMenu.of(SDL.getTraySubmenu(this.pointer) as MenuPointer);
+    return TrayMenu.of(SDL.getTraySubmenu(this.pointer));
   }
 
   /**
@@ -703,7 +703,7 @@ export class TrayMenu {
    * @from SDL_tray.h:523 SDL_Tray * SDL_GetTrayMenuParentTray(SDL_TrayMenu *menu);
    */
   get parentTray(): TrayPointer {
-    return SDL.getTrayMenuParentTray(this.pointer) as TrayPointer;
+    return SDL.getTrayMenuParentTray(this.pointer);
   }
 
   /**
@@ -727,7 +727,7 @@ export class TrayMenu {
    */
   get parentEntry(): TrayEntry {
     return TrayEntry.of(
-      SDL.getTrayMenuParentEntry(this.pointer) as EntryPointer,
+      SDL.getTrayMenuParentEntry(this.pointer),
     );
   }
 

@@ -222,7 +222,7 @@ export class Render {
     const r = SDL.createRenderer(
       window.pointer,
       name && name.join(","),
-    ) as RendererPointer;
+    );
     if (!r) throw SdlError("createRenderer");
     return new Render(r);
   }
@@ -281,7 +281,7 @@ export class Render {
    * @from SDL_render.h:298 SDL_Renderer * SDL_CreateRendererWithProperties(SDL_PropertiesID props);
    */
   createWithProperties(props: number): Render {
-    const r = SDL.createRendererWithProperties(props) as RendererPointer;
+    const r = SDL.createRendererWithProperties(props);
     if (!r) throw SdlError("createRendererWithProperties");
     return new Render(r);
   }
@@ -308,7 +308,7 @@ export class Render {
    * @from SDL_render.h:331 SDL_Renderer * SDL_CreateSoftwareRenderer(SDL_Surface *surface);
    */
   createSoftware(surface: SurfacePointer): Render {
-    const r = SDL.createSoftwareRenderer(surface) as RendererPointer;
+    const r = SDL.createSoftwareRenderer(surface);
     if (!r) throw SdlError("createSoftwareRenderer");
     return new Render(r);
   }
@@ -327,7 +327,7 @@ export class Render {
    * @from SDL_render.h:344 SDL_Renderer * SDL_GetRenderer(SDL_Window *window);
    */
   static fromWindow(window: Window): Render {
-    const r = SDL.getRenderer(window.pointer) as RendererPointer;
+    const r = SDL.getRenderer(window.pointer);
     if (!r) throw SdlError("getRenderer");
     return new Render(r);
   }
@@ -346,7 +346,7 @@ export class Render {
    * @from SDL_render.h:357 SDL_Window * SDL_GetRenderWindow(SDL_Renderer *renderer);
    */
   get window(): Window {
-    const w = SDL.getRenderWindow(this.pointer) as WindowPointer;
+    const w = SDL.getRenderWindow(this.pointer);
     if (!w) throw SdlError("getRenderWindow");
     return new Window(w);
   }
@@ -700,7 +700,7 @@ export class Render {
   createTextureWithProperties(props: number): Texture {
     const r = SDL.createTextureWithProperties(this.pointer, props);
     if (!r) throw SdlError("createTextureWithProperties");
-    return new Texture(r as TexturePointer);
+    return new Texture(r);
   }
 
   /**
@@ -754,7 +754,7 @@ export class Render {
   get target(): Texture | null {
     const r = SDL.getRenderTarget(this.pointer);
     if (r === null) return null;
-    return new Texture(r as TexturePointer);
+    return new Texture(r);
   }
 
   /**
@@ -2416,7 +2416,7 @@ export class Texture {
    * @from SDL_render.h:847 SDL_Renderer * SDL_GetRendererFromTexture(SDL_Texture *texture);
    */
   get render(): Render {
-    const r = SDL.getRendererFromTexture(this.pointer) as RendererPointer;
+    const r = SDL.getRendererFromTexture(this.pointer);
     if (!r) throw SdlError("getRendererFromTexture");
     return new Render(r);
   }

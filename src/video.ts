@@ -552,7 +552,7 @@ export class Display {
   get desktopDisplayMode(): DisplayModePtr {
     const r = SDL.getDesktopDisplayMode(this.id);
     if (!r) throw SdlError("getDesktopDisplayMode");
-    return new DisplayModePtr(r as DisplayModePointer);
+    return new DisplayModePtr(r);
   }
 
   /**
@@ -579,7 +579,7 @@ export class Display {
   get currentDisplayMode(): DisplayModePtr {
     const r = SDL.getDesktopDisplayMode(this.id);
     if (!r) throw SdlError("getDesktopDisplayMode");
-    return new DisplayModePtr(r as DisplayModePointer);
+    return new DisplayModePtr(r);
   }
 
   /**
@@ -770,7 +770,7 @@ export class Window {
   get fullscreenMode(): DisplayModePtr {
     const r = SDL.getWindowFullscreenMode(this.pointer);
     if (!r) throw SdlError("getWindowFullscreenMode");
-    return new DisplayModePtr(r as DisplayModePointer);
+    return new DisplayModePtr(r);
   }
 
   /**
@@ -834,9 +834,9 @@ export class Window {
     const p = Cursor.Unsafe(windows);
     const r = [];
     while (true) {
-      const window = p.ptr as WindowPointer;
+      const window = p.ptr;
       if (!window) break;
-      r.push(new Window(window));
+      r.push(new Window(window as WindowPointer));
     }
     free(windows);
     return r;
@@ -934,7 +934,7 @@ export class Window {
     h: number,
     flags: bigint,
   ): Window {
-    const r = SDL.createWindow(title, w, h, flags) as WindowPointer;
+    const r = SDL.createWindow(title, w, h, flags);
     if (!r) throw SdlError("createWindow");
     return new Window(r);
   }
@@ -1015,7 +1015,7 @@ export class Window {
       w,
       h,
       flags,
-    ) as WindowPointer;
+    );
     if (!r) throw SdlError("createPopupWindow");
     return new Window(r);
   }
@@ -1197,7 +1197,7 @@ export class Window {
    * @from SDL_video.h:1378 SDL_Window * SDL_GetWindowFromID(SDL_WindowID id);
    */
   static fromId(id: number): Window {
-    const r = SDL.getWindowFromId(id) as WindowPointer;
+    const r = SDL.getWindowFromId(id);
     if (!r) throw SdlError("getWindowFromId");
     return new Window(r);
   }
@@ -1218,7 +1218,7 @@ export class Window {
    * @from SDL_video.h:1393 SDL_Window * SDL_GetWindowParent(SDL_Window *window);
    */
   get parent(): Window {
-    const r = SDL.getWindowParent(this.pointer) as WindowPointer;
+    const r = SDL.getWindowParent(this.pointer);
     if (!r) throw SdlError("getWindowParent");
     return new Window(r);
   }
@@ -2203,7 +2203,7 @@ export class Window {
    * @from SDL_video.h:2284 SDL_Surface * SDL_GetWindowSurface(SDL_Window *window);
    */
   get surface(): SurfacePointer {
-    return SDL.getWindowSurface(this.pointer) as SurfacePointer;
+    return SDL.getWindowSurface(this.pointer);
   }
 
   /**
@@ -2449,7 +2449,7 @@ export class Window {
    * @from SDL_video.h:2495 SDL_Window * SDL_GetGrabbedWindow(void);
    */
   static get grabbed(): Window {
-    const r = SDL.getGrabbedWindow() as WindowPointer;
+    const r = SDL.getGrabbedWindow();
     if (!r) throw SdlError("getGrabbedWindow");
     return new Window(r);
   }
@@ -3036,7 +3036,7 @@ export class GL {
    * @from SDL_video.h:3112 SDL_Window * SDL_GL_GetCurrentWindow(void);
    */
   static glGetCurrentWindow(): Window {
-    const r = SDL.glGetCurrentWindow() as WindowPointer;
+    const r = SDL.glGetCurrentWindow();
     if (!r) throw SdlError("glGetCurrentWindow");
     return new Window(r);
   }

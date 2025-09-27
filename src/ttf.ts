@@ -164,7 +164,7 @@ export class Font {
    * @from SDL_ttf.h:152 TTF_Font * TTF_OpenFont(const char *file, float ptsize);
    */
   static open(file: string, ptsize: number): Font {
-    const fontPointer = TTF.openFont(file ?? "", ptsize) as FontPointer;
+    const fontPointer = TTF.openFont(file, ptsize);
     if (fontPointer === null) throw SdlError("openFont");
     return new Font(fontPointer);
   }
@@ -201,7 +201,7 @@ export class Font {
     closeio: boolean,
     ptsize: number,
   ): Font {
-    const fontPointer = TTF.openFontIo(src, closeio, ptsize) as FontPointer;
+    const fontPointer = TTF.openFontIo(src, closeio, ptsize);
     if (fontPointer === null) throw SdlError("openFont");
     return new Font(fontPointer);
   }
@@ -252,7 +252,7 @@ export class Font {
    * @from SDL_ttf.h:224 TTF_Font * TTF_OpenFontWithProperties(SDL_PropertiesID props);
    */
   static openWithProperties(props: number): Font {
-    const fontPointer = TTF.openFontWithProperties(props) as FontPointer;
+    const fontPointer = TTF.openFontWithProperties(props);
     if (fontPointer === null) throw SdlError("openFont");
     return new Font(fontPointer);
   }
@@ -313,7 +313,7 @@ export class Font {
    * @from SDL_ttf.h:255 TTF_Font * TTF_CopyFont(TTF_Font *existing_font);
    */
   copy(): Font {
-    const fontPointer = TTF.copyFont(this.pointer) as FontPointer;
+    const fontPointer = TTF.copyFont(this.pointer);
     if (fontPointer === null) throw SdlError("openFont");
     return new Font(fontPointer);
   }
@@ -1695,7 +1695,7 @@ export class Font {
       ch,
       fg,
       bg,
-    ) as SurfacePointer;
+    );
     if (!p) throw SdlError("renderGlyphShaded");
     return Surface.of(p);
   }
@@ -1742,7 +1742,7 @@ export class Font {
       text,
       0n,
       fg,
-    ) as SurfacePointer;
+    );
     if (!p) throw SdlError("renderTextBlended");
     return Surface.of(p);
   }
@@ -1827,7 +1827,7 @@ export class Font {
       this.pointer,
       ch,
       fg,
-    ) as SurfacePointer;
+    );
     if (!p) throw SdlError("renderGlyphBlended");
     return Surface.of(p);
   }
@@ -1876,7 +1876,7 @@ export class Font {
       0n,
       fg,
       bg,
-    ) as SurfacePointer;
+    );
     if (!p) throw SdlError("renderTextLcd");
     return Surface.of(p);
   }
@@ -1932,7 +1932,7 @@ export class Font {
       fg,
       bg,
       wrap_width,
-    ) as SurfacePointer;
+    );
     if (!p) throw SdlError("renderTextLcdWrapped");
     return Surface.of(p);
   }
@@ -1974,7 +1974,7 @@ export class Font {
       ch,
       fg,
       bg,
-    ) as SurfacePointer;
+    );
     if (!p) throw SdlError("renderGlyphLcd");
     return Surface.of(p);
   }
@@ -2037,7 +2037,7 @@ export class SurfaceTextEngine extends TextEngine {
    * @from SDL_ttf.h:1746 TTF_TextEngine * TTF_CreateSurfaceTextEngine(void);
    */
   static create(): SurfaceTextEngine {
-    const pointer = TTF.createSurfaceTextEngine() as TextEnginePointer;
+    const pointer = TTF.createSurfaceTextEngine();
     if (!pointer) throw SdlError("createSurfaceTextEngine");
     return new SurfaceTextEngine(pointer);
   }
@@ -2452,7 +2452,7 @@ export class Text {
    * @from SDL_ttf.h:2111 TTF_TextEngine * TTF_GetTextEngine(TTF_Text *text);
    */
   get engine(): TextEngine {
-    const r = TTF.getTextEngine(this.pointer) as TextEnginePointer;
+    const r = TTF.getTextEngine(this.pointer);
     if (!r) throw SdlError("getTextEngine");
     return new TextEngine(r);
   }
@@ -2501,7 +2501,7 @@ export class Text {
    * @from SDL_ttf.h:2150 TTF_Font * TTF_GetTextFont(TTF_Text *text);
    */
   get font(): Font {
-    return new Font(TTF.getTextFont(this.pointer) as FontPointer);
+    return new Font(TTF.getTextFont(this.pointer));
   }
 
   /**

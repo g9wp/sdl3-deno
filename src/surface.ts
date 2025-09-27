@@ -260,7 +260,7 @@ export class Surface {
       io,
       false,
       type,
-    ) as SurfacePointer;
+    );
     if (!pointer) throw SdlError(`Failed to load image`);
     return Surface.of(pointer);
   }

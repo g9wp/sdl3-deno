@@ -842,7 +842,7 @@ export class Event extends EventUnion {
    * @from SDL_events.h:1567 SDL_Window * SDL_GetWindowFromEvent(const SDL_Event *event);
    */
   get windowPointer(): WindowPointer {
-    return SDL.getWindowFromEvent(this.pointer) as WindowPointer;
+    return SDL.getWindowFromEvent(this.pointer);
   }
 }
 
