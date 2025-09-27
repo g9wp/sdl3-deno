@@ -22,6 +22,8 @@ import * as IMG from "../gen/IMG.ts";
 
 import * as SDL from "../gen/sdl/iostream.ts";
 import { destroySurface } from "../gen/sdl/surface.ts";
+import * as _s from "../gen/structs/SDL_surface.ts";
+import { UnsafeDataView } from "@g9wp/ptr";
 
 import { SdlError } from "./_utils.ts";
 import type { SurfacePointer } from "./pointer_type.ts";
@@ -65,6 +67,10 @@ export class Surface {
     if (!imagePath) return;
     this.pointer = IMG.load(imagePath);
     if (!this.pointer) throw SdlError(`Failed to load image`);
+  }
+
+  get detail(): _s.Surface {
+    return _s.read_Surface(UnsafeDataView(this.pointer!));
   }
 
   static of(pointer: SurfacePointer): Surface {
