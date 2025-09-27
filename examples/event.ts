@@ -17,9 +17,10 @@ async function main() {
   using textEvent = textEngine.createText(font, "event");
   textEvent.setColor({ r: 0, g: 128, b: 0, a: 255 });
 
-  function drawEvent(e: any) {
-    console.log(e);
-    textEvent.setString(JSON.stringify(e, (_, v) => typeof v === 'bigint' ? v.toString() : v, 4));
+  function drawEvent(e: { type: number }) {
+    const t = {name: EventType[e.type] ?? "", ...e};
+    console.log(t);
+    textEvent.setString(JSON.stringify(t, (_, v) => typeof v === 'bigint' ? v.toString() : v, 4));
   }
 
   function drawFrame() {
@@ -54,7 +55,7 @@ async function main() {
         break;
       }
       default:
-        drawEvent(event.common);
+        drawEvent(event.detail);
         break;
     }
   }
