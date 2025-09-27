@@ -349,7 +349,7 @@ export abstract class EventUnion {
 
   abstract type: number;
 
-  toObject(): _.CommonEvent {
+  get detail(): _.CommonEvent {
     switch(this.type) {
     case EventType.QUIT: return this.quit;
     case EventType.DISPLAY_ORIENTATION: return this.display;
