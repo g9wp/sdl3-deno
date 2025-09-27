@@ -48,10 +48,7 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
-import {
-  Cursor,
-  UnsafeDataView,
-} from "@g9wp/ptr";
+import { Cursor, UnsafeDataView } from "@g9wp/ptr";
 import * as SDL from "../gen/sdl/video.ts";
 import { free } from "../gen/sdl/stdinc.ts";
 import type * as _r from "../gen/structs/SDL_rect.ts";

@@ -51,10 +51,12 @@ type EventFilter = (
 type EventFilterUnsafeCallback = ReturnType<typeof CB.EventFilter>;
 
 function createCb(filter: EventFilter): EventFilterUnsafeCallback {
-  return CB.EventFilter(filter as (
-    userdata: Deno.PointerValue,
-    event: Deno.PointerValue,
-  ) => boolean);
+  return CB.EventFilter(
+    filter as (
+      userdata: Deno.PointerValue,
+      event: Deno.PointerValue,
+    ) => boolean,
+  );
 }
 
 const eventWatchers = {
