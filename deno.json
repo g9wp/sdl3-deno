@@ -24,6 +24,7 @@
   },
   "imports": {
     "@denosaurs/byte-type": "jsr:@denosaurs/byte-type@^0.4.1",
+    "@derzade/typescript-event-target": "jsr:@derzade/typescript-event-target@^1.1.1",
     "@g9wp/ptr": "jsr:@g9wp/ptr@^0.3.1",
     "@std/assert": "jsr:@std/assert@^1.0.14"
   }
