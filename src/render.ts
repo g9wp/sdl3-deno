@@ -61,7 +61,6 @@ import { Surface } from "./surface.ts";
 import type {
   RendererPointer,
   SurfacePointer,
-  WindowPointer,
 } from "./pointer_type.ts";
 type TexturePointer = Deno.PointerValue<"SDL_Texture">;
 

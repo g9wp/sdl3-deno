@@ -22,7 +22,6 @@ import { free } from "../gen/sdl/stdinc.ts";
 import type {
   IoStreamPointer,
   RendererPointer,
-  SurfacePointer,
 } from "./pointer_type.ts";
 type FontPointer = Deno.PointerValue<"TTF_Font">;
 type TextPointer = Deno.PointerValue<"TTF_Text">;
