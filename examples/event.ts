@@ -1,4 +1,4 @@
-import { Event, EventType, Render, SDL, SdlContext } from "@sdl3/sdl3-deno";
+import { Event, EventType, Render, SDL, SDLK, SdlContext } from "@sdl3/sdl3-deno";
 import { Font, RendererTextEngine, TtfContext } from "@sdl3/sdl3-deno/ttf";
 
 if (import.meta.main) {
@@ -48,7 +48,7 @@ async function main() {
       case EventType.KEY_UP: {
         const e = event.keyboard;
         drawEvent(e);
-        if (e.scancode === SDL.SCANCODE.ESCAPE) {
+        if (e.key === SDLK.ESCAPE) {
           event.pushQuit({});
           continue;
         }

@@ -1,5 +1,6 @@
 import * as SDL from "../gen/SDL.ts";
 export { SDL };
+export { SDLK } from "../gen/SDL.ts";
 import * as IMG from "../gen/IMG.ts";
 export { IMG };
 // import * as TTF from "../gen/TTF.ts";

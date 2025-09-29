@@ -92,7 +92,7 @@ const tray = new Tray({
 2. event: [examples/event.ts](./examples/event.ts)
 
 ```typescript
-import { Event, EventType, Render, SDL, SdlContext } from "@sdl3/sdl3-deno";
+import { Event, EventType, Render, SDL, SDLK, SdlContext } from "@sdl3/sdl3-deno";
 import { Font, RendererTextEngine, TtfContext } from "@sdl3/sdl3-deno/ttf";
 
 
@@ -133,7 +133,7 @@ for await (const event of Event.iter(1000 / 60, drawFrame)) {
     case EventType.KEY_UP: {
       const e = event.keyboard;
       drawEvent(e);
-      if (e.scancode === SDL.SCANCODE.ESCAPE) {
+      if (e.key === SDLK.ESCAPE) {
         event.pushQuit({});
         continue;
       }
