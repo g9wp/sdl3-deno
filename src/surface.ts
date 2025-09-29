@@ -111,7 +111,7 @@ export class Surface {
    * [SDL_DestroySurface](https://wiki.libsdl.org/SDL3/SDL_DestroySurface)
    * ().
    *
-   * @param imagePath a path on the filesystem to load an image from.
+   * @param file a path on the filesystem to load an image from.
    * @returns a new SDL surface, or NULL on error.
    *
    * @since This function is available since SDL_image 3.0.0.
@@ -167,7 +167,9 @@ export class Surface {
    * When done with the returned surface, the app should dispose of it with a
    * call to SDL_DestroySurface().
    *
-   * @param buffer data will be read from.
+   * @param src an SDL_IOStream that data will be read from.
+   * @param closeio true to close/free the SDL_IOStream before returning, false
+   *                to leave it open.
    * @returns a new SDL surface, or NULL on error.
    *
    * @since This function is available since SDL_image 3.0.0.
@@ -235,8 +237,10 @@ export class Surface {
    * When done with the returned surface, the app should dispose of it with a
    * call to SDL_DestroySurface().
    *
-   * @param buffer data will be read from.
-   * @param fmt_hint a filename extension that represent this data ("BMP", "GIF",
+   * @param src an SDL_IOStream that data will be read from.
+   * @param closeio true to close/free the SDL_IOStream before returning, false
+   *                to leave it open.
+   * @param type a filename extension that represent this data ("BMP", "GIF",
    *             "PNG", etc).
    * @returns a new SDL surface, or NULL on error.
    *
@@ -268,6 +272,8 @@ export class Surface {
    * Free a surface.
    *
    * It is safe to pass NULL to this function.
+   *
+   * @param surface the SDL_Surface to free.
    *
    * @threadsafety No other thread should be using the surface when it is freed.
    *

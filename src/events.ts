@@ -239,21 +239,19 @@ export class Event extends EventUnion {
    * The common practice is to fully process the event queue once every frame,
    * usually as a first step before updating the game's state:
    *
-   * ```ts
-   * setInterval(() => {
-   *     const event = new Event();
-   *     while (event.poll()) {  // poll until all events are handled!
+   * ```c
+   * while (game_is_still_running) {
+   *     SDL_Event event;
+   *     while (SDL_PollEvent(&event)) {  // poll until all events are handled!
    *         // decide what to do with this event.
-   *         if (event.type === EventType.QUIT) {
-   *             handleQuitEvent(event.quit);
-   *         }
    *     }
    *
    *     // update game state, draw the current frame
-   *
-   * }, frameInterval);
+   * }
    * ```
    *
+   * @param event the SDL_Event structure to be filled with the next event from
+   *              the queue, or NULL.
    * @returns true if this got an event or false if there are none available.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -264,7 +262,7 @@ export class Event extends EventUnion {
    * @sa SDL_WaitEvent
    * @sa SDL_WaitEventTimeout
    *
-   * @from SDL_events.h:1267 bool SDL_PollEvent(SDL_Event *event);
+   * @from SDL_events.h:1269 bool SDL_PollEvent(SDL_Event *event);
    */
   poll(): boolean {
     return SDL.pollEvent(this.pointer) && this.readType_();
@@ -298,7 +296,7 @@ export class Event extends EventUnion {
    * @sa SDL_PushEvent
    * @sa SDL_WaitEventTimeout
    *
-   * @from SDL_events.h:1291 bool SDL_WaitEvent(SDL_Event *event);
+   * @from SDL_events.h:1293 bool SDL_WaitEvent(SDL_Event *event);
    */
   wait(): boolean {
     return SDL.waitEvent(this.pointer) && this.readType_();
@@ -332,7 +330,7 @@ export class Event extends EventUnion {
    * @sa SDL_PushEvent
    * @sa SDL_WaitEvent
    *
-   * @from SDL_events.h:1321 bool SDL_WaitEventTimeout(SDL_Event *event, Sint32 timeoutMS);
+   * @from SDL_events.h:1323 bool SDL_WaitEventTimeout(SDL_Event *event, Sint32 timeoutMS);
    */
   waitTimeout(timeoutMS: number): boolean {
     return SDL.waitEventTimeout(this.pointer, timeoutMS) && this.readType_();
@@ -358,7 +356,7 @@ export class Event extends EventUnion {
    * @sa SDL_PollEvent
    * @sa SDL_WaitEvent
    *
-   * @from SDL_events.h:1068 void SDL_PumpEvents(void);
+   * @from SDL_events.h:1070 void SDL_PumpEvents(void);
    */
   static pump() {
     SDL.pumpEvents();
@@ -396,7 +394,7 @@ export class Event extends EventUnion {
    * @sa SDL_PollEvent
    * @sa SDL_RegisterEvents
    *
-   * @from SDL_events.h:1355 bool SDL_PushEvent(SDL_Event *event);
+   * @from SDL_events.h:1357 bool SDL_PushEvent(SDL_Event *event);
    */
   override push(): boolean {
     return SDL.pushEvent(this.pointer);

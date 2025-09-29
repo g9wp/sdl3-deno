@@ -58,10 +58,7 @@ import type { Size } from "./rect.ts";
 import * as _p from "@g9wp/ptr";
 import { Surface } from "./surface.ts";
 
-import type {
-  RendererPointer,
-  SurfacePointer,
-} from "./pointer_type.ts";
+import type { RendererPointer, SurfacePointer } from "./pointer_type.ts";
 type TexturePointer = Deno.PointerValue<"SDL_Texture">;
 
 /**
@@ -1057,8 +1054,7 @@ export class Render {
    * Return whether an explicit rectangle was set as the viewport.
    *
    * This is useful if you're saving and restoring the viewport and want to know
-   * whether you should restore a specific rectangle or NULL. Note that the
-   * viewport is always reset when changing rendering targets.
+   * whether you should restore a specific rectangle or NULL.
    *
    * Each render target has its own viewport. This function checks the viewport
    * for the current render target.
@@ -1074,7 +1070,7 @@ export class Render {
    * @sa SDL_GetRenderViewport
    * @sa SDL_SetRenderViewport
    *
-   * @from SDL_render.h:1626 bool SDL_RenderViewportSet(SDL_Renderer *renderer);
+   * @from SDL_render.h:1625 bool SDL_RenderViewportSet(SDL_Renderer *renderer);
    */
   get viewportSet(): boolean {
     return SDL.renderViewportSet(this.pointer);
@@ -1100,7 +1096,7 @@ export class Render {
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @from SDL_render.h:1648 bool SDL_GetRenderSafeArea(SDL_Renderer *renderer, SDL_Rect *rect);
+   * @from SDL_render.h:1647 bool SDL_GetRenderSafeArea(SDL_Renderer *renderer, SDL_Rect *rect);
    */
   get safeArea(): _r.Rect {
     return SDL.getRenderSafeArea(this.pointer);
@@ -1125,7 +1121,7 @@ export class Render {
    * @sa SDL_GetRenderClipRect
    * @sa SDL_RenderClipEnabled
    *
-   * @from SDL_render.h:1669 bool SDL_SetRenderClipRect(SDL_Renderer *renderer, const SDL_Rect *rect);
+   * @from SDL_render.h:1668 bool SDL_SetRenderClipRect(SDL_Renderer *renderer, const SDL_Rect *rect);
    */
   setClipRect(rect: _r.Rect | null): boolean {
     return SDL.setRenderClipRect(this.pointer, rect);
@@ -1150,7 +1146,7 @@ export class Render {
    * @sa SDL_RenderClipEnabled
    * @sa SDL_SetRenderClipRect
    *
-   * @from SDL_render.h:1690 bool SDL_GetRenderClipRect(SDL_Renderer *renderer, SDL_Rect *rect);
+   * @from SDL_render.h:1689 bool SDL_GetRenderClipRect(SDL_Renderer *renderer, SDL_Rect *rect);
    */
   get clipRect(): _r.Rect {
     return SDL.getRenderClipRect(this.pointer);
@@ -1173,7 +1169,7 @@ export class Render {
    * @sa SDL_GetRenderClipRect
    * @sa SDL_SetRenderClipRect
    *
-   * @from SDL_render.h:1709 bool SDL_RenderClipEnabled(SDL_Renderer *renderer);
+   * @from SDL_render.h:1708 bool SDL_RenderClipEnabled(SDL_Renderer *renderer);
    */
   get clipEnabled(): boolean {
     return SDL.renderClipEnabled(this.pointer);
@@ -1205,7 +1201,7 @@ export class Render {
    *
    * @sa SDL_GetRenderScale
    *
-   * @from SDL_render.h:1737 bool SDL_SetRenderScale(SDL_Renderer *renderer, float scaleX, float scaleY);
+   * @from SDL_render.h:1736 bool SDL_SetRenderScale(SDL_Renderer *renderer, float scaleX, float scaleY);
    */
   seScale(scaleX: number, scaleY: number): boolean {
     return SDL.setRenderScale(this.pointer, scaleX, scaleY);
@@ -1229,7 +1225,7 @@ export class Render {
    *
    * @sa SDL_SetRenderScale
    *
-   * @from SDL_render.h:1757 bool SDL_GetRenderScale(SDL_Renderer *renderer, float *scaleX, float *scaleY);
+   * @from SDL_render.h:1756 bool SDL_GetRenderScale(SDL_Renderer *renderer, float *scaleX, float *scaleY);
    */
   get scale(): { scaleX: number; scaleY: number } {
     return SDL.getRenderScale(this.pointer);
@@ -1258,7 +1254,7 @@ export class Render {
    * @sa SDL_GetRenderDrawColor
    * @sa SDL_SetRenderDrawColorFloat
    *
-   * @from SDL_render.h:1782 bool SDL_SetRenderDrawColor(SDL_Renderer *renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+   * @from SDL_render.h:1781 bool SDL_SetRenderDrawColor(SDL_Renderer *renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
    */
   setDrawColor(r: number, g: number, b: number, a: number): boolean {
     return SDL.setRenderDrawColor(this.pointer, r, g, b, a);
@@ -1287,7 +1283,7 @@ export class Render {
    * @sa SDL_GetRenderDrawColorFloat
    * @sa SDL_SetRenderDrawColor
    *
-   * @from SDL_render.h:1807 bool SDL_SetRenderDrawColorFloat(SDL_Renderer *renderer, float r, float g, float b, float a);
+   * @from SDL_render.h:1806 bool SDL_SetRenderDrawColorFloat(SDL_Renderer *renderer, float r, float g, float b, float a);
    */
   setDrawColorFloat(r: number, g: number, b: number, a: number): boolean {
     return SDL.setRenderDrawColorFloat(this.pointer, r, g, b, a);
@@ -1315,7 +1311,7 @@ export class Render {
    * @sa SDL_GetRenderDrawColorFloat
    * @sa SDL_SetRenderDrawColor
    *
-   * @from SDL_render.h:1831 bool SDL_GetRenderDrawColor(SDL_Renderer *renderer, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);
+   * @from SDL_render.h:1830 bool SDL_GetRenderDrawColor(SDL_Renderer *renderer, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);
    */
   get drawColor(): { r: number; g: number; b: number; a: number } {
     return SDL.getRenderDrawColor(this.pointer);
@@ -1343,7 +1339,7 @@ export class Render {
    * @sa SDL_SetRenderDrawColorFloat
    * @sa SDL_GetRenderDrawColor
    *
-   * @from SDL_render.h:1855 bool SDL_GetRenderDrawColorFloat(SDL_Renderer *renderer, float *r, float *g, float *b, float *a);
+   * @from SDL_render.h:1854 bool SDL_GetRenderDrawColorFloat(SDL_Renderer *renderer, float *r, float *g, float *b, float *a);
    */
   get drawColorFloat(): { r: number; g: number; b: number; a: number } {
     return SDL.getRenderDrawColorFloat(this.pointer);
@@ -1371,7 +1367,7 @@ export class Render {
    *
    * @sa SDL_GetRenderColorScale
    *
-   * @from SDL_render.h:1879 bool SDL_SetRenderColorScale(SDL_Renderer *renderer, float scale);
+   * @from SDL_render.h:1878 bool SDL_SetRenderColorScale(SDL_Renderer *renderer, float scale);
    */
   setColorScale(scale: number): boolean {
     return SDL.setRenderColorScale(this.pointer, scale);
@@ -1391,7 +1387,7 @@ export class Render {
    *
    * @sa SDL_SetRenderColorScale
    *
-   * @from SDL_render.h:1895 bool SDL_GetRenderColorScale(SDL_Renderer *renderer, float *scale);
+   * @from SDL_render.h:1894 bool SDL_GetRenderColorScale(SDL_Renderer *renderer, float *scale);
    */
   get colorScale(): number {
     return SDL.getRenderColorScale(this.pointer);
@@ -1413,7 +1409,7 @@ export class Render {
    *
    * @sa SDL_GetRenderDrawBlendMode
    *
-   * @from SDL_render.h:1913 bool SDL_SetRenderDrawBlendMode(SDL_Renderer *renderer, SDL_BlendMode blendMode);
+   * @from SDL_render.h:1912 bool SDL_SetRenderDrawBlendMode(SDL_Renderer *renderer, SDL_BlendMode blendMode);
    */
   setDrawBlendMode(blendMode: number): boolean {
     return SDL.setRenderDrawBlendMode(this.pointer, blendMode);
@@ -1433,7 +1429,7 @@ export class Render {
    *
    * @sa SDL_SetRenderDrawBlendMode
    *
-   * @from SDL_render.h:1929 bool SDL_GetRenderDrawBlendMode(SDL_Renderer *renderer, SDL_BlendMode *blendMode);
+   * @from SDL_render.h:1928 bool SDL_GetRenderDrawBlendMode(SDL_Renderer *renderer, SDL_BlendMode *blendMode);
    */
   get drawBlendMode(): number {
     return SDL.getRenderDrawBlendMode(this.pointer);
@@ -1457,7 +1453,7 @@ export class Render {
    *
    * @sa SDL_SetRenderDrawColor
    *
-   * @from SDL_render.h:1949 bool SDL_RenderClear(SDL_Renderer *renderer);
+   * @from SDL_render.h:1948 bool SDL_RenderClear(SDL_Renderer *renderer);
    */
   clear(): boolean {
     return SDL.renderClear(this.pointer);
@@ -1478,7 +1474,7 @@ export class Render {
    *
    * @sa SDL_RenderPoints
    *
-   * @from SDL_render.h:1966 bool SDL_RenderPoint(SDL_Renderer *renderer, float x, float y);
+   * @from SDL_render.h:1965 bool SDL_RenderPoint(SDL_Renderer *renderer, float x, float y);
    */
   point(x: number, y: number): boolean {
     return SDL.renderPoint(this.pointer, x, y);
@@ -1499,7 +1495,7 @@ export class Render {
    *
    * @sa SDL_RenderPoint
    *
-   * @from SDL_render.h:1983 bool SDL_RenderPoints(SDL_Renderer *renderer, const SDL_FPoint *points, int count);
+   * @from SDL_render.h:1982 bool SDL_RenderPoints(SDL_Renderer *renderer, const SDL_FPoint *points, int count);
    */
   points(points: _r.FPoint[]): boolean {
     return SDL.renderPoints(this.pointer, points);
@@ -1522,7 +1518,7 @@ export class Render {
    *
    * @sa SDL_RenderLines
    *
-   * @from SDL_render.h:2002 bool SDL_RenderLine(SDL_Renderer *renderer, float x1, float y1, float x2, float y2);
+   * @from SDL_render.h:2001 bool SDL_RenderLine(SDL_Renderer *renderer, float x1, float y1, float x2, float y2);
    */
   line(x1: number, y1: number, x2: number, y2: number): boolean {
     return SDL.renderLine(this.pointer, x1, y1, x2, y2);
@@ -1544,7 +1540,7 @@ export class Render {
    *
    * @sa SDL_RenderLine
    *
-   * @from SDL_render.h:2020 bool SDL_RenderLines(SDL_Renderer *renderer, const SDL_FPoint *points, int count);
+   * @from SDL_render.h:2019 bool SDL_RenderLines(SDL_Renderer *renderer, const SDL_FPoint *points, int count);
    */
   lines(points: _r.FPoint[]): boolean {
     return SDL.renderLines(this.pointer, points);
@@ -1565,7 +1561,7 @@ export class Render {
    *
    * @sa SDL_RenderRects
    *
-   * @from SDL_render.h:2037 bool SDL_RenderRect(SDL_Renderer *renderer, const SDL_FRect *rect);
+   * @from SDL_render.h:2036 bool SDL_RenderRect(SDL_Renderer *renderer, const SDL_FRect *rect);
    */
   rect(rect: _r.FRect | null): boolean {
     return SDL.renderRect(this.pointer, rect);
@@ -1575,7 +1571,8 @@ export class Render {
    * Draw some number of rectangles on the current rendering target at subpixel
    * precision.
    *
-   * @param rects an array of destination rectangles.
+   * @param renderer the renderer which should draw multiple rectangles.
+   * @param rects a pointer to an array of destination rectangles.
    * @param count the number of rectangles.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -1586,7 +1583,7 @@ export class Render {
    *
    * @sa SDL_RenderRect
    *
-   * @from SDL_render.h:2055 bool SDL_RenderRects(SDL_Renderer *renderer, const SDL_FRect *rects, int count);
+   * @from SDL_render.h:2054 bool SDL_RenderRects(SDL_Renderer *renderer, const SDL_FRect *rects, int count);
    */
   rects(rects: _r.FRect[]): boolean {
     return SDL.renderRects(this.pointer, rects);
@@ -1596,7 +1593,9 @@ export class Render {
    * Fill a rectangle on the current rendering target with the drawing color at
    * subpixel precision.
    *
-   * @param rect a destination rectangle, or NULL for the entire rendering target.
+   * @param renderer the renderer which should fill a rectangle.
+   * @param rect a pointer to the destination rectangle, or NULL for the entire
+   *             rendering target.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
    *
@@ -1606,7 +1605,7 @@ export class Render {
    *
    * @sa SDL_RenderFillRects
    *
-   * @from SDL_render.h:2073 bool SDL_RenderFillRect(SDL_Renderer *renderer, const SDL_FRect *rect);
+   * @from SDL_render.h:2072 bool SDL_RenderFillRect(SDL_Renderer *renderer, const SDL_FRect *rect);
    */
   fillRect(rect: _r.FRect | null): boolean {
     return SDL.renderFillRect(this.pointer, rect);
@@ -1616,7 +1615,8 @@ export class Render {
    * Fill some number of rectangles on the current rendering target with the
    * drawing color at subpixel precision.
    *
-   * @param rects an array of destination rectangles.
+   * @param renderer the renderer which should fill multiple rectangles.
+   * @param rects a pointer to an array of destination rectangles.
    * @param count the number of rectangles.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -1627,7 +1627,7 @@ export class Render {
    *
    * @sa SDL_RenderFillRect
    *
-   * @from SDL_render.h:2091 bool SDL_RenderFillRects(SDL_Renderer *renderer, const SDL_FRect *rects, int count);
+   * @from SDL_render.h:2090 bool SDL_RenderFillRects(SDL_Renderer *renderer, const SDL_FRect *rects, int count);
    */
   fillRects(rects: _r.FRect[]): boolean {
     return SDL.renderFillRects(this.pointer, rects);
@@ -1637,9 +1637,12 @@ export class Render {
    * Copy a portion of the texture to the current rendering target at subpixel
    * precision.
    *
+   * @param renderer the renderer which should copy parts of a texture.
    * @param texture the source texture.
-   * @param srcrect the source rectangle, or NULL for the entire texture.
-   * @param dstrect the destination rectangle, or NULL for the entire rendering target.
+   * @param srcrect a pointer to the source rectangle, or NULL for the entire
+   *                texture.
+   * @param dstrect a pointer to the destination rectangle, or NULL for the
+   *                entire rendering target.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
    *
@@ -1650,7 +1653,7 @@ export class Render {
    * @sa SDL_RenderTextureRotated
    * @sa SDL_RenderTextureTiled
    *
-   * @from SDL_render.h:2113 bool SDL_RenderTexture(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect);
+   * @from SDL_render.h:2112 bool SDL_RenderTexture(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect);
    */
   texture(
     texture: Texture,
@@ -1669,13 +1672,17 @@ export class Render {
    * Copy a portion of the source texture to the current rendering target, with
    * rotation and flipping, at subpixel precision.
    *
+   * @param renderer the renderer which should copy parts of a texture.
    * @param texture the source texture.
-   * @param srcrect the source rectangle, or NULL for the entire texture.
-   * @param dstrect the destination rectangle, or NULL for the entire rendering target.
+   * @param srcrect a pointer to the source rectangle, or NULL for the entire
+   *                texture.
+   * @param dstrect a pointer to the destination rectangle, or NULL for the
+   *                entire rendering target.
    * @param angle an angle in degrees that indicates the rotation that will be
    *              applied to dstrect, rotating it in a clockwise direction.
-   * @param center a point indicating the point around which dstrect will be rotated
-   *               (if NULL, rotation will be done around dstrect.w/2, dstrect.h/2).
+   * @param center a pointer to a point indicating the point around which
+   *               dstrect will be rotated (if NULL, rotation will be done
+   *               around dstrect.w/2, dstrect.h/2).
    * @param flip an SDL_FlipMode value stating which flipping actions should be
    *             performed on the texture.
    * @returns true on success or false on failure; call SDL_GetError() for more
@@ -1687,7 +1694,7 @@ export class Render {
    *
    * @sa SDL_RenderTexture
    *
-   * @from SDL_render.h:2141 bool SDL_RenderTextureRotated(SDL_Renderer *renderer, SDL_Texture *texture,                                                     const SDL_FRect *srcrect, const SDL_FRect *dstrect,                                                     double angle, const SDL_FPoint *center,                                                     SDL_FlipMode flip);
+   * @from SDL_render.h:2140 bool SDL_RenderTextureRotated(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect, double angle, const SDL_FPoint *center, SDL_FlipMode flip);
    */
   textureRotated(
     texture: Texture,
@@ -1734,7 +1741,7 @@ export class Render {
    *
    * @sa SDL_RenderTexture
    *
-   * @from SDL_render.h:2172 bool SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture,                                                     const SDL_FRect *srcrect, const SDL_FPoint *origin,                                                     const SDL_FPoint *right, const SDL_FPoint *down);
+   * @from SDL_render.h:2171 bool SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);
    */
   textureAffine(
     texture: Texture,
@@ -1778,7 +1785,7 @@ export class Render {
    *
    * @sa SDL_RenderTexture
    *
-   * @from SDL_render.h:2201 bool SDL_RenderTextureTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float scale, const SDL_FRect *dstrect);
+   * @from SDL_render.h:2200 bool SDL_RenderTextureTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float scale, const SDL_FRect *dstrect);
    */
   textureTiled(
     texture: Texture,
@@ -1827,7 +1834,7 @@ export class Render {
    *
    * @sa SDL_RenderTexture
    *
-   * @from SDL_render.h:2235 bool SDL_RenderTexture9Grid(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect);
+   * @from SDL_render.h:2234 bool SDL_RenderTexture9Grid(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect);
    */
   texture9Grid(
     texture: Texture,
@@ -1874,7 +1881,7 @@ export class Render {
    *
    * @sa SDL_RenderGeometryRaw
    *
-   * @from SDL_render.h:2259 bool SDL_RenderGeometry(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_Vertex *vertices, int num_vertices, const int *indices, int num_indices);
+   * @from SDL_render.h:2258 bool SDL_RenderGeometry(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_Vertex *vertices, int num_vertices, const int *indices, int num_indices);
    */
   geometry(
     texture: Texture | null,
@@ -1925,7 +1932,7 @@ export class Render {
    *
    * @sa SDL_RenderGeometry
    *
-   * @from SDL_render.h:2291 bool SDL_RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const SDL_FColor *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices);
+   * @from SDL_render.h:2290 bool SDL_RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const SDL_FColor *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices);
    */
   geometryRaw(
     texture: Texture | null,
@@ -1981,7 +1988,7 @@ export class Render {
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @from SDL_render.h:2324 SDL_Surface * SDL_RenderReadPixels(SDL_Renderer *renderer, const SDL_Rect *rect);
+   * @from SDL_render.h:2323 SDL_Surface * SDL_RenderReadPixels(SDL_Renderer *renderer, const SDL_Rect *rect);
    */
   readPixels(rect: _r.Rect | null): Surface {
     const r = SDL.renderReadPixels(
@@ -2040,7 +2047,7 @@ export class Render {
    * @sa SDL_SetRenderDrawBlendMode
    * @sa SDL_SetRenderDrawColor
    *
-   * @from SDL_render.h:2374 bool SDL_RenderPresent(SDL_Renderer *renderer);
+   * @from SDL_render.h:2373 bool SDL_RenderPresent(SDL_Renderer *renderer);
    */
   present(): boolean {
     return SDL.renderPresent(this.pointer);
@@ -2060,7 +2067,7 @@ export class Render {
    *
    * @sa SDL_CreateRenderer
    *
-   * @from SDL_render.h:2407 void SDL_DestroyRenderer(SDL_Renderer *renderer);
+   * @from SDL_render.h:2406 void SDL_DestroyRenderer(SDL_Renderer *renderer);
    */
   destroy() {
     if (this.pointer == null) return;
@@ -2103,7 +2110,7 @@ export class Render {
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @from SDL_render.h:2440 bool SDL_FlushRenderer(SDL_Renderer *renderer);
+   * @from SDL_render.h:2439 bool SDL_FlushRenderer(SDL_Renderer *renderer);
    */
   flush(): boolean {
     return SDL.flushRenderer(this.pointer);
@@ -2125,7 +2132,7 @@ export class Render {
    *
    * @sa SDL_GetRenderMetalCommandEncoder
    *
-   * @from SDL_render.h:2458 void * SDL_GetRenderMetalLayer(SDL_Renderer *renderer);
+   * @from SDL_render.h:2457 void * SDL_GetRenderMetalLayer(SDL_Renderer *renderer);
    */
   get metalLayer(): Deno.PointerValue {
     return SDL.getRenderMetalLayer(this.pointer);
@@ -2137,7 +2144,7 @@ export class Render {
    * This function returns `void *`, so SDL doesn't have to include Metal's
    * headers, but it can be safely cast to an `id<MTLRenderCommandEncoder>`.
    *
-   * This will return null if Metal refuses to give SDL a drawable to render to,
+   * This will return NULL if Metal refuses to give SDL a drawable to render to,
    * which might happen if the window is hidden/minimized/offscreen. This
    * doesn't apply to command encoders for render targets, just the window's
    * backbuffer. Check your return values!
@@ -2152,7 +2159,7 @@ export class Render {
    *
    * @sa SDL_GetRenderMetalLayer
    *
-   * @from SDL_render.h:2481 void * SDL_GetRenderMetalCommandEncoder(SDL_Renderer *renderer);
+   * @from SDL_render.h:2480 void * SDL_GetRenderMetalCommandEncoder(SDL_Renderer *renderer);
    */
   get metalCommandEncoder(): Deno.PointerValue {
     return SDL.getRenderMetalCommandEncoder(this.pointer);
@@ -2186,7 +2193,7 @@ export class Render {
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @from SDL_render.h:2512 bool SDL_AddVulkanRenderSemaphores(SDL_Renderer *renderer, Uint32 wait_stage_mask, Sint64 wait_semaphore, Sint64 signal_semaphore);
+   * @from SDL_render.h:2511 bool SDL_AddVulkanRenderSemaphores(SDL_Renderer *renderer, Uint32 wait_stage_mask, Sint64 wait_semaphore, Sint64 signal_semaphore);
    */
   addVulkanSemaphores(
     wait_stage_mask: number,
@@ -2224,7 +2231,7 @@ export class Render {
    *
    * @sa SDL_GetRenderVSync
    *
-   * @from SDL_render.h:2537 bool SDL_SetRenderVSync(SDL_Renderer *renderer, int vsync);
+   * @from SDL_render.h:2536 bool SDL_SetRenderVSync(SDL_Renderer *renderer, int vsync);
    */
   setVSync(vsync: number): boolean {
     return SDL.setRenderVSync(this.pointer, vsync);
@@ -2244,7 +2251,7 @@ export class Render {
    *
    * @sa SDL_SetRenderVSync
    *
-   * @from SDL_render.h:2557 bool SDL_GetRenderVSync(SDL_Renderer *renderer, int *vsync);
+   * @from SDL_render.h:2556 bool SDL_GetRenderVSync(SDL_Renderer *renderer, int *vsync);
    */
   get vsync(): number {
     return SDL.getRenderVSync(this.pointer);
@@ -2289,7 +2296,7 @@ export class Render {
    * @sa SDL_RenderDebugTextFormat
    * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
    *
-   * @from SDL_render.h:2609 bool SDL_RenderDebugText(SDL_Renderer *renderer, float x, float y, const char *str);
+   * @from SDL_render.h:2608 bool SDL_RenderDebugText(SDL_Renderer *renderer, float x, float y, const char *str);
    */
   debugText(x: number, y: number, str: string): boolean {
     return SDL.renderDebugText(this.pointer, x, y, str);
@@ -2998,7 +3005,7 @@ export class Texture {
    * @sa SDL_CreateTexture
    * @sa SDL_CreateTextureFromSurface
    *
-   * @from SDL_render.h:2391 void SDL_DestroyTexture(SDL_Texture *texture);
+   * @from SDL_render.h:2390 void SDL_DestroyTexture(SDL_Texture *texture);
    */
   destroy() {
     if (!this.pointer) return;

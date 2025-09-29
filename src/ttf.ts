@@ -19,10 +19,7 @@ import {
 } from "../gen/structs/SDL_ttf.ts";
 import { free } from "../gen/sdl/stdinc.ts";
 
-import type {
-  IoStreamPointer,
-  RendererPointer,
-} from "./pointer_type.ts";
+import type { IoStreamPointer, RendererPointer } from "./pointer_type.ts";
 type FontPointer = Deno.PointerValue<"TTF_Font">;
 type TextPointer = Deno.PointerValue<"TTF_Text">;
 type TextEnginePointer = Deno.PointerValue<"TTF_TextEngine">;
@@ -1135,7 +1132,7 @@ export class Font {
    *
    * @sa TTF_StringToTag
    *
-   * @from SDL_ttf.h:997 bool TTF_SetFontScript(TTF_Font *font, Uint32 script);
+   * @from SDL_ttf.h:1023 bool TTF_SetFontScript(TTF_Font *font, Uint32 script);
    */
   setScript(script: number): boolean {
     return TTF.setFontScript(this.pointer, script);
@@ -2010,7 +2007,7 @@ export class TextEngine {
    *
    * @sa TTF_DestroyText
    *
-   * @from SDL_ttf.h:2036 TTF_Text * TTF_CreateText(TTF_TextEngine *engine, TTF_Font *font, const char *text, size_t length);
+   * @from SDL_ttf.h:2062 TTF_Text * TTF_CreateText(TTF_TextEngine *engine, TTF_Font *font, const char *text, size_t length);
    */
   createText(font: Font, text: string): Text {
     const pointer = TTF.createText(this.pointer, font.pointer, text, 0n);

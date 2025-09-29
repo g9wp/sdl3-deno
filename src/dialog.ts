@@ -63,17 +63,13 @@ import type { WindowPointer } from "./pointer_type.ts";
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_FileCallback
+ * @sa SDL_DialogFileCallback
  * @sa SDL_DialogFileFilter
  * @sa SDL_ShowSaveFileDialog
  * @sa SDL_ShowOpenFolderDialog
  * @sa SDL_ShowFileDialogWithProperties
  *
- * @from SDL_dialog.h:163 void SDL_ShowOpenFileDialog(
- SDL_FileCallback callback, void *userdata,
- SDL_Window *window,
- const SDL_DialogFileFilter *filters, int nfilters,
- const char *default_location, bool allow_many);
+ * @from SDL_dialog.h:163 void SDL_ShowOpenFileDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const SDL_DialogFileFilter *filters, int nfilters, const char *default_location, bool allow_many);
  */
 export function openFile(
   options: {
@@ -143,13 +139,13 @@ export function openFile(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_FileCallback
+ * @sa SDL_DialogFileCallback
  * @sa SDL_DialogFileFilter
  * @sa SDL_ShowOpenFileDialog
  * @sa SDL_ShowOpenFolderDialog
  * @sa SDL_ShowFileDialogWithProperties
  *
- * @from SDL_dialog.h:212 void SDL_ShowSaveFileDialog(SDL_FileCallback callback, void *userdata, SDL_Window *window, const SDL_DialogFileFilter *filters, int nfilters, const char *default_location);
+ * @from SDL_dialog.h:212 void SDL_ShowSaveFileDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const SDL_DialogFileFilter *filters, int nfilters, const char *default_location);
  */
 export function saveFile(
   options: {
@@ -213,12 +209,12 @@ export function saveFile(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_FileCallback
+ * @sa SDL_DialogFileCallback
  * @sa SDL_ShowOpenFileDialog
  * @sa SDL_ShowSaveFileDialog
  * @sa SDL_ShowFileDialogWithProperties
  *
- * @from SDL_dialog.h:257 void SDL_ShowOpenFolderDialog(SDL_FileCallback callback, void *userdata, SDL_Window *window, const char *default_location, bool allow_many);
+ * @from SDL_dialog.h:257 void SDL_ShowOpenFolderDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const char *default_location, bool allow_many);
  */
 export function openFolder(
   options: {
@@ -284,13 +280,13 @@ export function openFolder(
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_FileDialogType
- * @sa SDL_FileCallback
+ * @sa SDL_DialogFileCallback
  * @sa SDL_DialogFileFilter
  * @sa SDL_ShowOpenFileDialog
  * @sa SDL_ShowSaveFileDialog
  * @sa SDL_ShowOpenFolderDialog
  *
- * @from SDL_dialog.h:323 void SDL_ShowFileDialogWithProperties(SDL_FileDialogType type, SDL_FileCallback callback, void *userdata, SDL_PropertiesID props);
+ * @from SDL_dialog.h:323 void SDL_ShowFileDialogWithProperties(SDL_FileDialogType type, SDL_DialogFileCallback callback, void *userdata, SDL_PropertiesID props);
  */
 export function withProperties(
   options: {

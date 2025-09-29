@@ -91,7 +91,8 @@ export class Properties {
    * SDL properties ID
    *
    * @since This datatype is available since SDL 3.2.0.
-   * @from SDL_properties.h:66 typedef Uint32 SDL_PropertiesID;
+   *
+   * @from SDL_properties.h:65 typedef Uint32 SDL_PropertiesID;
    */
   public id: number;
 

@@ -184,6 +184,8 @@ export class Tray {
    *
    * This also destroys all associated menus and entries.
    *
+   * @param tray the tray icon to be destroyed.
+   *
    * @threadsafety This function should be called on the thread that created the
    *               tray.
    *
@@ -207,6 +209,7 @@ export class Tray {
   /**
    * Updates the system tray icon's icon.
    *
+   * @param tray the tray icon to be updated.
    * @param icon the new icon. May be NULL.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -227,6 +230,7 @@ export class Tray {
   /**
    * Updates the system tray icon's tooltip.
    *
+   * @param tray the tray icon to be updated.
    * @param tooltip the new tooltip in UTF-8 encoding. May be NULL.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -251,6 +255,7 @@ export class Tray {
    *
    * A menu does not need to be destroyed; it will be destroyed with the tray.
    *
+   * @param tray the tray to bind the menu to.
    * @returns the newly created menu.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -281,6 +286,7 @@ export class Tray {
    *
    * A menu does not need to be destroyed; it will be destroyed with the tray.
    *
+   * @param tray the tray entry to bind the menu to.
    * @returns the newly created menu.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -348,6 +354,7 @@ export class TrayEntry {
   /**
    * Gets the menu containing a certain tray entry.
    *
+   * @param entry the entry for which to get the parent menu.
    * @returns the parent menu.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -373,6 +380,7 @@ export class TrayEntry {
    *
    * A menu does not need to be destroyed; it will be destroyed with the tray.
    *
+   * @param entry the tray entry to bind the menu to.
    * @returns the newly created menu.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -403,6 +411,7 @@ export class TrayEntry {
    *
    * A menu does not need to be destroyed; it will be destroyed with the tray.
    *
+   * @param entry the tray entry to bind the menu to.
    * @returns the newly created menu.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -421,6 +430,8 @@ export class TrayEntry {
 
   /**
    * Removes a tray entry.
+   *
+   * @param entry The entry to be deleted.
    *
    * @threadsafety This function should be called on the thread that created the
    *               tray.
@@ -446,6 +457,7 @@ export class TrayEntry {
    * label (separators), or to set a NULL label to an entry that has a non-NULL
    * label. The function will silently fail if that happens.
    *
+   * @param entry the entry to be updated.
    * @param label the new label for the entry in UTF-8 encoding.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -468,6 +480,7 @@ export class TrayEntry {
    *
    * If the returned value is NULL, the entry is a separator.
    *
+   * @param entry the entry to be read.
    * @returns the label of the entry in UTF-8 encoding.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -490,6 +503,7 @@ export class TrayEntry {
    *
    * The entry must have been created with the SDL_TRAYENTRY_CHECKBOX flag.
    *
+   * @param entry the entry to be updated.
    * @param checked true if the entry should be checked; false otherwise.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -512,6 +526,7 @@ export class TrayEntry {
    *
    * The entry must have been created with the SDL_TRAYENTRY_CHECKBOX flag.
    *
+   * @param entry the entry to be read.
    * @returns true if the entry is checked; false otherwise.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -552,6 +567,7 @@ export class TrayEntry {
   /**
    * Gets whether or not an entry is enabled.
    *
+   * @param entry the entry to be read.
    * @returns true if the entry is enabled; false otherwise.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -572,6 +588,7 @@ export class TrayEntry {
   /**
    * Sets a callback to be invoked when the entry is selected.
    *
+   * @param entry the entry to be updated.
    * @param callback a callback to be invoked when the entry is selected.
    * @param userdata an optional pointer to pass extra data to the callback when
    *                 it will be invoked.
@@ -596,6 +613,8 @@ export class TrayEntry {
 
   /**
    * Simulate a click on a tray entry.
+   *
+   * @param entry The entry to activate.
    *
    * @threadsafety This function should be called on the thread that created the
    *               tray.
@@ -690,6 +709,7 @@ export class TrayMenu {
    * Either this function or SDL_GetTrayMenuParentEntry() will return non-NULL
    * for any given menu.
    *
+   * @param menu the menu for which to get the parent enttrayry.
    * @returns the parent tray, or NULL if this menu is a submenu.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -713,6 +733,7 @@ export class TrayMenu {
    * Either this function or SDL_GetTrayMenuParentTray() will return non-NULL
    * for any given menu.
    *
+   * @param menu the menu for which to get the parent entry.
    * @returns the parent entry, or NULL if this menu is not a submenu.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -734,7 +755,10 @@ export class TrayMenu {
   /**
    * Returns a list of entries in the menu, in order.
    *
-   * @returns a list of entries within the given menu. The
+   * @param menu The menu to get entries from.
+   * @param count An optional pointer to obtain the number of entries in the
+   *              menu.
+   * @returns a NULL-terminated list of entries within the given menu. The
    *          pointer becomes invalid when any function that inserts or deletes
    *          entries in the menu is called.
    *
@@ -775,6 +799,7 @@ export class TrayMenu {
    *
    * An entry does not need to be destroyed; it will be destroyed with the tray.
    *
+   * @param menu the menu to append the entry to.
    * @param pos the desired position for the new entry. Entries at or following
    *            this place will be moved. If pos is -1, the entry is appended.
    * @param label the text to be displayed on the entry, in UTF-8 encoding, or

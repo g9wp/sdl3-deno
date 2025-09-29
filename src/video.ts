@@ -198,7 +198,7 @@ export class Display {
    *
    * @since This datatype is available since SDL 3.2.0.
    *
-   * @from SDL_video.h:75 typedef Uint32 SDL_DisplayID;
+   * @from SDL_video.h:74 typedef Uint32 SDL_DisplayID;
    */
   id: number = 0;
 
@@ -845,6 +845,10 @@ export class Window {
   /**
    * Create a window with the specified dimensions and flags.
    *
+   * The window size is a request and may be different than expected based on
+   * the desktop layout and window manager policies. Your application should be
+   * prepared to handle a window of any size.
+   *
    * `flags` may be any of the following OR'd together:
    *
    * - `SDL_WINDOW_FULLSCREEN`: fullscreen window at desktop resolution
@@ -926,7 +930,7 @@ export class Window {
    * @sa SDL_CreateWindowWithProperties
    * @sa SDL_DestroyWindow
    *
-   * @from SDL_video.h:1124 SDL_Window * SDL_CreateWindow(const char *title, int w, int h, SDL_WindowFlags flags);
+   * @from SDL_video.h:1128 SDL_Window * SDL_CreateWindow(const char *title, int w, int h, SDL_WindowFlags flags);
    */
   static create(
     title: string,
@@ -941,6 +945,10 @@ export class Window {
 
   /**
    * Create a child popup window of the specified parent window.
+   *
+   * The window size is a request and may be different than expected based on
+   * the desktop layout and window manager policies. Your application should be
+   * prepared to handle a window of any size.
    *
    * The flags parameter **must** contain at least one of the following:
    *
@@ -974,6 +982,15 @@ export class Window {
    * Popup windows implicitly do not have a border/decorations and do not appear
    * on the taskbar/dock or in lists of windows such as alt-tab menus.
    *
+   * By default, popup window positions will automatically be constrained to keep
+   * the entire window within display bounds. This can be overridden with the
+   * `SDL_PROP_WINDOW_CREATE_CONSTRAIN_POPUP_BOOLEAN` property.
+   *
+   * By default, popup menus will automatically grab keyboard focus from the parent
+   * when shown. This behavior can be overridden by setting the `SDL_WINDOW_NOT_FOCUSABLE`
+   * flag, setting the `SDL_PROP_WINDOW_CREATE_FOCUSABLE_BOOLEAN` property to false, or
+   * toggling it after creation via the `SDL_SetWindowFocusable()` function.
+   *
    * If a parent window is hidden or destroyed, any child popup windows will be
    * recursively hidden or destroyed as well. Child popup windows not explicitly
    * hidden will be restored when the parent is shown.
@@ -999,7 +1016,7 @@ export class Window {
    * @sa SDL_DestroyWindow
    * @sa SDL_GetWindowParent
    *
-   * @from SDL_video.h:1186 SDL_Window * SDL_CreatePopupWindow(SDL_Window *parent, int offset_x, int offset_y, int w, int h, SDL_WindowFlags flags);
+   * @from SDL_video.h:1203 SDL_Window * SDL_CreatePopupWindow(SDL_Window *parent, int offset_x, int offset_y, int w, int h, SDL_WindowFlags flags);
    */
   createPopup(
     offset_x: number,
@@ -1023,12 +1040,19 @@ export class Window {
   /**
    * Create a window with the specified properties.
    *
+   * The window size is a request and may be different than expected based on
+   * the desktop layout and window manager policies. Your application should be
+   * prepared to handle a window of any size.
+   *
    * These are the supported properties:
    *
    * - `SDL_PROP_WINDOW_CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should
    *   be always on top
    * - `SDL_PROP_WINDOW_CREATE_BORDERLESS_BOOLEAN`: true if the window has no
    *   window decoration
+   * - `SDL_PROP_WINDOW_CREATE_CONSTRAIN_POPUP_BOOLEAN`: true if the "tooltip" and
+   *   "menu" window types should be automatically constrained to be entirely within
+   *   display bounds (default), false if no constraints on the position are desired.
    * - `SDL_PROP_WINDOW_CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the
    *   window will be used with an externally managed graphics context.
    * - `SDL_PROP_WINDOW_CREATE_FOCUSABLE_BOOLEAN`: true if the window should
@@ -1139,7 +1163,7 @@ export class Window {
    * @sa SDL_CreateWindow
    * @sa SDL_DestroyWindow
    *
-   * @from SDL_video.h:1307 SDL_Window * SDL_CreateWindowWithProperties(SDL_PropertiesID props);
+   * @from SDL_video.h:1331 SDL_Window * SDL_CreateWindowWithProperties(SDL_PropertiesID props);
    */
   static createWithProperties(props: number): Window {
     const r = SDL.createWindowWithProperties(props);
@@ -1153,7 +1177,8 @@ export class Window {
    * The value 0 is an invalid ID.
    *
    * @since This datatype is available since SDL 3.2.0.
-   * @from SDL_video.h:84 typedef Uint32 SDL_WindowID;
+   *
+   * @from SDL_video.h:83 typedef Uint32 SDL_WindowID;
    */
 
   /**
@@ -1172,7 +1197,7 @@ export class Window {
    *
    * @sa SDL_GetWindowFromID
    *
-   * @from SDL_video.h:1360 SDL_WindowID SDL_GetWindowID(SDL_Window *window);
+   * @from SDL_video.h:1385 SDL_WindowID SDL_GetWindowID(SDL_Window *window);
    */
   get id(): number {
     return SDL.getWindowId(this.pointer);
@@ -1194,7 +1219,7 @@ export class Window {
    *
    * @sa SDL_GetWindowID
    *
-   * @from SDL_video.h:1378 SDL_Window * SDL_GetWindowFromID(SDL_WindowID id);
+   * @from SDL_video.h:1403 SDL_Window * SDL_GetWindowFromID(SDL_WindowID id);
    */
   static fromId(id: number): Window {
     const r = SDL.getWindowFromId(id);
@@ -1215,7 +1240,7 @@ export class Window {
    *
    * @sa SDL_CreatePopupWindow
    *
-   * @from SDL_video.h:1393 SDL_Window * SDL_GetWindowParent(SDL_Window *window);
+   * @from SDL_video.h:1418 SDL_Window * SDL_GetWindowParent(SDL_Window *window);
    */
   get parent(): Window {
     const r = SDL.getWindowParent(this.pointer);
@@ -1278,7 +1303,7 @@ export class Window {
    * - `SDL_PROP_WINDOW_COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`
    *   NSWindow associated with the window
    * - `SDL_PROP_WINDOW_COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag
-   *   assocated with metal views on the window
+   *   associated with metal views on the window
    *
    * On OpenVR:
    *
@@ -1343,7 +1368,7 @@ export class Window {
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @from SDL_video.h:1515 SDL_PropertiesID SDL_GetWindowProperties(SDL_Window *window);
+   * @from SDL_video.h:1540 SDL_PropertiesID SDL_GetWindowProperties(SDL_Window *window);
    */
   get properties(): number {
     return SDL.getWindowProperties(this.pointer);
@@ -1367,7 +1392,7 @@ export class Window {
    * @sa SDL_SetWindowMouseGrab
    * @sa SDL_ShowWindow
    *
-   * @from SDL_video.h:1571 SDL_WindowFlags SDL_GetWindowFlags(SDL_Window *window);
+   * @from SDL_video.h:1596 SDL_WindowFlags SDL_GetWindowFlags(SDL_Window *window);
    */
   get flags(): bigint {
     return SDL.getWindowFlags(this.pointer);
@@ -1389,7 +1414,7 @@ export class Window {
    *
    * @sa SDL_GetWindowTitle
    *
-   * @from SDL_video.h:1589 bool SDL_SetWindowTitle(SDL_Window *window, const char *title);
+   * @from SDL_video.h:1614 bool SDL_SetWindowTitle(SDL_Window *window, const char *title);
    */
   setTitle(title: string): boolean {
     return SDL.setWindowTitle(this.pointer, title);
@@ -1408,7 +1433,7 @@ export class Window {
    *
    * @sa SDL_SetWindowTitle
    *
-   * @from SDL_video.h:1604 const char * SDL_GetWindowTitle(SDL_Window *window);
+   * @from SDL_video.h:1629 const char * SDL_GetWindowTitle(SDL_Window *window);
    */
   get title(): string {
     return SDL.getWindowTitle(this.pointer);
@@ -1436,7 +1461,7 @@ export class Window {
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @from SDL_video.h:1628 bool SDL_SetWindowIcon(SDL_Window *window, SDL_Surface *icon);
+   * @from SDL_video.h:1653 bool SDL_SetWindowIcon(SDL_Window *window, SDL_Surface *icon);
    */
   setIcon(icon: SurfacePointer): boolean {
     return SDL.setWindowIcon(this.pointer, icon);
@@ -1481,7 +1506,7 @@ export class Window {
    * @sa SDL_GetWindowPosition
    * @sa SDL_SyncWindow
    *
-   * @from SDL_video.h:1669 bool SDL_SetWindowPosition(SDL_Window *window, int x, int y);
+   * @from SDL_video.h:1694 bool SDL_SetWindowPosition(SDL_Window *window, int x, int y);
    */
   setPosition(x: number, y: number): boolean {
     return SDL.setWindowPosition(this.pointer, x, y);
@@ -1509,7 +1534,7 @@ export class Window {
    *
    * @sa SDL_SetWindowPosition
    *
-   * @from SDL_video.h:1694 bool SDL_GetWindowPosition(SDL_Window *window, int *x, int *y);
+   * @from SDL_video.h:1719 bool SDL_GetWindowPosition(SDL_Window *window, int *x, int *y);
    */
   get position(): { x: number; y: number } {
     return SDL.getWindowPosition(this.pointer);
@@ -1550,7 +1575,7 @@ export class Window {
    * @sa SDL_SetWindowFullscreenMode
    * @sa SDL_SyncWindow
    *
-   * @from SDL_video.h:1731 bool SDL_SetWindowSize(SDL_Window *window, int w, int h);
+   * @from SDL_video.h:1756 bool SDL_SetWindowSize(SDL_Window *window, int w, int h);
    */
   setSize({ w, h }: Size): boolean {
     return SDL.setWindowSize(this.pointer, w, h);
@@ -1577,7 +1602,7 @@ export class Window {
    * @sa SDL_GetWindowSizeInPixels
    * @sa SDL_SetWindowSize
    *
-   * @from SDL_video.h:1754 bool SDL_GetWindowSize(SDL_Window *window, int *w, int *h);
+   * @from SDL_video.h:1779 bool SDL_GetWindowSize(SDL_Window *window, int *w, int *h);
    */
   get size(): Size {
     return SDL.getWindowSize(this.pointer);
@@ -1603,7 +1628,7 @@ export class Window {
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @from SDL_video.h:1776 bool SDL_GetWindowSafeArea(SDL_Window *window, SDL_Rect *rect);
+   * @from SDL_video.h:1801 bool SDL_GetWindowSafeArea(SDL_Window *window, SDL_Rect *rect);
    */
   safeArea(): _r.Rect {
     return SDL.getWindowSafeArea(this.pointer);
@@ -1648,7 +1673,7 @@ export class Window {
    * @sa SDL_GetWindowAspectRatio
    * @sa SDL_SyncWindow
    *
-   * @from SDL_video.h:1817 bool SDL_SetWindowAspectRatio(SDL_Window *window, float min_aspect, float max_aspect);
+   * @from SDL_video.h:1842 bool SDL_SetWindowAspectRatio(SDL_Window *window, float min_aspect, float max_aspect);
    */
   setAspectRatio(min_aspect: number, max_aspect: number): boolean {
     return SDL.setWindowAspectRatio(this.pointer, min_aspect, max_aspect);
@@ -1671,7 +1696,7 @@ export class Window {
    *
    * @sa SDL_SetWindowAspectRatio
    *
-   * @from SDL_video.h:1836 bool SDL_GetWindowAspectRatio(SDL_Window *window, float *min_aspect, float *max_aspect);
+   * @from SDL_video.h:1861 bool SDL_GetWindowAspectRatio(SDL_Window *window, float *min_aspect, float *max_aspect);
    */
   get aspectRatio(): { min_aspect: number; max_aspect: number } {
     return SDL.getWindowAspectRatio(this.pointer);
@@ -1712,7 +1737,7 @@ export class Window {
    *
    * @sa SDL_GetWindowSize
    *
-   * @from SDL_video.h:1873 bool SDL_GetWindowBordersSize(SDL_Window *window, int *top, int *left, int *bottom, int *right);
+   * @from SDL_video.h:1898 bool SDL_GetWindowBordersSize(SDL_Window *window, int *top, int *left, int *bottom, int *right);
    */
   get bordersSize(): {
     top: number;
@@ -1742,7 +1767,7 @@ export class Window {
    * @sa SDL_CreateWindow
    * @sa SDL_GetWindowSize
    *
-   * @from SDL_video.h:1893 bool SDL_GetWindowSizeInPixels(SDL_Window *window, int *w, int *h);
+   * @from SDL_video.h:1918 bool SDL_GetWindowSizeInPixels(SDL_Window *window, int *w, int *h);
    */
   get sizeInPixels(): Size {
     return SDL.getWindowSizeInPixels(this.pointer);
@@ -1763,7 +1788,7 @@ export class Window {
    * @sa SDL_GetWindowMinimumSize
    * @sa SDL_SetWindowMaximumSize
    *
-   * @from SDL_video.h:1911 bool SDL_SetWindowMinimumSize(SDL_Window *window, int min_w, int min_h);
+   * @from SDL_video.h:1936 bool SDL_SetWindowMinimumSize(SDL_Window *window, int min_w, int min_h);
    */
   setMinimumSize(min_w: number, min_h: number): boolean {
     return SDL.setWindowMinimumSize(this.pointer, min_w, min_h);
@@ -1787,7 +1812,7 @@ export class Window {
    * @sa SDL_GetWindowMaximumSize
    * @sa SDL_SetWindowMinimumSize
    *
-   * @from SDL_video.h:1931 bool SDL_GetWindowMinimumSize(SDL_Window *window, int *w, int *h);
+   * @from SDL_video.h:1956 bool SDL_GetWindowMinimumSize(SDL_Window *window, int *w, int *h);
    */
   get minimumSize(): Size {
     return SDL.getWindowMinimumSize(this.pointer);
@@ -1809,7 +1834,7 @@ export class Window {
    * @sa SDL_GetWindowMaximumSize
    * @sa SDL_SetWindowMinimumSize
    *
-   * @from SDL_video.h:1949 bool SDL_SetWindowMaximumSize(SDL_Window *window, int max_w, int max_h);
+   * @from SDL_video.h:1974 bool SDL_SetWindowMaximumSize(SDL_Window *window, int max_w, int max_h);
    */
   setMaximumSize(max_w: number, max_h: number): boolean {
     return SDL.setWindowMaximumSize(this.pointer, max_w, max_h);
@@ -1833,7 +1858,7 @@ export class Window {
    * @sa SDL_GetWindowMinimumSize
    * @sa SDL_SetWindowMaximumSize
    *
-   * @from SDL_video.h:1969 bool SDL_GetWindowMaximumSize(SDL_Window *window, int *w, int *h);
+   * @from SDL_video.h:1994 bool SDL_GetWindowMaximumSize(SDL_Window *window, int *w, int *h);
    */
   get maximumSize(): Size {
     return SDL.getWindowMaximumSize(this.pointer);
@@ -1859,7 +1884,7 @@ export class Window {
    *
    * @sa SDL_GetWindowFlags
    *
-   * @from SDL_video.h:1991 bool SDL_SetWindowBordered(SDL_Window *window, bool bordered);
+   * @from SDL_video.h:2016 bool SDL_SetWindowBordered(SDL_Window *window, bool bordered);
    */
   setBordered(bordered: boolean): boolean {
     return SDL.setWindowBordered(this.pointer, bordered);
@@ -1885,7 +1910,7 @@ export class Window {
    *
    * @sa SDL_GetWindowFlags
    *
-   * @from SDL_video.h:2013 bool SDL_SetWindowResizable(SDL_Window *window, bool resizable);
+   * @from SDL_video.h:2038 bool SDL_SetWindowResizable(SDL_Window *window, bool resizable);
    */
   setResizable(resizable: boolean): boolean {
     return SDL.setWindowResizable(this.pointer, resizable);
@@ -1907,7 +1932,7 @@ export class Window {
    *
    * @sa SDL_GetWindowFlags
    *
-   * @from SDL_video.h:2032 bool SDL_SetWindowAlwaysOnTop(SDL_Window *window, bool on_top);
+   * @from SDL_video.h:2057 bool SDL_SetWindowAlwaysOnTop(SDL_Window *window, bool on_top);
    */
   setAlwaysOnTop(on_top: boolean): boolean {
     return SDL.setWindowAlwaysOnTop(this.pointer, on_top);
@@ -1927,7 +1952,7 @@ export class Window {
    * @sa SDL_HideWindow
    * @sa SDL_RaiseWindow
    *
-   * @from SDL_video.h:2048 bool SDL_ShowWindow(SDL_Window *window);
+   * @from SDL_video.h:2073 bool SDL_ShowWindow(SDL_Window *window);
    */
   show(): boolean {
     return SDL.showWindow(this.pointer);
@@ -1947,7 +1972,7 @@ export class Window {
    * @sa SDL_ShowWindow
    * @sa SDL_WINDOW_HIDDEN
    *
-   * @from SDL_video.h:2064 bool SDL_HideWindow(SDL_Window *window);
+   * @from SDL_video.h:2089 bool SDL_HideWindow(SDL_Window *window);
    */
 
   hide(): boolean {
@@ -1972,7 +1997,7 @@ export class Window {
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @from SDL_video.h:2084 bool SDL_RaiseWindow(SDL_Window *window);
+   * @from SDL_video.h:2109 bool SDL_RaiseWindow(SDL_Window *window);
    */
   raise(): boolean {
     return SDL.raiseWindow(this.pointer);
@@ -2010,7 +2035,7 @@ export class Window {
    * @sa SDL_RestoreWindow
    * @sa SDL_SyncWindow
    *
-   * @from SDL_video.h:2118 bool SDL_MaximizeWindow(SDL_Window *window);
+   * @from SDL_video.h:2143 bool SDL_MaximizeWindow(SDL_Window *window);
    */
   maximize(): boolean {
     return SDL.maximizeWindow(this.pointer);
@@ -2043,7 +2068,7 @@ export class Window {
    * @sa SDL_RestoreWindow
    * @sa SDL_SyncWindow
    *
-   * @from SDL_video.h:2147 bool SDL_MinimizeWindow(SDL_Window *window);
+   * @from SDL_video.h:2172 bool SDL_MinimizeWindow(SDL_Window *window);
    */
   minimize(): boolean {
     return SDL.minimizeWindow(this.pointer);
@@ -2077,7 +2102,7 @@ export class Window {
    * @sa SDL_MinimizeWindow
    * @sa SDL_SyncWindow
    *
-   * @from SDL_video.h:2177 bool SDL_RestoreWindow(SDL_Window *window);
+   * @from SDL_video.h:2202 bool SDL_RestoreWindow(SDL_Window *window);
    */
   restore(): boolean {
     return SDL.restoreWindow(this.pointer);
@@ -2113,7 +2138,7 @@ export class Window {
    * @sa SDL_SyncWindow
    * @sa SDL_WINDOW_FULLSCREEN
    *
-   * @from SDL_video.h:2209 bool SDL_SetWindowFullscreen(SDL_Window *window, bool fullscreen);
+   * @from SDL_video.h:2234 bool SDL_SetWindowFullscreen(SDL_Window *window, bool fullscreen);
    */
   setFullScreen(fullscreen: boolean): boolean {
     return SDL.setWindowFullscreen(this.pointer, fullscreen);
@@ -2148,7 +2173,7 @@ export class Window {
    * @sa SDL_RestoreWindow
    * @sa SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS
    *
-   * @from SDL_video.h:2240 bool SDL_SyncWindow(SDL_Window *window);
+   * @from SDL_video.h:2265 bool SDL_SyncWindow(SDL_Window *window);
    */
   sync(): boolean {
     return SDL.syncWindow(this.pointer);
@@ -2167,7 +2192,7 @@ export class Window {
    *
    * @sa SDL_GetWindowSurface
    *
-   * @from SDL_video.h:2255 bool SDL_WindowHasSurface(SDL_Window *window);
+   * @from SDL_video.h:2280 bool SDL_WindowHasSurface(SDL_Window *window);
    */
   hasSurface(): boolean {
     return SDL.windowHasSurface(this.pointer);
@@ -2200,7 +2225,7 @@ export class Window {
    * @sa SDL_UpdateWindowSurface
    * @sa SDL_UpdateWindowSurfaceRects
    *
-   * @from SDL_video.h:2284 SDL_Surface * SDL_GetWindowSurface(SDL_Window *window);
+   * @from SDL_video.h:2309 SDL_Surface * SDL_GetWindowSurface(SDL_Window *window);
    */
   get surface(): SurfacePointer {
     return SDL.getWindowSurface(this.pointer);
@@ -2230,7 +2255,7 @@ export class Window {
    *
    * @sa SDL_GetWindowSurfaceVSync
    *
-   * @from SDL_video.h:2310 bool SDL_SetWindowSurfaceVSync(SDL_Window *window, int vsync);
+   * @from SDL_video.h:2335 bool SDL_SetWindowSurfaceVSync(SDL_Window *window, int vsync);
    */
   setSurfaceVSync(vsync: number): boolean {
     return SDL.setWindowSurfaceVSync(this.pointer, vsync);
@@ -2251,7 +2276,7 @@ export class Window {
    *
    * @sa SDL_SetWindowSurfaceVSync
    *
-   * @from SDL_video.h:2330 bool SDL_GetWindowSurfaceVSync(SDL_Window *window, int *vsync);
+   * @from SDL_video.h:2355 bool SDL_GetWindowSurfaceVSync(SDL_Window *window, int *vsync);
    */
   get surfaceVSync(): number {
     return SDL.getWindowSurfaceVSync(this.pointer);
@@ -2276,7 +2301,7 @@ export class Window {
    * @sa SDL_GetWindowSurface
    * @sa SDL_UpdateWindowSurfaceRects
    *
-   * @from SDL_video.h:2351 bool SDL_UpdateWindowSurface(SDL_Window *window);
+   * @from SDL_video.h:2376 bool SDL_UpdateWindowSurface(SDL_Window *window);
    */
   updateSurface(): boolean {
     return SDL.updateWindowSurface(this.pointer);
@@ -2309,7 +2334,7 @@ export class Window {
    * @sa SDL_GetWindowSurface
    * @sa SDL_UpdateWindowSurface
    *
-   * @from SDL_video.h:2380 bool SDL_UpdateWindowSurfaceRects(SDL_Window *window, const SDL_Rect *rects, int numrects);
+   * @from SDL_video.h:2405 bool SDL_UpdateWindowSurfaceRects(SDL_Window *window, const SDL_Rect *rects, int numrects);
    */
   updateSurfaceRects(rects: _r.Rect[]): boolean {
     return SDL.updateWindowSurfaceRects(this.pointer, rects);
@@ -2328,7 +2353,7 @@ export class Window {
    * @sa SDL_GetWindowSurface
    * @sa SDL_WindowHasSurface
    *
-   * @from SDL_video.h:2396 bool SDL_DestroyWindowSurface(SDL_Window *window);
+   * @from SDL_video.h:2421 bool SDL_DestroyWindowSurface(SDL_Window *window);
    */
   destroySurface(): boolean {
     return SDL.destroyWindowSurface(this.pointer);
@@ -2365,7 +2390,7 @@ export class Window {
    * @sa SDL_GetWindowKeyboardGrab
    * @sa SDL_SetWindowMouseGrab
    *
-   * @from SDL_video.h:2429 bool SDL_SetWindowKeyboardGrab(SDL_Window *window, bool grabbed);
+   * @from SDL_video.h:2454 bool SDL_SetWindowKeyboardGrab(SDL_Window *window, bool grabbed);
    */
   setKeyboardGrab(grabbed: boolean): boolean {
     return SDL.setWindowKeyboardGrab(this.pointer, grabbed);
@@ -2389,7 +2414,7 @@ export class Window {
    * @sa SDL_SetWindowMouseGrab
    * @sa SDL_SetWindowKeyboardGrab
    *
-   * @from SDL_video.h:2450 bool SDL_SetWindowMouseGrab(SDL_Window *window, bool grabbed);
+   * @from SDL_video.h:2475 bool SDL_SetWindowMouseGrab(SDL_Window *window, bool grabbed);
    */
   setMouseGrab(grabbed: boolean): boolean {
     return SDL.setWindowMouseGrab(this.pointer, grabbed);
@@ -2407,7 +2432,7 @@ export class Window {
    *
    * @sa SDL_SetWindowKeyboardGrab
    *
-   * @from SDL_video.h:2464 bool SDL_GetWindowKeyboardGrab(SDL_Window *window);
+   * @from SDL_video.h:2489 bool SDL_GetWindowKeyboardGrab(SDL_Window *window);
    */
   getKeyboardGrab(): boolean {
     return SDL.getWindowKeyboardGrab(this.pointer);
@@ -2428,7 +2453,7 @@ export class Window {
    * @sa SDL_SetWindowMouseGrab
    * @sa SDL_SetWindowKeyboardGrab
    *
-   * @from SDL_video.h:2481 bool SDL_GetWindowMouseGrab(SDL_Window *window);
+   * @from SDL_video.h:2506 bool SDL_GetWindowMouseGrab(SDL_Window *window);
    */
   getMouseGrab(): boolean {
     return SDL.getWindowMouseGrab(this.pointer);
@@ -2446,7 +2471,7 @@ export class Window {
    * @sa SDL_SetWindowMouseGrab
    * @sa SDL_SetWindowKeyboardGrab
    *
-   * @from SDL_video.h:2495 SDL_Window * SDL_GetGrabbedWindow(void);
+   * @from SDL_video.h:2520 SDL_Window * SDL_GetGrabbedWindow(void);
    */
   static get grabbed(): Window {
     const r = SDL.getGrabbedWindow();
@@ -2474,7 +2499,7 @@ export class Window {
    * @sa SDL_GetWindowMouseGrab
    * @sa SDL_SetWindowMouseGrab
    *
-   * @from SDL_video.h:2517 bool SDL_SetWindowMouseRect(SDL_Window *window, const SDL_Rect *rect);
+   * @from SDL_video.h:2542 bool SDL_SetWindowMouseRect(SDL_Window *window, const SDL_Rect *rect);
    */
   setMouseRect(rect: _r.Rect): boolean {
     return SDL.setWindowMouseRect(this.pointer, rect);
@@ -2495,7 +2520,7 @@ export class Window {
    * @sa SDL_GetWindowMouseGrab
    * @sa SDL_SetWindowMouseGrab
    *
-   * @from SDL_video.h:2534 const SDL_Rect * SDL_GetWindowMouseRect(SDL_Window *window);
+   * @from SDL_video.h:2559 const SDL_Rect * SDL_GetWindowMouseRect(SDL_Window *window);
    */
   get mouseRect(): _r.Rect {
     return SDL.getWindowMouseRect(this.pointer);
@@ -2520,7 +2545,7 @@ export class Window {
    *
    * @sa SDL_GetWindowOpacity
    *
-   * @from SDL_video.h:2555 bool SDL_SetWindowOpacity(SDL_Window *window, float opacity);
+   * @from SDL_video.h:2580 bool SDL_SetWindowOpacity(SDL_Window *window, float opacity);
    */
   setOpacity(opacity: number): boolean {
     return SDL.setWindowOpacity(this.pointer, opacity);
@@ -2542,7 +2567,7 @@ export class Window {
    *
    * @sa SDL_SetWindowOpacity
    *
-   * @from SDL_video.h:2573 float SDL_GetWindowOpacity(SDL_Window *window);
+   * @from SDL_video.h:2598 float SDL_GetWindowOpacity(SDL_Window *window);
    */
   get opacity(): number {
     return SDL.getWindowOpacity(this.pointer);
@@ -2580,7 +2605,7 @@ export class Window {
    *
    * @sa SDL_SetWindowModal
    *
-   * @from SDL_video.h:2607 bool SDL_SetWindowParent(SDL_Window *window, SDL_Window *parent);
+   * @from SDL_video.h:2632 bool SDL_SetWindowParent(SDL_Window *window, SDL_Window *parent);
    */
   setParent(parent: Window): boolean {
     return SDL.setWindowParent(this.pointer, parent.pointer);
@@ -2604,7 +2629,7 @@ export class Window {
    * @sa SDL_SetWindowParent
    * @sa SDL_WINDOW_MODAL
    *
-   * @from SDL_video.h:2627 bool SDL_SetWindowModal(SDL_Window *window, bool modal);
+   * @from SDL_video.h:2652 bool SDL_SetWindowModal(SDL_Window *window, bool modal);
    */
   setModal(modal: boolean): boolean {
     return SDL.setWindowModal(this.pointer, modal);
@@ -2622,7 +2647,7 @@ export class Window {
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @from SDL_video.h:2641 bool SDL_SetWindowFocusable(SDL_Window *window, bool focusable);
+   * @from SDL_video.h:2666 bool SDL_SetWindowFocusable(SDL_Window *window, bool focusable);
    */
   setFocusable(focusable: boolean): boolean {
     return SDL.setWindowFocusable(this.pointer, focusable);
@@ -2651,7 +2676,7 @@ export class Window {
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @from SDL_video.h:2667 bool SDL_ShowWindowSystemMenu(SDL_Window *window, int x, int y);
+   * @from SDL_video.h:2692 bool SDL_ShowWindowSystemMenu(SDL_Window *window, int x, int y);
    */
   showSystemMenu(x: number, y: number): boolean {
     return SDL.showWindowSystemMenu(this.pointer, x, y);
@@ -2682,7 +2707,7 @@ export class Window {
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @from SDL_video.h:2776 bool SDL_SetWindowShape(SDL_Window *window, SDL_Surface *shape);
+   * @from SDL_video.h:2801 bool SDL_SetWindowShape(SDL_Window *window, SDL_Surface *shape);
    */
   setShape(shape: SurfacePointer): boolean {
     return SDL.setWindowShape(this.pointer, shape);
@@ -2699,7 +2724,7 @@ export class Window {
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @from SDL_video.h:2790 bool SDL_FlashWindow(SDL_Window *window, SDL_FlashOperation operation);
+   * @from SDL_video.h:2815 bool SDL_FlashWindow(SDL_Window *window, SDL_FlashOperation operation);
    */
   flash(operation: number): boolean {
     return SDL.flashWindow(this.pointer, operation);
@@ -2725,7 +2750,7 @@ export class Window {
    * @sa SDL_CreateWindow
    * @sa SDL_CreateWindowWithProperties
    *
-   * @from SDL_video.h:2812 void SDL_DestroyWindow(SDL_Window *window);
+   * @from SDL_video.h:2837 void SDL_DestroyWindow(SDL_Window *window);
    */
   destroy() {
     if (!this.pointer) return;
@@ -2755,7 +2780,7 @@ export class ScreenSaver {
    * @sa SDL_DisableScreenSaver
    * @sa SDL_EnableScreenSaver
    *
-   * @from SDL_video.h:2831 bool SDL_ScreenSaverEnabled(void);
+   * @from SDL_video.h:2856 bool SDL_ScreenSaverEnabled(void);
    */
   static get enabled(): boolean {
     return SDL.screenSaverEnabled();
@@ -2774,7 +2799,7 @@ export class ScreenSaver {
    * @sa SDL_DisableScreenSaver
    * @sa SDL_ScreenSaverEnabled
    *
-   * @from SDL_video.h:2846 bool SDL_EnableScreenSaver(void);
+   * @from SDL_video.h:2871 bool SDL_EnableScreenSaver(void);
    */
   static enable(): boolean {
     return SDL.enableScreenSaver();
@@ -2799,7 +2824,7 @@ export class ScreenSaver {
    * @sa SDL_EnableScreenSaver
    * @sa SDL_ScreenSaverEnabled
    *
-   * @from SDL_video.h:2867 bool SDL_DisableScreenSaver(void);
+   * @from SDL_video.h:2892 bool SDL_DisableScreenSaver(void);
    */
   disable(): boolean {
     return SDL.disableScreenSaver();
@@ -2829,7 +2854,7 @@ export class GL {
    * @sa SDL_GL_GetProcAddress
    * @sa SDL_GL_UnloadLibrary
    *
-   * @from SDL_video.h:2897 bool SDL_GL_LoadLibrary(const char *path);
+   * @from SDL_video.h:2922 bool SDL_GL_LoadLibrary(const char *path);
    */
   static loadLibrary(path: string): boolean {
     return SDL.glLoadLibrary(path);
@@ -2887,7 +2912,7 @@ export class GL {
    * @sa SDL_GL_LoadLibrary
    * @sa SDL_GL_UnloadLibrary
    *
-   * @from SDL_video.h:2952 SDL_FunctionPointer SDL_GL_GetProcAddress(const char *proc);
+   * @from SDL_video.h:2977 SDL_FunctionPointer SDL_GL_GetProcAddress(const char *proc);
    */
   static getProcAddress(proc: string): Deno.PointerValue {
     return SDL.glGetProcAddress(proc);
@@ -2910,7 +2935,7 @@ export class GL {
    *
    * @sa SDL_EGL_GetCurrentDisplay
    *
-   * @from SDL_video.h:2971 SDL_FunctionPointer SDL_EGL_GetProcAddress(const char *proc);
+   * @from SDL_video.h:2996 SDL_FunctionPointer SDL_EGL_GetProcAddress(const char *proc);
    */
   static eglGetProcAddress(proc: string): Deno.PointerValue {
     return SDL.eglGetProcAddress(proc);
@@ -2925,7 +2950,7 @@ export class GL {
    *
    * @sa SDL_GL_LoadLibrary
    *
-   * @from SDL_video.h:2982 void SDL_GL_UnloadLibrary(void);
+   * @from SDL_video.h:3007 void SDL_GL_UnloadLibrary(void);
    */
   static unloadLibrary() {
     SDL.glUnloadLibrary();
@@ -2952,7 +2977,7 @@ export class GL {
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @from SDL_video.h:3005 bool SDL_GL_ExtensionSupported(const char *extension);
+   * @from SDL_video.h:3030 bool SDL_GL_ExtensionSupported(const char *extension);
    */
   static extensionSupported(extension: string): boolean {
     return SDL.glExtensionSupported(extension);
@@ -2968,7 +2993,7 @@ export class GL {
    * @sa SDL_GL_GetAttribute
    * @sa SDL_GL_SetAttribute
    *
-   * @from SDL_video.h:3017 void SDL_GL_ResetAttributes(void);
+   * @from SDL_video.h:3042 void SDL_GL_ResetAttributes(void);
    */
   static resetAttributes() {
     SDL.glResetAttributes();
@@ -2995,7 +3020,7 @@ export class GL {
    * @sa SDL_GL_GetAttribute
    * @sa SDL_GL_ResetAttributes
    *
-   * @from SDL_video.h:3040 bool SDL_GL_SetAttribute(SDL_GLAttr attr, int value);
+   * @from SDL_video.h:3065 bool SDL_GL_SetAttribute(SDL_GLAttr attr, int value);
    */
   static setAttribute(attr: number, value: number): boolean {
     return SDL.glSetAttribute(attr, value);
@@ -3017,7 +3042,7 @@ export class GL {
    * @sa SDL_GL_ResetAttributes
    * @sa SDL_GL_SetAttribute
    *
-   * @from SDL_video.h:3058 bool SDL_GL_GetAttribute(SDL_GLAttr attr, int *value);
+   * @from SDL_video.h:3083 bool SDL_GL_GetAttribute(SDL_GLAttr attr, int *value);
    */
   static getAttribute(attr: number): number {
     return SDL.glGetAttribute(attr);
@@ -3033,7 +3058,7 @@ export class GL {
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @from SDL_video.h:3112 SDL_Window * SDL_GL_GetCurrentWindow(void);
+   * @from SDL_video.h:3137 SDL_Window * SDL_GL_GetCurrentWindow(void);
    */
   static glGetCurrentWindow(): Window {
     const r = SDL.glGetCurrentWindow();
@@ -3061,7 +3086,7 @@ export class GL {
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @from SDL_video.h:3185 void SDL_EGL_SetAttributeCallbacks(SDL_EGLAttribArrayCallback platformAttribCallback,                                                               SDL_EGLIntArrayCallback surfaceAttribCallback,                                                               SDL_EGLIntArrayCallback contextAttribCallback, void *userdata);
+   * @from SDL_video.h:3210 void SDL_EGL_SetAttributeCallbacks(SDL_EGLAttribArrayCallback platformAttribCallback, SDL_EGLIntArrayCallback surfaceAttribCallback, SDL_EGLIntArrayCallback contextAttribCallback, void *userdata);
    */
   eglSetAttributeCallbacks() {} // TODO
 
@@ -3094,7 +3119,7 @@ export class GL {
    *
    * @sa SDL_GL_GetSwapInterval
    *
-   * @from SDL_video.h:3218 bool SDL_GL_SetSwapInterval(int interval);
+   * @from SDL_video.h:3243 bool SDL_GL_SetSwapInterval(int interval);
    */
   static glSetSwapInterval(interval: number): boolean {
     return SDL.glSetSwapInterval(interval);
@@ -3119,7 +3144,7 @@ export class GL {
    *
    * @sa SDL_GL_SetSwapInterval
    *
-   * @from SDL_video.h:3239 bool SDL_GL_GetSwapInterval(int *interval);
+   * @from SDL_video.h:3264 bool SDL_GL_GetSwapInterval(int *interval);
    */
   static glGetSwapInterval(): number {
     return SDL.glGetSwapInterval();
@@ -3143,7 +3168,7 @@ export class GL {
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @from SDL_video.h:3259 bool SDL_GL_SwapWindow(SDL_Window *window);
+   * @from SDL_video.h:3284 bool SDL_GL_SwapWindow(SDL_Window *window);
    */
   static glSwapWindow(window: Window): boolean {
     return SDL.glSwapWindow(window.pointer);
