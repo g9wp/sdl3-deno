@@ -17,7 +17,7 @@
 
 import * as SDL from "../gen/sdl/dialog.ts";
 import * as CB from "../gen/callbacks/SDL_dialog.ts";
-import { Cursor } from "@g9wp/ptr";
+import * as _p from "@g9wp/ptr";
 import type { WindowPointer } from "./pointer_type.ts";
 
 /**
@@ -328,15 +328,7 @@ function createFileCallback(
 
 function getFileList(filelist: Deno.PointerValue): string[] | null {
   if (!filelist) return null;
-
-  const files: string[] = [];
-  const p = Cursor.Unsafe(filelist!);
-  while (true) {
-    const s = p.pcstr;
-    if (s === null) break;
-    files.push(s);
-  }
-  return files;
+  return _p.getCstrArr(filelist);
 }
 
 type FileFilter = [string, string] | {
@@ -350,7 +342,7 @@ function cFileFilters(
   if (filters === undefined || filters.length === 0) return null;
 
   const buf = new BigUint64Array(2 * filters.length);
-  const p = new Cursor(buf);
+  const p = new _p.Cursor(buf);
   filters.forEach((e) => {
     if (e instanceof Array) {
       p.setPcstr(e[0]);

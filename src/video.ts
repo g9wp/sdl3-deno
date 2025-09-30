@@ -48,7 +48,7 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
-import { Cursor, UnsafeDataView } from "@g9wp/ptr";
+import * as _p from "@g9wp/ptr";
 import * as SDL from "../gen/sdl/video.ts";
 import { free } from "../gen/sdl/stdinc.ts";
 import type * as _r from "../gen/structs/SDL_rect.ts";
@@ -76,7 +76,7 @@ export class DisplayModePtr {
   constructor(public pointer: DisplayModePointer) {}
 
   get detail(): _.DisplayMode {
-    return _.read_DisplayMode(UnsafeDataView(this.pointer, 40));
+    return _.read_DisplayMode(_p.UnsafeDataView(this.pointer));
   }
 }
 
@@ -224,7 +224,7 @@ export class Display {
   static get list(): Display[] {
     const { ret: displays } = SDL.getDisplays();
     if (!displays) throw SdlError("getDisplays");
-    const p = Cursor.Unsafe(displays);
+    const p = _p.Cursor.Unsafe(displays);
     const r = [];
     while (true) {
       const id = p.i32;
@@ -463,16 +463,12 @@ export class Display {
    *
    * @from SDL_video.h:776 SDL_DisplayMode ** SDL_GetFullscreenDisplayModes(SDL_DisplayID displayID, int *count);
    */
-  fullscreenDisplayModes(): DisplayModePtr[] {
+  fullscreenDisplayModes(): _.DisplayMode[] {
     const { ret: modes } = SDL.getFullscreenDisplayModes(this.id);
     if (!modes) throw SdlError("getFullscreenDisplayModes");
-    const p = Cursor.Unsafe(modes);
-    const r = [];
-    while (true) {
-      const mode = p.ptr;
-      if (!mode) break;
-      r.push(new DisplayModePtr(mode as DisplayModePointer));
-    }
+    const r = _p.getPtrArr(modes).map((p) =>
+      _.read_DisplayMode(_p.UnsafeDataView(p!))
+    );
     free(modes);
     return r;
   }
@@ -513,8 +509,7 @@ export class Display {
     h: number,
     refresh_rate: number,
     include_high_density_modes: boolean,
-  ): DisplayModePtr {
-    const buf = new Uint32Array(10);
+  ): _.DisplayMode {
     if (
       !SDL.getClosestFullscreenDisplayMode(
         this.id,
@@ -522,10 +517,10 @@ export class Display {
         h,
         refresh_rate,
         include_high_density_modes,
-        Deno.UnsafePointer.of(buf),
+        _p.u64.p0 as Deno.PointerValue<"SDL_DisplayMode">,
       )
     ) throw SdlError("getClosestFullscreenDisplayMode");
-    return new DisplayModePtr(Deno.UnsafePointer.of(buf)!);
+    return _.read_DisplayMode(_p.u64.dataView);
   }
 
   /**
@@ -831,13 +826,7 @@ export class Window {
   static get list(): Window[] {
     const { ret: windows } = SDL.getWindows();
     if (!windows) throw SdlError("getWindows");
-    const p = Cursor.Unsafe(windows);
-    const r = [];
-    while (true) {
-      const window = p.ptr;
-      if (!window) break;
-      r.push(new Window(window as WindowPointer));
-    }
+    const r = _p.getPtrArr(windows).map((p) => new Window(p as WindowPointer));
     free(windows);
     return r;
   }
