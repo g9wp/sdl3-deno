@@ -22,12 +22,8 @@ export function read_cstr(p: Deno.PointerValue): string {
   return ptr_view(p).getCString();
 }
 
-export function getErr(): string {
-  return getError();
-}
-
 export function SdlError(s?: string): Error {
-  return new Error(`${s || "SDL Error"}: ${getErr()}`);
+  return new Error(`${s || "SDL Error"}: ${getError()}`);
 }
 
 export function init_pumpEvents(tick = 1000 / 60): number {
