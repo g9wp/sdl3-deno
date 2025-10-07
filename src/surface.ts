@@ -2139,3 +2139,10 @@ export class Surface {
     return SDL.writeSurfacePixelFloat(this.pointer, x, y, r, g, b, a);
   }
 }
+
+import config from './user_config_loader.ts';
+import { exists } from '@std/fs';
+
+if (await exists(config.SDL3_image)) {
+  await Surface.enableImageLib();
+}
