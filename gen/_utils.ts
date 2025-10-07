@@ -1,20 +1,13 @@
-const DENO_SDL3_PATH = (() => {
-  try {
-    return Deno.env.get("DENO_SDL3_PATH");
-  } catch (_) {
-    return undefined;
-  }
-})();
-
-const OS_PREFIX = Deno.build.os === "windows" ? "" : "lib";
-const OS_SUFFIX = Deno.build.os === "windows" ? ".dll" : Deno.build.os === "darwin" ? ".dylib" : ".so";
+import config from '../src/user_config_loader.ts';
 
 export function libSdlPath(lib: string): string {
-  lib = `${OS_PREFIX}${lib}${OS_SUFFIX}`;
-  if (DENO_SDL3_PATH) {
-    return `${DENO_SDL3_PATH}/${lib}`;
-  } else {
-    return `${import.meta.dirname}/../sdl3/${lib}`;
+  switch(lib) {
+    case "SDL3":
+    case "SDL3_image":
+    case "SDL3_ttf":
+      return config[lib];
+    default:
+      throw new Error(`Unknown library: ${lib}`);
   }
 }
 
