@@ -4,6 +4,7 @@
   "license": "MIT",
   "exports": {
     ".": "./src/mod.ts",
+    "./config": "./src/user_config.ts",
     "./tray": "./src/tray.ts",
     "./dialog": "./src/dialog.ts",
     "./messagebox": "./src/messagebox.ts",

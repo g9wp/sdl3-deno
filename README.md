@@ -19,13 +19,31 @@ Deno FFI bindings for SDL3 libraries with TypeScript wrappers.
 ## Installation
 
 1. `deno add jsr:@sdl3/sdl3-deno` or Clone the repository
-2. Install [SDL3 runtime libraries](https://github.com/libsdl-org) and set the `DENO_SDL3_PATH` environment variable (or install them into the `./sdl3` directory) [`gen/_util.ts`]
+2. Install SDL3 runtime libraries
 
-It's recommended to use an environment file [`deno run -A --env-file=.env example.ts`](https://docs.deno.com/runtime/reference/env_variables/)
+    2.1. from github release or package manager
 
-```.env
+    - [SDL3](https://github.com/libsdl-org/SDL/releases)
+    - [SDL3_image](https://github.com/libsdl-org/SDL_image/releases)
+    - [SDL3_ttf](https://github.com/libsdl-org/SDL_ttf/releases)
+
+    2.2. configure the sdl3 lib path
+
+      - using the `DENO_SDL3_PATH` environment variable
+```ini
+//.env
 DENO_SDL3_PATH=/path/to/sdl3
 ```
+      - put the libs to default search path '<your_workspace>/sdl3', '<your_workspace>/lib', '<sdl3-deno-cache>/sdl3', '<sdl3-deno-cache>/lib'
+      - using config file sdl3-deno.config.ts
+  ```ts
+  //<your_workspace>/sdl3-deno.config.ts
+  import { defineConfig } from "@sdl3/sdl3-deno/config";
+
+  export default defineConfig({
+    lib: ["sdl3", "lib", "C:/mingw64/clang64/bin"],
+  });
+  ```
 
 3. Import modules as needed
 
@@ -140,7 +158,7 @@ for await (const event of Event.iter(1000 / 60, drawFrame)) {
       break;
     }
     default:
-      drawEvent(event.common);
+      drawEvent(event.detail);
       break;
   }
 }
