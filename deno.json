@@ -1,6 +1,6 @@
 {
   "name": "@sdl3/sdl3-deno",
-  "version": "2.0.0-alpha2",
+  "version": "2.0.0",
   "license": "MIT",
   "exports": {
     ".": "./src/mod.ts",
