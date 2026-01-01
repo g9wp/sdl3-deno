@@ -370,7 +370,7 @@ export function mapRgba(
  * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
  * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
  *
- * @param pixel a pixel value.
+ * @param pixelvalue a pixel value.
  * @param format a pointer to SDL_PixelFormatDetails describing the pixel
  *               format.
  * @param palette an optional palette for indexed formats, may be NULL.
@@ -388,10 +388,10 @@ export function mapRgba(
  * @sa SDL_MapRGB
  * @sa SDL_MapRGBA
  *
- * @from SDL_pixels.h:1399 void SDL_GetRGB(Uint32 pixel, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b);
+ * @from SDL_pixels.h:1399 void SDL_GetRGB(Uint32 pixelvalue, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b);
  */
-export function getRgb(pixel: number, format: Deno.PointerValue<"SDL_PixelFormatDetails">, palette: Deno.PointerValue<"SDL_Palette">): { r: number; g: number; b: number } {
-  lib.symbols.SDL_GetRGB(pixel, format, palette, _p.u8.p0, _p.u8.p1, _p.u8.p2);
+export function getRgb(pixelvalue: number, format: Deno.PointerValue<"SDL_PixelFormatDetails">, palette: Deno.PointerValue<"SDL_Palette">): { r: number; g: number; b: number } {
+  lib.symbols.SDL_GetRGB(pixelvalue, format, palette, _p.u8.p0, _p.u8.p1, _p.u8.p2);
   return {r: _p.u8.v0, g: _p.u8.v1, b: _p.u8.v2};
 }
 
@@ -406,7 +406,7 @@ export function getRgb(pixel: number, format: Deno.PointerValue<"SDL_PixelFormat
  * If the surface has no alpha component, the alpha will be returned as 0xff
  * (100% opaque).
  *
- * @param pixel a pixel value.
+ * @param pixelvalue a pixel value.
  * @param format a pointer to SDL_PixelFormatDetails describing the pixel
  *               format.
  * @param palette an optional palette for indexed formats, may be NULL.
@@ -425,10 +425,10 @@ export function getRgb(pixel: number, format: Deno.PointerValue<"SDL_PixelFormat
  * @sa SDL_MapRGB
  * @sa SDL_MapRGBA
  *
- * @from SDL_pixels.h:1431 void SDL_GetRGBA(Uint32 pixel, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);
+ * @from SDL_pixels.h:1431 void SDL_GetRGBA(Uint32 pixelvalue, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);
  */
-export function getRgba(pixel: number, format: Deno.PointerValue<"SDL_PixelFormatDetails">, palette: Deno.PointerValue<"SDL_Palette">): { r: number; g: number; b: number; a: number } {
-  lib.symbols.SDL_GetRGBA(pixel, format, palette, _p.u8.p0, _p.u8.p1, _p.u8.p2, _p.u8.p3);
+export function getRgba(pixelvalue: number, format: Deno.PointerValue<"SDL_PixelFormatDetails">, palette: Deno.PointerValue<"SDL_Palette">): { r: number; g: number; b: number; a: number } {
+  lib.symbols.SDL_GetRGBA(pixelvalue, format, palette, _p.u8.p0, _p.u8.p1, _p.u8.p2, _p.u8.p3);
   return {r: _p.u8.v0, g: _p.u8.v1, b: _p.u8.v2, a: _p.u8.v3};
 }
 

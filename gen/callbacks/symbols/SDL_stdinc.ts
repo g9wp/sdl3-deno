@@ -63,7 +63,7 @@ export const symbols = {
  * @sa SDL_GetMemoryFunctions
  * @sa SDL_SetMemoryFunctions
  *
- * @from SDL_stdinc.h:1423 typedef void *(*SDL_malloc_func)(size_t size);
+ * @from SDL_stdinc.h:1450 typedef void *(*SDL_malloc_func)(size_t size);
  */
 SDL_malloc_func: {
       parameters: ["usize"],
@@ -89,7 +89,7 @@ SDL_malloc_func: {
  * @sa SDL_GetMemoryFunctions
  * @sa SDL_SetMemoryFunctions
  *
- * @from SDL_stdinc.h:1444 typedef void *(*SDL_calloc_func)(size_t nmemb, size_t size);
+ * @from SDL_stdinc.h:1471 typedef void *(*SDL_calloc_func)(size_t nmemb, size_t size);
  */
 SDL_calloc_func: {
       parameters: ["usize", "usize"],
@@ -115,7 +115,7 @@ SDL_calloc_func: {
  * @sa SDL_GetMemoryFunctions
  * @sa SDL_SetMemoryFunctions
  *
- * @from SDL_stdinc.h:1465 typedef void *(*SDL_realloc_func)(void *mem, size_t size);
+ * @from SDL_stdinc.h:1492 typedef void *(*SDL_realloc_func)(void *mem, size_t size);
  */
 SDL_realloc_func: {
       parameters: ["pointer", "usize"],
@@ -138,7 +138,7 @@ SDL_realloc_func: {
  * @sa SDL_GetMemoryFunctions
  * @sa SDL_SetMemoryFunctions
  *
- * @from SDL_stdinc.h:1483 typedef void (*SDL_free_func)(void *mem);
+ * @from SDL_stdinc.h:1510 typedef void (*SDL_free_func)(void *mem);
  */
 SDL_free_func: {
       parameters: ["pointer"],
@@ -159,7 +159,7 @@ SDL_free_func: {
  * @sa SDL_bsearch
  * @sa SDL_qsort
  *
- * @from SDL_stdinc.h:1855 typedef int (*SDL_CompareCallback)(const void *a, const void *b);
+ * @from SDL_stdinc.h:1882 typedef int (*SDL_CompareCallback)(const void *a, const void *b);
  */
 SDL_CompareCallback: {
       parameters: ["pointer", "pointer"],
@@ -181,7 +181,7 @@ SDL_CompareCallback: {
  * @sa SDL_qsort_r
  * @sa SDL_bsearch_r
  *
- * @from SDL_stdinc.h:1968 typedef int (*SDL_CompareCallback_r)(void *userdata, const void *a, const void *b);
+ * @from SDL_stdinc.h:1995 typedef int (*SDL_CompareCallback_r)(void *userdata, const void *a, const void *b);
  */
 SDL_CompareCallback_r: {
       parameters: ["pointer", "pointer", "pointer"],
@@ -203,7 +203,7 @@ SDL_CompareCallback_r: {
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:6123 typedef void (*SDL_FunctionPointer)(void);
+ * @from SDL_stdinc.h:6154 typedef void (*SDL_FunctionPointer)(void);
  */
 SDL_FunctionPointer: {
       parameters: [],
@@ -230,7 +230,7 @@ SDL_FunctionPointer: {
  * @sa SDL_GetMemoryFunctions
  * @sa SDL_SetMemoryFunctions
  *
- * @from SDL_stdinc.h:1423 typedef void *(*SDL_malloc_func)(size_t size);
+ * @from SDL_stdinc.h:1450 typedef void *(*SDL_malloc_func)(size_t size);
  */
 export function malloc_func(cb: (
     size: bigint, 
@@ -257,7 +257,7 @@ export function malloc_func(cb: (
  * @sa SDL_GetMemoryFunctions
  * @sa SDL_SetMemoryFunctions
  *
- * @from SDL_stdinc.h:1444 typedef void *(*SDL_calloc_func)(size_t nmemb, size_t size);
+ * @from SDL_stdinc.h:1471 typedef void *(*SDL_calloc_func)(size_t nmemb, size_t size);
  */
 export function calloc_func(cb: (
     nmemb: bigint, 
@@ -285,7 +285,7 @@ export function calloc_func(cb: (
  * @sa SDL_GetMemoryFunctions
  * @sa SDL_SetMemoryFunctions
  *
- * @from SDL_stdinc.h:1465 typedef void *(*SDL_realloc_func)(void *mem, size_t size);
+ * @from SDL_stdinc.h:1492 typedef void *(*SDL_realloc_func)(void *mem, size_t size);
  */
 export function realloc_func(cb: (
     mem: Deno.PointerValue, 
@@ -310,7 +310,7 @@ export function realloc_func(cb: (
  * @sa SDL_GetMemoryFunctions
  * @sa SDL_SetMemoryFunctions
  *
- * @from SDL_stdinc.h:1483 typedef void (*SDL_free_func)(void *mem);
+ * @from SDL_stdinc.h:1510 typedef void (*SDL_free_func)(void *mem);
  */
 export function free_func(cb: (
     mem: Deno.PointerValue, 
@@ -332,7 +332,7 @@ export function free_func(cb: (
  * @sa SDL_bsearch
  * @sa SDL_qsort
  *
- * @from SDL_stdinc.h:1855 typedef int (*SDL_CompareCallback)(const void *a, const void *b);
+ * @from SDL_stdinc.h:1882 typedef int (*SDL_CompareCallback)(const void *a, const void *b);
  */
 export function CompareCallback(cb: (
     a: Deno.PointerValue, 
@@ -356,7 +356,7 @@ export function CompareCallback(cb: (
  * @sa SDL_qsort_r
  * @sa SDL_bsearch_r
  *
- * @from SDL_stdinc.h:1968 typedef int (*SDL_CompareCallback_r)(void *userdata, const void *a, const void *b);
+ * @from SDL_stdinc.h:1995 typedef int (*SDL_CompareCallback_r)(void *userdata, const void *a, const void *b);
  */
 export function CompareCallback_r(cb: (
     userdata: Deno.PointerValue, 
@@ -381,7 +381,7 @@ export function CompareCallback_r(cb: (
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:6123 typedef void (*SDL_FunctionPointer)(void);
+ * @from SDL_stdinc.h:6154 typedef void (*SDL_FunctionPointer)(void);
  */
 export function FunctionPointer(cb: (
   ) => void) {

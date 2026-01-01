@@ -4,6 +4,7 @@ export * from "./SDL_audio.ts";
 export * from "./SDL_blendmode.ts";
 export * from "./SDL_camera.ts";
 export * from "./SDL_dialog.ts";
+export * from "./SDL_dlopennote.ts";
 export * from "./SDL_events.ts";
 export * from "./SDL_filesystem.ts";
 export * from "./SDL_gamepad.ts";

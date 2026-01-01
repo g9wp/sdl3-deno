@@ -26,6 +26,7 @@ import * as SDL_log from './SDL_log.ts';
 import * as SDL_messagebox from './SDL_messagebox.ts';
 import * as SDL_misc from './SDL_misc.ts';
 import * as SDL_mouse from './SDL_mouse.ts';
+import * as SDL_pen from './SDL_pen.ts';
 import * as SDL_pixels from './SDL_pixels.ts';
 import * as SDL_platform from './SDL_platform.ts';
 import * as SDL_power from './SDL_power.ts';
@@ -79,6 +80,7 @@ export const symbols = {
   ...SDL_messagebox.symbols,
   ...SDL_misc.symbols,
   ...SDL_mouse.symbols,
+  ...SDL_pen.symbols,
   ...SDL_pixels.symbols,
   ...SDL_platform.symbols,
   ...SDL_power.symbols,

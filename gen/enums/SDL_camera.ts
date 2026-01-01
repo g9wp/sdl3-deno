@@ -84,3 +84,20 @@ export enum SDL_CameraPosition {
 
 
 
+/**
+ * The current state of a request for camera access.
+ *
+ * @since This enum is available since SDL 3.4.0.
+ *
+ * @sa SDL_GetCameraPermissionState
+ *
+ * @from SDL_camera.h:145 SDL_CAMERA_PERMISSION_STATE_
+ */
+export enum SDL_CameraPermissionState {
+  DENIED = -1, 
+  PENDING, 
+  APPROVED, 
+}
+
+
+

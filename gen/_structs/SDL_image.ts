@@ -40,11 +40,11 @@ import * as _ from "@denosaurs/byte-type";
  * @from SDL_image.h:1974
  */
 export const IMG_Animation = new _.Struct({
-  w: _.i32, /* int */
-  h: _.i32, /* int */
-  count: _.i32, /* int */
-  frames: _.u64, /* SDL_Surface ** */
-  delays: _.u64, /* int * */
+  w: _.i32, /**< int : The width of the frames */
+  h: _.i32, /**< int : The height of the frames */
+  count: _.i32, /**< int : The number of frames */
+  frames: _.u64, /**< SDL_Surface ** : An array of frames */
+  delays: _.u64, /**< int * : An array of frame delays, in milliseconds */
 });
 
 

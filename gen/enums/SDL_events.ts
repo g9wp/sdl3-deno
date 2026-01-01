@@ -9,7 +9,7 @@
  * coming and going, the system changing in some way, etc.
  *
  * An app generally takes a moment, perhaps at the start of a new frame, to
- * examine any events that have occured since the last time and process or
+ * examine any events that have occurred since the last time and process or
  * ignore them. This is generally done by calling SDL_PollEvent() in a loop
  * until it returns false (or, if using the main callbacks, events are
  * provided one at a time in calls to SDL_AppEvent() before the next call to
@@ -98,14 +98,16 @@ export enum SDL_EventType {
   DISPLAY_DESKTOP_MODE_CHANGED, /**< Display has changed desktop mode */
   DISPLAY_CURRENT_MODE_CHANGED, /**< Display has changed current mode */
   DISPLAY_CONTENT_SCALE_CHANGED, /**< Display has changed content scale */
+  DISPLAY_USABLE_BOUNDS_CHANGED, /**< Display has changed usable bounds */
   DISPLAY_FIRST = DISPLAY_ORIENTATION, 
-  DISPLAY_LAST = DISPLAY_CONTENT_SCALE_CHANGED, 
+  DISPLAY_LAST = DISPLAY_USABLE_BOUNDS_CHANGED, 
     /* Window events */
     /* 0x200 was SDL_WINDOWEVENT, reserve the number for sdl2-compat */
     /* 0x201 was SDL_SYSWMEVENT, reserve the number for sdl2-compat */
   WINDOW_SHOWN = 0x202, /**< Window has been shown */
   WINDOW_HIDDEN, /**< Window has been hidden */
-  WINDOW_EXPOSED, /**< Window has been exposed and should be redrawn, and can be redrawn directly from event watchers for this event */
+  WINDOW_EXPOSED, /**< Window has been exposed and should be redrawn, and can be redrawn directly from event watchers for this event.
+                                             data1 is 1 for live-resize expose events, 0 otherwise. */
   WINDOW_MOVED, /**< Window has been moved to data1, data2 */
   WINDOW_RESIZED, /**< Window has been resized to data1xdata2 */
   WINDOW_PIXEL_SIZE_CHANGED, /**< The pixel size of the window has changed to data1xdata2 */
@@ -143,6 +145,8 @@ export enum SDL_EventType {
   KEYBOARD_ADDED, /**< A new keyboard has been inserted into the system */
   KEYBOARD_REMOVED, /**< A keyboard has been removed */
   TEXT_EDITING_CANDIDATES, /**< Keyboard text editing candidates */
+  SCREEN_KEYBOARD_SHOWN, /**< The on-screen keyboard has been shown */
+  SCREEN_KEYBOARD_HIDDEN, /**< The on-screen keyboard has been hidden */
     /* Mouse events */
   MOUSE_MOTION = 0x400, /**< Mouse moved */
   MOUSE_BUTTON_DOWN, /**< Mouse button pressed */
@@ -178,9 +182,13 @@ export enum SDL_EventType {
   FINGER_UP, 
   FINGER_MOTION, 
   FINGER_CANCELED, 
+    /* Pinch events */
+  PINCH_BEGIN = 0x710, /**< Pinch gesture started */
+  PINCH_UPDATE, /**< Pinch gesture updated */
+  PINCH_END, /**< Pinch gesture ended */
     /* 0x800, 0x801, and 0x802 were the Gesture events from SDL2. Do not reuse these values! sdl2-compat needs them! */
     /* Clipboard events */
-  CLIPBOARD_UPDATE = 0x900, /**< The clipboard or primary selection changed */
+  CLIPBOARD_UPDATE = 0x900, /**< The clipboard changed */
     /* Drag and drop events */
   DROP_FILE = 0x1000, /**< The system requests a file open */
   DROP_TEXT, /**< text/plain drag-and-drop event */
@@ -237,7 +245,7 @@ export enum SDL_EventType {
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @from SDL_events.h:1079 SDL_
+ * @from SDL_events.h:1108 SDL_
  */
 export enum SDL_EventAction {
   ADDEVENT, /**< Add events to the back of the queue. */

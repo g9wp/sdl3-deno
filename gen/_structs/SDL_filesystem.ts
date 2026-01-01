@@ -54,7 +54,7 @@ import * as _ from "@denosaurs/byte-type";
  * @sa SDL_GetPathInfo
  * @sa SDL_GetStoragePathInfo
  *
- * @from SDL_filesystem.h:252
+ * @from SDL_filesystem.h:267
  */
 export const SDL_PathInfo = new _.Struct({
   type: _.u32, /**< SDL_PathType : the path type */

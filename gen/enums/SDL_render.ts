@@ -18,9 +18,9 @@
  * may also be stretched with linear interpolation.
  *
  * This API is designed to accelerate simple 2D operations. You may want more
- * functionality such as polygons and particle effects and in that case you
- * should use SDL's OpenGL/Direct3D support, the SDL3 GPU API, or one of the
- * many good 3D engines.
+ * functionality such as 3D polygons and particle effects, and in that case
+ * you should use SDL's OpenGL/Direct3D support, the SDL3 GPU API, or one of
+ * the many good 3D engines.
  *
  * These functions must be called from the main thread. See this bug for
  * details: https://github.com/libsdl-org/SDL/issues/986
@@ -50,7 +50,7 @@
 */
 
 /**
- * @from SDL_render:300 SDL_PROP_RENDERER_CREATE_
+ * @from SDL_render:338 SDL_PROP_RENDERER_CREATE_
  */
 export enum PROP_RENDERER_CREATE {
   NAME_STRING = "SDL.renderer.create.name", 
@@ -58,6 +58,10 @@ export enum PROP_RENDERER_CREATE {
   SURFACE_POINTER = "SDL.renderer.create.surface", 
   OUTPUT_COLORSPACE_NUMBER = "SDL.renderer.create.output_colorspace", 
   PRESENT_VSYNC_NUMBER = "SDL.renderer.create.present_vsync", 
+  GPU_DEVICE_POINTER = "SDL.renderer.create.gpu.device", 
+  GPU_SHADERS_SPIRV_BOOLEAN = "SDL.renderer.create.gpu.shaders_spirv", 
+  GPU_SHADERS_DXIL_BOOLEAN = "SDL.renderer.create.gpu.shaders_dxil", 
+  GPU_SHADERS_MSL_BOOLEAN = "SDL.renderer.create.gpu.shaders_msl", 
   VULKAN_INSTANCE_POINTER = "SDL.renderer.create.vulkan.instance", 
   VULKAN_SURFACE_NUMBER = "SDL.renderer.create.vulkan.surface", 
   VULKAN_PHYSICAL_DEVICE_POINTER = "SDL.renderer.create.vulkan.physical_device", 
@@ -69,7 +73,7 @@ export enum PROP_RENDERER_CREATE {
 
 
 /**
- * @from SDL_render:461 SDL_PROP_RENDERER_
+ * @from SDL_render:552 SDL_PROP_RENDERER_
  */
 export enum PROP_RENDERER {
   NAME_STRING = "SDL.renderer.name", 
@@ -78,6 +82,7 @@ export enum PROP_RENDERER {
   VSYNC_NUMBER = "SDL.renderer.vsync", 
   MAX_TEXTURE_SIZE_NUMBER = "SDL.renderer.max_texture_size", 
   TEXTURE_FORMATS_POINTER = "SDL.renderer.texture_formats", 
+  TEXTURE_WRAPPING_BOOLEAN = "SDL.renderer.texture_wrapping", 
   OUTPUT_COLORSPACE_NUMBER = "SDL.renderer.output_colorspace", 
   HDR_ENABLED_BOOLEAN = "SDL.renderer.HDR_enabled", 
   SDR_WHITE_POINT_FLOAT = "SDL.renderer.SDR_white_point", 
@@ -101,7 +106,7 @@ export enum PROP_RENDERER {
 
 
 /**
- * @from SDL_render:697 SDL_PROP_TEXTURE_CREATE_
+ * @from SDL_render:807 SDL_PROP_TEXTURE_CREATE_
  */
 export enum PROP_TEXTURE_CREATE {
   COLORSPACE_NUMBER = "SDL.texture.create.colorspace", 
@@ -109,6 +114,7 @@ export enum PROP_TEXTURE_CREATE {
   ACCESS_NUMBER = "SDL.texture.create.access", 
   WIDTH_NUMBER = "SDL.texture.create.width", 
   HEIGHT_NUMBER = "SDL.texture.create.height", 
+  PALETTE_POINTER = "SDL.texture.create.palette", 
   SDR_WHITE_POINT_FLOAT = "SDL.texture.create.SDR_white_point", 
   HDR_HEADROOM_FLOAT = "SDL.texture.create.HDR_headroom", 
   D3D11_TEXTURE_POINTER = "SDL.texture.create.d3d11.texture", 
@@ -127,12 +133,17 @@ export enum PROP_TEXTURE_CREATE {
   OPENGLES2_TEXTURE_U_NUMBER = "SDL.texture.create.opengles2.texture_u", 
   OPENGLES2_TEXTURE_V_NUMBER = "SDL.texture.create.opengles2.texture_v", 
   VULKAN_TEXTURE_NUMBER = "SDL.texture.create.vulkan.texture", 
+  VULKAN_LAYOUT_NUMBER = "SDL.texture.create.vulkan.layout", 
+  GPU_TEXTURE_POINTER = "SDL.texture.create.gpu.texture", 
+  GPU_TEXTURE_UV_POINTER = "SDL.texture.create.gpu.texture_uv", 
+  GPU_TEXTURE_U_POINTER = "SDL.texture.create.gpu.texture_u", 
+  GPU_TEXTURE_V_POINTER = "SDL.texture.create.gpu.texture_v", 
 }
 
 
 
 /**
- * @from SDL_render:809 SDL_PROP_TEXTURE_
+ * @from SDL_render:936 SDL_PROP_TEXTURE_
  */
 export enum PROP_TEXTURE {
   COLORSPACE_NUMBER = "SDL.texture.colorspace", 
@@ -161,12 +172,16 @@ export enum PROP_TEXTURE {
   OPENGLES2_TEXTURE_V_NUMBER = "SDL.texture.opengles2.texture_v", 
   OPENGLES2_TEXTURE_TARGET_NUMBER = "SDL.texture.opengles2.target", 
   VULKAN_TEXTURE_NUMBER = "SDL.texture.vulkan.texture", 
+  GPU_TEXTURE_POINTER = "SDL.texture.gpu.texture", 
+  GPU_TEXTURE_UV_POINTER = "SDL.texture.gpu.texture_uv", 
+  GPU_TEXTURE_U_POINTER = "SDL.texture.gpu.texture_u", 
+  GPU_TEXTURE_V_POINTER = "SDL.texture.gpu.texture_v", 
 }
 
 
 
 /**
- * @from SDL_render:2538 SDL_RENDERER_VSYNC_
+ * @from SDL_render:2777 SDL_RENDERER_VSYNC_
  */
 export enum RENDERER_VSYNC {
   DISABLED = 0, 
@@ -180,7 +195,7 @@ export enum RENDERER_VSYNC {
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @from SDL_render.h:92 SDL_TEXTUREACCESS_
+ * @from SDL_render.h:100 SDL_TEXTUREACCESS_
  */
 export enum SDL_TextureAccess {
   STATIC, /**< Changes rarely, not lockable */
@@ -191,16 +206,38 @@ export enum SDL_TextureAccess {
 
 
 /**
+ * The addressing mode for a texture when used in SDL_RenderGeometry().
+ *
+ * This affects how texture coordinates are interpreted outside of [0, 1]
+ *
+ * Texture wrapping is always supported for power of two texture sizes, and is
+ * supported for other texture sizes if
+ * SDL_PROP_RENDERER_TEXTURE_WRAPPING_BOOLEAN is set to true.
+ *
+ * @since This enum is available since SDL 3.4.0.
+ *
+ * @from SDL_render.h:118 SDL_TEXTURE_ADDRESS_
+ */
+export enum SDL_TextureAddressMode {
+  INVALID = -1, 
+  AUTO, /**< Wrapping is enabled if texture coordinates are outside [0, 1], this is the default */
+  CLAMP, /**< Texture coordinates are clamped to the [0, 1] range */
+  WRAP, /**< The texture is repeated (tiled) */
+}
+
+
+
+/**
  * How the logical size is mapped to the output.
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @from SDL_render.h:104 SDL_LOGICAL_PRESENTATION_
+ * @from SDL_render.h:131 SDL_LOGICAL_PRESENTATION_
  */
 export enum SDL_RendererLogicalPresentation {
   DISABLED, /**< There is no logical size in effect */
   STRETCH, /**< The rendered content is stretched to the output resolution */
-  LETTERBOX, /**< The rendered content is fit to the largest dimension and the other dimension is letterboxed with black bars */
+  LETTERBOX, /**< The rendered content is fit to the largest dimension and the other dimension is letterboxed with the clear color */
   OVERSCAN, /**< The rendered content is fit to the smallest dimension and the other dimension extends beyond the output bounds */
   INTEGER_SCALE, /**< The rendered content is scaled up by integer multiples to fit the output resolution */
 }

@@ -70,7 +70,7 @@ export const symbols = {
  *
  * @sa SDL_GetMice
  *
- * @from SDL_mouse.h:176 bool SDL_HasMouse(void);
+ * @from SDL_mouse.h:225 bool SDL_HasMouse(void);
  */
 SDL_HasMouse: {
       parameters: [],
@@ -99,7 +99,7 @@ SDL_HasMouse: {
  * @sa SDL_GetMouseNameForID
  * @sa SDL_HasMouse
  *
- * @from SDL_mouse.h:199 SDL_MouseID * SDL_GetMice(int *count);
+ * @from SDL_mouse.h:248 SDL_MouseID * SDL_GetMice(int *count);
  */
 SDL_GetMice: {
       parameters: ["pointer"],
@@ -122,7 +122,7 @@ SDL_GetMice: {
  *
  * @sa SDL_GetMice
  *
- * @from SDL_mouse.h:216 const char * SDL_GetMouseNameForID(SDL_MouseID instance_id);
+ * @from SDL_mouse.h:265 const char * SDL_GetMouseNameForID(SDL_MouseID instance_id);
  */
 SDL_GetMouseNameForID: {
       parameters: ["u32"],
@@ -139,7 +139,7 @@ SDL_GetMouseNameForID: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_mouse.h:227 SDL_Window * SDL_GetMouseFocus(void);
+ * @from SDL_mouse.h:276 SDL_Window * SDL_GetMouseFocus(void);
  */
 SDL_GetMouseFocus: {
       parameters: [],
@@ -178,7 +178,7 @@ SDL_GetMouseFocus: {
  * @sa SDL_GetGlobalMouseState
  * @sa SDL_GetRelativeMouseState
  *
- * @from SDL_mouse.h:260 SDL_MouseButtonFlags SDL_GetMouseState(float *x, float *y);
+ * @from SDL_mouse.h:309 SDL_MouseButtonFlags SDL_GetMouseState(float *x, float *y);
  */
 SDL_GetMouseState: {
       parameters: ["pointer", "pointer"],
@@ -221,7 +221,7 @@ SDL_GetMouseState: {
  * @sa SDL_GetMouseState
  * @sa SDL_GetGlobalMouseState
  *
- * @from SDL_mouse.h:297 SDL_MouseButtonFlags SDL_GetGlobalMouseState(float *x, float *y);
+ * @from SDL_mouse.h:346 SDL_MouseButtonFlags SDL_GetGlobalMouseState(float *x, float *y);
  */
 SDL_GetGlobalMouseState: {
       parameters: ["pointer", "pointer"],
@@ -262,7 +262,7 @@ SDL_GetGlobalMouseState: {
  * @sa SDL_GetMouseState
  * @sa SDL_GetGlobalMouseState
  *
- * @from SDL_mouse.h:332 SDL_MouseButtonFlags SDL_GetRelativeMouseState(float *x, float *y);
+ * @from SDL_mouse.h:381 SDL_MouseButtonFlags SDL_GetRelativeMouseState(float *x, float *y);
  */
 SDL_GetRelativeMouseState: {
       parameters: ["pointer", "pointer"],
@@ -291,7 +291,7 @@ SDL_GetRelativeMouseState: {
  *
  * @sa SDL_WarpMouseGlobal
  *
- * @from SDL_mouse.h:355 void SDL_WarpMouseInWindow(SDL_Window *window, float x, float y);
+ * @from SDL_mouse.h:404 void SDL_WarpMouseInWindow(SDL_Window *window, float x, float y);
  */
 SDL_WarpMouseInWindow: {
       parameters: ["pointer", "f32", "f32"],
@@ -321,7 +321,7 @@ SDL_WarpMouseInWindow: {
  *
  * @sa SDL_WarpMouseInWindow
  *
- * @from SDL_mouse.h:380 bool SDL_WarpMouseGlobal(float x, float y);
+ * @from SDL_mouse.h:429 bool SDL_WarpMouseGlobal(float x, float y);
  */
 SDL_WarpMouseGlobal: {
       parameters: ["f32", "f32"],
@@ -355,7 +355,7 @@ SDL_WarpMouseGlobal: {
  *
  * @sa SDL_GetWindowRelativeMouseMode
  *
- * @from SDL_mouse.h:408 bool SDL_SetWindowRelativeMouseMode(SDL_Window *window, bool enabled);
+ * @from SDL_mouse.h:475 bool SDL_SetWindowRelativeMouseMode(SDL_Window *window, bool enabled);
  */
 SDL_SetWindowRelativeMouseMode: {
       parameters: ["pointer", "bool"],
@@ -375,7 +375,7 @@ SDL_SetWindowRelativeMouseMode: {
  *
  * @sa SDL_SetWindowRelativeMouseMode
  *
- * @from SDL_mouse.h:422 bool SDL_GetWindowRelativeMouseMode(SDL_Window *window);
+ * @from SDL_mouse.h:489 bool SDL_GetWindowRelativeMouseMode(SDL_Window *window);
  */
 SDL_GetWindowRelativeMouseMode: {
       parameters: ["pointer"],
@@ -429,7 +429,7 @@ SDL_GetWindowRelativeMouseMode: {
  *
  * @sa SDL_GetGlobalMouseState
  *
- * @from SDL_mouse.h:470 bool SDL_CaptureMouse(bool enabled);
+ * @from SDL_mouse.h:537 bool SDL_CaptureMouse(bool enabled);
  */
 SDL_CaptureMouse: {
       parameters: ["bool"],
@@ -476,12 +476,13 @@ SDL_CaptureMouse: {
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa SDL_CreateAnimatedCursor
  * @sa SDL_CreateColorCursor
  * @sa SDL_CreateSystemCursor
  * @sa SDL_DestroyCursor
  * @sa SDL_SetCursor
  *
- * @from SDL_mouse.h:516 SDL_Cursor * SDL_CreateCursor(const Uint8 *data, const Uint8 *mask, int w, int h, int hot_x, int hot_y);
+ * @from SDL_mouse.h:584 SDL_Cursor * SDL_CreateCursor(const Uint8 *data, const Uint8 *mask, int w, int h, int hot_x, int hot_y);
  */
 SDL_CreateCursor: {
       parameters: ["pointer", "pointer", "i32", "i32", "i32", "i32"],
@@ -492,15 +493,17 @@ SDL_CreateCursor: {
 /**
  * Create a color cursor.
  *
- * If this function is passed a surface with alternate representations, the
- * surface will be interpreted as the content to be used for 100% display
- * scale, and the alternate representations will be used for high DPI
- * situations. For example, if the original surface is 32x32, then on a 2x
- * macOS display or 200% display scale on Windows, a 64x64 version of the
- * image will be used, if available. If a matching version of the image isn't
- * available, the closest larger size image will be downscaled to the
- * appropriate size and be used instead, if available. Otherwise, the closest
- * smaller image will be upscaled and be used instead.
+ * If this function is passed a surface with alternate representations added
+ * with SDL_AddSurfaceAlternateImage(), the surface will be interpreted as the
+ * content to be used for 100% display scale, and the alternate
+ * representations will be used for high DPI situations if
+ * SDL_HINT_MOUSE_DPI_SCALE_CURSORS is enabled. For example, if the original
+ * surface is 32x32, then on a 2x macOS display or 200% display scale on
+ * Windows, a 64x64 version of the image will be used, if available. If a
+ * matching version of the image isn't available, the closest larger size
+ * image will be downscaled to the appropriate size and be used instead, if
+ * available. Otherwise, the closest smaller image will be upscaled and be
+ * used instead.
  *
  * @param surface an SDL_Surface structure representing the cursor image.
  * @param hot_x the x position of the cursor hot spot.
@@ -512,15 +515,71 @@ SDL_CreateCursor: {
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa SDL_AddSurfaceAlternateImage
+ * @sa SDL_CreateAnimatedCursor
  * @sa SDL_CreateCursor
  * @sa SDL_CreateSystemCursor
  * @sa SDL_DestroyCursor
  * @sa SDL_SetCursor
  *
- * @from SDL_mouse.h:549 SDL_Cursor * SDL_CreateColorCursor(SDL_Surface *surface, int hot_x, int hot_y);
+ * @from SDL_mouse.h:621 SDL_Cursor * SDL_CreateColorCursor(SDL_Surface *surface, int hot_x, int hot_y);
  */
 SDL_CreateColorCursor: {
       parameters: ["pointer", "i32", "i32"],
+      result: "pointer"
+    },
+
+
+/**
+ * Create an animated color cursor.
+ *
+ * Animated cursors are composed of a sequential array of frames, specified as
+ * surfaces and durations in an array of SDL_CursorFrameInfo structs. The hot
+ * spot coordinates are universal to all frames, and all frames must have the
+ * same dimensions.
+ *
+ * Frame durations are specified in milliseconds. A duration of 0 implies an
+ * infinite frame time, and the animation will stop on that frame. To create a
+ * one-shot animation, set the duration of the last frame in the sequence to
+ * 0.
+ *
+ * If this function is passed surfaces with alternate representations added
+ * with SDL_AddSurfaceAlternateImage(), the surfaces will be interpreted as
+ * the content to be used for 100% display scale, and the alternate
+ * representations will be used for high DPI situations. For example, if the
+ * original surfaces are 32x32, then on a 2x macOS display or 200% display
+ * scale on Windows, a 64x64 version of the image will be used, if available.
+ * If a matching version of the image isn't available, the closest larger size
+ * image will be downscaled to the appropriate size and be used instead, if
+ * available. Otherwise, the closest smaller image will be upscaled and be
+ * used instead.
+ *
+ * If the underlying platform does not support animated cursors, this function
+ * will fall back to creating a static color cursor using the first frame in
+ * the sequence.
+ *
+ * @param frames an array of cursor images composing the animation.
+ * @param frame_count the number of frames in the sequence.
+ * @param hot_x the x position of the cursor hot spot.
+ * @param hot_y the y position of the cursor hot spot.
+ * @returns the new cursor on success or NULL on failure; call SDL_GetError()
+ *          for more information.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_AddSurfaceAlternateImage
+ * @sa SDL_CreateCursor
+ * @sa SDL_CreateColorCursor
+ * @sa SDL_CreateSystemCursor
+ * @sa SDL_DestroyCursor
+ * @sa SDL_SetCursor
+ *
+ * @from SDL_mouse.h:671 SDL_Cursor *SDL_CreateAnimatedCursor(SDL_CursorFrameInfo *frames, int frame_count, int hot_x, int hot_y);
+ */
+SDL_CreateAnimatedCursor: {
+      parameters: ["pointer", "i32", "i32", "i32"],
       result: "pointer"
     },
 
@@ -538,7 +597,7 @@ SDL_CreateColorCursor: {
  *
  * @sa SDL_DestroyCursor
  *
- * @from SDL_mouse.h:566 SDL_Cursor * SDL_CreateSystemCursor(SDL_SystemCursor id);
+ * @from SDL_mouse.h:689 SDL_Cursor * SDL_CreateSystemCursor(SDL_SystemCursor id);
  */
 SDL_CreateSystemCursor: {
       parameters: ["u32"],
@@ -564,7 +623,7 @@ SDL_CreateSystemCursor: {
  *
  * @sa SDL_GetCursor
  *
- * @from SDL_mouse.h:586 bool SDL_SetCursor(SDL_Cursor *cursor);
+ * @from SDL_mouse.h:709 bool SDL_SetCursor(SDL_Cursor *cursor);
  */
 SDL_SetCursor: {
       parameters: ["pointer"],
@@ -586,7 +645,7 @@ SDL_SetCursor: {
  *
  * @sa SDL_SetCursor
  *
- * @from SDL_mouse.h:602 SDL_Cursor * SDL_GetCursor(void);
+ * @from SDL_mouse.h:725 SDL_Cursor * SDL_GetCursor(void);
  */
 SDL_GetCursor: {
       parameters: [],
@@ -600,14 +659,14 @@ SDL_GetCursor: {
  * You do not have to call SDL_DestroyCursor() on the return value, but it is
  * safe to do so.
  *
- * @returns the default cursor on success or NULL on failuree; call
+ * @returns the default cursor on success or NULL on failure; call
  *          SDL_GetError() for more information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_mouse.h:617 SDL_Cursor * SDL_GetDefaultCursor(void);
+ * @from SDL_mouse.h:740 SDL_Cursor * SDL_GetDefaultCursor(void);
  */
 SDL_GetDefaultCursor: {
       parameters: [],
@@ -627,11 +686,12 @@ SDL_GetDefaultCursor: {
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa SDL_CreateAnimatedCursor
  * @sa SDL_CreateColorCursor
  * @sa SDL_CreateCursor
  * @sa SDL_CreateSystemCursor
  *
- * @from SDL_mouse.h:635 void SDL_DestroyCursor(SDL_Cursor *cursor);
+ * @from SDL_mouse.h:759 void SDL_DestroyCursor(SDL_Cursor *cursor);
  */
 SDL_DestroyCursor: {
       parameters: ["pointer"],
@@ -652,7 +712,7 @@ SDL_DestroyCursor: {
  * @sa SDL_CursorVisible
  * @sa SDL_HideCursor
  *
- * @from SDL_mouse.h:650 bool SDL_ShowCursor(void);
+ * @from SDL_mouse.h:774 bool SDL_ShowCursor(void);
  */
 SDL_ShowCursor: {
       parameters: [],
@@ -673,7 +733,7 @@ SDL_ShowCursor: {
  * @sa SDL_CursorVisible
  * @sa SDL_ShowCursor
  *
- * @from SDL_mouse.h:665 bool SDL_HideCursor(void);
+ * @from SDL_mouse.h:789 bool SDL_HideCursor(void);
  */
 SDL_HideCursor: {
       parameters: [],
@@ -694,7 +754,7 @@ SDL_HideCursor: {
  * @sa SDL_HideCursor
  * @sa SDL_ShowCursor
  *
- * @from SDL_mouse.h:680 bool SDL_CursorVisible(void);
+ * @from SDL_mouse.h:804 bool SDL_CursorVisible(void);
  */
 SDL_CursorVisible: {
       parameters: [],

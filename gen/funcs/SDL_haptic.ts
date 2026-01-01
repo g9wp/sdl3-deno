@@ -49,7 +49,7 @@
  * {
  *    SDL_Haptic *haptic;
  *    SDL_HapticEffect effect;
- *    int effect_id;
+ *    SDL_HapticEffectID effect_id;
  *
  *    // Open the device
  *    haptic = SDL_OpenHapticFromJoystick(joystick);
@@ -131,7 +131,7 @@ export const symbols = {
  *
  * @sa SDL_OpenHaptic
  *
- * @from SDL_haptic.h:954 SDL_HapticID * SDL_GetHaptics(int *count);
+ * @from SDL_haptic.h:974 SDL_HapticID * SDL_GetHaptics(int *count);
  */
 SDL_GetHaptics: {
       parameters: ["pointer"],
@@ -154,7 +154,7 @@ SDL_GetHaptics: {
  * @sa SDL_GetHapticName
  * @sa SDL_OpenHaptic
  *
- * @from SDL_haptic.h:971 const char * SDL_GetHapticNameForID(SDL_HapticID instance_id);
+ * @from SDL_haptic.h:991 const char * SDL_GetHapticNameForID(SDL_HapticID instance_id);
  */
 SDL_GetHapticNameForID: {
       parameters: ["u32"],
@@ -185,7 +185,7 @@ SDL_GetHapticNameForID: {
  * @sa SDL_SetHapticAutocenter
  * @sa SDL_SetHapticGain
  *
- * @from SDL_haptic.h:996 SDL_Haptic * SDL_OpenHaptic(SDL_HapticID instance_id);
+ * @from SDL_haptic.h:1016 SDL_Haptic * SDL_OpenHaptic(SDL_HapticID instance_id);
  */
 SDL_OpenHaptic: {
       parameters: ["u32"],
@@ -202,7 +202,7 @@ SDL_OpenHaptic: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_haptic.h:1008 SDL_Haptic * SDL_GetHapticFromID(SDL_HapticID instance_id);
+ * @from SDL_haptic.h:1028 SDL_Haptic * SDL_GetHapticFromID(SDL_HapticID instance_id);
  */
 SDL_GetHapticFromID: {
       parameters: ["u32"],
@@ -219,7 +219,7 @@ SDL_GetHapticFromID: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_haptic.h:1019 SDL_HapticID SDL_GetHapticID(SDL_Haptic *haptic);
+ * @from SDL_haptic.h:1039 SDL_HapticID SDL_GetHapticID(SDL_Haptic *haptic);
  */
 SDL_GetHapticID: {
       parameters: ["pointer"],
@@ -239,7 +239,7 @@ SDL_GetHapticID: {
  *
  * @sa SDL_GetHapticNameForID
  *
- * @from SDL_haptic.h:1033 const char * SDL_GetHapticName(SDL_Haptic *haptic);
+ * @from SDL_haptic.h:1053 const char * SDL_GetHapticName(SDL_Haptic *haptic);
  */
 SDL_GetHapticName: {
       parameters: ["pointer"],
@@ -256,7 +256,7 @@ SDL_GetHapticName: {
  *
  * @sa SDL_OpenHapticFromMouse
  *
- * @from SDL_haptic.h:1044 bool SDL_IsMouseHaptic(void);
+ * @from SDL_haptic.h:1064 bool SDL_IsMouseHaptic(void);
  */
 SDL_IsMouseHaptic: {
       parameters: [],
@@ -275,7 +275,7 @@ SDL_IsMouseHaptic: {
  * @sa SDL_CloseHaptic
  * @sa SDL_IsMouseHaptic
  *
- * @from SDL_haptic.h:1057 SDL_Haptic * SDL_OpenHapticFromMouse(void);
+ * @from SDL_haptic.h:1077 SDL_Haptic * SDL_OpenHapticFromMouse(void);
  */
 SDL_OpenHapticFromMouse: {
       parameters: [],
@@ -293,7 +293,7 @@ SDL_OpenHapticFromMouse: {
  *
  * @sa SDL_OpenHapticFromJoystick
  *
- * @from SDL_haptic.h:1069 bool SDL_IsJoystickHaptic(SDL_Joystick *joystick);
+ * @from SDL_haptic.h:1089 bool SDL_IsJoystickHaptic(SDL_Joystick *joystick);
  */
 SDL_IsJoystickHaptic: {
       parameters: ["pointer"],
@@ -321,7 +321,7 @@ SDL_IsJoystickHaptic: {
  * @sa SDL_CloseHaptic
  * @sa SDL_IsJoystickHaptic
  *
- * @from SDL_haptic.h:1091 SDL_Haptic * SDL_OpenHapticFromJoystick(SDL_Joystick *joystick);
+ * @from SDL_haptic.h:1111 SDL_Haptic * SDL_OpenHapticFromJoystick(SDL_Joystick *joystick);
  */
 SDL_OpenHapticFromJoystick: {
       parameters: ["pointer"],
@@ -338,7 +338,7 @@ SDL_OpenHapticFromJoystick: {
  *
  * @sa SDL_OpenHaptic
  *
- * @from SDL_haptic.h:1102 void SDL_CloseHaptic(SDL_Haptic *haptic);
+ * @from SDL_haptic.h:1122 void SDL_CloseHaptic(SDL_Haptic *haptic);
  */
 SDL_CloseHaptic: {
       parameters: ["pointer"],
@@ -362,7 +362,7 @@ SDL_CloseHaptic: {
  * @sa SDL_GetMaxHapticEffectsPlaying
  * @sa SDL_GetHapticFeatures
  *
- * @from SDL_haptic.h:1120 int SDL_GetMaxHapticEffects(SDL_Haptic *haptic);
+ * @from SDL_haptic.h:1140 int SDL_GetMaxHapticEffects(SDL_Haptic *haptic);
  */
 SDL_GetMaxHapticEffects: {
       parameters: ["pointer"],
@@ -384,7 +384,7 @@ SDL_GetMaxHapticEffects: {
  * @sa SDL_GetMaxHapticEffects
  * @sa SDL_GetHapticFeatures
  *
- * @from SDL_haptic.h:1136 int SDL_GetMaxHapticEffectsPlaying(SDL_Haptic *haptic);
+ * @from SDL_haptic.h:1156 int SDL_GetMaxHapticEffectsPlaying(SDL_Haptic *haptic);
  */
 SDL_GetMaxHapticEffectsPlaying: {
       parameters: ["pointer"],
@@ -404,7 +404,7 @@ SDL_GetMaxHapticEffectsPlaying: {
  * @sa SDL_HapticEffectSupported
  * @sa SDL_GetMaxHapticEffects
  *
- * @from SDL_haptic.h:1150 Uint32 SDL_GetHapticFeatures(SDL_Haptic *haptic);
+ * @from SDL_haptic.h:1170 Uint32 SDL_GetHapticFeatures(SDL_Haptic *haptic);
  */
 SDL_GetHapticFeatures: {
       parameters: ["pointer"],
@@ -424,7 +424,7 @@ SDL_GetHapticFeatures: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_haptic.h:1164 int SDL_GetNumHapticAxes(SDL_Haptic *haptic);
+ * @from SDL_haptic.h:1184 int SDL_GetNumHapticAxes(SDL_Haptic *haptic);
  */
 SDL_GetNumHapticAxes: {
       parameters: ["pointer"],
@@ -444,7 +444,7 @@ SDL_GetNumHapticAxes: {
  * @sa SDL_CreateHapticEffect
  * @sa SDL_GetHapticFeatures
  *
- * @from SDL_haptic.h:1178 bool SDL_HapticEffectSupported(SDL_Haptic *haptic, const SDL_HapticEffect *effect);
+ * @from SDL_haptic.h:1198 bool SDL_HapticEffectSupported(SDL_Haptic *haptic, const SDL_HapticEffect *effect);
  */
 SDL_HapticEffectSupported: {
       parameters: ["pointer", "pointer"],
@@ -467,7 +467,7 @@ SDL_HapticEffectSupported: {
  * @sa SDL_RunHapticEffect
  * @sa SDL_UpdateHapticEffect
  *
- * @from SDL_haptic.h:1195 int SDL_CreateHapticEffect(SDL_Haptic *haptic, const SDL_HapticEffect *effect);
+ * @from SDL_haptic.h:1215 SDL_HapticEffectID SDL_CreateHapticEffect(SDL_Haptic *haptic, const SDL_HapticEffect *effect);
  */
 SDL_CreateHapticEffect: {
       parameters: ["pointer", "pointer"],
@@ -495,7 +495,7 @@ SDL_CreateHapticEffect: {
  * @sa SDL_CreateHapticEffect
  * @sa SDL_RunHapticEffect
  *
- * @from SDL_haptic.h:1217 bool SDL_UpdateHapticEffect(SDL_Haptic *haptic, int effect, const SDL_HapticEffect *data);
+ * @from SDL_haptic.h:1237 bool SDL_UpdateHapticEffect(SDL_Haptic *haptic, SDL_HapticEffectID effect, const SDL_HapticEffect *data);
  */
 SDL_UpdateHapticEffect: {
       parameters: ["pointer", "i32", "pointer"],
@@ -525,7 +525,7 @@ SDL_UpdateHapticEffect: {
  * @sa SDL_StopHapticEffect
  * @sa SDL_StopHapticEffects
  *
- * @from SDL_haptic.h:1241 bool SDL_RunHapticEffect(SDL_Haptic *haptic, int effect, Uint32 iterations);
+ * @from SDL_haptic.h:1261 bool SDL_RunHapticEffect(SDL_Haptic *haptic, SDL_HapticEffectID effect, Uint32 iterations);
  */
 SDL_RunHapticEffect: {
       parameters: ["pointer", "i32", "u32"],
@@ -546,7 +546,7 @@ SDL_RunHapticEffect: {
  * @sa SDL_RunHapticEffect
  * @sa SDL_StopHapticEffects
  *
- * @from SDL_haptic.h:1256 bool SDL_StopHapticEffect(SDL_Haptic *haptic, int effect);
+ * @from SDL_haptic.h:1276 bool SDL_StopHapticEffect(SDL_Haptic *haptic, SDL_HapticEffectID effect);
  */
 SDL_StopHapticEffect: {
       parameters: ["pointer", "i32"],
@@ -567,7 +567,7 @@ SDL_StopHapticEffect: {
  *
  * @sa SDL_CreateHapticEffect
  *
- * @from SDL_haptic.h:1271 void SDL_DestroyHapticEffect(SDL_Haptic *haptic, int effect);
+ * @from SDL_haptic.h:1291 void SDL_DestroyHapticEffect(SDL_Haptic *haptic, SDL_HapticEffectID effect);
  */
 SDL_DestroyHapticEffect: {
       parameters: ["pointer", "i32"],
@@ -589,7 +589,7 @@ SDL_DestroyHapticEffect: {
  *
  * @sa SDL_GetHapticFeatures
  *
- * @from SDL_haptic.h:1287 bool SDL_GetHapticEffectStatus(SDL_Haptic *haptic, int effect);
+ * @from SDL_haptic.h:1307 bool SDL_GetHapticEffectStatus(SDL_Haptic *haptic, SDL_HapticEffectID effect);
  */
 SDL_GetHapticEffectStatus: {
       parameters: ["pointer", "i32"],
@@ -617,7 +617,7 @@ SDL_GetHapticEffectStatus: {
  *
  * @sa SDL_GetHapticFeatures
  *
- * @from SDL_haptic.h:1309 bool SDL_SetHapticGain(SDL_Haptic *haptic, int gain);
+ * @from SDL_haptic.h:1329 bool SDL_SetHapticGain(SDL_Haptic *haptic, int gain);
  */
 SDL_SetHapticGain: {
       parameters: ["pointer", "i32"],
@@ -642,7 +642,7 @@ SDL_SetHapticGain: {
  *
  * @sa SDL_GetHapticFeatures
  *
- * @from SDL_haptic.h:1328 bool SDL_SetHapticAutocenter(SDL_Haptic *haptic, int autocenter);
+ * @from SDL_haptic.h:1348 bool SDL_SetHapticAutocenter(SDL_Haptic *haptic, int autocenter);
  */
 SDL_SetHapticAutocenter: {
       parameters: ["pointer", "i32"],
@@ -667,7 +667,7 @@ SDL_SetHapticAutocenter: {
  *
  * @sa SDL_ResumeHaptic
  *
- * @from SDL_haptic.h:1347 bool SDL_PauseHaptic(SDL_Haptic *haptic);
+ * @from SDL_haptic.h:1367 bool SDL_PauseHaptic(SDL_Haptic *haptic);
  */
 SDL_PauseHaptic: {
       parameters: ["pointer"],
@@ -688,7 +688,7 @@ SDL_PauseHaptic: {
  *
  * @sa SDL_PauseHaptic
  *
- * @from SDL_haptic.h:1362 bool SDL_ResumeHaptic(SDL_Haptic *haptic);
+ * @from SDL_haptic.h:1382 bool SDL_ResumeHaptic(SDL_Haptic *haptic);
  */
 SDL_ResumeHaptic: {
       parameters: ["pointer"],
@@ -708,7 +708,7 @@ SDL_ResumeHaptic: {
  * @sa SDL_RunHapticEffect
  * @sa SDL_StopHapticEffects
  *
- * @from SDL_haptic.h:1376 bool SDL_StopHapticEffects(SDL_Haptic *haptic);
+ * @from SDL_haptic.h:1396 bool SDL_StopHapticEffects(SDL_Haptic *haptic);
  */
 SDL_StopHapticEffects: {
       parameters: ["pointer"],
@@ -726,7 +726,7 @@ SDL_StopHapticEffects: {
  *
  * @sa SDL_InitHapticRumble
  *
- * @from SDL_haptic.h:1388 bool SDL_HapticRumbleSupported(SDL_Haptic *haptic);
+ * @from SDL_haptic.h:1408 bool SDL_HapticRumbleSupported(SDL_Haptic *haptic);
  */
 SDL_HapticRumbleSupported: {
       parameters: ["pointer"],
@@ -747,7 +747,7 @@ SDL_HapticRumbleSupported: {
  * @sa SDL_StopHapticRumble
  * @sa SDL_HapticRumbleSupported
  *
- * @from SDL_haptic.h:1403 bool SDL_InitHapticRumble(SDL_Haptic *haptic);
+ * @from SDL_haptic.h:1423 bool SDL_InitHapticRumble(SDL_Haptic *haptic);
  */
 SDL_InitHapticRumble: {
       parameters: ["pointer"],
@@ -769,7 +769,7 @@ SDL_InitHapticRumble: {
  * @sa SDL_InitHapticRumble
  * @sa SDL_StopHapticRumble
  *
- * @from SDL_haptic.h:1419 bool SDL_PlayHapticRumble(SDL_Haptic *haptic, float strength, Uint32 length);
+ * @from SDL_haptic.h:1439 bool SDL_PlayHapticRumble(SDL_Haptic *haptic, float strength, Uint32 length);
  */
 SDL_PlayHapticRumble: {
       parameters: ["pointer", "f32", "u32"],
@@ -788,7 +788,7 @@ SDL_PlayHapticRumble: {
  *
  * @sa SDL_PlayHapticRumble
  *
- * @from SDL_haptic.h:1432 bool SDL_StopHapticRumble(SDL_Haptic *haptic);
+ * @from SDL_haptic.h:1452 bool SDL_StopHapticRumble(SDL_Haptic *haptic);
  */
 SDL_StopHapticRumble: {
       parameters: ["pointer"],

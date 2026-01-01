@@ -41,7 +41,7 @@
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4295 SDL_HINT_
+ * @from SDL_hints.h:4645 SDL_HINT_
  */
 export enum SDL_HintPriority {
   DEFAULT, 

@@ -8,12 +8,16 @@
  * provides a reasonable toolbox for transforming the data, including copying
  * between surfaces, filling rectangles in the image data, etc.
  *
- * There is also a simple .bmp loader, SDL_LoadBMP(). SDL itself does not
- * provide loaders for various other file formats, but there are several
- * excellent external libraries that do, including its own satellite library,
- * SDL_image:
+ * There is also a simple .bmp loader, SDL_LoadBMP(), and a simple .png
+ * loader, SDL_LoadPNG(). SDL itself does not provide loaders for other file
+ * formats, but there are several excellent external libraries that do,
+ * including its own satellite library,
+ * [SDL_image](https://wiki.libsdl.org/SDL3_image)
+ * .
  *
- * https://github.com/libsdl-org/SDL_image
+ * In general these functions are thread-safe in that they can be called on
+ * different threads with different surfaces. You should not try to modify any
+ * surface from two threads simultaneously.
  *
  * @module
  */
@@ -60,7 +64,7 @@ export const symbols = {
  * @sa SDL_CreateSurfaceFrom
  * @sa SDL_DestroySurface
  *
- * @from SDL_surface.h:166 SDL_Surface * SDL_CreateSurface(int width, int height, SDL_PixelFormat format);
+ * @from SDL_surface.h:172 SDL_Surface * SDL_CreateSurface(int width, int height, SDL_PixelFormat format);
  */
 SDL_CreateSurface: {
       parameters: ["i32", "i32", "u32"],
@@ -96,7 +100,7 @@ SDL_CreateSurface: {
  * @sa SDL_CreateSurface
  * @sa SDL_DestroySurface
  *
- * @from SDL_surface.h:196 SDL_Surface * SDL_CreateSurfaceFrom(int width, int height, SDL_PixelFormat format, void *pixels, int pitch);
+ * @from SDL_surface.h:202 SDL_Surface * SDL_CreateSurfaceFrom(int width, int height, SDL_PixelFormat format, void *pixels, int pitch);
  */
 SDL_CreateSurfaceFrom: {
       parameters: ["i32", "i32", "u32", "pointer", "i32"],
@@ -118,7 +122,7 @@ SDL_CreateSurfaceFrom: {
  * @sa SDL_CreateSurface
  * @sa SDL_CreateSurfaceFrom
  *
- * @from SDL_surface.h:212 void SDL_DestroySurface(SDL_Surface *surface);
+ * @from SDL_surface.h:218 void SDL_DestroySurface(SDL_Surface *surface);
  */
 SDL_DestroySurface: {
       parameters: ["pointer"],
@@ -149,6 +153,12 @@ SDL_DestroySurface: {
  *   left edge of the image, if this surface is being used as a cursor.
  * - `SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the
  *   top edge of the image, if this surface is being used as a cursor.
+ * - `SDL_PROP_SURFACE_ROTATION_FLOAT`: the number of degrees a surface's data
+ *   is meant to be rotated clockwise to make the image right-side up. Default
+ *   0. This is used by the camera API, if a mobile device is oriented
+ *   differently than what its camera provides (i.e. - the camera always
+ *   provides portrait images but the phone is being held in landscape
+ *   orientation). Since SDL 3.4.0.
  *
  * @param surface the SDL_Surface structure to query.
  * @returns a valid property ID on success or 0 on failure; call
@@ -158,7 +168,7 @@ SDL_DestroySurface: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_surface.h:246 SDL_PropertiesID SDL_GetSurfaceProperties(SDL_Surface *surface);
+ * @from SDL_surface.h:258 SDL_PropertiesID SDL_GetSurfaceProperties(SDL_Surface *surface);
  */
 SDL_GetSurfaceProperties: {
       parameters: ["pointer"],
@@ -178,13 +188,14 @@ SDL_GetSurfaceProperties: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_GetSurfaceColorspace
  *
- * @from SDL_surface.h:272 bool SDL_SetSurfaceColorspace(SDL_Surface *surface, SDL_Colorspace colorspace);
+ * @from SDL_surface.h:286 bool SDL_SetSurfaceColorspace(SDL_Surface *surface, SDL_Colorspace colorspace);
  */
 SDL_SetSurfaceColorspace: {
       parameters: ["pointer", "u32"],
@@ -203,13 +214,14 @@ SDL_SetSurfaceColorspace: {
  * @returns the colorspace used by the surface, or SDL_COLORSPACE_UNKNOWN if
  *          the surface is NULL.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_SetSurfaceColorspace
  *
- * @from SDL_surface.h:291 SDL_Colorspace SDL_GetSurfaceColorspace(SDL_Surface *surface);
+ * @from SDL_surface.h:306 SDL_Colorspace SDL_GetSurfaceColorspace(SDL_Surface *surface);
  */
 SDL_GetSurfaceColorspace: {
       parameters: ["pointer"],
@@ -239,13 +251,14 @@ SDL_GetSurfaceColorspace: {
  *          the surface didn't have an index format); call SDL_GetError() for
  *          more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_SetPaletteColors
  *
- * @from SDL_surface.h:321 SDL_Palette * SDL_CreateSurfacePalette(SDL_Surface *surface);
+ * @from SDL_surface.h:337 SDL_Palette * SDL_CreateSurfacePalette(SDL_Surface *surface);
  */
 SDL_CreateSurfacePalette: {
       parameters: ["pointer"],
@@ -256,6 +269,9 @@ SDL_CreateSurfacePalette: {
 /**
  * Set the palette used by a surface.
  *
+ * Setting the palette keeps an internal reference to the palette, which can
+ * be safely destroyed afterwards.
+ *
  * A single palette can be shared with many surfaces.
  *
  * @param surface the SDL_Surface structure to update.
@@ -263,14 +279,15 @@ SDL_CreateSurfacePalette: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_CreatePalette
  * @sa SDL_GetSurfacePalette
  *
- * @from SDL_surface.h:340 bool SDL_SetSurfacePalette(SDL_Surface *surface, SDL_Palette *palette);
+ * @from SDL_surface.h:360 bool SDL_SetSurfacePalette(SDL_Surface *surface, SDL_Palette *palette);
  */
 SDL_SetSurfacePalette: {
       parameters: ["pointer", "pointer"],
@@ -291,7 +308,7 @@ SDL_SetSurfacePalette: {
  *
  * @sa SDL_SetSurfacePalette
  *
- * @from SDL_surface.h:355 SDL_Palette * SDL_GetSurfacePalette(SDL_Surface *surface);
+ * @from SDL_surface.h:375 SDL_Palette * SDL_GetSurfacePalette(SDL_Surface *surface);
  */
 SDL_GetSurfacePalette: {
       parameters: ["pointer"],
@@ -316,7 +333,8 @@ SDL_GetSurfacePalette: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -324,7 +342,7 @@ SDL_GetSurfacePalette: {
  * @sa SDL_GetSurfaceImages
  * @sa SDL_SurfaceHasAlternateImages
  *
- * @from SDL_surface.h:382 bool SDL_AddSurfaceAlternateImage(SDL_Surface *surface, SDL_Surface *image);
+ * @from SDL_surface.h:403 bool SDL_AddSurfaceAlternateImage(SDL_Surface *surface, SDL_Surface *image);
  */
 SDL_AddSurfaceAlternateImage: {
       parameters: ["pointer", "pointer"],
@@ -346,7 +364,7 @@ SDL_AddSurfaceAlternateImage: {
  * @sa SDL_RemoveSurfaceAlternateImages
  * @sa SDL_GetSurfaceImages
  *
- * @from SDL_surface.h:398 bool SDL_SurfaceHasAlternateImages(SDL_Surface *surface);
+ * @from SDL_surface.h:419 bool SDL_SurfaceHasAlternateImages(SDL_Surface *surface);
  */
 SDL_SurfaceHasAlternateImages: {
       parameters: ["pointer"],
@@ -371,7 +389,8 @@ SDL_SurfaceHasAlternateImages: {
  *          failure; call SDL_GetError() for more information. This should be
  *          freed with SDL_free() when it is no longer needed.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -379,7 +398,7 @@ SDL_SurfaceHasAlternateImages: {
  * @sa SDL_RemoveSurfaceAlternateImages
  * @sa SDL_SurfaceHasAlternateImages
  *
- * @from SDL_surface.h:425 SDL_Surface ** SDL_GetSurfaceImages(SDL_Surface *surface, int *count);
+ * @from SDL_surface.h:447 SDL_Surface ** SDL_GetSurfaceImages(SDL_Surface *surface, int *count);
  */
 SDL_GetSurfaceImages: {
       parameters: ["pointer", "pointer"],
@@ -395,7 +414,8 @@ SDL_GetSurfaceImages: {
  *
  * @param surface the SDL_Surface structure to update.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -403,7 +423,7 @@ SDL_GetSurfaceImages: {
  * @sa SDL_GetSurfaceImages
  * @sa SDL_SurfaceHasAlternateImages
  *
- * @from SDL_surface.h:443 void SDL_RemoveSurfaceAlternateImages(SDL_Surface *surface);
+ * @from SDL_surface.h:466 void SDL_RemoveSurfaceAlternateImages(SDL_Surface *surface);
  */
 SDL_RemoveSurfaceAlternateImages: {
       parameters: ["pointer"],
@@ -427,16 +447,17 @@ SDL_RemoveSurfaceAlternateImages: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe. The locking referred to by
- *               this function is making the pixels available for direct
- *               access, not thread-safe locking.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces. The locking referred to by this function
+ *               is making the pixels available for direct access, not
+ *               thread-safe locking.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_MUSTLOCK
  * @sa SDL_UnlockSurface
  *
- * @from SDL_surface.h:470 bool SDL_LockSurface(SDL_Surface *surface);
+ * @from SDL_surface.h:494 bool SDL_LockSurface(SDL_Surface *surface);
  */
 SDL_LockSurface: {
       parameters: ["pointer"],
@@ -457,11 +478,63 @@ SDL_LockSurface: {
  *
  * @sa SDL_LockSurface
  *
- * @from SDL_surface.h:485 void SDL_UnlockSurface(SDL_Surface *surface);
+ * @from SDL_surface.h:509 void SDL_UnlockSurface(SDL_Surface *surface);
  */
 SDL_UnlockSurface: {
       parameters: ["pointer"],
       result: "void"
+    },
+
+
+/**
+ * Load a BMP or PNG image from a seekable SDL data stream.
+ *
+ * The new surface should be freed with SDL_DestroySurface(). Not doing so
+ * will result in a memory leak.
+ *
+ * @param src the data stream for the surface.
+ * @param closeio if true, calls SDL_CloseIO() on `src` before returning, even
+ *                in the case of an error.
+ * @returns a pointer to a new SDL_Surface structure or NULL on failure; call
+ *          SDL_GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_DestroySurface
+ * @sa SDL_LoadSurface
+ *
+ * @from SDL_surface.h:530 SDL_Surface * SDL_LoadSurface_IO(SDL_IOStream *src, bool closeio);
+ */
+SDL_LoadSurface_IO: {
+      parameters: ["pointer", "bool"],
+      result: "pointer"
+    },
+
+
+/**
+ * Load a BMP or PNG image from a file.
+ *
+ * The new surface should be freed with SDL_DestroySurface(). Not doing so
+ * will result in a memory leak.
+ *
+ * @param file the file to load.
+ * @returns a pointer to a new SDL_Surface structure or NULL on failure; call
+ *          SDL_GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_DestroySurface
+ * @sa SDL_LoadSurface_IO
+ *
+ * @from SDL_surface.h:549 SDL_Surface * SDL_LoadSurface(const char *file);
+ */
+SDL_LoadSurface: {
+      parameters: ["pointer"],
+      result: "pointer"
     },
 
 
@@ -485,7 +558,7 @@ SDL_UnlockSurface: {
  * @sa SDL_LoadBMP
  * @sa SDL_SaveBMP_IO
  *
- * @from SDL_surface.h:507 SDL_Surface * SDL_LoadBMP_IO(SDL_IOStream *src, bool closeio);
+ * @from SDL_surface.h:571 SDL_Surface * SDL_LoadBMP_IO(SDL_IOStream *src, bool closeio);
  */
 SDL_LoadBMP_IO: {
       parameters: ["pointer", "bool"],
@@ -511,7 +584,7 @@ SDL_LoadBMP_IO: {
  * @sa SDL_LoadBMP_IO
  * @sa SDL_SaveBMP
  *
- * @from SDL_surface.h:527 SDL_Surface * SDL_LoadBMP(const char *file);
+ * @from SDL_surface.h:591 SDL_Surface * SDL_LoadBMP(const char *file);
  */
 SDL_LoadBMP: {
       parameters: ["pointer"],
@@ -535,14 +608,15 @@ SDL_LoadBMP: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_LoadBMP_IO
  * @sa SDL_SaveBMP
  *
- * @from SDL_surface.h:552 bool SDL_SaveBMP_IO(SDL_Surface *surface, SDL_IOStream *dst, bool closeio);
+ * @from SDL_surface.h:617 bool SDL_SaveBMP_IO(SDL_Surface *surface, SDL_IOStream *dst, bool closeio);
  */
 SDL_SaveBMP_IO: {
       parameters: ["pointer", "pointer", "bool"],
@@ -551,7 +625,7 @@ SDL_SaveBMP_IO: {
 
 
 /**
- * Save a surface to a file.
+ * Save a surface to a file in BMP format.
  *
  * Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the
  * BMP directly. Other RGB formats with 8-bit or higher get converted to a
@@ -564,16 +638,129 @@ SDL_SaveBMP_IO: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_LoadBMP
  * @sa SDL_SaveBMP_IO
  *
- * @from SDL_surface.h:575 bool SDL_SaveBMP(SDL_Surface *surface, const char *file);
+ * @from SDL_surface.h:641 bool SDL_SaveBMP(SDL_Surface *surface, const char *file);
  */
 SDL_SaveBMP: {
+      parameters: ["pointer", "pointer"],
+      result: "bool"
+    },
+
+
+/**
+ * Load a PNG image from a seekable SDL data stream.
+ *
+ * This is intended as a convenience function for loading images from trusted
+ * sources. If you want to load arbitrary images you should use libpng or
+ * another image loading library designed with security in mind.
+ *
+ * The new surface should be freed with SDL_DestroySurface(). Not doing so
+ * will result in a memory leak.
+ *
+ * @param src the data stream for the surface.
+ * @param closeio if true, calls SDL_CloseIO() on `src` before returning, even
+ *                in the case of an error.
+ * @returns a pointer to a new SDL_Surface structure or NULL on failure; call
+ *          SDL_GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_DestroySurface
+ * @sa SDL_LoadPNG
+ * @sa SDL_SavePNG_IO
+ *
+ * @from SDL_surface.h:667 SDL_Surface * SDL_LoadPNG_IO(SDL_IOStream *src, bool closeio);
+ */
+SDL_LoadPNG_IO: {
+      parameters: ["pointer", "bool"],
+      result: "pointer"
+    },
+
+
+/**
+ * Load a PNG image from a file.
+ *
+ * This is intended as a convenience function for loading images from trusted
+ * sources. If you want to load arbitrary images you should use libpng or
+ * another image loading library designed with security in mind.
+ *
+ * The new surface should be freed with SDL_DestroySurface(). Not doing so
+ * will result in a memory leak.
+ *
+ * @param file the PNG file to load.
+ * @returns a pointer to a new SDL_Surface structure or NULL on failure; call
+ *          SDL_GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_DestroySurface
+ * @sa SDL_LoadPNG_IO
+ * @sa SDL_SavePNG
+ *
+ * @from SDL_surface.h:691 SDL_Surface * SDL_LoadPNG(const char *file);
+ */
+SDL_LoadPNG: {
+      parameters: ["pointer"],
+      result: "pointer"
+    },
+
+
+/**
+ * Save a surface to a seekable SDL data stream in PNG format.
+ *
+ * @param surface the SDL_Surface structure containing the image to be saved.
+ * @param dst a data stream to save to.
+ * @param closeio if true, calls SDL_CloseIO() on `dst` before returning, even
+ *                in the case of an error.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_LoadPNG_IO
+ * @sa SDL_SavePNG
+ *
+ * @from SDL_surface.h:711 bool SDL_SavePNG_IO(SDL_Surface *surface, SDL_IOStream *dst, bool closeio);
+ */
+SDL_SavePNG_IO: {
+      parameters: ["pointer", "pointer", "bool"],
+      result: "bool"
+    },
+
+
+/**
+ * Save a surface to a file in PNG format.
+ *
+ * @param surface the SDL_Surface structure containing the image to be saved.
+ * @param file a file to save to.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_LoadPNG
+ * @sa SDL_SavePNG_IO
+ *
+ * @from SDL_surface.h:729 bool SDL_SavePNG(SDL_Surface *surface, const char *file);
+ */
+SDL_SavePNG: {
       parameters: ["pointer", "pointer"],
       result: "bool"
     },
@@ -590,7 +777,8 @@ SDL_SaveBMP: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -598,7 +786,7 @@ SDL_SaveBMP: {
  * @sa SDL_LockSurface
  * @sa SDL_UnlockSurface
  *
- * @from SDL_surface.h:596 bool SDL_SetSurfaceRLE(SDL_Surface *surface, bool enabled);
+ * @from SDL_surface.h:751 bool SDL_SetSurfaceRLE(SDL_Surface *surface, bool enabled);
  */
 SDL_SetSurfaceRLE: {
       parameters: ["pointer", "bool"],
@@ -620,7 +808,7 @@ SDL_SetSurfaceRLE: {
  *
  * @sa SDL_SetSurfaceRLE
  *
- * @from SDL_surface.h:612 bool SDL_SurfaceHasRLE(SDL_Surface *surface);
+ * @from SDL_surface.h:767 bool SDL_SurfaceHasRLE(SDL_Surface *surface);
  */
 SDL_SurfaceHasRLE: {
       parameters: ["pointer"],
@@ -644,7 +832,8 @@ SDL_SurfaceHasRLE: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -652,7 +841,7 @@ SDL_SurfaceHasRLE: {
  * @sa SDL_SetSurfaceRLE
  * @sa SDL_SurfaceHasColorKey
  *
- * @from SDL_surface.h:638 bool SDL_SetSurfaceColorKey(SDL_Surface *surface, bool enabled, Uint32 key);
+ * @from SDL_surface.h:794 bool SDL_SetSurfaceColorKey(SDL_Surface *surface, bool enabled, Uint32 key);
  */
 SDL_SetSurfaceColorKey: {
       parameters: ["pointer", "bool", "u32"],
@@ -675,7 +864,7 @@ SDL_SetSurfaceColorKey: {
  * @sa SDL_SetSurfaceColorKey
  * @sa SDL_GetSurfaceColorKey
  *
- * @from SDL_surface.h:655 bool SDL_SurfaceHasColorKey(SDL_Surface *surface);
+ * @from SDL_surface.h:811 bool SDL_SurfaceHasColorKey(SDL_Surface *surface);
  */
 SDL_SurfaceHasColorKey: {
       parameters: ["pointer"],
@@ -703,7 +892,7 @@ SDL_SurfaceHasColorKey: {
  * @sa SDL_SetSurfaceColorKey
  * @sa SDL_SurfaceHasColorKey
  *
- * @from SDL_surface.h:677 bool SDL_GetSurfaceColorKey(SDL_Surface *surface, Uint32 *key);
+ * @from SDL_surface.h:833 bool SDL_GetSurfaceColorKey(SDL_Surface *surface, Uint32 *key);
  */
 SDL_GetSurfaceColorKey: {
       parameters: ["pointer", "pointer"],
@@ -727,14 +916,15 @@ SDL_GetSurfaceColorKey: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_GetSurfaceColorMod
  * @sa SDL_SetSurfaceAlphaMod
  *
- * @from SDL_surface.h:702 bool SDL_SetSurfaceColorMod(SDL_Surface *surface, Uint8 r, Uint8 g, Uint8 b);
+ * @from SDL_surface.h:859 bool SDL_SetSurfaceColorMod(SDL_Surface *surface, Uint8 r, Uint8 g, Uint8 b);
  */
 SDL_SetSurfaceColorMod: {
       parameters: ["pointer", "u8", "u8", "u8"],
@@ -752,14 +942,15 @@ SDL_SetSurfaceColorMod: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_GetSurfaceAlphaMod
  * @sa SDL_SetSurfaceColorMod
  *
- * @from SDL_surface.h:722 bool SDL_GetSurfaceColorMod(SDL_Surface *surface, Uint8 *r, Uint8 *g, Uint8 *b);
+ * @from SDL_surface.h:880 bool SDL_GetSurfaceColorMod(SDL_Surface *surface, Uint8 *r, Uint8 *g, Uint8 *b);
  */
 SDL_GetSurfaceColorMod: {
       parameters: ["pointer", "pointer", "pointer", "pointer"],
@@ -780,14 +971,15 @@ SDL_GetSurfaceColorMod: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_GetSurfaceAlphaMod
  * @sa SDL_SetSurfaceColorMod
  *
- * @from SDL_surface.h:744 bool SDL_SetSurfaceAlphaMod(SDL_Surface *surface, Uint8 alpha);
+ * @from SDL_surface.h:903 bool SDL_SetSurfaceAlphaMod(SDL_Surface *surface, Uint8 alpha);
  */
 SDL_SetSurfaceAlphaMod: {
       parameters: ["pointer", "u8"],
@@ -810,7 +1002,7 @@ SDL_SetSurfaceAlphaMod: {
  * @sa SDL_GetSurfaceColorMod
  * @sa SDL_SetSurfaceAlphaMod
  *
- * @from SDL_surface.h:761 bool SDL_GetSurfaceAlphaMod(SDL_Surface *surface, Uint8 *alpha);
+ * @from SDL_surface.h:920 bool SDL_GetSurfaceAlphaMod(SDL_Surface *surface, Uint8 *alpha);
  */
 SDL_GetSurfaceAlphaMod: {
       parameters: ["pointer", "pointer"],
@@ -830,13 +1022,14 @@ SDL_GetSurfaceAlphaMod: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_GetSurfaceBlendMode
  *
- * @from SDL_surface.h:781 bool SDL_SetSurfaceBlendMode(SDL_Surface *surface, SDL_BlendMode blendMode);
+ * @from SDL_surface.h:941 bool SDL_SetSurfaceBlendMode(SDL_Surface *surface, SDL_BlendMode blendMode);
  */
 SDL_SetSurfaceBlendMode: {
       parameters: ["pointer", "u32"],
@@ -858,7 +1051,7 @@ SDL_SetSurfaceBlendMode: {
  *
  * @sa SDL_SetSurfaceBlendMode
  *
- * @from SDL_surface.h:797 bool SDL_GetSurfaceBlendMode(SDL_Surface *surface, SDL_BlendMode *blendMode);
+ * @from SDL_surface.h:957 bool SDL_GetSurfaceBlendMode(SDL_Surface *surface, SDL_BlendMode *blendMode);
  */
 SDL_GetSurfaceBlendMode: {
       parameters: ["pointer", "pointer"],
@@ -881,13 +1074,14 @@ SDL_GetSurfaceBlendMode: {
  * @returns true if the rectangle intersects the surface, otherwise false and
  *          blits will be completely clipped.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_GetSurfaceClipRect
  *
- * @from SDL_surface.h:820 bool SDL_SetSurfaceClipRect(SDL_Surface *surface, const SDL_Rect *rect);
+ * @from SDL_surface.h:981 bool SDL_SetSurfaceClipRect(SDL_Surface *surface, const SDL_Rect *rect);
  */
 SDL_SetSurfaceClipRect: {
       parameters: ["pointer", "pointer"],
@@ -908,13 +1102,14 @@ SDL_SetSurfaceClipRect: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_SetSurfaceClipRect
  *
- * @from SDL_surface.h:841 bool SDL_GetSurfaceClipRect(SDL_Surface *surface, SDL_Rect *rect);
+ * @from SDL_surface.h:1003 bool SDL_GetSurfaceClipRect(SDL_Surface *surface, SDL_Rect *rect);
  */
 SDL_GetSurfaceClipRect: {
       parameters: ["pointer", "pointer"],
@@ -930,15 +1125,51 @@ SDL_GetSurfaceClipRect: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_surface.h:855 bool SDL_FlipSurface(SDL_Surface *surface, SDL_FlipMode flip);
+ * @from SDL_surface.h:1018 bool SDL_FlipSurface(SDL_Surface *surface, SDL_FlipMode flip);
  */
 SDL_FlipSurface: {
       parameters: ["pointer", "u32"],
       result: "bool"
+    },
+
+
+/**
+ * Return a copy of a surface rotated clockwise a number of degrees.
+ *
+ * The angle of rotation can be negative for counter-clockwise rotation.
+ *
+ * When the rotation isn't a multiple of 90 degrees, the resulting surface is
+ * larger than the original, with the background filled in with the colorkey,
+ * if available, or RGBA 255/255/255/0 if not.
+ *
+ * If `surface` has the SDL_PROP_SURFACE_ROTATION_FLOAT property set on it,
+ * the new copy will have the adjusted value set: if the rotation property is
+ * 90 and `angle` was 30, the new surface will have a property value of 60
+ * (that is: to be upright vs gravity, this surface needs to rotate 60 more
+ * degrees). However, note that further rotations on the new surface in this
+ * example will produce unexpected results, since the image will have resized
+ * and padded to accommodate the not-90 degree angle.
+ *
+ * @param surface the surface to rotate.
+ * @param angle the rotation angle, in degrees.
+ * @returns a rotated copy of the surface or NULL on failure; call
+ *          SDL_GetError() for more information.
+ *
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @from SDL_surface.h:1047 SDL_Surface * SDL_RotateSurface(SDL_Surface *surface, float angle);
+ */
+SDL_RotateSurface: {
+      parameters: ["pointer", "f32"],
+      result: "pointer"
     },
 
 
@@ -954,13 +1185,14 @@ SDL_FlipSurface: {
  * @returns a copy of the surface or NULL on failure; call SDL_GetError() for
  *          more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_DestroySurface
  *
- * @from SDL_surface.h:875 SDL_Surface * SDL_DuplicateSurface(SDL_Surface *surface);
+ * @from SDL_surface.h:1068 SDL_Surface * SDL_DuplicateSurface(SDL_Surface *surface);
  */
 SDL_DuplicateSurface: {
       parameters: ["pointer"],
@@ -981,13 +1213,14 @@ SDL_DuplicateSurface: {
  * @returns a copy of the surface or NULL on failure; call SDL_GetError() for
  *          more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_DestroySurface
  *
- * @from SDL_surface.h:896 SDL_Surface * SDL_ScaleSurface(SDL_Surface *surface, int width, int height, SDL_ScaleMode scaleMode);
+ * @from SDL_surface.h:1090 SDL_Surface * SDL_ScaleSurface(SDL_Surface *surface, int width, int height, SDL_ScaleMode scaleMode);
  */
 SDL_ScaleSurface: {
       parameters: ["pointer", "i32", "i32", "u32"],
@@ -1014,14 +1247,15 @@ SDL_ScaleSurface: {
  * @returns the new SDL_Surface structure that is created or NULL on failure;
  *          call SDL_GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_ConvertSurfaceAndColorspace
  * @sa SDL_DestroySurface
  *
- * @from SDL_surface.h:924 SDL_Surface * SDL_ConvertSurface(SDL_Surface *surface, SDL_PixelFormat format);
+ * @from SDL_surface.h:1119 SDL_Surface * SDL_ConvertSurface(SDL_Surface *surface, SDL_PixelFormat format);
  */
 SDL_ConvertSurface: {
       parameters: ["pointer", "u32"],
@@ -1048,14 +1282,15 @@ SDL_ConvertSurface: {
  * @returns the new SDL_Surface structure that is created or NULL on failure;
  *          call SDL_GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_ConvertSurface
  * @sa SDL_DestroySurface
  *
- * @from SDL_surface.h:952 SDL_Surface * SDL_ConvertSurfaceAndColorspace(SDL_Surface *surface, SDL_PixelFormat format, SDL_Palette *palette, SDL_Colorspace colorspace, SDL_PropertiesID props);
+ * @from SDL_surface.h:1148 SDL_Surface * SDL_ConvertSurfaceAndColorspace(SDL_Surface *surface, SDL_PixelFormat format, SDL_Palette *palette, SDL_Colorspace colorspace, SDL_PropertiesID props);
  */
 SDL_ConvertSurfaceAndColorspace: {
       parameters: ["pointer", "u32", "pointer", "u32", "u32"],
@@ -1085,7 +1320,7 @@ SDL_ConvertSurfaceAndColorspace: {
  *
  * @sa SDL_ConvertPixelsAndColorspace
  *
- * @from SDL_surface.h:976 bool SDL_ConvertPixels(int width, int height, SDL_PixelFormat src_format, const void *src, int src_pitch, SDL_PixelFormat dst_format, void *dst, int dst_pitch);
+ * @from SDL_surface.h:1172 bool SDL_ConvertPixels(int width, int height, SDL_PixelFormat src_format, const void *src, int src_pitch, SDL_PixelFormat dst_format, void *dst, int dst_pitch);
  */
 SDL_ConvertPixels: {
       parameters: ["i32", "i32", "u32", "pointer", "i32", "u32", "pointer", "i32"],
@@ -1124,7 +1359,7 @@ SDL_ConvertPixels: {
  *
  * @sa SDL_ConvertPixels
  *
- * @from SDL_surface.h:1009 bool SDL_ConvertPixelsAndColorspace(int width, int height, SDL_PixelFormat src_format, SDL_Colorspace src_colorspace, SDL_PropertiesID src_properties, const void *src, int src_pitch, SDL_PixelFormat dst_format, SDL_Colorspace dst_colorspace, SDL_PropertiesID dst_properties, void *dst, int dst_pitch);
+ * @from SDL_surface.h:1205 bool SDL_ConvertPixelsAndColorspace(int width, int height, SDL_PixelFormat src_format, SDL_Colorspace src_colorspace, SDL_PropertiesID src_properties, const void *src, int src_pitch, SDL_PixelFormat dst_format, SDL_Colorspace dst_colorspace, SDL_PropertiesID dst_properties, void *dst, int dst_pitch);
  */
 SDL_ConvertPixelsAndColorspace: {
       parameters: ["i32", "i32", "u32", "u32", "u32", "pointer", "i32", "u32", "u32", "u32", "pointer", "i32"],
@@ -1156,7 +1391,7 @@ SDL_ConvertPixelsAndColorspace: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_surface.h:1035 bool SDL_PremultiplyAlpha(int width, int height, SDL_PixelFormat src_format, const void *src, int src_pitch, SDL_PixelFormat dst_format, void *dst, int dst_pitch, bool linear);
+ * @from SDL_surface.h:1231 bool SDL_PremultiplyAlpha(int width, int height, SDL_PixelFormat src_format, const void *src, int src_pitch, SDL_PixelFormat dst_format, void *dst, int dst_pitch, bool linear);
  */
 SDL_PremultiplyAlpha: {
       parameters: ["i32", "i32", "u32", "pointer", "i32", "u32", "pointer", "i32", "bool"],
@@ -1175,11 +1410,12 @@ SDL_PremultiplyAlpha: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_surface.h:1052 bool SDL_PremultiplySurfaceAlpha(SDL_Surface *surface, bool linear);
+ * @from SDL_surface.h:1249 bool SDL_PremultiplySurfaceAlpha(SDL_Surface *surface, bool linear);
  */
 SDL_PremultiplySurfaceAlpha: {
       parameters: ["pointer", "bool"],
@@ -1193,7 +1429,7 @@ SDL_PremultiplySurfaceAlpha: {
  * This function handles all surface formats, and ignores any clip rectangle.
  *
  * If the surface is YUV, the color is assumed to be in the sRGB colorspace,
- * otherwise the color is assumed to be in the colorspace of the suface.
+ * otherwise the color is assumed to be in the colorspace of the surface.
  *
  * @param surface the SDL_Surface to clear.
  * @param r the red component of the pixel, normally in the range 0-1.
@@ -1203,11 +1439,12 @@ SDL_PremultiplySurfaceAlpha: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_surface.h:1074 bool SDL_ClearSurface(SDL_Surface *surface, float r, float g, float b, float a);
+ * @from SDL_surface.h:1272 bool SDL_ClearSurface(SDL_Surface *surface, float r, float g, float b, float a);
  */
 SDL_ClearSurface: {
       parameters: ["pointer", "f32", "f32", "f32", "f32"],
@@ -1234,13 +1471,14 @@ SDL_ClearSurface: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_FillSurfaceRects
  *
- * @from SDL_surface.h:1101 bool SDL_FillSurfaceRect(SDL_Surface *dst, const SDL_Rect *rect, Uint32 color);
+ * @from SDL_surface.h:1300 bool SDL_FillSurfaceRect(SDL_Surface *dst, const SDL_Rect *rect, Uint32 color);
  */
 SDL_FillSurfaceRect: {
       parameters: ["pointer", "pointer", "u32"],
@@ -1267,13 +1505,14 @@ SDL_FillSurfaceRect: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_FillSurfaceRect
  *
- * @from SDL_surface.h:1128 bool SDL_FillSurfaceRects(SDL_Surface *dst, const SDL_Rect *rects, int count, Uint32 color);
+ * @from SDL_surface.h:1328 bool SDL_FillSurfaceRects(SDL_Surface *dst, const SDL_Rect *rects, int count, Uint32 color);
  */
 SDL_FillSurfaceRects: {
       parameters: ["pointer", "pointer", "i32", "u32"],
@@ -1352,7 +1591,7 @@ SDL_FillSurfaceRects: {
  *
  * @sa SDL_BlitSurfaceScaled
  *
- * @from SDL_surface.h:1201 bool SDL_BlitSurface(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect);
+ * @from SDL_surface.h:1401 bool SDL_BlitSurface(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect);
  */
 SDL_BlitSurface: {
       parameters: ["pointer", "pointer", "pointer", "pointer"],
@@ -1382,7 +1621,7 @@ SDL_BlitSurface: {
  *
  * @sa SDL_BlitSurface
  *
- * @from SDL_surface.h:1225 bool SDL_BlitSurfaceUnchecked(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect);
+ * @from SDL_surface.h:1425 bool SDL_BlitSurfaceUnchecked(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect);
  */
 SDL_BlitSurfaceUnchecked: {
       parameters: ["pointer", "pointer", "pointer", "pointer"],
@@ -1412,7 +1651,7 @@ SDL_BlitSurfaceUnchecked: {
  *
  * @sa SDL_BlitSurface
  *
- * @from SDL_surface.h:1249 bool SDL_BlitSurfaceScaled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect, SDL_ScaleMode scaleMode);
+ * @from SDL_surface.h:1449 bool SDL_BlitSurfaceScaled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect, SDL_ScaleMode scaleMode);
  */
 SDL_BlitSurfaceScaled: {
       parameters: ["pointer", "pointer", "pointer", "pointer", "u32"],
@@ -1443,7 +1682,7 @@ SDL_BlitSurfaceScaled: {
  *
  * @sa SDL_BlitSurfaceScaled
  *
- * @from SDL_surface.h:1274 bool SDL_BlitSurfaceUncheckedScaled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect, SDL_ScaleMode scaleMode);
+ * @from SDL_surface.h:1474 bool SDL_BlitSurfaceUncheckedScaled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect, SDL_ScaleMode scaleMode);
  */
 SDL_BlitSurfaceUncheckedScaled: {
       parameters: ["pointer", "pointer", "pointer", "pointer", "u32"],
@@ -1472,7 +1711,7 @@ SDL_BlitSurfaceUncheckedScaled: {
  *
  * @sa SDL_BlitSurfaceScaled
  *
- * @from SDL_surface.h:1297 bool SDL_StretchSurface(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect, SDL_ScaleMode scaleMode);
+ * @from SDL_surface.h:1497 bool SDL_StretchSurface(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect, SDL_ScaleMode scaleMode);
  */
 SDL_StretchSurface: {
       parameters: ["pointer", "pointer", "pointer", "pointer", "u32"],
@@ -1503,7 +1742,7 @@ SDL_StretchSurface: {
  *
  * @sa SDL_BlitSurface
  *
- * @from SDL_surface.h:1322 bool SDL_BlitSurfaceTiled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect);
+ * @from SDL_surface.h:1522 bool SDL_BlitSurfaceTiled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect);
  */
 SDL_BlitSurfaceTiled: {
       parameters: ["pointer", "pointer", "pointer", "pointer"],
@@ -1538,7 +1777,7 @@ SDL_BlitSurfaceTiled: {
  *
  * @sa SDL_BlitSurface
  *
- * @from SDL_surface.h:1351 bool SDL_BlitSurfaceTiledWithScale(SDL_Surface *src, const SDL_Rect *srcrect, float scale, SDL_ScaleMode scaleMode, SDL_Surface *dst, const SDL_Rect *dstrect);
+ * @from SDL_surface.h:1551 bool SDL_BlitSurfaceTiledWithScale(SDL_Surface *src, const SDL_Rect *srcrect, float scale, SDL_ScaleMode scaleMode, SDL_Surface *dst, const SDL_Rect *dstrect);
  */
 SDL_BlitSurfaceTiledWithScale: {
       parameters: ["pointer", "pointer", "f32", "u32", "pointer", "pointer"],
@@ -1580,7 +1819,7 @@ SDL_BlitSurfaceTiledWithScale: {
  *
  * @sa SDL_BlitSurface
  *
- * @from SDL_surface.h:1387 bool SDL_BlitSurface9Grid(SDL_Surface *src, const SDL_Rect *srcrect, int left_width, int right_width, int top_height, int bottom_height, float scale, SDL_ScaleMode scaleMode, SDL_Surface *dst, const SDL_Rect *dstrect);
+ * @from SDL_surface.h:1587 bool SDL_BlitSurface9Grid(SDL_Surface *src, const SDL_Rect *srcrect, int left_width, int right_width, int top_height, int bottom_height, float scale, SDL_ScaleMode scaleMode, SDL_Surface *dst, const SDL_Rect *dstrect);
  */
 SDL_BlitSurface9Grid: {
       parameters: ["pointer", "pointer", "i32", "i32", "i32", "i32", "f32", "u32", "pointer", "pointer"],
@@ -1612,13 +1851,14 @@ SDL_BlitSurface9Grid: {
  * @param b the blue component of the pixel in the range 0-255.
  * @returns a pixel value.
  *
- * @threadsafety It is safe to call this function from any thread.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_MapSurfaceRGBA
  *
- * @from SDL_surface.h:1419 Uint32 SDL_MapSurfaceRGB(SDL_Surface *surface, Uint8 r, Uint8 g, Uint8 b);
+ * @from SDL_surface.h:1620 Uint32 SDL_MapSurfaceRGB(SDL_Surface *surface, Uint8 r, Uint8 g, Uint8 b);
  */
 SDL_MapSurfaceRGB: {
       parameters: ["pointer", "u8", "u8", "u8"],
@@ -1651,13 +1891,14 @@ SDL_MapSurfaceRGB: {
  * @param a the alpha component of the pixel in the range 0-255.
  * @returns a pixel value.
  *
- * @threadsafety It is safe to call this function from any thread.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_MapSurfaceRGB
  *
- * @from SDL_surface.h:1452 Uint32 SDL_MapSurfaceRGBA(SDL_Surface *surface, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+ * @from SDL_surface.h:1654 Uint32 SDL_MapSurfaceRGBA(SDL_Surface *surface, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
  */
 SDL_MapSurfaceRGBA: {
       parameters: ["pointer", "u8", "u8", "u8", "u8"],
@@ -1688,11 +1929,12 @@ SDL_MapSurfaceRGBA: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_surface.h:1481 bool SDL_ReadSurfacePixel(SDL_Surface *surface, int x, int y, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);
+ * @from SDL_surface.h:1684 bool SDL_ReadSurfacePixel(SDL_Surface *surface, int x, int y, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);
  */
 SDL_ReadSurfacePixel: {
       parameters: ["pointer", "i32", "i32", "pointer", "pointer", "pointer", "pointer"],
@@ -1720,11 +1962,12 @@ SDL_ReadSurfacePixel: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_surface.h:1507 bool SDL_ReadSurfacePixelFloat(SDL_Surface *surface, int x, int y, float *r, float *g, float *b, float *a);
+ * @from SDL_surface.h:1711 bool SDL_ReadSurfacePixelFloat(SDL_Surface *surface, int x, int y, float *r, float *g, float *b, float *a);
  */
 SDL_ReadSurfacePixelFloat: {
       parameters: ["pointer", "i32", "i32", "pointer", "pointer", "pointer", "pointer"],
@@ -1751,11 +1994,12 @@ SDL_ReadSurfacePixelFloat: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_surface.h:1532 bool SDL_WriteSurfacePixel(SDL_Surface *surface, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+ * @from SDL_surface.h:1737 bool SDL_WriteSurfacePixel(SDL_Surface *surface, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
  */
 SDL_WriteSurfacePixel: {
       parameters: ["pointer", "i32", "i32", "u8", "u8", "u8", "u8"],
@@ -1779,11 +2023,12 @@ SDL_WriteSurfacePixel: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_surface.h:1554 bool SDL_WriteSurfacePixelFloat(SDL_Surface *surface, int x, int y, float r, float g, float b, float a);
+ * @from SDL_surface.h:1760 bool SDL_WriteSurfacePixelFloat(SDL_Surface *surface, int x, int y, float r, float g, float b, float a);
  */
 SDL_WriteSurfacePixelFloat: {
       parameters: ["pointer", "i32", "i32", "f32", "f32", "f32", "f32"],

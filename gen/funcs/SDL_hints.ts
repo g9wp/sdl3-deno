@@ -60,7 +60,7 @@ export const symbols = {
  * @sa SDL_ResetHint
  * @sa SDL_SetHint
  *
- * @from SDL_hints.h:4323 bool SDL_SetHintWithPriority(const char *name, const char *value, SDL_HintPriority priority);
+ * @from SDL_hints.h:4673 bool SDL_SetHintWithPriority(const char *name, const char *value, SDL_HintPriority priority);
  */
 SDL_SetHintWithPriority: {
       parameters: ["pointer", "pointer", "u32"],
@@ -88,7 +88,7 @@ SDL_SetHintWithPriority: {
  * @sa SDL_ResetHint
  * @sa SDL_SetHintWithPriority
  *
- * @from SDL_hints.h:4345 bool SDL_SetHint(const char *name, const char *value);
+ * @from SDL_hints.h:4695 bool SDL_SetHint(const char *name, const char *value);
  */
 SDL_SetHint: {
       parameters: ["pointer", "pointer"],
@@ -114,7 +114,7 @@ SDL_SetHint: {
  * @sa SDL_SetHint
  * @sa SDL_ResetHints
  *
- * @from SDL_hints.h:4365 bool SDL_ResetHint(const char *name);
+ * @from SDL_hints.h:4715 bool SDL_ResetHint(const char *name);
  */
 SDL_ResetHint: {
       parameters: ["pointer"],
@@ -135,7 +135,7 @@ SDL_ResetHint: {
  *
  * @sa SDL_ResetHint
  *
- * @from SDL_hints.h:4380 void SDL_ResetHints(void);
+ * @from SDL_hints.h:4730 void SDL_ResetHints(void);
  */
 SDL_ResetHints: {
       parameters: [],
@@ -149,19 +149,14 @@ SDL_ResetHints: {
  * @param name the hint to query.
  * @returns the string value of a hint or NULL if the hint isn't set.
  *
- * @threadsafety It is safe to call this function from any thread, however the
- *               return value only remains valid until the hint is changed; if
- *               another thread might do so, the app should supply locks
- *               and/or make a copy of the string. Note that using a hint
- *               callback instead is always thread-safe, as SDL holds a lock
- *               on the thread subsystem during the callback.
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_SetHint
  * @sa SDL_SetHintWithPriority
  *
- * @from SDL_hints.h:4400 const char * SDL_GetHint(const char *name);
+ * @from SDL_hints.h:4745 const char *SDL_GetHint(const char *name);
  */
 SDL_GetHint: {
       parameters: ["pointer"],
@@ -184,7 +179,7 @@ SDL_GetHint: {
  * @sa SDL_GetHint
  * @sa SDL_SetHint
  *
- * @from SDL_hints.h:4417 bool SDL_GetHintBoolean(const char *name, bool default_value);
+ * @from SDL_hints.h:4762 bool SDL_GetHintBoolean(const char *name, bool default_value);
  */
 SDL_GetHintBoolean: {
       parameters: ["pointer", "bool"],
@@ -211,7 +206,7 @@ SDL_GetHintBoolean: {
  *
  * @sa SDL_RemoveHintCallback
  *
- * @from SDL_hints.h:4459 bool SDL_AddHintCallback(const char *name, SDL_HintCallback callback, void *userdata);
+ * @from SDL_hints.h:4804 bool SDL_AddHintCallback(const char *name, SDL_HintCallback callback, void *userdata);
  */
 SDL_AddHintCallback: {
       parameters: ["pointer", "function", "pointer"],
@@ -233,7 +228,7 @@ SDL_AddHintCallback: {
  *
  * @sa SDL_AddHintCallback
  *
- * @from SDL_hints.h:4475 void SDL_RemoveHintCallback(const char *name, SDL_HintCallback callback, void *userdata);
+ * @from SDL_hints.h:4820 void SDL_RemoveHintCallback(const char *name, SDL_HintCallback callback, void *userdata);
  */
 SDL_RemoveHintCallback: {
       parameters: ["pointer", "function", "pointer"],

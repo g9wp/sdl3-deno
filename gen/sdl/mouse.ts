@@ -77,7 +77,7 @@ export {
  *
  * @sa SDL_GetMice
  *
- * @from SDL_mouse.h:176 bool SDL_HasMouse(void);
+ * @from SDL_mouse.h:225 bool SDL_HasMouse(void);
  */
 export function hasMouse(): boolean {
   return lib.symbols.SDL_HasMouse();
@@ -104,7 +104,7 @@ export function hasMouse(): boolean {
  * @sa SDL_GetMouseNameForID
  * @sa SDL_HasMouse
  *
- * @from SDL_mouse.h:199 SDL_MouseID * SDL_GetMice(int *count);
+ * @from SDL_mouse.h:248 SDL_MouseID * SDL_GetMice(int *count);
  */
 export function getMice(): { count: number; ret: Deno.PointerValue<"SDL_MouseID"> } {
   const ret = lib.symbols.SDL_GetMice(_p.i32.p0) as Deno.PointerValue<"SDL_MouseID">;
@@ -127,7 +127,7 @@ export function getMice(): { count: number; ret: Deno.PointerValue<"SDL_MouseID"
  *
  * @sa SDL_GetMice
  *
- * @from SDL_mouse.h:216 const char * SDL_GetMouseNameForID(SDL_MouseID instance_id);
+ * @from SDL_mouse.h:265 const char * SDL_GetMouseNameForID(SDL_MouseID instance_id);
  */
 export function getMouseNameForId(instance_id: number): string {
   return _p.getCstr2(lib.symbols.SDL_GetMouseNameForID(instance_id));
@@ -142,7 +142,7 @@ export function getMouseNameForId(instance_id: number): string {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_mouse.h:227 SDL_Window * SDL_GetMouseFocus(void);
+ * @from SDL_mouse.h:276 SDL_Window * SDL_GetMouseFocus(void);
  */
 export function getMouseFocus(): Deno.PointerValue<"SDL_Window"> {
   return lib.symbols.SDL_GetMouseFocus() as Deno.PointerValue<"SDL_Window">;
@@ -179,7 +179,7 @@ export function getMouseFocus(): Deno.PointerValue<"SDL_Window"> {
  * @sa SDL_GetGlobalMouseState
  * @sa SDL_GetRelativeMouseState
  *
- * @from SDL_mouse.h:260 SDL_MouseButtonFlags SDL_GetMouseState(float *x, float *y);
+ * @from SDL_mouse.h:309 SDL_MouseButtonFlags SDL_GetMouseState(float *x, float *y);
  */
 export function getMouseState(): { x: number; y: number } {
   if(!lib.symbols.SDL_GetMouseState(_p.f32.p0, _p.f32.p1))
@@ -222,7 +222,7 @@ export function getMouseState(): { x: number; y: number } {
  * @sa SDL_GetMouseState
  * @sa SDL_GetGlobalMouseState
  *
- * @from SDL_mouse.h:297 SDL_MouseButtonFlags SDL_GetGlobalMouseState(float *x, float *y);
+ * @from SDL_mouse.h:346 SDL_MouseButtonFlags SDL_GetGlobalMouseState(float *x, float *y);
  */
 export function getGlobalMouseState(): { x: number; y: number } {
   if(!lib.symbols.SDL_GetGlobalMouseState(_p.f32.p0, _p.f32.p1))
@@ -263,7 +263,7 @@ export function getGlobalMouseState(): { x: number; y: number } {
  * @sa SDL_GetMouseState
  * @sa SDL_GetGlobalMouseState
  *
- * @from SDL_mouse.h:332 SDL_MouseButtonFlags SDL_GetRelativeMouseState(float *x, float *y);
+ * @from SDL_mouse.h:381 SDL_MouseButtonFlags SDL_GetRelativeMouseState(float *x, float *y);
  */
 export function getRelativeMouseState(): { x: number; y: number } {
   if(!lib.symbols.SDL_GetRelativeMouseState(_p.f32.p0, _p.f32.p1))
@@ -292,7 +292,7 @@ export function getRelativeMouseState(): { x: number; y: number } {
  *
  * @sa SDL_WarpMouseGlobal
  *
- * @from SDL_mouse.h:355 void SDL_WarpMouseInWindow(SDL_Window *window, float x, float y);
+ * @from SDL_mouse.h:404 void SDL_WarpMouseInWindow(SDL_Window *window, float x, float y);
  */
 export function warpMouseInWindow(window: Deno.PointerValue<"SDL_Window">, x: number, y: number): void {
   return lib.symbols.SDL_WarpMouseInWindow(window, x, y);
@@ -320,7 +320,7 @@ export function warpMouseInWindow(window: Deno.PointerValue<"SDL_Window">, x: nu
  *
  * @sa SDL_WarpMouseInWindow
  *
- * @from SDL_mouse.h:380 bool SDL_WarpMouseGlobal(float x, float y);
+ * @from SDL_mouse.h:429 bool SDL_WarpMouseGlobal(float x, float y);
  */
 export function warpMouseGlobal(x: number, y: number): boolean {
   return lib.symbols.SDL_WarpMouseGlobal(x, y);
@@ -352,7 +352,7 @@ export function warpMouseGlobal(x: number, y: number): boolean {
  *
  * @sa SDL_GetWindowRelativeMouseMode
  *
- * @from SDL_mouse.h:408 bool SDL_SetWindowRelativeMouseMode(SDL_Window *window, bool enabled);
+ * @from SDL_mouse.h:475 bool SDL_SetWindowRelativeMouseMode(SDL_Window *window, bool enabled);
  */
 export function setWindowRelativeMouseMode(window: Deno.PointerValue<"SDL_Window">, enabled: boolean): boolean {
   return lib.symbols.SDL_SetWindowRelativeMouseMode(window, enabled);
@@ -370,7 +370,7 @@ export function setWindowRelativeMouseMode(window: Deno.PointerValue<"SDL_Window
  *
  * @sa SDL_SetWindowRelativeMouseMode
  *
- * @from SDL_mouse.h:422 bool SDL_GetWindowRelativeMouseMode(SDL_Window *window);
+ * @from SDL_mouse.h:489 bool SDL_GetWindowRelativeMouseMode(SDL_Window *window);
  */
 export function getWindowRelativeMouseMode(window: Deno.PointerValue<"SDL_Window">): boolean {
   return lib.symbols.SDL_GetWindowRelativeMouseMode(window);
@@ -422,7 +422,7 @@ export function getWindowRelativeMouseMode(window: Deno.PointerValue<"SDL_Window
  *
  * @sa SDL_GetGlobalMouseState
  *
- * @from SDL_mouse.h:470 bool SDL_CaptureMouse(bool enabled);
+ * @from SDL_mouse.h:537 bool SDL_CaptureMouse(bool enabled);
  */
 export function captureMouse(enabled: boolean): boolean {
   return lib.symbols.SDL_CaptureMouse(enabled);
@@ -467,12 +467,13 @@ export function captureMouse(enabled: boolean): boolean {
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa SDL_CreateAnimatedCursor
  * @sa SDL_CreateColorCursor
  * @sa SDL_CreateSystemCursor
  * @sa SDL_DestroyCursor
  * @sa SDL_SetCursor
  *
- * @from SDL_mouse.h:516 SDL_Cursor * SDL_CreateCursor(const Uint8 *data, const Uint8 *mask, int w, int h, int hot_x, int hot_y);
+ * @from SDL_mouse.h:584 SDL_Cursor * SDL_CreateCursor(const Uint8 *data, const Uint8 *mask, int w, int h, int hot_x, int hot_y);
  */
 export function createCursor(
     data: number,
@@ -492,15 +493,17 @@ export function createCursor(
 /**
  * Create a color cursor.
  *
- * If this function is passed a surface with alternate representations, the
- * surface will be interpreted as the content to be used for 100% display
- * scale, and the alternate representations will be used for high DPI
- * situations. For example, if the original surface is 32x32, then on a 2x
- * macOS display or 200% display scale on Windows, a 64x64 version of the
- * image will be used, if available. If a matching version of the image isn't
- * available, the closest larger size image will be downscaled to the
- * appropriate size and be used instead, if available. Otherwise, the closest
- * smaller image will be upscaled and be used instead.
+ * If this function is passed a surface with alternate representations added
+ * with SDL_AddSurfaceAlternateImage(), the surface will be interpreted as the
+ * content to be used for 100% display scale, and the alternate
+ * representations will be used for high DPI situations if
+ * SDL_HINT_MOUSE_DPI_SCALE_CURSORS is enabled. For example, if the original
+ * surface is 32x32, then on a 2x macOS display or 200% display scale on
+ * Windows, a 64x64 version of the image will be used, if available. If a
+ * matching version of the image isn't available, the closest larger size
+ * image will be downscaled to the appropriate size and be used instead, if
+ * available. Otherwise, the closest smaller image will be upscaled and be
+ * used instead.
  *
  * @param surface an SDL_Surface structure representing the cursor image.
  * @param hot_x the x position of the cursor hot spot.
@@ -512,15 +515,74 @@ export function createCursor(
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa SDL_AddSurfaceAlternateImage
+ * @sa SDL_CreateAnimatedCursor
  * @sa SDL_CreateCursor
  * @sa SDL_CreateSystemCursor
  * @sa SDL_DestroyCursor
  * @sa SDL_SetCursor
  *
- * @from SDL_mouse.h:549 SDL_Cursor * SDL_CreateColorCursor(SDL_Surface *surface, int hot_x, int hot_y);
+ * @from SDL_mouse.h:621 SDL_Cursor * SDL_CreateColorCursor(SDL_Surface *surface, int hot_x, int hot_y);
  */
 export function createColorCursor(surface: Deno.PointerValue<"SDL_Surface">, hot_x: number, hot_y: number): Deno.PointerValue<"SDL_Cursor"> {
   return lib.symbols.SDL_CreateColorCursor(surface, hot_x, hot_y) as Deno.PointerValue<"SDL_Cursor">;
+}
+
+/**
+ * Create an animated color cursor.
+ *
+ * Animated cursors are composed of a sequential array of frames, specified as
+ * surfaces and durations in an array of SDL_CursorFrameInfo structs. The hot
+ * spot coordinates are universal to all frames, and all frames must have the
+ * same dimensions.
+ *
+ * Frame durations are specified in milliseconds. A duration of 0 implies an
+ * infinite frame time, and the animation will stop on that frame. To create a
+ * one-shot animation, set the duration of the last frame in the sequence to
+ * 0.
+ *
+ * If this function is passed surfaces with alternate representations added
+ * with SDL_AddSurfaceAlternateImage(), the surfaces will be interpreted as
+ * the content to be used for 100% display scale, and the alternate
+ * representations will be used for high DPI situations. For example, if the
+ * original surfaces are 32x32, then on a 2x macOS display or 200% display
+ * scale on Windows, a 64x64 version of the image will be used, if available.
+ * If a matching version of the image isn't available, the closest larger size
+ * image will be downscaled to the appropriate size and be used instead, if
+ * available. Otherwise, the closest smaller image will be upscaled and be
+ * used instead.
+ *
+ * If the underlying platform does not support animated cursors, this function
+ * will fall back to creating a static color cursor using the first frame in
+ * the sequence.
+ *
+ * @param frames an array of cursor images composing the animation.
+ * @param frame_count the number of frames in the sequence.
+ * @param hot_x the x position of the cursor hot spot.
+ * @param hot_y the y position of the cursor hot spot.
+ * @returns the new cursor on success or NULL on failure; call SDL_GetError()
+ *          for more information.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_AddSurfaceAlternateImage
+ * @sa SDL_CreateCursor
+ * @sa SDL_CreateColorCursor
+ * @sa SDL_CreateSystemCursor
+ * @sa SDL_DestroyCursor
+ * @sa SDL_SetCursor
+ *
+ * @from SDL_mouse.h:671 SDL_Cursor *SDL_CreateAnimatedCursor(SDL_CursorFrameInfo *frames, int frame_count, int hot_x, int hot_y);
+ */
+export function createAnimatedCursor(
+    frames: Deno.PointerValue<"SDL_CursorFrameInfo">,
+    frame_count: number,
+    hot_x: number,
+    hot_y: number,
+): Deno.PointerValue<"SDL_Cursor"> {
+  return lib.symbols.SDL_CreateAnimatedCursor(frames, frame_count, hot_x, hot_y) as Deno.PointerValue<"SDL_Cursor">;
 }
 
 /**
@@ -536,7 +598,7 @@ export function createColorCursor(surface: Deno.PointerValue<"SDL_Surface">, hot
  *
  * @sa SDL_DestroyCursor
  *
- * @from SDL_mouse.h:566 SDL_Cursor * SDL_CreateSystemCursor(SDL_SystemCursor id);
+ * @from SDL_mouse.h:689 SDL_Cursor * SDL_CreateSystemCursor(SDL_SystemCursor id);
  */
 export function createSystemCursor(id: number): Deno.PointerValue<"SDL_Cursor"> {
   return lib.symbols.SDL_CreateSystemCursor(id) as Deno.PointerValue<"SDL_Cursor">;
@@ -560,7 +622,7 @@ export function createSystemCursor(id: number): Deno.PointerValue<"SDL_Cursor"> 
  *
  * @sa SDL_GetCursor
  *
- * @from SDL_mouse.h:586 bool SDL_SetCursor(SDL_Cursor *cursor);
+ * @from SDL_mouse.h:709 bool SDL_SetCursor(SDL_Cursor *cursor);
  */
 export function setCursor(cursor: Deno.PointerValue<"SDL_Cursor">): boolean {
   return lib.symbols.SDL_SetCursor(cursor);
@@ -580,7 +642,7 @@ export function setCursor(cursor: Deno.PointerValue<"SDL_Cursor">): boolean {
  *
  * @sa SDL_SetCursor
  *
- * @from SDL_mouse.h:602 SDL_Cursor * SDL_GetCursor(void);
+ * @from SDL_mouse.h:725 SDL_Cursor * SDL_GetCursor(void);
  */
 export function getCursor(): Deno.PointerValue<"SDL_Cursor"> {
   return lib.symbols.SDL_GetCursor() as Deno.PointerValue<"SDL_Cursor">;
@@ -592,14 +654,14 @@ export function getCursor(): Deno.PointerValue<"SDL_Cursor"> {
  * You do not have to call SDL_DestroyCursor() on the return value, but it is
  * safe to do so.
  *
- * @returns the default cursor on success or NULL on failuree; call
+ * @returns the default cursor on success or NULL on failure; call
  *          SDL_GetError() for more information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_mouse.h:617 SDL_Cursor * SDL_GetDefaultCursor(void);
+ * @from SDL_mouse.h:740 SDL_Cursor * SDL_GetDefaultCursor(void);
  */
 export function getDefaultCursor(): Deno.PointerValue<"SDL_Cursor"> {
   return lib.symbols.SDL_GetDefaultCursor() as Deno.PointerValue<"SDL_Cursor">;
@@ -617,11 +679,12 @@ export function getDefaultCursor(): Deno.PointerValue<"SDL_Cursor"> {
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa SDL_CreateAnimatedCursor
  * @sa SDL_CreateColorCursor
  * @sa SDL_CreateCursor
  * @sa SDL_CreateSystemCursor
  *
- * @from SDL_mouse.h:635 void SDL_DestroyCursor(SDL_Cursor *cursor);
+ * @from SDL_mouse.h:759 void SDL_DestroyCursor(SDL_Cursor *cursor);
  */
 export function destroyCursor(cursor: Deno.PointerValue<"SDL_Cursor">): void {
   return lib.symbols.SDL_DestroyCursor(cursor);
@@ -640,7 +703,7 @@ export function destroyCursor(cursor: Deno.PointerValue<"SDL_Cursor">): void {
  * @sa SDL_CursorVisible
  * @sa SDL_HideCursor
  *
- * @from SDL_mouse.h:650 bool SDL_ShowCursor(void);
+ * @from SDL_mouse.h:774 bool SDL_ShowCursor(void);
  */
 export function showCursor(): boolean {
   return lib.symbols.SDL_ShowCursor();
@@ -659,7 +722,7 @@ export function showCursor(): boolean {
  * @sa SDL_CursorVisible
  * @sa SDL_ShowCursor
  *
- * @from SDL_mouse.h:665 bool SDL_HideCursor(void);
+ * @from SDL_mouse.h:789 bool SDL_HideCursor(void);
  */
 export function hideCursor(): boolean {
   return lib.symbols.SDL_HideCursor();
@@ -678,7 +741,7 @@ export function hideCursor(): boolean {
  * @sa SDL_HideCursor
  * @sa SDL_ShowCursor
  *
- * @from SDL_mouse.h:680 bool SDL_CursorVisible(void);
+ * @from SDL_mouse.h:804 bool SDL_CursorVisible(void);
  */
 export function cursorVisible(): boolean {
   return lib.symbols.SDL_CursorVisible();

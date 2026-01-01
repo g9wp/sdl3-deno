@@ -38,7 +38,15 @@
 */
 
 /**
- * @from SDL_cpuinfo:59
+ * A guess for the cacheline size used for padding.
+ *
+ * Most x86 processors have a 64 byte cache line. The 64-bit PowerPC
+ * processors have a 128 byte cache line. We use the larger value to be
+ * generally safe.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_cpuinfo.h:59
  */
 export const SDL_CACHELINE_SIZE = 128;
 

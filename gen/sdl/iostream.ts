@@ -58,6 +58,8 @@ export {
  * - "w": Create an empty file for writing. If a file with the same name
  *   already exists its content is erased and the file is treated as a new
  *   empty file.
+ * - "wx": Create an empty file for writing. If a file with the same name
+ *   already exists, the call fails.
  * - "a": Append to a file. Writing operations append data at the end of the
  *   file. The file is created if it does not exist.
  * - "r+": Open a file for update both reading and writing. The file must
@@ -65,6 +67,8 @@ export {
  * - "w+": Create an empty file for both reading and writing. If a file with
  *   the same name already exists its content is erased and the file is
  *   treated as a new empty file.
+ * - "w+x": Create an empty file for both reading and writing. If a file with
+ *   the same name already exists, the call fails.
  * - "a+": Open a file for reading and appending. All writing operations are
  *   performed at the end of the file, protecting the previous content to be
  *   overwritten. You can reposition (fseek, rewind) the internal pointer to
@@ -115,7 +119,7 @@ export {
  * @returns a pointer to the SDL_IOStream structure that is created or NULL on
  *          failure; call SDL_GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -126,7 +130,7 @@ export {
  * @sa SDL_TellIO
  * @sa SDL_WriteIO
  *
- * @from SDL_iostream.h:273 SDL_IOStream * SDL_IOFromFile(const char *file, const char *mode);
+ * @from SDL_iostream.h:277 SDL_IOStream * SDL_IOFromFile(const char *file, const char *mode);
  */
 export function ioFromFile(file: string, mode: string): Deno.PointerValue<"SDL_IOStream"> {
   return lib.symbols.SDL_IOFromFile(_p.toCstr(file), _p.toCstr(mode)) as Deno.PointerValue<"SDL_IOStream">;
@@ -140,8 +144,7 @@ export function ioFromFile(file: string, mode: string): Deno.PointerValue<"SDL_I
  * certain size, for both read and write access.
  *
  * This memory buffer is not copied by the SDL_IOStream; the pointer you
- * provide must remain valid until you close the stream. Closing the stream
- * will not free the original buffer.
+ * provide must remain valid until you close the stream.
  *
  * If you need to make sure the SDL_IOStream never writes to the memory
  * buffer, you should use SDL_IOFromConstMem() with a read-only buffer of
@@ -153,6 +156,13 @@ export function ioFromFile(file: string, mode: string): Deno.PointerValue<"SDL_I
  *   was passed to this function.
  * - `SDL_PROP_IOSTREAM_MEMORY_SIZE_NUMBER`: this will be the `size` parameter
  *   that was passed to this function.
+ *
+ * Additionally, the following properties are recognized:
+ *
+ * - `SDL_PROP_IOSTREAM_MEMORY_FREE_FUNC_POINTER`: if this property is set to
+ *   a non-NULL value it will be interpreted as a function of SDL_free_func
+ *   type and called with the passed `mem` pointer when closing the stream. By
+ *   default it is unset, i.e., the memory will not be freed.
  *
  * @param mem a pointer to a buffer to feed an SDL_IOStream stream.
  * @param size the buffer size, in bytes.
@@ -171,7 +181,7 @@ export function ioFromFile(file: string, mode: string): Deno.PointerValue<"SDL_I
  * @sa SDL_TellIO
  * @sa SDL_WriteIO
  *
- * @from SDL_iostream.h:319 SDL_IOStream * SDL_IOFromMem(void *mem, size_t size);
+ * @from SDL_iostream.h:329 SDL_IOStream * SDL_IOFromMem(void *mem, size_t size);
  */
 export function ioFromMem(mem: Deno.PointerValue, size: bigint): Deno.PointerValue<"SDL_IOStream"> {
   return lib.symbols.SDL_IOFromMem(mem, size) as Deno.PointerValue<"SDL_IOStream">;
@@ -188,8 +198,7 @@ export function ioFromMem(mem: Deno.PointerValue, size: bigint): Deno.PointerVal
  * without writing to the memory buffer.
  *
  * This memory buffer is not copied by the SDL_IOStream; the pointer you
- * provide must remain valid until you close the stream. Closing the stream
- * will not free the original buffer.
+ * provide must remain valid until you close the stream.
  *
  * If you need to write to a memory buffer, you should use SDL_IOFromMem()
  * with a writable buffer of memory instead.
@@ -200,6 +209,13 @@ export function ioFromMem(mem: Deno.PointerValue, size: bigint): Deno.PointerVal
  *   was passed to this function.
  * - `SDL_PROP_IOSTREAM_MEMORY_SIZE_NUMBER`: this will be the `size` parameter
  *   that was passed to this function.
+ *
+ * Additionally, the following properties are recognized:
+ *
+ * - `SDL_PROP_IOSTREAM_MEMORY_FREE_FUNC_POINTER`: if this property is set to
+ *   a non-NULL value it will be interpreted as a function of SDL_free_func
+ *   type and called with the passed `mem` pointer when closing the stream. By
+ *   default it is unset, i.e., the memory will not be freed.
  *
  * @param mem a pointer to a read-only buffer to feed an SDL_IOStream stream.
  * @param size the buffer size, in bytes.
@@ -216,7 +232,7 @@ export function ioFromMem(mem: Deno.PointerValue, size: bigint): Deno.PointerVal
  * @sa SDL_SeekIO
  * @sa SDL_TellIO
  *
- * @from SDL_iostream.h:363 SDL_IOStream * SDL_IOFromConstMem(const void *mem, size_t size);
+ * @from SDL_iostream.h:380 SDL_IOStream * SDL_IOFromConstMem(const void *mem, size_t size);
  */
 export function ioFromConstMem(mem: Deno.PointerValue, size: bigint): Deno.PointerValue<"SDL_IOStream"> {
   return lib.symbols.SDL_IOFromConstMem(mem, size) as Deno.PointerValue<"SDL_IOStream">;
@@ -250,7 +266,7 @@ export function ioFromConstMem(mem: Deno.PointerValue, size: bigint): Deno.Point
  * @sa SDL_TellIO
  * @sa SDL_WriteIO
  *
- * @from SDL_iostream.h:393 SDL_IOStream * SDL_IOFromDynamicMem(void);
+ * @from SDL_iostream.h:410 SDL_IOStream * SDL_IOFromDynamicMem(void);
  */
 export function ioFromDynamicMem(): Deno.PointerValue<"SDL_IOStream"> {
   return lib.symbols.SDL_IOFromDynamicMem() as Deno.PointerValue<"SDL_IOStream">;
@@ -283,7 +299,7 @@ export function ioFromDynamicMem(): Deno.PointerValue<"SDL_IOStream"> {
  * @sa SDL_IOFromFile
  * @sa SDL_IOFromMem
  *
- * @from SDL_iostream.h:428 SDL_IOStream * SDL_OpenIO(const SDL_IOStreamInterface *iface, void *userdata);
+ * @from SDL_iostream.h:445 SDL_IOStream * SDL_OpenIO(const SDL_IOStreamInterface *iface, void *userdata);
  */
 export function openIo(iface: Deno.PointerValue<"SDL_IOStreamInterface">, userdata: Deno.PointerValue): Deno.PointerValue<"SDL_IOStream"> {
   return lib.symbols.SDL_OpenIO(iface, userdata) as Deno.PointerValue<"SDL_IOStream">;
@@ -313,13 +329,13 @@ export function openIo(iface: Deno.PointerValue<"SDL_IOStreamInterface">, userda
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_OpenIO
  *
- * @from SDL_iostream.h:460 bool SDL_CloseIO(SDL_IOStream *context);
+ * @from SDL_iostream.h:477 bool SDL_CloseIO(SDL_IOStream *context);
  */
 export function closeIo(context: Deno.PointerValue<"SDL_IOStream">): boolean {
   return lib.symbols.SDL_CloseIO(context);
@@ -332,11 +348,11 @@ export function closeIo(context: Deno.PointerValue<"SDL_IOStream">): boolean {
  * @returns a valid property ID on success or 0 on failure; call
  *          SDL_GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:473 SDL_PropertiesID SDL_GetIOProperties(SDL_IOStream *context);
+ * @from SDL_iostream.h:490 SDL_PropertiesID SDL_GetIOProperties(SDL_IOStream *context);
  */
 export function getIoProperties(context: Deno.PointerValue<"SDL_IOStream">): number {
   return lib.symbols.SDL_GetIOProperties(context);
@@ -356,11 +372,11 @@ export function getIoProperties(context: Deno.PointerValue<"SDL_IOStream">): num
  * @param context the SDL_IOStream to query.
  * @returns an SDL_IOStatus enum with the current state.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:493 SDL_IOStatus SDL_GetIOStatus(SDL_IOStream *context);
+ * @from SDL_iostream.h:510 SDL_IOStatus SDL_GetIOStatus(SDL_IOStream *context);
  */
 export function getIoStatus(context: Deno.PointerValue<"SDL_IOStream">): number {
   return lib.symbols.SDL_GetIOStatus(context);
@@ -374,11 +390,11 @@ export function getIoStatus(context: Deno.PointerValue<"SDL_IOStream">): number 
  *          negative error code on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:507 Sint64 SDL_GetIOSize(SDL_IOStream *context);
+ * @from SDL_iostream.h:524 Sint64 SDL_GetIOSize(SDL_IOStream *context);
  */
 export function getIoSize(context: Deno.PointerValue<"SDL_IOStream">): bigint {
   return lib.symbols.SDL_GetIOSize(context);
@@ -405,13 +421,13 @@ export function getIoSize(context: Deno.PointerValue<"SDL_IOStream">): bigint {
  * @returns the final offset in the data stream after the seek or -1 on
  *          failure; call SDL_GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_TellIO
  *
- * @from SDL_iostream.h:536 Sint64 SDL_SeekIO(SDL_IOStream *context, Sint64 offset, SDL_IOWhence whence);
+ * @from SDL_iostream.h:553 Sint64 SDL_SeekIO(SDL_IOStream *context, Sint64 offset, SDL_IOWhence whence);
  */
 export function seekIo(context: Deno.PointerValue<"SDL_IOStream">, offset: bigint, whence: number): bigint {
   return lib.symbols.SDL_SeekIO(context, offset, whence);
@@ -429,13 +445,13 @@ export function seekIo(context: Deno.PointerValue<"SDL_IOStream">, offset: bigin
  * @returns the current offset in the stream, or -1 if the information can not
  *          be determined.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_SeekIO
  *
- * @from SDL_iostream.h:556 Sint64 SDL_TellIO(SDL_IOStream *context);
+ * @from SDL_iostream.h:573 Sint64 SDL_TellIO(SDL_IOStream *context);
  */
 export function tellIo(context: Deno.PointerValue<"SDL_IOStream">): bigint {
   return lib.symbols.SDL_TellIO(context);
@@ -452,20 +468,24 @@ export function tellIo(context: Deno.PointerValue<"SDL_IOStream">): bigint {
  * the stream is not at EOF, SDL_GetIOStatus() will return a different error
  * value and SDL_GetError() will offer a human-readable message.
  *
+ * A request for zero bytes on a valid stream will return zero immediately
+ * without accessing the stream, so the stream status (EOF, err, etc) will not
+ * change.
+ *
  * @param context a pointer to an SDL_IOStream structure.
  * @param ptr a pointer to a buffer to read data into.
  * @param size the number of bytes to read from the data source.
  * @returns the number of bytes read, or 0 on end of file or other failure;
  *          call SDL_GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_WriteIO
  * @sa SDL_GetIOStatus
  *
- * @from SDL_iostream.h:582 size_t SDL_ReadIO(SDL_IOStream *context, void *ptr, size_t size);
+ * @from SDL_iostream.h:603 size_t SDL_ReadIO(SDL_IOStream *context, void *ptr, size_t size);
  */
 export function readIo(context: Deno.PointerValue<"SDL_IOStream">, ptr: Deno.PointerValue, size: bigint): bigint {
   return lib.symbols.SDL_ReadIO(context, ptr, size);
@@ -485,13 +505,17 @@ export function readIo(context: Deno.PointerValue<"SDL_IOStream">, ptr: Deno.Poi
  * recoverable, such as a non-blocking write that can simply be retried later,
  * or a fatal error.
  *
+ * A request for zero bytes on a valid stream will return zero immediately
+ * without accessing the stream, so the stream status (EOF, err, etc) will not
+ * change.
+ *
  * @param context a pointer to an SDL_IOStream structure.
  * @param ptr a pointer to a buffer containing data to write.
  * @param size the number of bytes to write.
  * @returns the number of bytes written, which will be less than `size` on
  *          failure; call SDL_GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -501,7 +525,7 @@ export function readIo(context: Deno.PointerValue<"SDL_IOStream">, ptr: Deno.Poi
  * @sa SDL_FlushIO
  * @sa SDL_GetIOStatus
  *
- * @from SDL_iostream.h:614 size_t SDL_WriteIO(SDL_IOStream *context, const void *ptr, size_t size);
+ * @from SDL_iostream.h:639 size_t SDL_WriteIO(SDL_IOStream *context, const void *ptr, size_t size);
  */
 export function writeIo(context: Deno.PointerValue<"SDL_IOStream">, ptr: Deno.PointerValue, size: bigint): bigint {
   return lib.symbols.SDL_WriteIO(context, ptr, size);
@@ -518,14 +542,14 @@ export function writeIo(context: Deno.PointerValue<"SDL_IOStream">, ptr: Deno.Po
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_OpenIO
  * @sa SDL_WriteIO
  *
- * @from SDL_iostream.h:675 bool SDL_FlushIO(SDL_IOStream *context);
+ * @from SDL_iostream.h:700 bool SDL_FlushIO(SDL_IOStream *context);
  */
 export function flushIo(context: Deno.PointerValue<"SDL_IOStream">): boolean {
   return lib.symbols.SDL_FlushIO(context);
@@ -548,14 +572,14 @@ export function flushIo(context: Deno.PointerValue<"SDL_IOStream">): boolean {
  * @returns the data or NULL on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_LoadFile
  * @sa SDL_SaveFile_IO
  *
- * @from SDL_iostream.h:701 void * SDL_LoadFile_IO(SDL_IOStream *src, size_t *datasize, bool closeio);
+ * @from SDL_iostream.h:726 void * SDL_LoadFile_IO(SDL_IOStream *src, size_t *datasize, bool closeio);
  */
 export function loadFileIo(src: Deno.PointerValue<"SDL_IOStream">, closeio: boolean): { datasize: bigint; ret: Deno.PointerValue } {
   const ret = lib.symbols.SDL_LoadFile_IO(src, _p.u64.p0, closeio) as Deno.PointerValue;
@@ -577,14 +601,14 @@ export function loadFileIo(src: Deno.PointerValue<"SDL_IOStream">, closeio: bool
  * @returns the data or NULL on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_LoadFile_IO
  * @sa SDL_SaveFile
  *
- * @from SDL_iostream.h:724 void * SDL_LoadFile(const char *file, size_t *datasize);
+ * @from SDL_iostream.h:749 void * SDL_LoadFile(const char *file, size_t *datasize);
  */
 export function loadFile(file: string): { datasize: bigint; ret: Deno.PointerValue } {
   const ret = lib.symbols.SDL_LoadFile(_p.toCstr(file), _p.u64.p0) as Deno.PointerValue;
@@ -604,14 +628,14 @@ export function loadFile(file: string): { datasize: bigint; ret: Deno.PointerVal
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_SaveFile
  * @sa SDL_LoadFile_IO
  *
- * @from SDL_iostream.h:745 bool SDL_SaveFile_IO(SDL_IOStream *src, const void *data, size_t datasize, bool closeio);
+ * @from SDL_iostream.h:770 bool SDL_SaveFile_IO(SDL_IOStream *src, const void *data, size_t datasize, bool closeio);
  */
 export function saveFileIo(
     src: Deno.PointerValue<"SDL_IOStream">,
@@ -632,14 +656,14 @@ export function saveFileIo(
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_SaveFile_IO
  * @sa SDL_LoadFile
  *
- * @from SDL_iostream.h:764 bool SDL_SaveFile(const char *file, const void *data, size_t datasize);
+ * @from SDL_iostream.h:789 bool SDL_SaveFile(const char *file, const void *data, size_t datasize);
  */
 export function saveFile(file: string, data: Deno.PointerValue, datasize: bigint): boolean {
   return lib.symbols.SDL_SaveFile(_p.toCstr(file), data, datasize);
@@ -658,11 +682,11 @@ export function saveFile(file: string, data: Deno.PointerValue, datasize: bigint
  * @returns true on success or false on failure or EOF; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:790 bool SDL_ReadU8(SDL_IOStream *src, Uint8 *value);
+ * @from SDL_iostream.h:815 bool SDL_ReadU8(SDL_IOStream *src, Uint8 *value);
  */
 export function readU8(src: Deno.PointerValue<"SDL_IOStream">): number {
   if(!lib.symbols.SDL_ReadU8(src, _p.u8.p0))
@@ -683,11 +707,11 @@ export function readU8(src: Deno.PointerValue<"SDL_IOStream">): number {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:809 bool SDL_ReadS8(SDL_IOStream *src, Sint8 *value);
+ * @from SDL_iostream.h:834 bool SDL_ReadS8(SDL_IOStream *src, Sint8 *value);
  */
 export function readS8(src: Deno.PointerValue<"SDL_IOStream">): number {
   if(!lib.symbols.SDL_ReadS8(src, _p.i8.p0))
@@ -709,14 +733,14 @@ export function readS8(src: Deno.PointerValue<"SDL_IOStream">): number {
  *
  * @param src the stream from which to read data.
  * @param value a pointer filled in with the data read.
- * @returns true on successful write or false on failure; call SDL_GetError()
+ * @returns true on successful read or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:832 bool SDL_ReadU16LE(SDL_IOStream *src, Uint16 *value);
+ * @from SDL_iostream.h:857 bool SDL_ReadU16LE(SDL_IOStream *src, Uint16 *value);
  */
 export function readU16Le(src: Deno.PointerValue<"SDL_IOStream">): number {
   if(!lib.symbols.SDL_ReadU16LE(src, _p.u16.p0))
@@ -738,14 +762,14 @@ export function readU16Le(src: Deno.PointerValue<"SDL_IOStream">): number {
  *
  * @param src the stream from which to read data.
  * @param value a pointer filled in with the data read.
- * @returns true on successful write or false on failure; call SDL_GetError()
+ * @returns true on successful read or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:855 bool SDL_ReadS16LE(SDL_IOStream *src, Sint16 *value);
+ * @from SDL_iostream.h:880 bool SDL_ReadS16LE(SDL_IOStream *src, Sint16 *value);
  */
 export function readS16Le(src: Deno.PointerValue<"SDL_IOStream">): number {
   if(!lib.symbols.SDL_ReadS16LE(src, _p.i16.p0))
@@ -767,14 +791,14 @@ export function readS16Le(src: Deno.PointerValue<"SDL_IOStream">): number {
  *
  * @param src the stream from which to read data.
  * @param value a pointer filled in with the data read.
- * @returns true on successful write or false on failure; call SDL_GetError()
+ * @returns true on successful read or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:878 bool SDL_ReadU16BE(SDL_IOStream *src, Uint16 *value);
+ * @from SDL_iostream.h:903 bool SDL_ReadU16BE(SDL_IOStream *src, Uint16 *value);
  */
 export function readU16Be(src: Deno.PointerValue<"SDL_IOStream">): number {
   if(!lib.symbols.SDL_ReadU16BE(src, _p.u16.p0))
@@ -796,14 +820,14 @@ export function readU16Be(src: Deno.PointerValue<"SDL_IOStream">): number {
  *
  * @param src the stream from which to read data.
  * @param value a pointer filled in with the data read.
- * @returns true on successful write or false on failure; call SDL_GetError()
+ * @returns true on successful read or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:901 bool SDL_ReadS16BE(SDL_IOStream *src, Sint16 *value);
+ * @from SDL_iostream.h:926 bool SDL_ReadS16BE(SDL_IOStream *src, Sint16 *value);
  */
 export function readS16Be(src: Deno.PointerValue<"SDL_IOStream">): number {
   if(!lib.symbols.SDL_ReadS16BE(src, _p.i16.p0))
@@ -825,14 +849,14 @@ export function readS16Be(src: Deno.PointerValue<"SDL_IOStream">): number {
  *
  * @param src the stream from which to read data.
  * @param value a pointer filled in with the data read.
- * @returns true on successful write or false on failure; call SDL_GetError()
+ * @returns true on successful read or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:924 bool SDL_ReadU32LE(SDL_IOStream *src, Uint32 *value);
+ * @from SDL_iostream.h:949 bool SDL_ReadU32LE(SDL_IOStream *src, Uint32 *value);
  */
 export function readU32Le(src: Deno.PointerValue<"SDL_IOStream">): number {
   if(!lib.symbols.SDL_ReadU32LE(src, _p.u32.p0))
@@ -854,14 +878,14 @@ export function readU32Le(src: Deno.PointerValue<"SDL_IOStream">): number {
  *
  * @param src the stream from which to read data.
  * @param value a pointer filled in with the data read.
- * @returns true on successful write or false on failure; call SDL_GetError()
+ * @returns true on successful read or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:947 bool SDL_ReadS32LE(SDL_IOStream *src, Sint32 *value);
+ * @from SDL_iostream.h:972 bool SDL_ReadS32LE(SDL_IOStream *src, Sint32 *value);
  */
 export function readS32Le(src: Deno.PointerValue<"SDL_IOStream">): number {
   if(!lib.symbols.SDL_ReadS32LE(src, _p.i32.p0))
@@ -883,14 +907,14 @@ export function readS32Le(src: Deno.PointerValue<"SDL_IOStream">): number {
  *
  * @param src the stream from which to read data.
  * @param value a pointer filled in with the data read.
- * @returns true on successful write or false on failure; call SDL_GetError()
+ * @returns true on successful read or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:970 bool SDL_ReadU32BE(SDL_IOStream *src, Uint32 *value);
+ * @from SDL_iostream.h:995 bool SDL_ReadU32BE(SDL_IOStream *src, Uint32 *value);
  */
 export function readU32Be(src: Deno.PointerValue<"SDL_IOStream">): number {
   if(!lib.symbols.SDL_ReadU32BE(src, _p.u32.p0))
@@ -912,14 +936,14 @@ export function readU32Be(src: Deno.PointerValue<"SDL_IOStream">): number {
  *
  * @param src the stream from which to read data.
  * @param value a pointer filled in with the data read.
- * @returns true on successful write or false on failure; call SDL_GetError()
+ * @returns true on successful read or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:993 bool SDL_ReadS32BE(SDL_IOStream *src, Sint32 *value);
+ * @from SDL_iostream.h:1018 bool SDL_ReadS32BE(SDL_IOStream *src, Sint32 *value);
  */
 export function readS32Be(src: Deno.PointerValue<"SDL_IOStream">): number {
   if(!lib.symbols.SDL_ReadS32BE(src, _p.i32.p0))
@@ -941,14 +965,14 @@ export function readS32Be(src: Deno.PointerValue<"SDL_IOStream">): number {
  *
  * @param src the stream from which to read data.
  * @param value a pointer filled in with the data read.
- * @returns true on successful write or false on failure; call SDL_GetError()
+ * @returns true on successful read or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1016 bool SDL_ReadU64LE(SDL_IOStream *src, Uint64 *value);
+ * @from SDL_iostream.h:1041 bool SDL_ReadU64LE(SDL_IOStream *src, Uint64 *value);
  */
 export function readU64Le(src: Deno.PointerValue<"SDL_IOStream">): bigint {
   if(!lib.symbols.SDL_ReadU64LE(src, _p.u64.p0))
@@ -970,14 +994,14 @@ export function readU64Le(src: Deno.PointerValue<"SDL_IOStream">): bigint {
  *
  * @param src the stream from which to read data.
  * @param value a pointer filled in with the data read.
- * @returns true on successful write or false on failure; call SDL_GetError()
+ * @returns true on successful read or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1039 bool SDL_ReadS64LE(SDL_IOStream *src, Sint64 *value);
+ * @from SDL_iostream.h:1064 bool SDL_ReadS64LE(SDL_IOStream *src, Sint64 *value);
  */
 export function readS64Le(src: Deno.PointerValue<"SDL_IOStream">): bigint {
   if(!lib.symbols.SDL_ReadS64LE(src, _p.i64.p0))
@@ -999,14 +1023,14 @@ export function readS64Le(src: Deno.PointerValue<"SDL_IOStream">): bigint {
  *
  * @param src the stream from which to read data.
  * @param value a pointer filled in with the data read.
- * @returns true on successful write or false on failure; call SDL_GetError()
+ * @returns true on successful read or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1062 bool SDL_ReadU64BE(SDL_IOStream *src, Uint64 *value);
+ * @from SDL_iostream.h:1087 bool SDL_ReadU64BE(SDL_IOStream *src, Uint64 *value);
  */
 export function readU64Be(src: Deno.PointerValue<"SDL_IOStream">): bigint {
   if(!lib.symbols.SDL_ReadU64BE(src, _p.u64.p0))
@@ -1028,14 +1052,14 @@ export function readU64Be(src: Deno.PointerValue<"SDL_IOStream">): bigint {
  *
  * @param src the stream from which to read data.
  * @param value a pointer filled in with the data read.
- * @returns true on successful write or false on failure; call SDL_GetError()
+ * @returns true on successful read or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1085 bool SDL_ReadS64BE(SDL_IOStream *src, Sint64 *value);
+ * @from SDL_iostream.h:1110 bool SDL_ReadS64BE(SDL_IOStream *src, Sint64 *value);
  */
 export function readS64Be(src: Deno.PointerValue<"SDL_IOStream">): bigint {
   if(!lib.symbols.SDL_ReadS64BE(src, _p.i64.p0))
@@ -1051,11 +1075,11 @@ export function readS64Be(src: Deno.PointerValue<"SDL_IOStream">): bigint {
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1107 bool SDL_WriteU8(SDL_IOStream *dst, Uint8 value);
+ * @from SDL_iostream.h:1132 bool SDL_WriteU8(SDL_IOStream *dst, Uint8 value);
  */
 export function writeU8(dst: Deno.PointerValue<"SDL_IOStream">, value: number): boolean {
   return lib.symbols.SDL_WriteU8(dst, value);
@@ -1069,11 +1093,11 @@ export function writeU8(dst: Deno.PointerValue<"SDL_IOStream">, value: number): 
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1121 bool SDL_WriteS8(SDL_IOStream *dst, Sint8 value);
+ * @from SDL_iostream.h:1146 bool SDL_WriteS8(SDL_IOStream *dst, Sint8 value);
  */
 export function writeS8(dst: Deno.PointerValue<"SDL_IOStream">, value: number): boolean {
   return lib.symbols.SDL_WriteS8(dst, value);
@@ -1092,11 +1116,11 @@ export function writeS8(dst: Deno.PointerValue<"SDL_IOStream">, value: number): 
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1140 bool SDL_WriteU16LE(SDL_IOStream *dst, Uint16 value);
+ * @from SDL_iostream.h:1165 bool SDL_WriteU16LE(SDL_IOStream *dst, Uint16 value);
  */
 export function writeU16Le(dst: Deno.PointerValue<"SDL_IOStream">, value: number): boolean {
   return lib.symbols.SDL_WriteU16LE(dst, value);
@@ -1115,11 +1139,11 @@ export function writeU16Le(dst: Deno.PointerValue<"SDL_IOStream">, value: number
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1159 bool SDL_WriteS16LE(SDL_IOStream *dst, Sint16 value);
+ * @from SDL_iostream.h:1184 bool SDL_WriteS16LE(SDL_IOStream *dst, Sint16 value);
  */
 export function writeS16Le(dst: Deno.PointerValue<"SDL_IOStream">, value: number): boolean {
   return lib.symbols.SDL_WriteS16LE(dst, value);
@@ -1137,11 +1161,11 @@ export function writeS16Le(dst: Deno.PointerValue<"SDL_IOStream">, value: number
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1177 bool SDL_WriteU16BE(SDL_IOStream *dst, Uint16 value);
+ * @from SDL_iostream.h:1202 bool SDL_WriteU16BE(SDL_IOStream *dst, Uint16 value);
  */
 export function writeU16Be(dst: Deno.PointerValue<"SDL_IOStream">, value: number): boolean {
   return lib.symbols.SDL_WriteU16BE(dst, value);
@@ -1159,11 +1183,11 @@ export function writeU16Be(dst: Deno.PointerValue<"SDL_IOStream">, value: number
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1195 bool SDL_WriteS16BE(SDL_IOStream *dst, Sint16 value);
+ * @from SDL_iostream.h:1220 bool SDL_WriteS16BE(SDL_IOStream *dst, Sint16 value);
  */
 export function writeS16Be(dst: Deno.PointerValue<"SDL_IOStream">, value: number): boolean {
   return lib.symbols.SDL_WriteS16BE(dst, value);
@@ -1182,11 +1206,11 @@ export function writeS16Be(dst: Deno.PointerValue<"SDL_IOStream">, value: number
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1214 bool SDL_WriteU32LE(SDL_IOStream *dst, Uint32 value);
+ * @from SDL_iostream.h:1239 bool SDL_WriteU32LE(SDL_IOStream *dst, Uint32 value);
  */
 export function writeU32Le(dst: Deno.PointerValue<"SDL_IOStream">, value: number): boolean {
   return lib.symbols.SDL_WriteU32LE(dst, value);
@@ -1205,11 +1229,11 @@ export function writeU32Le(dst: Deno.PointerValue<"SDL_IOStream">, value: number
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1233 bool SDL_WriteS32LE(SDL_IOStream *dst, Sint32 value);
+ * @from SDL_iostream.h:1258 bool SDL_WriteS32LE(SDL_IOStream *dst, Sint32 value);
  */
 export function writeS32Le(dst: Deno.PointerValue<"SDL_IOStream">, value: number): boolean {
   return lib.symbols.SDL_WriteS32LE(dst, value);
@@ -1227,11 +1251,11 @@ export function writeS32Le(dst: Deno.PointerValue<"SDL_IOStream">, value: number
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1251 bool SDL_WriteU32BE(SDL_IOStream *dst, Uint32 value);
+ * @from SDL_iostream.h:1276 bool SDL_WriteU32BE(SDL_IOStream *dst, Uint32 value);
  */
 export function writeU32Be(dst: Deno.PointerValue<"SDL_IOStream">, value: number): boolean {
   return lib.symbols.SDL_WriteU32BE(dst, value);
@@ -1249,11 +1273,11 @@ export function writeU32Be(dst: Deno.PointerValue<"SDL_IOStream">, value: number
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1269 bool SDL_WriteS32BE(SDL_IOStream *dst, Sint32 value);
+ * @from SDL_iostream.h:1294 bool SDL_WriteS32BE(SDL_IOStream *dst, Sint32 value);
  */
 export function writeS32Be(dst: Deno.PointerValue<"SDL_IOStream">, value: number): boolean {
   return lib.symbols.SDL_WriteS32BE(dst, value);
@@ -1272,11 +1296,11 @@ export function writeS32Be(dst: Deno.PointerValue<"SDL_IOStream">, value: number
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1288 bool SDL_WriteU64LE(SDL_IOStream *dst, Uint64 value);
+ * @from SDL_iostream.h:1313 bool SDL_WriteU64LE(SDL_IOStream *dst, Uint64 value);
  */
 export function writeU64Le(dst: Deno.PointerValue<"SDL_IOStream">, value: bigint): boolean {
   return lib.symbols.SDL_WriteU64LE(dst, value);
@@ -1295,11 +1319,11 @@ export function writeU64Le(dst: Deno.PointerValue<"SDL_IOStream">, value: bigint
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1307 bool SDL_WriteS64LE(SDL_IOStream *dst, Sint64 value);
+ * @from SDL_iostream.h:1332 bool SDL_WriteS64LE(SDL_IOStream *dst, Sint64 value);
  */
 export function writeS64Le(dst: Deno.PointerValue<"SDL_IOStream">, value: bigint): boolean {
   return lib.symbols.SDL_WriteS64LE(dst, value);
@@ -1317,11 +1341,11 @@ export function writeS64Le(dst: Deno.PointerValue<"SDL_IOStream">, value: bigint
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1325 bool SDL_WriteU64BE(SDL_IOStream *dst, Uint64 value);
+ * @from SDL_iostream.h:1350 bool SDL_WriteU64BE(SDL_IOStream *dst, Uint64 value);
  */
 export function writeU64Be(dst: Deno.PointerValue<"SDL_IOStream">, value: bigint): boolean {
   return lib.symbols.SDL_WriteU64BE(dst, value);
@@ -1339,11 +1363,11 @@ export function writeU64Be(dst: Deno.PointerValue<"SDL_IOStream">, value: bigint
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1343 bool SDL_WriteS64BE(SDL_IOStream *dst, Sint64 value);
+ * @from SDL_iostream.h:1368 bool SDL_WriteS64BE(SDL_IOStream *dst, Sint64 value);
  */
 export function writeS64Be(dst: Deno.PointerValue<"SDL_IOStream">, value: bigint): boolean {
   return lib.symbols.SDL_WriteS64BE(dst, value);

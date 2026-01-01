@@ -76,7 +76,7 @@ import * as _b from "../_structs/SDL_assert.ts";
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_assert.h:288
+ * @from SDL_assert.h:321
  */
 export interface AssertData {
   always_ignore: boolean; /**< bool : true if app should always continue when assertion is triggered. */

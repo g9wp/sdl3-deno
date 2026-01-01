@@ -13,7 +13,8 @@
  * will report failure without doing anything.
  *
  * If you're going to work with threads, you almost certainly need to have a
- * good understanding of [CategoryMutex](CategoryMutex) as well.
+ * good understanding of thread safety measures: locking and synchronization
+ * mechanisms are handled by the functions in SDL_mutex.h.
  *
  * @module
  */
@@ -40,22 +41,22 @@
 */
 
 /**
- * @from SDL_thread:295
+ * @from SDL_thread:296
  */
 export const SDL_BeginThreadFunction = _beginthreadex;
 
 /**
- * @from SDL_thread:298
+ * @from SDL_thread:299
  */
 export const SDL_EndThreadFunction = _endthreadex;
 
 /**
- * @from SDL_thread:306
+ * @from SDL_thread:307
  */
 export const SDL_BeginThreadFunction = NULL;
 
 /**
- * @from SDL_thread:312
+ * @from SDL_thread:313
  */
 export const SDL_EndThreadFunction = NULL;
 

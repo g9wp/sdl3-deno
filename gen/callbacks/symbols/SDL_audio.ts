@@ -129,6 +129,41 @@
 
 export const symbols = {
 /**
+ * A callback that fires for completed SDL_PutAudioStreamDataNoCopy() data.
+ *
+ * When using SDL_PutAudioStreamDataNoCopy() to provide data to an
+ * SDL_AudioStream, it's not safe to dispose of the data until the stream has
+ * completely consumed it. Often times it's difficult to know exactly when
+ * this has happened.
+ *
+ * This callback fires once when the stream no longer needs the buffer,
+ * allowing the app to easily free or reuse it.
+ *
+ * @param userdata an opaque pointer provided by the app for their personal
+ *                 use.
+ * @param buf the pointer provided to SDL_PutAudioStreamDataNoCopy().
+ * @param buflen the size of buffer, in bytes, provided to
+ *               SDL_PutAudioStreamDataNoCopy().
+ *
+ * @threadsafety This callbacks may run from any thread, so if you need to
+ *               protect shared data, you should use SDL_LockAudioStream to
+ *               serialize access; this lock will be held before your callback
+ *               is called, so your callback does not need to manage the lock
+ *               explicitly.
+ *
+ * @since This datatype is available since SDL 3.4.0.
+ *
+ * @sa SDL_SetAudioStreamGetCallback
+ * @sa SDL_SetAudioStreamPutCallback
+ *
+ * @from SDL_audio.h:1471 typedef void (*SDL_AudioStreamDataCompleteCallback)(void *userdata, const void *buf, int buflen);
+ */
+SDL_AudioStreamDataCompleteCallback: {
+      parameters: ["pointer", "pointer", "i32"],
+      result: "void"
+    },
+
+/**
  * A callback that fires when data passes through an SDL_AudioStream.
  *
  * Apps can (optionally) register a callback with an audio stream that is
@@ -168,7 +203,7 @@ export const symbols = {
  * @sa SDL_SetAudioStreamGetCallback
  * @sa SDL_SetAudioStreamPutCallback
  *
- * @from SDL_audio.h:1710 typedef void (*SDL_AudioStreamCallback)(void *userdata, SDL_AudioStream *stream, int additional_amount, int total_amount);
+ * @from SDL_audio.h:1864 typedef void (*SDL_AudioStreamCallback)(void *userdata, SDL_AudioStream *stream, int additional_amount, int total_amount);
  */
 SDL_AudioStreamCallback: {
       parameters: ["pointer", "pointer", "i32", "i32"],
@@ -210,7 +245,7 @@ SDL_AudioStreamCallback: {
  *
  * @sa SDL_SetAudioPostmixCallback
  *
- * @from SDL_audio.h:1927 typedef void (*SDL_AudioPostmixCallback)(void *userdata, const SDL_AudioSpec *spec, float *buffer, int buflen);
+ * @from SDL_audio.h:2081 typedef void (*SDL_AudioPostmixCallback)(void *userdata, const SDL_AudioSpec *spec, float *buffer, int buflen);
  */
 SDL_AudioPostmixCallback: {
       parameters: ["pointer", "pointer", "pointer", "i32"],
@@ -219,6 +254,44 @@ SDL_AudioPostmixCallback: {
 
 } as const satisfies Deno.ForeignLibraryInterface;
 
+
+/**
+ * A callback that fires for completed SDL_PutAudioStreamDataNoCopy() data.
+ *
+ * When using SDL_PutAudioStreamDataNoCopy() to provide data to an
+ * SDL_AudioStream, it's not safe to dispose of the data until the stream has
+ * completely consumed it. Often times it's difficult to know exactly when
+ * this has happened.
+ *
+ * This callback fires once when the stream no longer needs the buffer,
+ * allowing the app to easily free or reuse it.
+ *
+ * @param userdata an opaque pointer provided by the app for their personal
+ *                 use.
+ * @param buf the pointer provided to SDL_PutAudioStreamDataNoCopy().
+ * @param buflen the size of buffer, in bytes, provided to
+ *               SDL_PutAudioStreamDataNoCopy().
+ *
+ * @threadsafety This callbacks may run from any thread, so if you need to
+ *               protect shared data, you should use SDL_LockAudioStream to
+ *               serialize access; this lock will be held before your callback
+ *               is called, so your callback does not need to manage the lock
+ *               explicitly.
+ *
+ * @since This datatype is available since SDL 3.4.0.
+ *
+ * @sa SDL_SetAudioStreamGetCallback
+ * @sa SDL_SetAudioStreamPutCallback
+ *
+ * @from SDL_audio.h:1471 typedef void (*SDL_AudioStreamDataCompleteCallback)(void *userdata, const void *buf, int buflen);
+ */
+export function AudioStreamDataCompleteCallback(cb: (
+    userdata: Deno.PointerValue, 
+    buf: Deno.PointerValue, 
+    buflen: number, 
+  ) => void) {
+  return new Deno.UnsafeCallback(symbols.SDL_AudioStreamDataCompleteCallback, cb);
+}
 
 /**
  * A callback that fires when data passes through an SDL_AudioStream.
@@ -260,7 +333,7 @@ SDL_AudioPostmixCallback: {
  * @sa SDL_SetAudioStreamGetCallback
  * @sa SDL_SetAudioStreamPutCallback
  *
- * @from SDL_audio.h:1710 typedef void (*SDL_AudioStreamCallback)(void *userdata, SDL_AudioStream *stream, int additional_amount, int total_amount);
+ * @from SDL_audio.h:1864 typedef void (*SDL_AudioStreamCallback)(void *userdata, SDL_AudioStream *stream, int additional_amount, int total_amount);
  */
 export function AudioStreamCallback(cb: (
     userdata: Deno.PointerValue, 
@@ -306,7 +379,7 @@ export function AudioStreamCallback(cb: (
  *
  * @sa SDL_SetAudioPostmixCallback
  *
- * @from SDL_audio.h:1927 typedef void (*SDL_AudioPostmixCallback)(void *userdata, const SDL_AudioSpec *spec, float *buffer, int buflen);
+ * @from SDL_audio.h:2081 typedef void (*SDL_AudioPostmixCallback)(void *userdata, const SDL_AudioSpec *spec, float *buffer, int buflen);
  */
 export function AudioPostmixCallback(cb: (
     userdata: Deno.PointerValue, 

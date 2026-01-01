@@ -249,6 +249,10 @@ import * as _p from "@g9wp/ptr";
 /**
  * Opens up a read-only container for the application's filesystem.
  *
+ * By default, SDL_OpenTitleStorage uses the generic storage implementation.
+ * When the path override is not provided, the generic implementation will use
+ * the output of SDL_GetBasePath as the base path.
+ *
  * @param override a path to override the backend's default title root.
  * @param props a property list that may contain backend-specific information.
  * @returns a title storage container on success or NULL on failure; call
@@ -261,7 +265,7 @@ import * as _p from "@g9wp/ptr";
  * @sa SDL_OpenUserStorage
  * @sa SDL_ReadStorageFile
  *
- * @from SDL_storage.h:348 SDL_Storage * SDL_OpenTitleStorage(const char *override, SDL_PropertiesID props);
+ * @from SDL_storage.h:352 SDL_Storage * SDL_OpenTitleStorage(const char *override, SDL_PropertiesID props);
  */
 export function openTitleStorage(override: string, props: number): Deno.PointerValue<"SDL_Storage"> {
   return lib.symbols.SDL_OpenTitleStorage(_p.toCstr(override), props) as Deno.PointerValue<"SDL_Storage">;
@@ -291,7 +295,7 @@ export function openTitleStorage(override: string, props: number): Deno.PointerV
  * @sa SDL_StorageReady
  * @sa SDL_WriteStorageFile
  *
- * @from SDL_storage.h:374 SDL_Storage * SDL_OpenUserStorage(const char *org, const char *app, SDL_PropertiesID props);
+ * @from SDL_storage.h:378 SDL_Storage * SDL_OpenUserStorage(const char *org, const char *app, SDL_PropertiesID props);
  */
 export function openUserStorage(org: string, app: string, props: number): Deno.PointerValue<"SDL_Storage"> {
   return lib.symbols.SDL_OpenUserStorage(_p.toCstr(org), _p.toCstr(app), props) as Deno.PointerValue<"SDL_Storage">;
@@ -319,7 +323,7 @@ export function openUserStorage(org: string, app: string, props: number): Deno.P
  * @sa SDL_ReadStorageFile
  * @sa SDL_WriteStorageFile
  *
- * @from SDL_storage.h:398 SDL_Storage * SDL_OpenFileStorage(const char *path);
+ * @from SDL_storage.h:402 SDL_Storage * SDL_OpenFileStorage(const char *path);
  */
 export function openFileStorage(path: string): Deno.PointerValue<"SDL_Storage"> {
   return lib.symbols.SDL_OpenFileStorage(_p.toCstr(path)) as Deno.PointerValue<"SDL_Storage">;
@@ -352,7 +356,7 @@ export function openFileStorage(path: string): Deno.PointerValue<"SDL_Storage"> 
  * @sa SDL_StorageReady
  * @sa SDL_WriteStorageFile
  *
- * @from SDL_storage.h:427 SDL_Storage * SDL_OpenStorage(const SDL_StorageInterface *iface, void *userdata);
+ * @from SDL_storage.h:431 SDL_Storage * SDL_OpenStorage(const SDL_StorageInterface *iface, void *userdata);
  */
 export function openStorage(iface: Deno.PointerValue<"SDL_StorageInterface">, userdata: Deno.PointerValue): Deno.PointerValue<"SDL_Storage"> {
   return lib.symbols.SDL_OpenStorage(iface, userdata) as Deno.PointerValue<"SDL_Storage">;
@@ -374,7 +378,7 @@ export function openStorage(iface: Deno.PointerValue<"SDL_StorageInterface">, us
  * @sa SDL_OpenTitleStorage
  * @sa SDL_OpenUserStorage
  *
- * @from SDL_storage.h:445 bool SDL_CloseStorage(SDL_Storage *storage);
+ * @from SDL_storage.h:449 bool SDL_CloseStorage(SDL_Storage *storage);
  */
 export function closeStorage(storage: Deno.PointerValue<"SDL_Storage">): boolean {
   return lib.symbols.SDL_CloseStorage(storage);
@@ -393,7 +397,7 @@ export function closeStorage(storage: Deno.PointerValue<"SDL_Storage">): boolean
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_storage.h:460 bool SDL_StorageReady(SDL_Storage *storage);
+ * @from SDL_storage.h:464 bool SDL_StorageReady(SDL_Storage *storage);
  */
 export function storageReady(storage: Deno.PointerValue<"SDL_Storage">): boolean {
   return lib.symbols.SDL_StorageReady(storage);
@@ -413,7 +417,7 @@ export function storageReady(storage: Deno.PointerValue<"SDL_Storage">): boolean
  * @sa SDL_ReadStorageFile
  * @sa SDL_StorageReady
  *
- * @from SDL_storage.h:476 bool SDL_GetStorageFileSize(SDL_Storage *storage, const char *path, Uint64 *length);
+ * @from SDL_storage.h:480 bool SDL_GetStorageFileSize(SDL_Storage *storage, const char *path, Uint64 *length);
  */
 export function getStorageFileSize(storage: Deno.PointerValue<"SDL_Storage">, path: string): bigint {
   if(!lib.symbols.SDL_GetStorageFileSize(storage, _p.toCstr(path), _p.u64.p0))
@@ -442,7 +446,7 @@ export function getStorageFileSize(storage: Deno.PointerValue<"SDL_Storage">, pa
  * @sa SDL_StorageReady
  * @sa SDL_WriteStorageFile
  *
- * @from SDL_storage.h:499 bool SDL_ReadStorageFile(SDL_Storage *storage, const char *path, void *destination, Uint64 length);
+ * @from SDL_storage.h:503 bool SDL_ReadStorageFile(SDL_Storage *storage, const char *path, void *destination, Uint64 length);
  */
 export function readStorageFile(
     storage: Deno.PointerValue<"SDL_Storage">,
@@ -469,7 +473,7 @@ export function readStorageFile(
  * @sa SDL_ReadStorageFile
  * @sa SDL_StorageReady
  *
- * @from SDL_storage.h:517 bool SDL_WriteStorageFile(SDL_Storage *storage, const char *path, const void *source, Uint64 length);
+ * @from SDL_storage.h:521 bool SDL_WriteStorageFile(SDL_Storage *storage, const char *path, const void *source, Uint64 length);
  */
 export function writeStorageFile(
     storage: Deno.PointerValue<"SDL_Storage">,
@@ -492,7 +496,7 @@ export function writeStorageFile(
  *
  * @sa SDL_StorageReady
  *
- * @from SDL_storage.h:531 bool SDL_CreateStorageDirectory(SDL_Storage *storage, const char *path);
+ * @from SDL_storage.h:535 bool SDL_CreateStorageDirectory(SDL_Storage *storage, const char *path);
  */
 export function createStorageDirectory(storage: Deno.PointerValue<"SDL_Storage">, path: string): boolean {
   return lib.symbols.SDL_CreateStorageDirectory(storage, _p.toCstr(path));
@@ -525,7 +529,7 @@ export function createStorageDirectory(storage: Deno.PointerValue<"SDL_Storage">
  *
  * @sa SDL_StorageReady
  *
- * @from SDL_storage.h:560 bool SDL_EnumerateStorageDirectory(SDL_Storage *storage, const char *path, SDL_EnumerateDirectoryCallback callback, void *userdata);
+ * @from SDL_storage.h:564 bool SDL_EnumerateStorageDirectory(SDL_Storage *storage, const char *path, SDL_EnumerateDirectoryCallback callback, void *userdata);
  */
 export function enumerateStorageDirectory(
     storage: Deno.PointerValue<"SDL_Storage">,
@@ -548,7 +552,7 @@ export function enumerateStorageDirectory(
  *
  * @sa SDL_StorageReady
  *
- * @from SDL_storage.h:574 bool SDL_RemoveStoragePath(SDL_Storage *storage, const char *path);
+ * @from SDL_storage.h:578 bool SDL_RemoveStoragePath(SDL_Storage *storage, const char *path);
  */
 export function removeStoragePath(storage: Deno.PointerValue<"SDL_Storage">, path: string): boolean {
   return lib.symbols.SDL_RemoveStoragePath(storage, _p.toCstr(path));
@@ -567,7 +571,7 @@ export function removeStoragePath(storage: Deno.PointerValue<"SDL_Storage">, pat
  *
  * @sa SDL_StorageReady
  *
- * @from SDL_storage.h:589 bool SDL_RenameStoragePath(SDL_Storage *storage, const char *oldpath, const char *newpath);
+ * @from SDL_storage.h:593 bool SDL_RenameStoragePath(SDL_Storage *storage, const char *oldpath, const char *newpath);
  */
 export function renameStoragePath(storage: Deno.PointerValue<"SDL_Storage">, oldpath: string, newpath: string): boolean {
   return lib.symbols.SDL_RenameStoragePath(storage, _p.toCstr(oldpath), _p.toCstr(newpath));
@@ -586,7 +590,7 @@ export function renameStoragePath(storage: Deno.PointerValue<"SDL_Storage">, old
  *
  * @sa SDL_StorageReady
  *
- * @from SDL_storage.h:604 bool SDL_CopyStorageFile(SDL_Storage *storage, const char *oldpath, const char *newpath);
+ * @from SDL_storage.h:608 bool SDL_CopyStorageFile(SDL_Storage *storage, const char *oldpath, const char *newpath);
  */
 export function copyStorageFile(storage: Deno.PointerValue<"SDL_Storage">, oldpath: string, newpath: string): boolean {
   return lib.symbols.SDL_CopyStorageFile(storage, _p.toCstr(oldpath), _p.toCstr(newpath));
@@ -606,7 +610,7 @@ export function copyStorageFile(storage: Deno.PointerValue<"SDL_Storage">, oldpa
  *
  * @sa SDL_StorageReady
  *
- * @from SDL_storage.h:620 bool SDL_GetStoragePathInfo(SDL_Storage *storage, const char *path, SDL_PathInfo *info);
+ * @from SDL_storage.h:624 bool SDL_GetStoragePathInfo(SDL_Storage *storage, const char *path, SDL_PathInfo *info);
  */
 export function getStoragePathInfo(storage: Deno.PointerValue<"SDL_Storage">, path: string, info: Deno.PointerValue<"SDL_PathInfo">): boolean {
   return lib.symbols.SDL_GetStoragePathInfo(storage, _p.toCstr(path), info);
@@ -623,7 +627,7 @@ export function getStoragePathInfo(storage: Deno.PointerValue<"SDL_Storage">, pa
  * @sa SDL_StorageReady
  * @sa SDL_WriteStorageFile
  *
- * @from SDL_storage.h:633 Uint64 SDL_GetStorageSpaceRemaining(SDL_Storage *storage);
+ * @from SDL_storage.h:637 Uint64 SDL_GetStorageSpaceRemaining(SDL_Storage *storage);
  */
 export function getStorageSpaceRemaining(storage: Deno.PointerValue<"SDL_Storage">): bigint {
   return lib.symbols.SDL_GetStorageSpaceRemaining(storage);
@@ -667,7 +671,7 @@ export function getStorageSpaceRemaining(storage: Deno.PointerValue<"SDL_Storage
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_storage.h:673 char ** SDL_GlobStorageDirectory(SDL_Storage *storage, const char *path, const char *pattern, SDL_GlobFlags flags, int *count);
+ * @from SDL_storage.h:677 char ** SDL_GlobStorageDirectory(SDL_Storage *storage, const char *path, const char *pattern, SDL_GlobFlags flags, int *count);
  */
 export function globStorageDirectory(
     storage: Deno.PointerValue<"SDL_Storage">,

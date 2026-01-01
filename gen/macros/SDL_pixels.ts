@@ -80,22 +80,46 @@
 */
 
 /**
- * @from SDL_pixels:99
+ * A fully opaque 8-bit alpha value.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_ALPHA_TRANSPARENT
+ *
+ * @from SDL_pixels.h:99
  */
 export const SDL_ALPHA_OPAQUE = 255;
 
 /**
- * @from SDL_pixels:108
+ * A fully opaque floating point alpha value.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_ALPHA_TRANSPARENT_FLOAT
+ *
+ * @from SDL_pixels.h:108
  */
 export const SDL_ALPHA_OPAQUE_FLOAT = 1.0f;
 
 /**
- * @from SDL_pixels:117
+ * A fully transparent 8-bit alpha value.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_ALPHA_OPAQUE
+ *
+ * @from SDL_pixels.h:117
  */
 export const SDL_ALPHA_TRANSPARENT = 0;
 
 /**
- * @from SDL_pixels:126
+ * A fully transparent floating point alpha value.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_ALPHA_OPAQUE_FLOAT
+ *
+ * @from SDL_pixels.h:126
  */
 export const SDL_ALPHA_TRANSPARENT_FLOAT = 0.0f;
 

@@ -72,7 +72,7 @@
  *
  * @sa SDL_GetUserFolder
  *
- * @from SDL_filesystem.h:181 SDL_FOLDER_
+ * @from SDL_filesystem.h:194 SDL_FOLDER_
  */
 export enum SDL_Folder {
   HOME, /**< The folder which contains all of the current user's data, preferences, and documents. It usually contains most of the other folders. If a requested folder does not exist, the home folder can be considered a safe fallback to store a user's documents. */
@@ -102,7 +102,7 @@ export enum SDL_Folder {
  *
  * @sa SDL_PathInfo
  *
- * @from SDL_filesystem.h:236 SDL_PATHTYPE_
+ * @from SDL_filesystem.h:251 SDL_PATHTYPE_
  */
 export enum SDL_PathType {
   NONE, /**< path does not exist */
@@ -120,7 +120,7 @@ export enum SDL_PathType {
  *
  * @sa SDL_EnumerateDirectoryCallback
  *
- * @from SDL_filesystem.h:296 SDL_ENUM_
+ * @from SDL_filesystem.h:313 SDL_ENUM_
  */
 export enum SDL_EnumerationResult {
   CONTINUE, /**< Value that requests that enumeration continue. */

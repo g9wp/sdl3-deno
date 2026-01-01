@@ -76,7 +76,7 @@
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @from SDL_assert.h:270 SDL_ASSERTION_
+ * @from SDL_assert.h:303 SDL_ASSERTION_
  */
 export enum SDL_AssertState {
   RETRY, /**< Retry the assert immediately. */

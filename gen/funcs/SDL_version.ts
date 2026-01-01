@@ -56,13 +56,14 @@ SDL_GetVersion: {
 
 
 /**
- * Get the code revision of SDL that is linked against your program.
+ * Get the code revision of the SDL library that is linked against your
+ * program.
  *
- * This value is the revision of the code you are linked with and may be
+ * This value is the revision of the code you are linking against and may be
  * different from the code you are compiling with, which is found in the
- * constant SDL_REVISION.
+ * constant SDL_REVISION if you explicitly include SDL_revision.h
  *
- * The revision is arbitrary string (a hash value) uniquely identifying the
+ * The revision is an arbitrary string (a hash value) uniquely identifying the
  * exact revision of the SDL library in use, and is only useful in comparing
  * against other revisions. It is NOT an incrementing number.
  *
@@ -79,7 +80,7 @@ SDL_GetVersion: {
  *
  * @sa SDL_GetVersion
  *
- * @from SDL_version.h:173 const char * SDL_GetRevision(void);
+ * @from SDL_version.h:174 const char * SDL_GetRevision(void);
  */
 SDL_GetRevision: {
       parameters: [],

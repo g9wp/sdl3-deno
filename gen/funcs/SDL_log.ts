@@ -161,6 +161,9 @@ SDL_ResetLogPriorities: {
  * SDL_LOG_PRIORITY_WARN and higher have a prefix showing their priority, e.g.
  * "WARNING: ".
  *
+ * This function makes a copy of its string argument, **prefix**, so it is not
+ * necessary to keep the value of **prefix** alive after the call returns.
+ *
  * @param priority the SDL_LogPriority to modify.
  * @param prefix the prefix to use for that log priority, or NULL to use no
  *               prefix.
@@ -174,7 +177,7 @@ SDL_ResetLogPriorities: {
  * @sa SDL_SetLogPriorities
  * @sa SDL_SetLogPriority
  *
- * @from SDL_log.h:221 bool SDL_SetLogPriorityPrefix(SDL_LogPriority priority, const char *prefix);
+ * @from SDL_log.h:224 bool SDL_SetLogPriorityPrefix(SDL_LogPriority priority, const char *prefix);
  */
 SDL_SetLogPriorityPrefix: {
       parameters: ["u32", "pointer"],
@@ -194,7 +197,7 @@ SDL_SetLogPriorityPrefix: {
  * @sa SDL_SetLogOutputFunction
  * @sa SDL_GetLogOutputFunction
  *
- * @from SDL_log.h:496 SDL_LogOutputFunction SDL_GetDefaultLogOutputFunction(void);
+ * @from SDL_log.h:498 SDL_LogOutputFunction SDL_GetDefaultLogOutputFunction(void);
  */
 SDL_GetDefaultLogOutputFunction: {
       parameters: [],
@@ -217,7 +220,7 @@ SDL_GetDefaultLogOutputFunction: {
  * @sa SDL_GetDefaultLogOutputFunction
  * @sa SDL_SetLogOutputFunction
  *
- * @from SDL_log.h:513 void SDL_GetLogOutputFunction(SDL_LogOutputFunction *callback, void **userdata);
+ * @from SDL_log.h:515 void SDL_GetLogOutputFunction(SDL_LogOutputFunction *callback, void **userdata);
  */
 SDL_GetLogOutputFunction: {
       parameters: ["pointer", "pointer"],
@@ -238,7 +241,7 @@ SDL_GetLogOutputFunction: {
  * @sa SDL_GetDefaultLogOutputFunction
  * @sa SDL_GetLogOutputFunction
  *
- * @from SDL_log.h:528 void SDL_SetLogOutputFunction(SDL_LogOutputFunction callback, void *userdata);
+ * @from SDL_log.h:530 void SDL_SetLogOutputFunction(SDL_LogOutputFunction callback, void *userdata);
  */
 SDL_SetLogOutputFunction: {
       parameters: ["function", "pointer"],

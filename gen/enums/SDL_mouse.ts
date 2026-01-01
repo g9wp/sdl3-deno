@@ -57,7 +57,7 @@
 */
 
 /**
- * @from SDL_mouse:149 SDL_BUTTON_
+ * @from SDL_mouse:160 SDL_BUTTON_
  */
 export enum BUTTON {
   LEFT = 1, 

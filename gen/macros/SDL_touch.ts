@@ -39,12 +39,20 @@
 */
 
 /**
- * @from SDL_touch:114
+ * The SDL_MouseID for mouse events simulated with touch input.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_touch.h:114
  */
 export const SDL_TOUCH_MOUSEID = ((SDL_MouseID)-1);
 
 /**
- * @from SDL_touch:121
+ * The SDL_TouchID for touch events simulated with mouse input.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_touch.h:121
  */
 export const SDL_MOUSE_TOUCHID = ((SDL_TouchID)-1);
 

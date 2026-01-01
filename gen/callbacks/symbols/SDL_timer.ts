@@ -10,7 +10,7 @@
  * This category covers measuring time elapsed (SDL_GetTicks(),
  * SDL_GetPerformanceCounter()), putting a thread to sleep for a certain
  * amount of time (SDL_Delay(), SDL_DelayNS(), SDL_DelayPrecise()), and firing
- * a callback function after a certain amount of time has elasped
+ * a callback function after a certain amount of time has elapsed
  * (SDL_AddTimer(), etc).
  *
  * There are also useful macros to convert between time units, like
@@ -65,7 +65,7 @@ export const symbols = {
  *
  * @sa SDL_AddTimer
  *
- * @from SDL_timer.h:327 typedef Uint32 (*SDL_TimerCallback)(void *userdata, SDL_TimerID timerID, Uint32 interval);
+ * @from SDL_timer.h:331 typedef Uint32 (*SDL_TimerCallback)(void *userdata, SDL_TimerID timerID, Uint32 interval);
  */
 SDL_TimerCallback: {
       parameters: ["pointer", "u32", "u32"],
@@ -96,7 +96,7 @@ SDL_TimerCallback: {
  *
  * @sa SDL_AddTimerNS
  *
- * @from SDL_timer.h:389 typedef Uint64 (*SDL_NSTimerCallback)(void *userdata, SDL_TimerID timerID, Uint64 interval);
+ * @from SDL_timer.h:393 typedef Uint64 (*SDL_NSTimerCallback)(void *userdata, SDL_TimerID timerID, Uint64 interval);
  */
 SDL_NSTimerCallback: {
       parameters: ["pointer", "u32", "u64"],
@@ -130,7 +130,7 @@ SDL_NSTimerCallback: {
  *
  * @sa SDL_AddTimer
  *
- * @from SDL_timer.h:327 typedef Uint32 (*SDL_TimerCallback)(void *userdata, SDL_TimerID timerID, Uint32 interval);
+ * @from SDL_timer.h:331 typedef Uint32 (*SDL_TimerCallback)(void *userdata, SDL_TimerID timerID, Uint32 interval);
  */
 export function TimerCallback(cb: (
     userdata: Deno.PointerValue, 
@@ -164,7 +164,7 @@ export function TimerCallback(cb: (
  *
  * @sa SDL_AddTimerNS
  *
- * @from SDL_timer.h:389 typedef Uint64 (*SDL_NSTimerCallback)(void *userdata, SDL_TimerID timerID, Uint64 interval);
+ * @from SDL_timer.h:393 typedef Uint64 (*SDL_NSTimerCallback)(void *userdata, SDL_TimerID timerID, Uint64 interval);
  */
 export function NSTimerCallback(cb: (
     userdata: Deno.PointerValue, 

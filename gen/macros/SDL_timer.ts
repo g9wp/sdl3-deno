@@ -10,7 +10,7 @@
  * This category covers measuring time elapsed (SDL_GetTicks(),
  * SDL_GetPerformanceCounter()), putting a thread to sleep for a certain
  * amount of time (SDL_Delay(), SDL_DelayNS(), SDL_DelayPrecise()), and firing
- * a callback function after a certain amount of time has elasped
+ * a callback function after a certain amount of time has elapsed
  * (SDL_AddTimer(), etc).
  *
  * There are also useful macros to convert between time units, like
@@ -41,27 +41,57 @@
 */
 
 /**
- * @from SDL_timer:61
+ * Number of milliseconds in a second.
+ *
+ * This is always 1000.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_timer.h:61
  */
 export const SDL_MS_PER_SECOND = 1000;
 
 /**
- * @from SDL_timer:70
+ * Number of microseconds in a second.
+ *
+ * This is always 1000000.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_timer.h:70
  */
 export const SDL_US_PER_SECOND = 1000000;
 
 /**
- * @from SDL_timer:79
+ * Number of nanoseconds in a second.
+ *
+ * This is always 1000000000.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_timer.h:79
  */
 export const SDL_NS_PER_SECOND = 1000000000LL;
 
 /**
- * @from SDL_timer:88
+ * Number of nanoseconds in a millisecond.
+ *
+ * This is always 1000000.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_timer.h:88
  */
 export const SDL_NS_PER_MS = 1000000;
 
 /**
- * @from SDL_timer:97
+ * Number of nanoseconds in a microsecond.
+ *
+ * This is always 1000.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_timer.h:97
  */
 export const SDL_NS_PER_US = 1000;
 

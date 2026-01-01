@@ -184,8 +184,7 @@ SDL_ResetKeyboard: {
 /**
  * Get the current key modifier state for the keyboard.
  *
- * @returns an OR'd combination of the modifier keys for the keyboard. See
- *          SDL_Keymod for details.
+ * @returns an OR'd combination of the modifier keys for the keyboard.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -194,7 +193,7 @@ SDL_ResetKeyboard: {
  * @sa SDL_GetKeyboardState
  * @sa SDL_SetModState
  *
- * @from SDL_keyboard.h:186 SDL_Keymod SDL_GetModState(void);
+ * @from SDL_keyboard.h:185 SDL_Keymod SDL_GetModState(void);
  */
 SDL_GetModState: {
       parameters: [],
@@ -221,7 +220,7 @@ SDL_GetModState: {
  *
  * @sa SDL_GetModState
  *
- * @from SDL_keyboard.h:207 void SDL_SetModState(SDL_Keymod modstate);
+ * @from SDL_keyboard.h:206 void SDL_SetModState(SDL_Keymod modstate);
  */
 SDL_SetModState: {
       parameters: ["u16"],
@@ -251,7 +250,7 @@ SDL_SetModState: {
  * @sa SDL_GetKeyName
  * @sa SDL_GetScancodeFromKey
  *
- * @from SDL_keyboard.h:231 SDL_Keycode SDL_GetKeyFromScancode(SDL_Scancode scancode, SDL_Keymod modstate, bool key_event);
+ * @from SDL_keyboard.h:230 SDL_Keycode SDL_GetKeyFromScancode(SDL_Scancode scancode, SDL_Keymod modstate, bool key_event);
  */
 SDL_GetKeyFromScancode: {
       parameters: ["u32", "u16", "bool"],
@@ -278,7 +277,7 @@ SDL_GetKeyFromScancode: {
  * @sa SDL_GetKeyFromScancode
  * @sa SDL_GetScancodeName
  *
- * @from SDL_keyboard.h:252 SDL_Scancode SDL_GetScancodeFromKey(SDL_Keycode key, SDL_Keymod *modstate);
+ * @from SDL_keyboard.h:251 SDL_Scancode SDL_GetScancodeFromKey(SDL_Keycode key, SDL_Keymod *modstate);
  */
 SDL_GetScancodeFromKey: {
       parameters: ["u32", "pointer"],
@@ -302,7 +301,7 @@ SDL_GetScancodeFromKey: {
  *
  * @sa SDL_GetScancodeName
  *
- * @from SDL_keyboard.h:270 bool SDL_SetScancodeName(SDL_Scancode scancode, const char *name);
+ * @from SDL_keyboard.h:269 bool SDL_SetScancodeName(SDL_Scancode scancode, const char *name);
  */
 SDL_SetScancodeName: {
       parameters: ["u32", "pointer"],
@@ -334,7 +333,7 @@ SDL_SetScancodeName: {
  * @sa SDL_GetScancodeFromName
  * @sa SDL_SetScancodeName
  *
- * @from SDL_keyboard.h:296 const char * SDL_GetScancodeName(SDL_Scancode scancode);
+ * @from SDL_keyboard.h:295 const char * SDL_GetScancodeName(SDL_Scancode scancode);
  */
 SDL_GetScancodeName: {
       parameters: ["u32"],
@@ -357,7 +356,7 @@ SDL_GetScancodeName: {
  * @sa SDL_GetScancodeFromKey
  * @sa SDL_GetScancodeName
  *
- * @from SDL_keyboard.h:313 SDL_Scancode SDL_GetScancodeFromName(const char *name);
+ * @from SDL_keyboard.h:312 SDL_Scancode SDL_GetScancodeFromName(const char *name);
  */
 SDL_GetScancodeFromName: {
       parameters: ["pointer"],
@@ -383,7 +382,7 @@ SDL_GetScancodeFromName: {
  * @sa SDL_GetKeyFromScancode
  * @sa SDL_GetScancodeFromKey
  *
- * @from SDL_keyboard.h:333 const char * SDL_GetKeyName(SDL_Keycode key);
+ * @from SDL_keyboard.h:332 const char * SDL_GetKeyName(SDL_Keycode key);
  */
 SDL_GetKeyName: {
       parameters: ["u32"],
@@ -406,7 +405,7 @@ SDL_GetKeyName: {
  * @sa SDL_GetKeyName
  * @sa SDL_GetScancodeFromName
  *
- * @from SDL_keyboard.h:350 SDL_Keycode SDL_GetKeyFromName(const char *name);
+ * @from SDL_keyboard.h:349 SDL_Keycode SDL_GetKeyFromName(const char *name);
  */
 SDL_GetKeyFromName: {
       parameters: ["pointer"],
@@ -440,7 +439,7 @@ SDL_GetKeyFromName: {
  * @sa SDL_StopTextInput
  * @sa SDL_TextInputActive
  *
- * @from SDL_keyboard.h:378 bool SDL_StartTextInput(SDL_Window *window);
+ * @from SDL_keyboard.h:377 bool SDL_StartTextInput(SDL_Window *window);
  */
 SDL_StartTextInput: {
       parameters: ["pointer"],
@@ -498,7 +497,7 @@ SDL_StartTextInput: {
  * @sa SDL_StopTextInput
  * @sa SDL_TextInputActive
  *
- * @from SDL_keyboard.h:473 bool SDL_StartTextInputWithProperties(SDL_Window *window, SDL_PropertiesID props);
+ * @from SDL_keyboard.h:472 bool SDL_StartTextInputWithProperties(SDL_Window *window, SDL_PropertiesID props);
  */
 SDL_StartTextInputWithProperties: {
       parameters: ["pointer", "u32"],
@@ -518,7 +517,7 @@ SDL_StartTextInputWithProperties: {
  *
  * @sa SDL_StartTextInput
  *
- * @from SDL_keyboard.h:493 bool SDL_TextInputActive(SDL_Window *window);
+ * @from SDL_keyboard.h:492 bool SDL_TextInputActive(SDL_Window *window);
  */
 SDL_TextInputActive: {
       parameters: ["pointer"],
@@ -542,7 +541,7 @@ SDL_TextInputActive: {
  *
  * @sa SDL_StartTextInput
  *
- * @from SDL_keyboard.h:511 bool SDL_StopTextInput(SDL_Window *window);
+ * @from SDL_keyboard.h:510 bool SDL_StopTextInput(SDL_Window *window);
  */
 SDL_StopTextInput: {
       parameters: ["pointer"],
@@ -564,7 +563,7 @@ SDL_StopTextInput: {
  * @sa SDL_StartTextInput
  * @sa SDL_StopTextInput
  *
- * @from SDL_keyboard.h:527 bool SDL_ClearComposition(SDL_Window *window);
+ * @from SDL_keyboard.h:526 bool SDL_ClearComposition(SDL_Window *window);
  */
 SDL_ClearComposition: {
       parameters: ["pointer"],
@@ -593,7 +592,7 @@ SDL_ClearComposition: {
  * @sa SDL_GetTextInputArea
  * @sa SDL_StartTextInput
  *
- * @from SDL_keyboard.h:550 bool SDL_SetTextInputArea(SDL_Window *window, const SDL_Rect *rect, int cursor);
+ * @from SDL_keyboard.h:549 bool SDL_SetTextInputArea(SDL_Window *window, const SDL_Rect *rect, int cursor);
  */
 SDL_SetTextInputArea: {
       parameters: ["pointer", "pointer", "i32"],
@@ -620,7 +619,7 @@ SDL_SetTextInputArea: {
  *
  * @sa SDL_SetTextInputArea
  *
- * @from SDL_keyboard.h:571 bool SDL_GetTextInputArea(SDL_Window *window, SDL_Rect *rect, int *cursor);
+ * @from SDL_keyboard.h:570 bool SDL_GetTextInputArea(SDL_Window *window, SDL_Rect *rect, int *cursor);
  */
 SDL_GetTextInputArea: {
       parameters: ["pointer", "pointer", "pointer"],
@@ -641,7 +640,7 @@ SDL_GetTextInputArea: {
  * @sa SDL_StartTextInput
  * @sa SDL_ScreenKeyboardShown
  *
- * @from SDL_keyboard.h:586 bool SDL_HasScreenKeyboardSupport(void);
+ * @from SDL_keyboard.h:585 bool SDL_HasScreenKeyboardSupport(void);
  */
 SDL_HasScreenKeyboardSupport: {
       parameters: [],
@@ -661,7 +660,7 @@ SDL_HasScreenKeyboardSupport: {
  *
  * @sa SDL_HasScreenKeyboardSupport
  *
- * @from SDL_keyboard.h:600 bool SDL_ScreenKeyboardShown(SDL_Window *window);
+ * @from SDL_keyboard.h:599 bool SDL_ScreenKeyboardShown(SDL_Window *window);
  */
 SDL_ScreenKeyboardShown: {
       parameters: ["pointer"],

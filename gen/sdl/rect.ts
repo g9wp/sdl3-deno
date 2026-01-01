@@ -47,7 +47,7 @@ import * as _p from "@g9wp/ptr";
  *
  * @sa SDL_GetRectIntersection
  *
- * @from SDL_rect.h:223 bool SDL_HasRectIntersection(const SDL_Rect *A, const SDL_Rect *B);
+ * @from SDL_rect.h:226 bool SDL_HasRectIntersection(const SDL_Rect *A, const SDL_Rect *B);
  */
 export function hasRectIntersection(A: { x: number; y: number; w: number; h: number; } | null, B: { x: number; y: number; w: number; h: number; } | null): boolean {
   if (A) _p.i32.arr.set([A.x, A.y, A.w, A.h], 0);
@@ -70,7 +70,7 @@ export function hasRectIntersection(A: { x: number; y: number; w: number; h: num
  *
  * @sa SDL_HasRectIntersection
  *
- * @from SDL_rect.h:240 bool SDL_GetRectIntersection(const SDL_Rect *A, const SDL_Rect *B, SDL_Rect *result);
+ * @from SDL_rect.h:243 bool SDL_GetRectIntersection(const SDL_Rect *A, const SDL_Rect *B, SDL_Rect *result);
  */
 export function getRectIntersection(A: { x: number; y: number; w: number; h: number; } | null, B: { x: number; y: number; w: number; h: number; } | null): { x: number; y: number; w: number; h: number; } | null {
   if (A) _p.i32.arr.set([A.x, A.y, A.w, A.h], 0);
@@ -92,7 +92,7 @@ export function getRectIntersection(A: { x: number; y: number; w: number; h: num
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_rect.h:254 bool SDL_GetRectUnion(const SDL_Rect *A, const SDL_Rect *B, SDL_Rect *result);
+ * @from SDL_rect.h:257 bool SDL_GetRectUnion(const SDL_Rect *A, const SDL_Rect *B, SDL_Rect *result);
  */
 export function getRectUnion(A: { x: number; y: number; w: number; h: number; } | null, B: { x: number; y: number; w: number; h: number; } | null): { x: number; y: number; w: number; h: number; } | null {
   if (A) _p.i32.arr.set([A.x, A.y, A.w, A.h], 0);
@@ -119,7 +119,7 @@ export function getRectUnion(A: { x: number; y: number; w: number; h: number; } 
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_rect.h:273 bool SDL_GetRectEnclosingPoints(const SDL_Point *points, int count, const SDL_Rect *clip, SDL_Rect *result);
+ * @from SDL_rect.h:276 bool SDL_GetRectEnclosingPoints(const SDL_Point *points, int count, const SDL_Rect *clip, SDL_Rect *result);
  */
 export function getRectEnclosingPoints(points: { x: number; y: number; } | null, count: number, clip: { x: number; y: number; w: number; h: number; } | null): { x: number; y: number; w: number; h: number; } | null {
   if (points) _p.i32.arr.set([points.x, points.y], 0);
@@ -147,7 +147,7 @@ export function getRectEnclosingPoints(points: { x: number; y: number; } | null,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_rect.h:293 bool SDL_GetRectAndLineIntersection(const SDL_Rect *rect, int *X1, int *Y1, int *X2, int *Y2);
+ * @from SDL_rect.h:296 bool SDL_GetRectAndLineIntersection(const SDL_Rect *rect, int *X1, int *Y1, int *X2, int *Y2);
  */
 export function getRectAndLineIntersection(
     rect: { x: number; y: number; w: number; h: number; } | null,
@@ -179,7 +179,7 @@ export function getRectAndLineIntersection(
  *
  * @sa SDL_GetRectIntersection
  *
- * @from SDL_rect.h:426 bool SDL_HasRectIntersectionFloat(const SDL_FRect *A, const SDL_FRect *B);
+ * @from SDL_rect.h:429 bool SDL_HasRectIntersectionFloat(const SDL_FRect *A, const SDL_FRect *B);
  */
 export function hasRectIntersectionFloat(A: { x: number; y: number; w: number; h: number; } | null, B: { x: number; y: number; w: number; h: number; } | null): boolean {
   if (A) _p.f32.arr.set([A.x, A.y, A.w, A.h], 0);
@@ -202,7 +202,7 @@ export function hasRectIntersectionFloat(A: { x: number; y: number; w: number; h
  *
  * @sa SDL_HasRectIntersectionFloat
  *
- * @from SDL_rect.h:443 bool SDL_GetRectIntersectionFloat(const SDL_FRect *A, const SDL_FRect *B, SDL_FRect *result);
+ * @from SDL_rect.h:446 bool SDL_GetRectIntersectionFloat(const SDL_FRect *A, const SDL_FRect *B, SDL_FRect *result);
  */
 export function getRectIntersectionFloat(A: { x: number; y: number; w: number; h: number; } | null, B: { x: number; y: number; w: number; h: number; } | null): { x: number; y: number; w: number; h: number; } | null {
   if (A) _p.f32.arr.set([A.x, A.y, A.w, A.h], 0);
@@ -224,7 +224,7 @@ export function getRectIntersectionFloat(A: { x: number; y: number; w: number; h
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_rect.h:457 bool SDL_GetRectUnionFloat(const SDL_FRect *A, const SDL_FRect *B, SDL_FRect *result);
+ * @from SDL_rect.h:460 bool SDL_GetRectUnionFloat(const SDL_FRect *A, const SDL_FRect *B, SDL_FRect *result);
  */
 export function getRectUnionFloat(A: { x: number; y: number; w: number; h: number; } | null, B: { x: number; y: number; w: number; h: number; } | null): { x: number; y: number; w: number; h: number; } | null {
   if (A) _p.f32.arr.set([A.x, A.y, A.w, A.h], 0);
@@ -252,7 +252,7 @@ export function getRectUnionFloat(A: { x: number; y: number; w: number; h: numbe
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_rect.h:477 bool SDL_GetRectEnclosingPointsFloat(const SDL_FPoint *points, int count, const SDL_FRect *clip, SDL_FRect *result);
+ * @from SDL_rect.h:480 bool SDL_GetRectEnclosingPointsFloat(const SDL_FPoint *points, int count, const SDL_FRect *clip, SDL_FRect *result);
  */
 export function getRectEnclosingPointsFloat(points: { x: number; y: number; } | null, count: number, clip: { x: number; y: number; w: number; h: number; } | null): { x: number; y: number; w: number; h: number; } | null {
   if (points) _p.f32.arr.set([points.x, points.y], 0);
@@ -281,7 +281,7 @@ export function getRectEnclosingPointsFloat(points: { x: number; y: number; } | 
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_rect.h:498 bool SDL_GetRectAndLineIntersectionFloat(const SDL_FRect *rect, float *X1, float *Y1, float *X2, float *Y2);
+ * @from SDL_rect.h:501 bool SDL_GetRectAndLineIntersectionFloat(const SDL_FRect *rect, float *X1, float *Y1, float *X2, float *Y2);
  */
 export function getRectAndLineIntersectionFloat(
     rect: { x: number; y: number; w: number; h: number; } | null,

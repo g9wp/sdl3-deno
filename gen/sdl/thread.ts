@@ -13,7 +13,8 @@
  * will report failure without doing anything.
  *
  * If you're going to work with threads, you almost certainly need to have a
- * good understanding of [CategoryMutex](CategoryMutex) as well.
+ * good understanding of thread safety measures: locking and synchronization
+ * mechanisms are handled by the functions in SDL_mutex.h.
  *
  * @module
  */
@@ -113,7 +114,7 @@ export {
  * @sa SDL_CreateThread
  * @sa SDL_WaitThread
  *
- * @from SDL_thread.h:280 SDL_Thread * SDL_CreateThreadWithProperties(SDL_PropertiesID props);
+ * @from SDL_thread.h:281 SDL_Thread * SDL_CreateThreadWithProperties(SDL_PropertiesID props);
  */
 export function createThreadWithProperties(props: number): Deno.PointerValue<"SDL_Thread"> {
   return lib.symbols.SDL_CreateThreadWithProperties(props) as Deno.PointerValue<"SDL_Thread">;
@@ -131,7 +132,7 @@ export function createThreadWithProperties(props: number): Deno.PointerValue<"SD
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_thread.h:346 SDL_Thread * SDL_CreateThreadWithPropertiesRuntime(SDL_PropertiesID props, SDL_FunctionPointer pfnBeginThread, SDL_FunctionPointer pfnEndThread);
+ * @from SDL_thread.h:347 SDL_Thread * SDL_CreateThreadWithPropertiesRuntime(SDL_PropertiesID props, SDL_FunctionPointer pfnBeginThread, SDL_FunctionPointer pfnEndThread);
  */
 export function createThreadWithPropertiesRuntime(props: number, pfnBeginThread: Deno.PointerValue, pfnEndThread: Deno.PointerValue): Deno.PointerValue<"SDL_Thread"> {
   return lib.symbols.SDL_CreateThreadWithPropertiesRuntime(props, pfnBeginThread, pfnEndThread) as Deno.PointerValue<"SDL_Thread">;
@@ -146,7 +147,7 @@ export function createThreadWithPropertiesRuntime(props: number, pfnBeginThread:
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_thread.h:366 const char * SDL_GetThreadName(SDL_Thread *thread);
+ * @from SDL_thread.h:367 const char * SDL_GetThreadName(SDL_Thread *thread);
  */
 export function getThreadName(thread: Deno.PointerValue<"SDL_Thread">): string {
   return _p.getCstr2(lib.symbols.SDL_GetThreadName(thread));
@@ -168,7 +169,7 @@ export function getThreadName(thread: Deno.PointerValue<"SDL_Thread">): string {
  *
  * @sa SDL_GetThreadID
  *
- * @from SDL_thread.h:384 SDL_ThreadID SDL_GetCurrentThreadID(void);
+ * @from SDL_thread.h:385 SDL_ThreadID SDL_GetCurrentThreadID(void);
  */
 export function getCurrentThreadId(): bigint {
   return lib.symbols.SDL_GetCurrentThreadID();
@@ -189,7 +190,7 @@ export function getCurrentThreadId(): bigint {
  *
  * @sa SDL_GetCurrentThreadID
  *
- * @from SDL_thread.h:401 SDL_ThreadID SDL_GetThreadID(SDL_Thread *thread);
+ * @from SDL_thread.h:402 SDL_ThreadID SDL_GetThreadID(SDL_Thread *thread);
  */
 export function getThreadId(thread: Deno.PointerValue<"SDL_Thread">): bigint {
   return lib.symbols.SDL_GetThreadID(thread);
@@ -208,7 +209,7 @@ export function getThreadId(thread: Deno.PointerValue<"SDL_Thread">): bigint {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_thread.h:416 bool SDL_SetCurrentThreadPriority(SDL_ThreadPriority priority);
+ * @from SDL_thread.h:417 bool SDL_SetCurrentThreadPriority(SDL_ThreadPriority priority);
  */
 export function setCurrentThreadPriority(priority: number): boolean {
   return lib.symbols.SDL_SetCurrentThreadPriority(priority);
@@ -247,7 +248,7 @@ export function setCurrentThreadPriority(priority: number): boolean {
  * @sa SDL_CreateThread
  * @sa SDL_DetachThread
  *
- * @from SDL_thread.h:451 void SDL_WaitThread(SDL_Thread *thread, int *status);
+ * @from SDL_thread.h:452 void SDL_WaitThread(SDL_Thread *thread, int *status);
  */
 export function waitThread(thread: Deno.PointerValue<"SDL_Thread">): number {
   lib.symbols.SDL_WaitThread(thread, _p.i32.p0);
@@ -265,7 +266,7 @@ export function waitThread(thread: Deno.PointerValue<"SDL_Thread">): number {
  *
  * @sa SDL_ThreadState
  *
- * @from SDL_thread.h:464 SDL_ThreadState SDL_GetThreadState(SDL_Thread *thread);
+ * @from SDL_thread.h:465 SDL_ThreadState SDL_GetThreadState(SDL_Thread *thread);
  */
 export function getThreadState(thread: Deno.PointerValue<"SDL_Thread">): number {
   return lib.symbols.SDL_GetThreadState(thread);
@@ -305,7 +306,7 @@ export function getThreadState(thread: Deno.PointerValue<"SDL_Thread">): number 
  * @sa SDL_CreateThread
  * @sa SDL_WaitThread
  *
- * @from SDL_thread.h:500 void SDL_DetachThread(SDL_Thread *thread);
+ * @from SDL_thread.h:501 void SDL_DetachThread(SDL_Thread *thread);
  */
 export function detachThread(thread: Deno.PointerValue<"SDL_Thread">): void {
   return lib.symbols.SDL_DetachThread(thread);
@@ -324,7 +325,7 @@ export function detachThread(thread: Deno.PointerValue<"SDL_Thread">): void {
  *
  * @sa SDL_SetTLS
  *
- * @from SDL_thread.h:515 void * SDL_GetTLS(SDL_TLSID *id);
+ * @from SDL_thread.h:516 void * SDL_GetTLS(SDL_TLSID *id);
  */
 export function getTls(id: Deno.PointerValue<"SDL_TLSID">): Deno.PointerValue {
   return lib.symbols.SDL_GetTLS(id);
@@ -356,7 +357,7 @@ export function getTls(id: Deno.PointerValue<"SDL_TLSID">): Deno.PointerValue {
  *
  * @sa SDL_GetTLS
  *
- * @from SDL_thread.h:556 bool SDL_SetTLS(SDL_TLSID *id, const void *value, SDL_TLSDestructorCallback destructor);
+ * @from SDL_thread.h:557 bool SDL_SetTLS(SDL_TLSID *id, const void *value, SDL_TLSDestructorCallback destructor);
  */
 export function setTls(id: Deno.PointerValue<"SDL_TLSID">, value: Deno.PointerValue, destructor: Deno.PointerValue): boolean {
   return lib.symbols.SDL_SetTLS(id, value, destructor);
@@ -373,7 +374,7 @@ export function setTls(id: Deno.PointerValue<"SDL_TLSID">, value: Deno.PointerVa
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_thread.h:569 void SDL_CleanupTLS(void);
+ * @from SDL_thread.h:570 void SDL_CleanupTLS(void);
  */
 export function cleanupTls(): void {
   return lib.symbols.SDL_CleanupTLS();

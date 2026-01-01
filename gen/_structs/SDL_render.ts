@@ -18,9 +18,9 @@
  * may also be stretched with linear interpolation.
  *
  * This API is designed to accelerate simple 2D operations. You may want more
- * functionality such as polygons and particle effects and in that case you
- * should use SDL's OpenGL/Direct3D support, the SDL3 GPU API, or one of the
- * many good 3D engines.
+ * functionality such as 3D polygons and particle effects, and in that case
+ * you should use SDL's OpenGL/Direct3D support, the SDL3 GPU API, or one of
+ * the many good 3D engines.
  *
  * These functions must be called from the main thread. See this bug for
  * details: https://github.com/libsdl-org/SDL/issues/986
@@ -59,7 +59,7 @@ import { SDL_FColor } from "./SDL_pixels.ts";
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_render.h:80
+ * @from SDL_render.h:88
  */
 export const SDL_Vertex = new _.Struct({
   position: SDL_FPoint, /**< SDL_FPoint : Vertex position, in SDL_Renderer coordinates  */
@@ -79,13 +79,35 @@ export const SDL_Vertex = new _.Struct({
  * @sa SDL_CreateTextureWithProperties
  * @sa SDL_DestroyTexture
  *
- * @from SDL_render.h:132
+ * @from SDL_render.h:159
  */
 export const SDL_Texture = new _.Struct({
   format: _.u32, /**< SDL_PixelFormat : The format of the texture, read-only */
   w: _.i32, /**< int : The width of the texture, read-only. */
   h: _.i32, /**< int : The height of the texture, read-only. */
   refcount: _.i32, /**< int : Application reference count, used when freeing texture */
+});
+
+
+
+/**
+ * A structure specifying the parameters of a GPU render state.
+ *
+ * @since This struct is available since SDL 3.4.0.
+ *
+ * @sa SDL_CreateGPURenderState
+ *
+ * @from SDL_render.h:2920
+ */
+export const SDL_GPURenderStateCreateInfo = new _.Struct({
+  fragment_shader: _.u64, /**< SDL_GPUShader * : The fragment shader to use when this render state is active */
+  num_sampler_bindings: _.i32, /**< Sint32 : The number of additional fragment samplers to bind when this render state is active */
+  sampler_bindings: _.u64, /**< const SDL_GPUTextureSamplerBinding * : Additional fragment samplers to bind when this render state is active */
+  num_storage_textures: _.i32, /**< Sint32 : The number of storage textures to bind when this render state is active */
+  storage_textures: _.u64, /**< SDL_GPUTexture *const * : Storage textures to bind when this render state is active */
+  num_storage_buffers: _.i32, /**< Sint32 : The number of storage buffers to bind when this render state is active */
+  storage_buffers: _.u64, /**< SDL_GPUBuffer *const * : Storage buffers to bind when this render state is active */
+  props: _.u32, /**< SDL_PropertiesID : A properties ID for extensions. Should be 0 if no extensions are needed. */
 });
 
 

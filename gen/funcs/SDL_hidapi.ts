@@ -71,7 +71,7 @@ export const symbols = {
  *
  * @sa SDL_hid_exit
  *
- * @from SDL_hidapi.h:175 int SDL_hid_init(void);
+ * @from SDL_hidapi.h:176 int SDL_hid_init(void);
  */
 SDL_hid_init: {
       parameters: [],
@@ -92,7 +92,7 @@ SDL_hid_init: {
  *
  * @sa SDL_hid_init
  *
- * @from SDL_hidapi.h:190 int SDL_hid_exit(void);
+ * @from SDL_hidapi.h:191 int SDL_hid_exit(void);
  */
 SDL_hid_exit: {
       parameters: [],
@@ -119,7 +119,7 @@ SDL_hid_exit: {
  *
  * @sa SDL_hid_enumerate
  *
- * @from SDL_hidapi.h:211 Uint32 SDL_hid_device_change_count(void);
+ * @from SDL_hidapi.h:212 Uint32 SDL_hid_device_change_count(void);
  */
 SDL_hid_device_change_count: {
       parameters: [],
@@ -153,7 +153,7 @@ SDL_hid_device_change_count: {
  *
  * @sa SDL_hid_device_change_count
  *
- * @from SDL_hidapi.h:239 SDL_hid_device_info * SDL_hid_enumerate(unsigned short vendor_id, unsigned short product_id);
+ * @from SDL_hidapi.h:240 SDL_hid_device_info * SDL_hid_enumerate(unsigned short vendor_id, unsigned short product_id);
  */
 SDL_hid_enumerate: {
       parameters: ["i16", "i16"],
@@ -171,7 +171,7 @@ SDL_hid_enumerate: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_hidapi.h:251 void SDL_hid_free_enumeration(SDL_hid_device_info *devs);
+ * @from SDL_hidapi.h:252 void SDL_hid_free_enumeration(SDL_hid_device_info *devs);
  */
 SDL_hid_free_enumeration: {
       parameters: ["pointer"],
@@ -195,7 +195,7 @@ SDL_hid_free_enumeration: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_hidapi.h:269 SDL_hid_device * SDL_hid_open(unsigned short vendor_id, unsigned short product_id, const wchar_t *serial_number);
+ * @from SDL_hidapi.h:270 SDL_hid_device * SDL_hid_open(unsigned short vendor_id, unsigned short product_id, const wchar_t *serial_number);
  */
 SDL_hid_open: {
       parameters: ["i16", "i16", "pointer"],
@@ -215,11 +215,33 @@ SDL_hid_open: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_hidapi.h:283 SDL_hid_device * SDL_hid_open_path(const char *path);
+ * @from SDL_hidapi.h:284 SDL_hid_device * SDL_hid_open_path(const char *path);
  */
 SDL_hid_open_path: {
       parameters: ["pointer"],
       result: "pointer"
+    },
+
+
+/**
+ * Get the properties associated with an SDL_hid_device.
+ *
+ * The following read-only properties are provided by SDL:
+ *
+ * - `SDL_PROP_HIDAPI_LIBUSB_DEVICE_HANDLE_POINTER`: the libusb_device_handle
+ *   associated with the device, if it was opened using libusb.
+ *
+ * @param dev a device handle returned from SDL_hid_open().
+ * @returns a valid property ID on success or 0 on failure; call
+ *          SDL_GetError() for more information.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @from SDL_hidapi.h:300 SDL_PropertiesID SDL_hid_get_properties(SDL_hid_device *dev);
+ */
+SDL_hid_get_properties: {
+      parameters: ["pointer"],
+      result: "u32"
     },
 
 
@@ -248,7 +270,7 @@ SDL_hid_open_path: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_hidapi.h:310 int SDL_hid_write(SDL_hid_device *dev, const unsigned char *data, size_t length);
+ * @from SDL_hidapi.h:329 int SDL_hid_write(SDL_hid_device *dev, const unsigned char *data, size_t length);
  */
 SDL_hid_write: {
       parameters: ["pointer", "pointer", "usize"],
@@ -275,7 +297,7 @@ SDL_hid_write: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_hidapi.h:331 int SDL_hid_read_timeout(SDL_hid_device *dev, unsigned char *data, size_t length, int milliseconds);
+ * @from SDL_hidapi.h:350 int SDL_hid_read_timeout(SDL_hid_device *dev, unsigned char *data, size_t length, int milliseconds);
  */
 SDL_hid_read_timeout: {
       parameters: ["pointer", "pointer", "usize", "i32"],
@@ -302,7 +324,7 @@ SDL_hid_read_timeout: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_hidapi.h:352 int SDL_hid_read(SDL_hid_device *dev, unsigned char *data, size_t length);
+ * @from SDL_hidapi.h:371 int SDL_hid_read(SDL_hid_device *dev, unsigned char *data, size_t length);
  */
 SDL_hid_read: {
       parameters: ["pointer", "pointer", "usize"],
@@ -327,7 +349,7 @@ SDL_hid_read: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_hidapi.h:371 int SDL_hid_set_nonblocking(SDL_hid_device *dev, int nonblock);
+ * @from SDL_hidapi.h:390 int SDL_hid_set_nonblocking(SDL_hid_device *dev, int nonblock);
  */
 SDL_hid_set_nonblocking: {
       parameters: ["pointer", "i32"],
@@ -358,7 +380,7 @@ SDL_hid_set_nonblocking: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_hidapi.h:396 int SDL_hid_send_feature_report(SDL_hid_device *dev, const unsigned char *data, size_t length);
+ * @from SDL_hidapi.h:415 int SDL_hid_send_feature_report(SDL_hid_device *dev, const unsigned char *data, size_t length);
  */
 SDL_hid_send_feature_report: {
       parameters: ["pointer", "pointer", "usize"],
@@ -387,7 +409,7 @@ SDL_hid_send_feature_report: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_hidapi.h:419 int SDL_hid_get_feature_report(SDL_hid_device *dev, unsigned char *data, size_t length);
+ * @from SDL_hidapi.h:438 int SDL_hid_get_feature_report(SDL_hid_device *dev, unsigned char *data, size_t length);
  */
 SDL_hid_get_feature_report: {
       parameters: ["pointer", "pointer", "usize"],
@@ -416,7 +438,7 @@ SDL_hid_get_feature_report: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_hidapi.h:442 int SDL_hid_get_input_report(SDL_hid_device *dev, unsigned char *data, size_t length);
+ * @from SDL_hidapi.h:461 int SDL_hid_get_input_report(SDL_hid_device *dev, unsigned char *data, size_t length);
  */
 SDL_hid_get_input_report: {
       parameters: ["pointer", "pointer", "usize"],
@@ -433,7 +455,7 @@ SDL_hid_get_input_report: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_hidapi.h:453 int SDL_hid_close(SDL_hid_device *dev);
+ * @from SDL_hidapi.h:472 int SDL_hid_close(SDL_hid_device *dev);
  */
 SDL_hid_close: {
       parameters: ["pointer"],
@@ -452,7 +474,7 @@ SDL_hid_close: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_hidapi.h:466 int SDL_hid_get_manufacturer_string(SDL_hid_device *dev, wchar_t *string, size_t maxlen);
+ * @from SDL_hidapi.h:485 int SDL_hid_get_manufacturer_string(SDL_hid_device *dev, wchar_t *string, size_t maxlen);
  */
 SDL_hid_get_manufacturer_string: {
       parameters: ["pointer", "pointer", "usize"],
@@ -471,7 +493,7 @@ SDL_hid_get_manufacturer_string: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_hidapi.h:479 int SDL_hid_get_product_string(SDL_hid_device *dev, wchar_t *string, size_t maxlen);
+ * @from SDL_hidapi.h:498 int SDL_hid_get_product_string(SDL_hid_device *dev, wchar_t *string, size_t maxlen);
  */
 SDL_hid_get_product_string: {
       parameters: ["pointer", "pointer", "usize"],
@@ -490,7 +512,7 @@ SDL_hid_get_product_string: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_hidapi.h:492 int SDL_hid_get_serial_number_string(SDL_hid_device *dev, wchar_t *string, size_t maxlen);
+ * @from SDL_hidapi.h:511 int SDL_hid_get_serial_number_string(SDL_hid_device *dev, wchar_t *string, size_t maxlen);
  */
 SDL_hid_get_serial_number_string: {
       parameters: ["pointer", "pointer", "usize"],
@@ -510,7 +532,7 @@ SDL_hid_get_serial_number_string: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_hidapi.h:506 int SDL_hid_get_indexed_string(SDL_hid_device *dev, int string_index, wchar_t *string, size_t maxlen);
+ * @from SDL_hidapi.h:525 int SDL_hid_get_indexed_string(SDL_hid_device *dev, int string_index, wchar_t *string, size_t maxlen);
  */
 SDL_hid_get_indexed_string: {
       parameters: ["pointer", "i32", "pointer", "usize"],
@@ -528,7 +550,7 @@ SDL_hid_get_indexed_string: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_hidapi.h:518 SDL_hid_device_info * SDL_hid_get_device_info(SDL_hid_device *dev);
+ * @from SDL_hidapi.h:537 SDL_hid_device_info * SDL_hid_get_device_info(SDL_hid_device *dev);
  */
 SDL_hid_get_device_info: {
       parameters: ["pointer"],
@@ -550,7 +572,7 @@ SDL_hid_get_device_info: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_hidapi.h:534 int SDL_hid_get_report_descriptor(SDL_hid_device *dev, unsigned char *buf, size_t buf_size);
+ * @from SDL_hidapi.h:553 int SDL_hid_get_report_descriptor(SDL_hid_device *dev, unsigned char *buf, size_t buf_size);
  */
 SDL_hid_get_report_descriptor: {
       parameters: ["pointer", "pointer", "usize"],
@@ -565,7 +587,7 @@ SDL_hid_get_report_descriptor: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_hidapi.h:543 void SDL_hid_ble_scan(bool active);
+ * @from SDL_hidapi.h:562 void SDL_hid_ble_scan(bool active);
  */
 SDL_hid_ble_scan: {
       parameters: ["bool"],

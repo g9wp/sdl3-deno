@@ -72,7 +72,7 @@ import { symbols } from './symbols/SDL_video.ts';
  *
  * @sa SDL_EGL_SetAttributeCallbacks
  *
- * @from SDL_video.h:376 typedef SDL_EGLAttrib *(*SDL_EGLAttribArrayCallback)(void *userdata);
+ * @from SDL_video.h:419 typedef SDL_EGLAttrib *(*SDL_EGLAttribArrayCallback)(void *userdata);
  */
 export function EGLAttribArrayCallback(cb: (
     userdata: Deno.PointerValue, 

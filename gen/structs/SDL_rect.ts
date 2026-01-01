@@ -137,8 +137,11 @@ export function write_Rect(t: Rect, dt: DataView) {
 
 
 /**
- * A rectangle, with the origin at the upper left (using floating point
- * values).
+ * A rectangle stored using floating point values.
+ *
+ * The origin of the coordinate space is in the top-left, with increasing
+ * values moving down and right. The properties `x` and `y` represent the
+ * coordinates of the top-left corner of the rectangle.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -152,7 +155,7 @@ export function write_Rect(t: Rect, dt: DataView) {
  * @sa SDL_GetRectEnclosingPointsFloat
  * @sa SDL_PointInRectFloat
  *
- * @from SDL_rect.h:105
+ * @from SDL_rect.h:108
  */
 export interface FRect {
   x: number; /* float */

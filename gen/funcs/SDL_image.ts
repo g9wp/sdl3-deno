@@ -2269,7 +2269,7 @@ IMG_SaveJPG_IO: {
  *
  * @sa IMG_FreeAnimation
  *
- * @from SDL_image.h:1995 IMG_Animation * IMG_LoadAnimation(const char *file);
+ * @from SDL_image.h:1996 IMG_Animation * IMG_LoadAnimation(const char *file);
  */
 IMG_LoadAnimation: {
       parameters: ["pointer"],
@@ -2296,7 +2296,7 @@ IMG_LoadAnimation: {
  *
  * @sa IMG_FreeAnimation
  *
- * @from SDL_image.h:2016 IMG_Animation * IMG_LoadAnimation_IO(SDL_IOStream *src, bool closeio);
+ * @from SDL_image.h:2017 IMG_Animation * IMG_LoadAnimation_IO(SDL_IOStream *src, bool closeio);
  */
 IMG_LoadAnimation_IO: {
       parameters: ["pointer", "bool"],
@@ -2332,7 +2332,7 @@ IMG_LoadAnimation_IO: {
  * @sa IMG_LoadAnimation_IO
  * @sa IMG_FreeAnimation
  *
- * @from SDL_image.h:2046 IMG_Animation * IMG_LoadAnimationTyped_IO(SDL_IOStream *src, bool closeio, const char *type);
+ * @from SDL_image.h:2047 IMG_Animation * IMG_LoadAnimationTyped_IO(SDL_IOStream *src, bool closeio, const char *type);
  */
 IMG_LoadAnimationTyped_IO: {
       parameters: ["pointer", "bool", "pointer"],
@@ -2353,7 +2353,7 @@ IMG_LoadAnimationTyped_IO: {
  * @sa IMG_LoadAnimation_IO
  * @sa IMG_LoadAnimationTyped_IO
  *
- * @from SDL_image.h:2061 void IMG_FreeAnimation(IMG_Animation *anim);
+ * @from SDL_image.h:2062 void IMG_FreeAnimation(IMG_Animation *anim);
  */
 IMG_FreeAnimation: {
       parameters: ["pointer"],
@@ -2379,7 +2379,7 @@ IMG_FreeAnimation: {
  * @sa IMG_LoadAnimationTyped_IO
  * @sa IMG_FreeAnimation
  *
- * @from SDL_image.h:2081 IMG_Animation * IMG_LoadGIFAnimation_IO(SDL_IOStream *src);
+ * @from SDL_image.h:2082 IMG_Animation * IMG_LoadGIFAnimation_IO(SDL_IOStream *src);
  */
 IMG_LoadGIFAnimation_IO: {
       parameters: ["pointer"],
@@ -2405,7 +2405,7 @@ IMG_LoadGIFAnimation_IO: {
  * @sa IMG_LoadAnimationTyped_IO
  * @sa IMG_FreeAnimation
  *
- * @from SDL_image.h:2101 IMG_Animation * IMG_LoadWEBPAnimation_IO(SDL_IOStream *src);
+ * @from SDL_image.h:2102 IMG_Animation * IMG_LoadWEBPAnimation_IO(SDL_IOStream *src);
  */
 IMG_LoadWEBPAnimation_IO: {
       parameters: ["pointer"],

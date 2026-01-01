@@ -104,6 +104,9 @@ SDL_CreateProcess: {
  * - `SDL_PROP_PROCESS_CREATE_ENVIRONMENT_POINTER`: an SDL_Environment
  *   pointer. If this property is set, it will be the entire environment for
  *   the process, otherwise the current environment is used.
+ * - `SDL_PROP_PROCESS_CREATE_WORKING_DIRECTORY_STRING`: a UTF-8 encoded
+ *   string representing the working directory for the process, defaults to
+ *   the current working directory.
  * - `SDL_PROP_PROCESS_CREATE_STDIN_NUMBER`: an SDL_ProcessIO value describing
  *   where standard input for the process comes from, defaults to
  *   `SDL_PROCESS_STDIO_NULL`.
@@ -130,6 +133,12 @@ SDL_CreateProcess: {
  *   run in the background. In this case the default input and output is
  *   `SDL_PROCESS_STDIO_NULL` and the exitcode of the process is not
  *   available, and will always be 0.
+ * - `SDL_PROP_PROCESS_CREATE_CMDLINE_STRING`: a string containing the program
+ *   to run and any parameters. This string is passed directly to
+ *   `CreateProcess` on Windows, and does nothing on other platforms. This
+ *   property is only important if you want to start programs that does
+ *   non-standard command-line processing, and in most cases using
+ *   `SDL_PROP_PROCESS_CREATE_ARGS_POINTER` is sufficient.
  *
  * On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
  * SIGCHLD should not be ignored or handled because those would prevent SDL
@@ -153,7 +162,7 @@ SDL_CreateProcess: {
  * @sa SDL_WaitProcess
  * @sa SDL_DestroyProcess
  *
- * @from SDL_process.h:217 SDL_Process * SDL_CreateProcessWithProperties(SDL_PropertiesID props);
+ * @from SDL_process.h:226 SDL_Process * SDL_CreateProcessWithProperties(SDL_PropertiesID props);
  */
 SDL_CreateProcessWithProperties: {
       parameters: ["u32"],
@@ -190,7 +199,7 @@ SDL_CreateProcessWithProperties: {
  * @sa SDL_CreateProcess
  * @sa SDL_CreateProcessWithProperties
  *
- * @from SDL_process.h:259 SDL_PropertiesID SDL_GetProcessProperties(SDL_Process *process);
+ * @from SDL_process.h:270 SDL_PropertiesID SDL_GetProcessProperties(SDL_Process *process);
  */
 SDL_GetProcessProperties: {
       parameters: ["pointer"],
@@ -227,7 +236,7 @@ SDL_GetProcessProperties: {
  * @sa SDL_CreateProcessWithProperties
  * @sa SDL_DestroyProcess
  *
- * @from SDL_process.h:296 void * SDL_ReadProcess(SDL_Process *process, size_t *datasize, int *exitcode);
+ * @from SDL_process.h:307 void * SDL_ReadProcess(SDL_Process *process, size_t *datasize, int *exitcode);
  */
 SDL_ReadProcess: {
       parameters: ["pointer", "pointer", "pointer"],
@@ -259,7 +268,7 @@ SDL_ReadProcess: {
  * @sa SDL_CreateProcessWithProperties
  * @sa SDL_GetProcessOutput
  *
- * @from SDL_process.h:322 SDL_IOStream * SDL_GetProcessInput(SDL_Process *process);
+ * @from SDL_process.h:333 SDL_IOStream * SDL_GetProcessInput(SDL_Process *process);
  */
 SDL_GetProcessInput: {
       parameters: ["pointer"],
@@ -289,7 +298,7 @@ SDL_GetProcessInput: {
  * @sa SDL_CreateProcessWithProperties
  * @sa SDL_GetProcessInput
  *
- * @from SDL_process.h:346 SDL_IOStream * SDL_GetProcessOutput(SDL_Process *process);
+ * @from SDL_process.h:357 SDL_IOStream * SDL_GetProcessOutput(SDL_Process *process);
  */
 SDL_GetProcessOutput: {
       parameters: ["pointer"],
@@ -318,7 +327,7 @@ SDL_GetProcessOutput: {
  * @sa SDL_WaitProcess
  * @sa SDL_DestroyProcess
  *
- * @from SDL_process.h:369 bool SDL_KillProcess(SDL_Process *process, bool force);
+ * @from SDL_process.h:380 bool SDL_KillProcess(SDL_Process *process, bool force);
  */
 SDL_KillProcess: {
       parameters: ["pointer", "bool"],
@@ -357,7 +366,7 @@ SDL_KillProcess: {
  * @sa SDL_KillProcess
  * @sa SDL_DestroyProcess
  *
- * @from SDL_process.h:402 bool SDL_WaitProcess(SDL_Process *process, bool block, int *exitcode);
+ * @from SDL_process.h:413 bool SDL_WaitProcess(SDL_Process *process, bool block, int *exitcode);
  */
 SDL_WaitProcess: {
       parameters: ["pointer", "bool", "pointer"],
@@ -382,7 +391,7 @@ SDL_WaitProcess: {
  * @sa SDL_CreateProcessWithProperties
  * @sa SDL_KillProcess
  *
- * @from SDL_process.h:421 void SDL_DestroyProcess(SDL_Process *process);
+ * @from SDL_process.h:432 void SDL_DestroyProcess(SDL_Process *process);
  */
 SDL_DestroyProcess: {
       parameters: ["pointer"],

@@ -13,7 +13,8 @@
  * will report failure without doing anything.
  *
  * If you're going to work with threads, you almost certainly need to have a
- * good understanding of [CategoryMutex](CategoryMutex) as well.
+ * good understanding of thread safety measures: locking and synchronization
+ * mechanisms are handled by the functions in SDL_mutex.h.
  *
  * @module
  */
@@ -40,7 +41,7 @@
 */
 
 /**
- * @from SDL_thread:282 SDL_PROP_THREAD_CREATE_
+ * @from SDL_thread:283 SDL_PROP_THREAD_CREATE_
  */
 export enum PROP_THREAD_CREATE {
   ENTRY_FUNCTION_POINTER = "SDL.thread.create.entry_function", 
@@ -62,7 +63,7 @@ export enum PROP_THREAD_CREATE {
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @from SDL_thread.h:109 SDL_THREAD_PRIORITY_
+ * @from SDL_thread.h:110 SDL_THREAD_PRIORITY_
  */
 export enum SDL_ThreadPriority {
   LOW, 
@@ -82,7 +83,7 @@ export enum SDL_ThreadPriority {
  *
  * @sa SDL_GetThreadState
  *
- * @from SDL_thread.h:125 SDL_THREAD_
+ * @from SDL_thread.h:126 SDL_THREAD_
  */
 export enum SDL_ThreadState {
   UNKNOWN, /**< The thread is not valid */

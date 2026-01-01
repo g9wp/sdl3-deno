@@ -68,7 +68,7 @@ export const symbols = {
  *
  * @sa SDL_EnumerateDirectory
  *
- * @from SDL_filesystem.h:327 typedef SDL_EnumerationResult (*SDL_EnumerateDirectoryCallback)(void *userdata, const char *dirname, const char *fname);
+ * @from SDL_filesystem.h:344 typedef SDL_EnumerationResult (*SDL_EnumerateDirectoryCallback)(void *userdata, const char *dirname, const char *fname);
  */
 SDL_EnumerateDirectoryCallback: {
       parameters: ["pointer", "pointer", "pointer"],
@@ -102,7 +102,7 @@ SDL_EnumerateDirectoryCallback: {
  *
  * @sa SDL_EnumerateDirectory
  *
- * @from SDL_filesystem.h:327 typedef SDL_EnumerationResult (*SDL_EnumerateDirectoryCallback)(void *userdata, const char *dirname, const char *fname);
+ * @from SDL_filesystem.h:344 typedef SDL_EnumerationResult (*SDL_EnumerateDirectoryCallback)(void *userdata, const char *dirname, const char *fname);
  */
 export function EnumerateDirectoryCallback(cb: (
     userdata: Deno.PointerValue, 

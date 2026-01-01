@@ -8,12 +8,16 @@
  * provides a reasonable toolbox for transforming the data, including copying
  * between surfaces, filling rectangles in the image data, etc.
  *
- * There is also a simple .bmp loader, SDL_LoadBMP(). SDL itself does not
- * provide loaders for various other file formats, but there are several
- * excellent external libraries that do, including its own satellite library,
- * SDL_image:
+ * There is also a simple .bmp loader, SDL_LoadBMP(), and a simple .png
+ * loader, SDL_LoadPNG(). SDL itself does not provide loaders for other file
+ * formats, but there are several excellent external libraries that do,
+ * including its own satellite library,
+ * [SDL_image](https://wiki.libsdl.org/SDL3_image)
+ * .
  *
- * https://github.com/libsdl-org/SDL_image
+ * In general these functions are thread-safe in that they can be called on
+ * different threads with different surfaces. You should not try to modify any
+ * surface from two threads simultaneously.
  *
  * @module
  */
@@ -70,7 +74,7 @@ import * as _ from "@denosaurs/byte-type";
  * @sa SDL_CreateSurface
  * @sa SDL_DestroySurface
  *
- * @from SDL_surface.h:131
+ * @from SDL_surface.h:137
  */
 export const SDL_Surface = new _.Struct({
   flags: _.u32, /**< SDL_SurfaceFlags : The flags of the surface, read-only */

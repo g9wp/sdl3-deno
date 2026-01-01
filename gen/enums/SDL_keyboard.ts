@@ -33,7 +33,7 @@
 */
 
 /**
- * @from SDL_keyboard:475 SDL_PROP_TEXTINPUT_
+ * @from SDL_keyboard:474 SDL_PROP_TEXTINPUT_
  */
 export enum PROP_TEXTINPUT {
   TYPE_NUMBER = "SDL.textinput.type", 
@@ -56,7 +56,7 @@ export enum PROP_TEXTINPUT {
  *
  * @sa SDL_StartTextInputWithProperties
  *
- * @from SDL_keyboard.h:391 SDL_TEXTINPUT_TYPE_
+ * @from SDL_keyboard.h:390 SDL_TEXTINPUT_TYPE_
  */
 export enum SDL_TextInputType {
   TEXT, /**< The input is text */
@@ -83,7 +83,7 @@ export enum SDL_TextInputType {
  *
  * @sa SDL_StartTextInputWithProperties
  *
- * @from SDL_keyboard.h:415 SDL_CAPITALIZE_
+ * @from SDL_keyboard.h:414 SDL_CAPITALIZE_
  */
 export enum SDL_Capitalization {
   NONE, /**< No auto-capitalization will be done */

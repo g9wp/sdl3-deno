@@ -49,6 +49,8 @@ export const symbols = {
  * - "w": Create an empty file for writing. If a file with the same name
  *   already exists its content is erased and the file is treated as a new
  *   empty file.
+ * - "wx": Create an empty file for writing. If a file with the same name
+ *   already exists, the call fails.
  * - "a": Append to a file. Writing operations append data at the end of the
  *   file. The file is created if it does not exist.
  * - "r+": Open a file for update both reading and writing. The file must
@@ -56,6 +58,8 @@ export const symbols = {
  * - "w+": Create an empty file for both reading and writing. If a file with
  *   the same name already exists its content is erased and the file is
  *   treated as a new empty file.
+ * - "w+x": Create an empty file for both reading and writing. If a file with
+ *   the same name already exists, the call fails.
  * - "a+": Open a file for reading and appending. All writing operations are
  *   performed at the end of the file, protecting the previous content to be
  *   overwritten. You can reposition (fseek, rewind) the internal pointer to
@@ -106,7 +110,7 @@ export const symbols = {
  * @returns a pointer to the SDL_IOStream structure that is created or NULL on
  *          failure; call SDL_GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -117,7 +121,7 @@ export const symbols = {
  * @sa SDL_TellIO
  * @sa SDL_WriteIO
  *
- * @from SDL_iostream.h:273 SDL_IOStream * SDL_IOFromFile(const char *file, const char *mode);
+ * @from SDL_iostream.h:277 SDL_IOStream * SDL_IOFromFile(const char *file, const char *mode);
  */
 SDL_IOFromFile: {
       parameters: ["pointer", "pointer"],
@@ -133,8 +137,7 @@ SDL_IOFromFile: {
  * certain size, for both read and write access.
  *
  * This memory buffer is not copied by the SDL_IOStream; the pointer you
- * provide must remain valid until you close the stream. Closing the stream
- * will not free the original buffer.
+ * provide must remain valid until you close the stream.
  *
  * If you need to make sure the SDL_IOStream never writes to the memory
  * buffer, you should use SDL_IOFromConstMem() with a read-only buffer of
@@ -146,6 +149,13 @@ SDL_IOFromFile: {
  *   was passed to this function.
  * - `SDL_PROP_IOSTREAM_MEMORY_SIZE_NUMBER`: this will be the `size` parameter
  *   that was passed to this function.
+ *
+ * Additionally, the following properties are recognized:
+ *
+ * - `SDL_PROP_IOSTREAM_MEMORY_FREE_FUNC_POINTER`: if this property is set to
+ *   a non-NULL value it will be interpreted as a function of SDL_free_func
+ *   type and called with the passed `mem` pointer when closing the stream. By
+ *   default it is unset, i.e., the memory will not be freed.
  *
  * @param mem a pointer to a buffer to feed an SDL_IOStream stream.
  * @param size the buffer size, in bytes.
@@ -164,7 +174,7 @@ SDL_IOFromFile: {
  * @sa SDL_TellIO
  * @sa SDL_WriteIO
  *
- * @from SDL_iostream.h:319 SDL_IOStream * SDL_IOFromMem(void *mem, size_t size);
+ * @from SDL_iostream.h:329 SDL_IOStream * SDL_IOFromMem(void *mem, size_t size);
  */
 SDL_IOFromMem: {
       parameters: ["pointer", "usize"],
@@ -183,8 +193,7 @@ SDL_IOFromMem: {
  * without writing to the memory buffer.
  *
  * This memory buffer is not copied by the SDL_IOStream; the pointer you
- * provide must remain valid until you close the stream. Closing the stream
- * will not free the original buffer.
+ * provide must remain valid until you close the stream.
  *
  * If you need to write to a memory buffer, you should use SDL_IOFromMem()
  * with a writable buffer of memory instead.
@@ -195,6 +204,13 @@ SDL_IOFromMem: {
  *   was passed to this function.
  * - `SDL_PROP_IOSTREAM_MEMORY_SIZE_NUMBER`: this will be the `size` parameter
  *   that was passed to this function.
+ *
+ * Additionally, the following properties are recognized:
+ *
+ * - `SDL_PROP_IOSTREAM_MEMORY_FREE_FUNC_POINTER`: if this property is set to
+ *   a non-NULL value it will be interpreted as a function of SDL_free_func
+ *   type and called with the passed `mem` pointer when closing the stream. By
+ *   default it is unset, i.e., the memory will not be freed.
  *
  * @param mem a pointer to a read-only buffer to feed an SDL_IOStream stream.
  * @param size the buffer size, in bytes.
@@ -211,7 +227,7 @@ SDL_IOFromMem: {
  * @sa SDL_SeekIO
  * @sa SDL_TellIO
  *
- * @from SDL_iostream.h:363 SDL_IOStream * SDL_IOFromConstMem(const void *mem, size_t size);
+ * @from SDL_iostream.h:380 SDL_IOStream * SDL_IOFromConstMem(const void *mem, size_t size);
  */
 SDL_IOFromConstMem: {
       parameters: ["pointer", "usize"],
@@ -247,7 +263,7 @@ SDL_IOFromConstMem: {
  * @sa SDL_TellIO
  * @sa SDL_WriteIO
  *
- * @from SDL_iostream.h:393 SDL_IOStream * SDL_IOFromDynamicMem(void);
+ * @from SDL_iostream.h:410 SDL_IOStream * SDL_IOFromDynamicMem(void);
  */
 SDL_IOFromDynamicMem: {
       parameters: [],
@@ -282,7 +298,7 @@ SDL_IOFromDynamicMem: {
  * @sa SDL_IOFromFile
  * @sa SDL_IOFromMem
  *
- * @from SDL_iostream.h:428 SDL_IOStream * SDL_OpenIO(const SDL_IOStreamInterface *iface, void *userdata);
+ * @from SDL_iostream.h:445 SDL_IOStream * SDL_OpenIO(const SDL_IOStreamInterface *iface, void *userdata);
  */
 SDL_OpenIO: {
       parameters: ["pointer", "pointer"],
@@ -314,13 +330,13 @@ SDL_OpenIO: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_OpenIO
  *
- * @from SDL_iostream.h:460 bool SDL_CloseIO(SDL_IOStream *context);
+ * @from SDL_iostream.h:477 bool SDL_CloseIO(SDL_IOStream *context);
  */
 SDL_CloseIO: {
       parameters: ["pointer"],
@@ -335,11 +351,11 @@ SDL_CloseIO: {
  * @returns a valid property ID on success or 0 on failure; call
  *          SDL_GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:473 SDL_PropertiesID SDL_GetIOProperties(SDL_IOStream *context);
+ * @from SDL_iostream.h:490 SDL_PropertiesID SDL_GetIOProperties(SDL_IOStream *context);
  */
 SDL_GetIOProperties: {
       parameters: ["pointer"],
@@ -361,11 +377,11 @@ SDL_GetIOProperties: {
  * @param context the SDL_IOStream to query.
  * @returns an SDL_IOStatus enum with the current state.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:493 SDL_IOStatus SDL_GetIOStatus(SDL_IOStream *context);
+ * @from SDL_iostream.h:510 SDL_IOStatus SDL_GetIOStatus(SDL_IOStream *context);
  */
 SDL_GetIOStatus: {
       parameters: ["pointer"],
@@ -381,11 +397,11 @@ SDL_GetIOStatus: {
  *          negative error code on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:507 Sint64 SDL_GetIOSize(SDL_IOStream *context);
+ * @from SDL_iostream.h:524 Sint64 SDL_GetIOSize(SDL_IOStream *context);
  */
 SDL_GetIOSize: {
       parameters: ["pointer"],
@@ -414,13 +430,13 @@ SDL_GetIOSize: {
  * @returns the final offset in the data stream after the seek or -1 on
  *          failure; call SDL_GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_TellIO
  *
- * @from SDL_iostream.h:536 Sint64 SDL_SeekIO(SDL_IOStream *context, Sint64 offset, SDL_IOWhence whence);
+ * @from SDL_iostream.h:553 Sint64 SDL_SeekIO(SDL_IOStream *context, Sint64 offset, SDL_IOWhence whence);
  */
 SDL_SeekIO: {
       parameters: ["pointer", "i64", "u32"],
@@ -440,13 +456,13 @@ SDL_SeekIO: {
  * @returns the current offset in the stream, or -1 if the information can not
  *          be determined.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_SeekIO
  *
- * @from SDL_iostream.h:556 Sint64 SDL_TellIO(SDL_IOStream *context);
+ * @from SDL_iostream.h:573 Sint64 SDL_TellIO(SDL_IOStream *context);
  */
 SDL_TellIO: {
       parameters: ["pointer"],
@@ -465,20 +481,24 @@ SDL_TellIO: {
  * the stream is not at EOF, SDL_GetIOStatus() will return a different error
  * value and SDL_GetError() will offer a human-readable message.
  *
+ * A request for zero bytes on a valid stream will return zero immediately
+ * without accessing the stream, so the stream status (EOF, err, etc) will not
+ * change.
+ *
  * @param context a pointer to an SDL_IOStream structure.
  * @param ptr a pointer to a buffer to read data into.
  * @param size the number of bytes to read from the data source.
  * @returns the number of bytes read, or 0 on end of file or other failure;
  *          call SDL_GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_WriteIO
  * @sa SDL_GetIOStatus
  *
- * @from SDL_iostream.h:582 size_t SDL_ReadIO(SDL_IOStream *context, void *ptr, size_t size);
+ * @from SDL_iostream.h:603 size_t SDL_ReadIO(SDL_IOStream *context, void *ptr, size_t size);
  */
 SDL_ReadIO: {
       parameters: ["pointer", "pointer", "usize"],
@@ -500,13 +520,17 @@ SDL_ReadIO: {
  * recoverable, such as a non-blocking write that can simply be retried later,
  * or a fatal error.
  *
+ * A request for zero bytes on a valid stream will return zero immediately
+ * without accessing the stream, so the stream status (EOF, err, etc) will not
+ * change.
+ *
  * @param context a pointer to an SDL_IOStream structure.
  * @param ptr a pointer to a buffer containing data to write.
  * @param size the number of bytes to write.
  * @returns the number of bytes written, which will be less than `size` on
  *          failure; call SDL_GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -516,7 +540,7 @@ SDL_ReadIO: {
  * @sa SDL_FlushIO
  * @sa SDL_GetIOStatus
  *
- * @from SDL_iostream.h:614 size_t SDL_WriteIO(SDL_IOStream *context, const void *ptr, size_t size);
+ * @from SDL_iostream.h:639 size_t SDL_WriteIO(SDL_IOStream *context, const void *ptr, size_t size);
  */
 SDL_WriteIO: {
       parameters: ["pointer", "pointer", "usize"],
@@ -535,14 +559,14 @@ SDL_WriteIO: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_OpenIO
  * @sa SDL_WriteIO
  *
- * @from SDL_iostream.h:675 bool SDL_FlushIO(SDL_IOStream *context);
+ * @from SDL_iostream.h:700 bool SDL_FlushIO(SDL_IOStream *context);
  */
 SDL_FlushIO: {
       parameters: ["pointer"],
@@ -567,14 +591,14 @@ SDL_FlushIO: {
  * @returns the data or NULL on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_LoadFile
  * @sa SDL_SaveFile_IO
  *
- * @from SDL_iostream.h:701 void * SDL_LoadFile_IO(SDL_IOStream *src, size_t *datasize, bool closeio);
+ * @from SDL_iostream.h:726 void * SDL_LoadFile_IO(SDL_IOStream *src, size_t *datasize, bool closeio);
  */
 SDL_LoadFile_IO: {
       parameters: ["pointer", "pointer", "bool"],
@@ -596,14 +620,14 @@ SDL_LoadFile_IO: {
  * @returns the data or NULL on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_LoadFile_IO
  * @sa SDL_SaveFile
  *
- * @from SDL_iostream.h:724 void * SDL_LoadFile(const char *file, size_t *datasize);
+ * @from SDL_iostream.h:749 void * SDL_LoadFile(const char *file, size_t *datasize);
  */
 SDL_LoadFile: {
       parameters: ["pointer", "pointer"],
@@ -623,14 +647,14 @@ SDL_LoadFile: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_SaveFile
  * @sa SDL_LoadFile_IO
  *
- * @from SDL_iostream.h:745 bool SDL_SaveFile_IO(SDL_IOStream *src, const void *data, size_t datasize, bool closeio);
+ * @from SDL_iostream.h:770 bool SDL_SaveFile_IO(SDL_IOStream *src, const void *data, size_t datasize, bool closeio);
  */
 SDL_SaveFile_IO: {
       parameters: ["pointer", "pointer", "usize", "bool"],
@@ -648,14 +672,14 @@ SDL_SaveFile_IO: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_SaveFile_IO
  * @sa SDL_LoadFile
  *
- * @from SDL_iostream.h:764 bool SDL_SaveFile(const char *file, const void *data, size_t datasize);
+ * @from SDL_iostream.h:789 bool SDL_SaveFile(const char *file, const void *data, size_t datasize);
  */
 SDL_SaveFile: {
       parameters: ["pointer", "pointer", "usize"],
@@ -676,11 +700,11 @@ SDL_SaveFile: {
  * @returns true on success or false on failure or EOF; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:790 bool SDL_ReadU8(SDL_IOStream *src, Uint8 *value);
+ * @from SDL_iostream.h:815 bool SDL_ReadU8(SDL_IOStream *src, Uint8 *value);
  */
 SDL_ReadU8: {
       parameters: ["pointer", "pointer"],
@@ -701,11 +725,11 @@ SDL_ReadU8: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:809 bool SDL_ReadS8(SDL_IOStream *src, Sint8 *value);
+ * @from SDL_iostream.h:834 bool SDL_ReadS8(SDL_IOStream *src, Sint8 *value);
  */
 SDL_ReadS8: {
       parameters: ["pointer", "pointer"],
@@ -727,14 +751,14 @@ SDL_ReadS8: {
  *
  * @param src the stream from which to read data.
  * @param value a pointer filled in with the data read.
- * @returns true on successful write or false on failure; call SDL_GetError()
+ * @returns true on successful read or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:832 bool SDL_ReadU16LE(SDL_IOStream *src, Uint16 *value);
+ * @from SDL_iostream.h:857 bool SDL_ReadU16LE(SDL_IOStream *src, Uint16 *value);
  */
 SDL_ReadU16LE: {
       parameters: ["pointer", "pointer"],
@@ -756,14 +780,14 @@ SDL_ReadU16LE: {
  *
  * @param src the stream from which to read data.
  * @param value a pointer filled in with the data read.
- * @returns true on successful write or false on failure; call SDL_GetError()
+ * @returns true on successful read or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:855 bool SDL_ReadS16LE(SDL_IOStream *src, Sint16 *value);
+ * @from SDL_iostream.h:880 bool SDL_ReadS16LE(SDL_IOStream *src, Sint16 *value);
  */
 SDL_ReadS16LE: {
       parameters: ["pointer", "pointer"],
@@ -785,14 +809,14 @@ SDL_ReadS16LE: {
  *
  * @param src the stream from which to read data.
  * @param value a pointer filled in with the data read.
- * @returns true on successful write or false on failure; call SDL_GetError()
+ * @returns true on successful read or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:878 bool SDL_ReadU16BE(SDL_IOStream *src, Uint16 *value);
+ * @from SDL_iostream.h:903 bool SDL_ReadU16BE(SDL_IOStream *src, Uint16 *value);
  */
 SDL_ReadU16BE: {
       parameters: ["pointer", "pointer"],
@@ -814,14 +838,14 @@ SDL_ReadU16BE: {
  *
  * @param src the stream from which to read data.
  * @param value a pointer filled in with the data read.
- * @returns true on successful write or false on failure; call SDL_GetError()
+ * @returns true on successful read or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:901 bool SDL_ReadS16BE(SDL_IOStream *src, Sint16 *value);
+ * @from SDL_iostream.h:926 bool SDL_ReadS16BE(SDL_IOStream *src, Sint16 *value);
  */
 SDL_ReadS16BE: {
       parameters: ["pointer", "pointer"],
@@ -843,14 +867,14 @@ SDL_ReadS16BE: {
  *
  * @param src the stream from which to read data.
  * @param value a pointer filled in with the data read.
- * @returns true on successful write or false on failure; call SDL_GetError()
+ * @returns true on successful read or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:924 bool SDL_ReadU32LE(SDL_IOStream *src, Uint32 *value);
+ * @from SDL_iostream.h:949 bool SDL_ReadU32LE(SDL_IOStream *src, Uint32 *value);
  */
 SDL_ReadU32LE: {
       parameters: ["pointer", "pointer"],
@@ -872,14 +896,14 @@ SDL_ReadU32LE: {
  *
  * @param src the stream from which to read data.
  * @param value a pointer filled in with the data read.
- * @returns true on successful write or false on failure; call SDL_GetError()
+ * @returns true on successful read or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:947 bool SDL_ReadS32LE(SDL_IOStream *src, Sint32 *value);
+ * @from SDL_iostream.h:972 bool SDL_ReadS32LE(SDL_IOStream *src, Sint32 *value);
  */
 SDL_ReadS32LE: {
       parameters: ["pointer", "pointer"],
@@ -901,14 +925,14 @@ SDL_ReadS32LE: {
  *
  * @param src the stream from which to read data.
  * @param value a pointer filled in with the data read.
- * @returns true on successful write or false on failure; call SDL_GetError()
+ * @returns true on successful read or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:970 bool SDL_ReadU32BE(SDL_IOStream *src, Uint32 *value);
+ * @from SDL_iostream.h:995 bool SDL_ReadU32BE(SDL_IOStream *src, Uint32 *value);
  */
 SDL_ReadU32BE: {
       parameters: ["pointer", "pointer"],
@@ -930,14 +954,14 @@ SDL_ReadU32BE: {
  *
  * @param src the stream from which to read data.
  * @param value a pointer filled in with the data read.
- * @returns true on successful write or false on failure; call SDL_GetError()
+ * @returns true on successful read or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:993 bool SDL_ReadS32BE(SDL_IOStream *src, Sint32 *value);
+ * @from SDL_iostream.h:1018 bool SDL_ReadS32BE(SDL_IOStream *src, Sint32 *value);
  */
 SDL_ReadS32BE: {
       parameters: ["pointer", "pointer"],
@@ -959,14 +983,14 @@ SDL_ReadS32BE: {
  *
  * @param src the stream from which to read data.
  * @param value a pointer filled in with the data read.
- * @returns true on successful write or false on failure; call SDL_GetError()
+ * @returns true on successful read or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1016 bool SDL_ReadU64LE(SDL_IOStream *src, Uint64 *value);
+ * @from SDL_iostream.h:1041 bool SDL_ReadU64LE(SDL_IOStream *src, Uint64 *value);
  */
 SDL_ReadU64LE: {
       parameters: ["pointer", "pointer"],
@@ -988,14 +1012,14 @@ SDL_ReadU64LE: {
  *
  * @param src the stream from which to read data.
  * @param value a pointer filled in with the data read.
- * @returns true on successful write or false on failure; call SDL_GetError()
+ * @returns true on successful read or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1039 bool SDL_ReadS64LE(SDL_IOStream *src, Sint64 *value);
+ * @from SDL_iostream.h:1064 bool SDL_ReadS64LE(SDL_IOStream *src, Sint64 *value);
  */
 SDL_ReadS64LE: {
       parameters: ["pointer", "pointer"],
@@ -1017,14 +1041,14 @@ SDL_ReadS64LE: {
  *
  * @param src the stream from which to read data.
  * @param value a pointer filled in with the data read.
- * @returns true on successful write or false on failure; call SDL_GetError()
+ * @returns true on successful read or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1062 bool SDL_ReadU64BE(SDL_IOStream *src, Uint64 *value);
+ * @from SDL_iostream.h:1087 bool SDL_ReadU64BE(SDL_IOStream *src, Uint64 *value);
  */
 SDL_ReadU64BE: {
       parameters: ["pointer", "pointer"],
@@ -1046,14 +1070,14 @@ SDL_ReadU64BE: {
  *
  * @param src the stream from which to read data.
  * @param value a pointer filled in with the data read.
- * @returns true on successful write or false on failure; call SDL_GetError()
+ * @returns true on successful read or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1085 bool SDL_ReadS64BE(SDL_IOStream *src, Sint64 *value);
+ * @from SDL_iostream.h:1110 bool SDL_ReadS64BE(SDL_IOStream *src, Sint64 *value);
  */
 SDL_ReadS64BE: {
       parameters: ["pointer", "pointer"],
@@ -1069,11 +1093,11 @@ SDL_ReadS64BE: {
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1107 bool SDL_WriteU8(SDL_IOStream *dst, Uint8 value);
+ * @from SDL_iostream.h:1132 bool SDL_WriteU8(SDL_IOStream *dst, Uint8 value);
  */
 SDL_WriteU8: {
       parameters: ["pointer", "u8"],
@@ -1089,11 +1113,11 @@ SDL_WriteU8: {
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1121 bool SDL_WriteS8(SDL_IOStream *dst, Sint8 value);
+ * @from SDL_iostream.h:1146 bool SDL_WriteS8(SDL_IOStream *dst, Sint8 value);
  */
 SDL_WriteS8: {
       parameters: ["pointer", "i8"],
@@ -1114,11 +1138,11 @@ SDL_WriteS8: {
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1140 bool SDL_WriteU16LE(SDL_IOStream *dst, Uint16 value);
+ * @from SDL_iostream.h:1165 bool SDL_WriteU16LE(SDL_IOStream *dst, Uint16 value);
  */
 SDL_WriteU16LE: {
       parameters: ["pointer", "u16"],
@@ -1139,11 +1163,11 @@ SDL_WriteU16LE: {
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1159 bool SDL_WriteS16LE(SDL_IOStream *dst, Sint16 value);
+ * @from SDL_iostream.h:1184 bool SDL_WriteS16LE(SDL_IOStream *dst, Sint16 value);
  */
 SDL_WriteS16LE: {
       parameters: ["pointer", "i16"],
@@ -1163,11 +1187,11 @@ SDL_WriteS16LE: {
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1177 bool SDL_WriteU16BE(SDL_IOStream *dst, Uint16 value);
+ * @from SDL_iostream.h:1202 bool SDL_WriteU16BE(SDL_IOStream *dst, Uint16 value);
  */
 SDL_WriteU16BE: {
       parameters: ["pointer", "u16"],
@@ -1187,11 +1211,11 @@ SDL_WriteU16BE: {
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1195 bool SDL_WriteS16BE(SDL_IOStream *dst, Sint16 value);
+ * @from SDL_iostream.h:1220 bool SDL_WriteS16BE(SDL_IOStream *dst, Sint16 value);
  */
 SDL_WriteS16BE: {
       parameters: ["pointer", "i16"],
@@ -1212,11 +1236,11 @@ SDL_WriteS16BE: {
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1214 bool SDL_WriteU32LE(SDL_IOStream *dst, Uint32 value);
+ * @from SDL_iostream.h:1239 bool SDL_WriteU32LE(SDL_IOStream *dst, Uint32 value);
  */
 SDL_WriteU32LE: {
       parameters: ["pointer", "u32"],
@@ -1237,11 +1261,11 @@ SDL_WriteU32LE: {
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1233 bool SDL_WriteS32LE(SDL_IOStream *dst, Sint32 value);
+ * @from SDL_iostream.h:1258 bool SDL_WriteS32LE(SDL_IOStream *dst, Sint32 value);
  */
 SDL_WriteS32LE: {
       parameters: ["pointer", "i32"],
@@ -1261,11 +1285,11 @@ SDL_WriteS32LE: {
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1251 bool SDL_WriteU32BE(SDL_IOStream *dst, Uint32 value);
+ * @from SDL_iostream.h:1276 bool SDL_WriteU32BE(SDL_IOStream *dst, Uint32 value);
  */
 SDL_WriteU32BE: {
       parameters: ["pointer", "u32"],
@@ -1285,11 +1309,11 @@ SDL_WriteU32BE: {
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1269 bool SDL_WriteS32BE(SDL_IOStream *dst, Sint32 value);
+ * @from SDL_iostream.h:1294 bool SDL_WriteS32BE(SDL_IOStream *dst, Sint32 value);
  */
 SDL_WriteS32BE: {
       parameters: ["pointer", "i32"],
@@ -1310,11 +1334,11 @@ SDL_WriteS32BE: {
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1288 bool SDL_WriteU64LE(SDL_IOStream *dst, Uint64 value);
+ * @from SDL_iostream.h:1313 bool SDL_WriteU64LE(SDL_IOStream *dst, Uint64 value);
  */
 SDL_WriteU64LE: {
       parameters: ["pointer", "u64"],
@@ -1335,11 +1359,11 @@ SDL_WriteU64LE: {
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1307 bool SDL_WriteS64LE(SDL_IOStream *dst, Sint64 value);
+ * @from SDL_iostream.h:1332 bool SDL_WriteS64LE(SDL_IOStream *dst, Sint64 value);
  */
 SDL_WriteS64LE: {
       parameters: ["pointer", "i64"],
@@ -1359,11 +1383,11 @@ SDL_WriteS64LE: {
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1325 bool SDL_WriteU64BE(SDL_IOStream *dst, Uint64 value);
+ * @from SDL_iostream.h:1350 bool SDL_WriteU64BE(SDL_IOStream *dst, Uint64 value);
  */
 SDL_WriteU64BE: {
       parameters: ["pointer", "u64"],
@@ -1383,11 +1407,11 @@ SDL_WriteU64BE: {
  * @returns true on successful write or false on failure; call SDL_GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same SDL_IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_iostream.h:1343 bool SDL_WriteS64BE(SDL_IOStream *dst, Sint64 value);
+ * @from SDL_iostream.h:1368 bool SDL_WriteS64BE(SDL_IOStream *dst, Sint64 value);
  */
 SDL_WriteS64BE: {
       parameters: ["pointer", "i64"],

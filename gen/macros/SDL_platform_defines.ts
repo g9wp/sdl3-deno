@@ -1,50 +1,104 @@
 /**
- * @from SDL_platform_defines:37
+ * A preprocessor macro that is only defined if compiling for AIX.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:37
  */
 export const SDL_PLATFORM_AIX = 1;
 
 /**
- * @from SDL_platform_defines:47
+ * A preprocessor macro that is only defined if compiling for Haiku OS.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:47
  */
 export const SDL_PLATFORM_HAIKU = 1;
 
 /**
- * @from SDL_platform_defines:57
+ * A preprocessor macro that is only defined if compiling for BSDi
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:57
  */
 export const SDL_PLATFORM_BSDI = 1;
 
 /**
- * @from SDL_platform_defines:67
+ * A preprocessor macro that is only defined if compiling for FreeBSD.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:67
  */
 export const SDL_PLATFORM_FREEBSD = 1;
 
 /**
- * @from SDL_platform_defines:77
+ * A preprocessor macro that is only defined if compiling for HP-UX.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:77
  */
 export const SDL_PLATFORM_HPUX = 1;
 
 /**
- * @from SDL_platform_defines:87
+ * A preprocessor macro that is only defined if compiling for IRIX.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:87
  */
 export const SDL_PLATFORM_IRIX = 1;
 
 /**
- * @from SDL_platform_defines:100
+ * A preprocessor macro that is only defined if compiling for Linux.
+ *
+ * Note that Android, although ostensibly a Linux-based system, will not
+ * define this. It defines SDL_PLATFORM_ANDROID instead.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:100
  */
 export const SDL_PLATFORM_LINUX = 1;
 
 /**
- * @from SDL_platform_defines:110
+ * A preprocessor macro that is only defined if compiling for Android.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:110
  */
 export const SDL_PLATFORM_ANDROID = 1;
 
 /**
- * @from SDL_platform_defines:125
+ * A preprocessor macro that is only defined if compiling for a Unix-like
+ * system.
+ *
+ * Other platforms, like Linux, might define this in addition to their primary
+ * define.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:125
  */
 export const SDL_PLATFORM_UNIX = 1;
 
 /**
- * @from SDL_platform_defines:142
+ * A preprocessor macro that is only defined if compiling for Apple platforms.
+ *
+ * iOS, macOS, etc will additionally define a more specific platform macro.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_PLATFORM_MACOS
+ * @sa SDL_PLATFORM_IOS
+ * @sa SDL_PLATFORM_TVOS
+ * @sa SDL_PLATFORM_VISIONOS
+ *
+ * @from SDL_platform_defines.h:142
  */
 export const SDL_PLATFORM_APPLE = 1;
 
@@ -79,72 +133,145 @@ export const TARGET_OS_SIMULATOR = 0;
 export const TARGET_OS_VISION = 0;
 
 /**
- * @from SDL_platform_defines:186
+ * A preprocessor macro that is only defined if compiling for tvOS.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_PLATFORM_APPLE
+ *
+ * @from SDL_platform_defines.h:186
  */
 export const SDL_PLATFORM_TVOS = 1;
 
 /**
- * @from SDL_platform_defines:198
+ * A preprocessor macro that is only defined if compiling for visionOS.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_PLATFORM_APPLE
+ *
+ * @from SDL_platform_defines.h:198
  */
 export const SDL_PLATFORM_VISIONOS = 1;
 
 /**
- * @from SDL_platform_defines:210
+ * A preprocessor macro that is only defined if compiling for iOS or visionOS.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_PLATFORM_APPLE
+ *
+ * @from SDL_platform_defines.h:210
  */
 export const SDL_PLATFORM_IOS = 1;
 
 /**
- * @from SDL_platform_defines:221
+ * A preprocessor macro that is only defined if compiling for macOS.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_PLATFORM_APPLE
+ *
+ * @from SDL_platform_defines.h:221
  */
 export const SDL_PLATFORM_MACOS = 1;
 
 /**
- * @from SDL_platform_defines:236
+ * A preprocessor macro that is only defined if compiling for Emscripten.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:236
  */
 export const SDL_PLATFORM_EMSCRIPTEN = 1;
 
 /**
- * @from SDL_platform_defines:246
+ * A preprocessor macro that is only defined if compiling for NetBSD.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:246
  */
 export const SDL_PLATFORM_NETBSD = 1;
 
 /**
- * @from SDL_platform_defines:256
+ * A preprocessor macro that is only defined if compiling for OpenBSD.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:256
  */
 export const SDL_PLATFORM_OPENBSD = 1;
 
 /**
- * @from SDL_platform_defines:266
+ * A preprocessor macro that is only defined if compiling for OS/2.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:266
  */
 export const SDL_PLATFORM_OS2 = 1;
 
 /**
- * @from SDL_platform_defines:276
+ * A preprocessor macro that is only defined if compiling for Tru64 (OSF/1).
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:276
  */
 export const SDL_PLATFORM_OSF = 1;
 
 /**
- * @from SDL_platform_defines:286
+ * A preprocessor macro that is only defined if compiling for QNX Neutrino.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:286
  */
 export const SDL_PLATFORM_QNXNTO = 1;
 
 /**
- * @from SDL_platform_defines:296
+ * A preprocessor macro that is only defined if compiling for RISC OS.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:296
  */
 export const SDL_PLATFORM_RISCOS = 1;
 
 /**
- * @from SDL_platform_defines:306
+ * A preprocessor macro that is only defined if compiling for SunOS/Solaris.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:306
  */
 export const SDL_PLATFORM_SOLARIS = 1;
 
 /**
- * @from SDL_platform_defines:316
+ * A preprocessor macro that is only defined if compiling for Cygwin.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:316
  */
 export const SDL_PLATFORM_CYGWIN = 1;
 
 /**
- * @from SDL_platform_defines:335
+ * A preprocessor macro that is only defined if compiling for Windows.
+ *
+ * This also covers several other platforms, like Microsoft GDK, Xbox, WinRT,
+ * etc. Each will have their own more-specific platform macros, too.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_PLATFORM_WIN32
+ * @sa SDL_PLATFORM_XBOXONE
+ * @sa SDL_PLATFORM_XBOXSERIES
+ * @sa SDL_PLATFORM_WINGDK
+ * @sa SDL_PLATFORM_GDK
+ *
+ * @from SDL_platform_defines.h:335
  */
 export const SDL_PLATFORM_WINDOWS = 1;
 
@@ -174,47 +301,109 @@ export const SDL_WINAPI_FAMILY_PHONE = (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP
 export const SDL_WINAPI_FAMILY_PHONE = 0;
 
 /**
- * @from SDL_platform_defines:385
+ * A preprocessor macro that is only defined if compiling for Microsoft GDK
+ * for Windows.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:385
  */
 export const SDL_PLATFORM_WINGDK = 1;
 
 /**
- * @from SDL_platform_defines:394
+ * A preprocessor macro that is only defined if compiling for Xbox One.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:394
  */
 export const SDL_PLATFORM_XBOXONE = 1;
 
 /**
- * @from SDL_platform_defines:403
+ * A preprocessor macro that is only defined if compiling for Xbox Series.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:403
  */
 export const SDL_PLATFORM_XBOXSERIES = 1;
 
 /**
- * @from SDL_platform_defines:416
+ * A preprocessor macro that is only defined if compiling for desktop Windows.
+ *
+ * Despite the "32", this also covers 64-bit Windows; as an informal
+ * convention, its system layer tends to still be referred to as "the Win32
+ * API."
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:416
  */
 export const SDL_PLATFORM_WIN32 = 1;
 
 /**
- * @from SDL_platform_defines:431
+ * A preprocessor macro that is only defined if compiling for Microsoft GDK on
+ * any platform.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:431
  */
 export const SDL_PLATFORM_GDK = 1;
 
 /**
- * @from SDL_platform_defines:441
+ * A preprocessor macro that is only defined if compiling for Sony PSP.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:441
  */
 export const SDL_PLATFORM_PSP = 1;
 
 /**
- * @from SDL_platform_defines:452
+ * A preprocessor macro that is only defined if compiling for Sony PlayStation
+ * 2.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:452
  */
 export const SDL_PLATFORM_PS2 = 1;
 
 /**
- * @from SDL_platform_defines:462
+ * A preprocessor macro that is only defined if compiling for Sony Vita.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:462
  */
 export const SDL_PLATFORM_VITA = 1;
 
 /**
- * @from SDL_platform_defines:472
+ * A preprocessor macro that is only defined if compiling for Nintendo 3DS.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_platform_defines.h:472
  */
 export const SDL_PLATFORM_3DS = 1;
+
+/**
+ * A preprocessor macro that is only defined if compiling for the Nokia
+ * N-Gage.
+ *
+ * @since This macro is available since SDL 3.4.0.
+ *
+ * @from SDL_platform_defines.h:483
+ */
+export const SDL_PLATFORM_NGAGE = 1;
+
+/**
+ * A preprocessor macro that is only defined if compiling for GNU/Hurd.
+ *
+ * @since This macro is available since SDL 3.4.0.
+ *
+ * @from SDL_platform_defines.h:493
+ */
+export const SDL_PLATFORM_HURD = 1;
 

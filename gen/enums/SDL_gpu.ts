@@ -183,14 +183,20 @@
  * underlying graphics API. While it's possible that we have done something
  * inefficiently, it's very unlikely especially if you are relatively
  * inexperienced with GPU rendering. Please see the performance tips above and
- * make sure you are following them. Additionally, tools like RenderDoc can be
- * very helpful for diagnosing incorrect behavior and performance issues.
+ * make sure you are following them. Additionally, tools like
+ * [RenderDoc](https://renderdoc.org/)
+ * can be very helpful for diagnosing incorrect behavior and performance
+ * issues.
  *
  * ## System Requirements
  *
- * **Vulkan:** Supported on Windows, Linux, Nintendo Switch, and certain
- * Android devices. Requires Vulkan 1.0 with the following extensions and
- * device features:
+ * ### Vulkan
+ *
+ * SDL driver name: "vulkan" (for use in SDL_CreateGPUDevice() and
+ * SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING)
+ *
+ * Supported on Windows, Linux, Nintendo Switch, and certain Android devices.
+ * Requires Vulkan 1.0 with the following extensions and device features:
  *
  * - `VK_KHR_swapchain`
  * - `VK_KHR_maintenance1`
@@ -199,19 +205,63 @@
  * - `depthClamp`
  * - `shaderClipDistance`
  * - `drawIndirectFirstInstance`
+ * - `sampleRateShading`
  *
- * **D3D12:** Supported on Windows 10 or newer, Xbox One (GDK), and Xbox
- * Series X|S (GDK). Requires a GPU that supports DirectX 12 Feature Level 11_0 and
+ * You can remove some of these requirements to increase compatibility with
+ * Android devices by using these properties when creating the GPU device with
+ * SDL_CreateGPUDeviceWithProperties():
+ *
+ * - SDL_PROP_GPU_DEVICE_CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN
+ * - SDL_PROP_GPU_DEVICE_CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN
+ * - SDL_PROP_GPU_DEVICE_CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN
+ * - SDL_PROP_GPU_DEVICE_CREATE_FEATURE_ANISOTROPY_BOOLEAN
+ *
+ * ### D3D12
+ *
+ * SDL driver name: "direct3d12"
+ *
+ * Supported on Windows 10 or newer, Xbox One (GDK), and Xbox Series X|S
+ * (GDK). Requires a GPU that supports DirectX 12 Feature Level 11_0 and
  * Resource Binding Tier 2 or above.
  *
- * **Metal:** Supported on macOS 10.14+ and iOS/tvOS 13.0+. Hardware
- * requirements vary by operating system:
+ * You can remove the Tier 2 resource binding requirement to support Intel
+ * Haswell and Broadwell GPUs by using this property when creating the GPU
+ * device with SDL_CreateGPUDeviceWithProperties():
+ *
+ * - SDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN
+ *
+ * ### Metal
+ *
+ * SDL driver name: "metal"
+ *
+ * Supported on macOS 10.14+ and iOS/tvOS 13.0+. Hardware requirements vary by
+ * operating system:
  *
  * - macOS requires an Apple Silicon or
  *   [Intel Mac2 family](https://developer.apple.com/documentation/metal/mtlfeatureset/mtlfeatureset_macos_gpufamily2_v1?language=objc)
  *   GPU
  * - iOS/tvOS requires an A9 GPU or newer
  * - iOS Simulator and tvOS Simulator are unsupported
+ *
+ * ## Coordinate System
+ *
+ * The GPU API uses a left-handed coordinate system, following the convention
+ * of D3D12 and Metal. Specifically:
+ *
+ * - **Normalized Device Coordinates:** The lower-left corner has an x,y
+ *   coordinate of `(-1.0, -1.0)`. The upper-right corner is `(1.0, 1.0)`. Z
+ *   values range from `[0.0, 1.0]` where 0 is the near plane.
+ * - **Viewport Coordinates:** The top-left corner has an x,y coordinate of
+ *   `(0, 0)` and extends to the bottom-right corner at `(viewportWidth,
+ *   viewportHeight)`. +Y is down.
+ * - **Texture Coordinates:** The top-left corner has an x,y coordinate of
+ *   `(0, 0)` and extends to the bottom-right corner at `(1.0, 1.0)`. +Y is
+ *   down.
+ *
+ * If the backend driver differs from this convention (e.g. Vulkan, which has
+ * an NDC that assumes +Y is down), SDL will automatically convert the
+ * coordinate system behind the scenes, so you don't need to perform any
+ * coordinate flipping logic in your shaders.
  *
  * ## Uniform Data
  *
@@ -279,6 +329,39 @@
  * section of data that has already been referenced will produce unexpected
  * results.
  *
+ * ## Debugging
+ *
+ * At some point of your GPU journey, you will probably encounter issues that
+ * are not traceable with regular debugger - for example, your code compiles
+ * but you get an empty screen, or your shader fails in runtime.
+ *
+ * For debugging such cases, there are tools that allow visually inspecting
+ * the whole GPU frame, every drawcall, every bound resource, memory buffers,
+ * etc. They are the following, per platform:
+ *
+ * * For Windows/Linux, use
+ *   [RenderDoc](https://renderdoc.org/)
+ * * For MacOS (Metal), use Xcode built-in debugger (Open XCode, go to Debug >
+ *   Debug Executable..., select your application, set "GPU Frame Capture" to
+ *   "Metal" in scheme "Options" window, run your app, and click the small
+ *   Metal icon on the bottom to capture a frame)
+ *
+ * Aside from that, you may want to enable additional debug layers to receive
+ * more detailed error messages, based on your GPU backend:
+ *
+ * * For D3D12, the debug layer is an optional feature that can be installed
+ *   via "Windows Settings -> System -> Optional features" and adding the
+ *   "Graphics Tools" optional feature.
+ * * For Vulkan, you will need to install Vulkan SDK on Windows, and on Linux,
+ *   you usually have some sort of `vulkan-validation-layers` system package
+ *   that should be installed.
+ * * For Metal, it should be enough just to run the application from XCode to
+ *   receive detailed errors or warnings in the output.
+ *
+ * Don't hesitate to use tools as RenderDoc when encountering runtime issues
+ * or unexpected output on screen, quick GPU frame inspection can usually help
+ * you fix the majority of such problems.
+ *
  * @module
  */
 
@@ -304,7 +387,7 @@
 */
 
 /**
- * @from SDL_gpu:822 SDL_GPU_TEXTUREUSAGE_
+ * @from SDL_gpu:905 SDL_GPU_TEXTUREUSAGE_
  */
 export enum GPU_TEXTUREUSAGE {
   SAMPLER = (1 << 0), /**< Texture supports sampling. */
@@ -319,7 +402,7 @@ export enum GPU_TEXTUREUSAGE {
 
 
 /**
- * @from SDL_gpu:902 SDL_GPU_BUFFERUSAGE_
+ * @from SDL_gpu:985 SDL_GPU_BUFFERUSAGE_
  */
 export enum GPU_BUFFERUSAGE {
   VERTEX = (1 << 0), /**< Buffer is a vertex buffer. */
@@ -333,7 +416,7 @@ export enum GPU_BUFFERUSAGE {
 
 
 /**
- * @from SDL_gpu:949 SDL_GPU_SHADERFORMAT_
+ * @from SDL_gpu:1032 SDL_GPU_SHADERFORMAT_
  */
 export enum GPU_SHADERFORMAT {
   INVALID = 0, 
@@ -348,7 +431,7 @@ export enum GPU_SHADERFORMAT {
 
 
 /**
- * @from SDL_gpu:1177 SDL_GPU_COLORCOMPONENT_
+ * @from SDL_gpu:1260 SDL_GPU_COLORCOMPONENT_
  */
 export enum GPU_COLORCOMPONENT {
   R = (1 << 0), /**< the red component */
@@ -360,25 +443,45 @@ export enum GPU_COLORCOMPONENT {
 
 
 /**
- * @from SDL_gpu:2179 SDL_PROP_GPU_DEVICE_CREATE_
+ * @from SDL_gpu:2337 SDL_PROP_GPU_DEVICE_CREATE_
  */
 export enum PROP_GPU_DEVICE_CREATE {
   DEBUGMODE_BOOLEAN = "SDL.gpu.device.create.debugmode", 
   PREFERLOWPOWER_BOOLEAN = "SDL.gpu.device.create.preferlowpower", 
+  VERBOSE_BOOLEAN = "SDL.gpu.device.create.verbose", 
   NAME_STRING = "SDL.gpu.device.create.name", 
+  FEATURE_CLIP_DISTANCE_BOOLEAN = "SDL.gpu.device.create.feature.clip_distance", 
+  FEATURE_DEPTH_CLAMPING_BOOLEAN = "SDL.gpu.device.create.feature.depth_clamping", 
+  FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN = "SDL.gpu.device.create.feature.indirect_draw_first_instance", 
+  FEATURE_ANISOTROPY_BOOLEAN = "SDL.gpu.device.create.feature.anisotropy", 
   SHADERS_PRIVATE_BOOLEAN = "SDL.gpu.device.create.shaders.private", 
   SHADERS_SPIRV_BOOLEAN = "SDL.gpu.device.create.shaders.spirv", 
   SHADERS_DXBC_BOOLEAN = "SDL.gpu.device.create.shaders.dxbc", 
   SHADERS_DXIL_BOOLEAN = "SDL.gpu.device.create.shaders.dxil", 
   SHADERS_MSL_BOOLEAN = "SDL.gpu.device.create.shaders.msl", 
   SHADERS_METALLIB_BOOLEAN = "SDL.gpu.device.create.shaders.metallib", 
+  D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN = "SDL.gpu.device.create.d3d12.allowtier1resourcebinding", 
   D3D12_SEMANTIC_NAME_STRING = "SDL.gpu.device.create.d3d12.semantic", 
+  VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN = "SDL.gpu.device.create.vulkan.requirehardwareacceleration", 
+  VULKAN_OPTIONS_POINTER = "SDL.gpu.device.create.vulkan.options", 
 }
 
 
 
 /**
- * @from SDL_gpu:2497 SDL_PROP_GPU_TEXTURE_CREATE_
+ * @from SDL_gpu:2550 SDL_PROP_GPU_DEVICE_
+ */
+export enum PROP_GPU_DEVICE {
+  NAME_STRING = "SDL.gpu.device.name", 
+  DRIVER_NAME_STRING = "SDL.gpu.device.driver_name", 
+  DRIVER_VERSION_STRING = "SDL.gpu.device.driver_version", 
+  DRIVER_INFO_STRING = "SDL.gpu.device.driver_info", 
+}
+
+
+
+/**
+ * @from SDL_gpu:2804 SDL_PROP_GPU_TEXTURE_CREATE_
  */
 export enum PROP_GPU_TEXTURE_CREATE {
   D3D12_CLEAR_R_FLOAT = "SDL.gpu.texture.create.d3d12.clear.r", 
@@ -413,7 +516,7 @@ export enum PROP_GPU_TEXTURE_CREATE {
  *
  * @sa SDL_CreateGPUGraphicsPipeline
  *
- * @from SDL_gpu.h:537 SDL_GPU_PRIMITIVETYPE_
+ * @from SDL_gpu.h:620 SDL_GPU_PRIMITIVETYPE_
  */
 export enum SDL_GPUPrimitiveType {
   TRIANGLELIST, /**< A series of separate triangles. */
@@ -433,7 +536,7 @@ export enum SDL_GPUPrimitiveType {
  *
  * @sa SDL_BeginGPURenderPass
  *
- * @from SDL_gpu.h:554 SDL_GPU_LOADOP_
+ * @from SDL_gpu.h:637 SDL_GPU_LOADOP_
  */
 export enum SDL_GPULoadOp {
   LOAD, /**< The previous contents of the texture will be preserved. */
@@ -451,7 +554,7 @@ export enum SDL_GPULoadOp {
  *
  * @sa SDL_BeginGPURenderPass
  *
- * @from SDL_gpu.h:569 SDL_GPU_STOREOP_
+ * @from SDL_gpu.h:652 SDL_GPU_STOREOP_
  */
 export enum SDL_GPUStoreOp {
   STORE, /**< The contents generated during the render pass will be written to memory. */
@@ -469,7 +572,7 @@ export enum SDL_GPUStoreOp {
  *
  * @sa SDL_CreateGPUGraphicsPipeline
  *
- * @from SDL_gpu.h:584 SDL_GPU_INDEXELEMENTSIZE_
+ * @from SDL_gpu.h:667 SDL_GPU_INDEXELEMENTSIZE_
  */
 export enum SDL_GPUIndexElementSize {
   _16BIT, /**< The index elements are 16-bit. */
@@ -563,7 +666,7 @@ export enum SDL_GPUIndexElementSize {
  * @sa SDL_CreateGPUTexture
  * @sa SDL_GPUTextureSupportsFormat
  *
- * @from SDL_gpu.h:675 SDL_GPU_TEXTUREFORMAT_
+ * @from SDL_gpu.h:758 SDL_GPU_TEXTUREFORMAT_
  */
 export enum SDL_GPUTextureFormat {
   INVALID, 
@@ -697,7 +800,7 @@ export enum SDL_GPUTextureFormat {
  *
  * @sa SDL_CreateGPUTexture
  *
- * @from SDL_gpu.h:837 SDL_GPU_TEXTURETYPE_
+ * @from SDL_gpu.h:920 SDL_GPU_TEXTURETYPE_
  */
 export enum SDL_GPUTextureType {
   _2D, /**< The texture is a 2-dimensional image. */
@@ -720,7 +823,7 @@ export enum SDL_GPUTextureType {
  * @sa SDL_CreateGPUTexture
  * @sa SDL_GPUTextureSupportsSampleCount
  *
- * @from SDL_gpu.h:857 SDL_GPU_SAMPLECOUNT_
+ * @from SDL_gpu.h:940 SDL_GPU_SAMPLECOUNT_
  */
 export enum SDL_GPUSampleCount {
   _1, /**< No multisampling. */
@@ -738,7 +841,7 @@ export enum SDL_GPUSampleCount {
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:873 SDL_GPU_CUBEMAPFACE_
+ * @from SDL_gpu.h:956 SDL_GPU_CUBEMAPFACE_
  */
 export enum SDL_GPUCubeMapFace {
   POSITIVEX, 
@@ -761,7 +864,7 @@ export enum SDL_GPUCubeMapFace {
  *
  * @sa SDL_CreateGPUTransferBuffer
  *
- * @from SDL_gpu.h:919 SDL_GPU_TRANSFERBUFFERUSAGE_
+ * @from SDL_gpu.h:1002 SDL_GPU_TRANSFERBUFFERUSAGE_
  */
 export enum SDL_GPUTransferBufferUsage {
   UPLOAD, 
@@ -777,7 +880,7 @@ export enum SDL_GPUTransferBufferUsage {
  *
  * @sa SDL_CreateGPUShader
  *
- * @from SDL_gpu.h:932 SDL_GPU_SHADERSTAGE_
+ * @from SDL_gpu.h:1015 SDL_GPU_SHADERSTAGE_
  */
 export enum SDL_GPUShaderStage {
   VERTEX, 
@@ -793,7 +896,7 @@ export enum SDL_GPUShaderStage {
  *
  * @sa SDL_CreateGPUGraphicsPipeline
  *
- * @from SDL_gpu.h:964 SDL_GPU_VERTEXELEMENTFORMAT_
+ * @from SDL_gpu.h:1047 SDL_GPU_VERTEXELEMENTFORMAT_
  */
 export enum SDL_GPUVertexElementFormat {
   INVALID, 
@@ -850,7 +953,7 @@ export enum SDL_GPUVertexElementFormat {
  *
  * @sa SDL_CreateGPUGraphicsPipeline
  *
- * @from SDL_gpu.h:1030 SDL_GPU_VERTEXINPUTRATE_
+ * @from SDL_gpu.h:1113 SDL_GPU_VERTEXINPUTRATE_
  */
 export enum SDL_GPUVertexInputRate {
   VERTEX, /**< Attribute addressing is a function of the vertex index. */
@@ -866,7 +969,7 @@ export enum SDL_GPUVertexInputRate {
  *
  * @sa SDL_CreateGPUGraphicsPipeline
  *
- * @from SDL_gpu.h:1043 SDL_GPU_FILLMODE_
+ * @from SDL_gpu.h:1126 SDL_GPU_FILLMODE_
  */
 export enum SDL_GPUFillMode {
   FILL, /**< Polygons will be rendered via rasterization. */
@@ -882,7 +985,7 @@ export enum SDL_GPUFillMode {
  *
  * @sa SDL_CreateGPUGraphicsPipeline
  *
- * @from SDL_gpu.h:1056 SDL_GPU_CULLMODE_
+ * @from SDL_gpu.h:1139 SDL_GPU_CULLMODE_
  */
 export enum SDL_GPUCullMode {
   NONE, /**< No triangles are culled. */
@@ -900,7 +1003,7 @@ export enum SDL_GPUCullMode {
  *
  * @sa SDL_CreateGPUGraphicsPipeline
  *
- * @from SDL_gpu.h:1071 SDL_GPU_FRONTFACE_
+ * @from SDL_gpu.h:1154 SDL_GPU_FRONTFACE_
  */
 export enum SDL_GPUFrontFace {
   COUNTER_CLOCKWISE, /**< A triangle with counter-clockwise vertex winding will be considered front-facing. */
@@ -916,7 +1019,7 @@ export enum SDL_GPUFrontFace {
  *
  * @sa SDL_CreateGPUGraphicsPipeline
  *
- * @from SDL_gpu.h:1084 SDL_GPU_COMPAREOP_
+ * @from SDL_gpu.h:1167 SDL_GPU_COMPAREOP_
  */
 export enum SDL_GPUCompareOp {
   INVALID, 
@@ -940,7 +1043,7 @@ export enum SDL_GPUCompareOp {
  *
  * @sa SDL_CreateGPUGraphicsPipeline
  *
- * @from SDL_gpu.h:1105 SDL_GPU_STENCILOP_
+ * @from SDL_gpu.h:1188 SDL_GPU_STENCILOP_
  */
 export enum SDL_GPUStencilOp {
   INVALID, 
@@ -967,7 +1070,7 @@ export enum SDL_GPUStencilOp {
  *
  * @sa SDL_CreateGPUGraphicsPipeline
  *
- * @from SDL_gpu.h:1129 SDL_GPU_BLENDOP_
+ * @from SDL_gpu.h:1212 SDL_GPU_BLENDOP_
  */
 export enum SDL_GPUBlendOp {
   INVALID, 
@@ -991,7 +1094,7 @@ export enum SDL_GPUBlendOp {
  *
  * @sa SDL_CreateGPUGraphicsPipeline
  *
- * @from SDL_gpu.h:1150 SDL_GPU_BLENDFACTOR_
+ * @from SDL_gpu.h:1233 SDL_GPU_BLENDFACTOR_
  */
 export enum SDL_GPUBlendFactor {
   INVALID, 
@@ -1019,7 +1122,7 @@ export enum SDL_GPUBlendFactor {
  *
  * @sa SDL_CreateGPUSampler
  *
- * @from SDL_gpu.h:1189 SDL_GPU_FILTER_
+ * @from SDL_gpu.h:1272 SDL_GPU_FILTER_
  */
 export enum SDL_GPUFilter {
   NEAREST, /**< Point filtering. */
@@ -1035,7 +1138,7 @@ export enum SDL_GPUFilter {
  *
  * @sa SDL_CreateGPUSampler
  *
- * @from SDL_gpu.h:1202 SDL_GPU_SAMPLERMIPMAPMODE_
+ * @from SDL_gpu.h:1285 SDL_GPU_SAMPLERMIPMAPMODE_
  */
 export enum SDL_GPUSamplerMipmapMode {
   NEAREST, /**< Point filtering. */
@@ -1052,7 +1155,7 @@ export enum SDL_GPUSamplerMipmapMode {
  *
  * @sa SDL_CreateGPUSampler
  *
- * @from SDL_gpu.h:1216 SDL_GPU_SAMPLERADDRESSMODE_
+ * @from SDL_gpu.h:1299 SDL_GPU_SAMPLERADDRESSMODE_
  */
 export enum SDL_GPUSamplerAddressMode {
   REPEAT, /**< Specifies that the coordinates will wrap around. */
@@ -1087,7 +1190,7 @@ export enum SDL_GPUSamplerAddressMode {
  * @sa SDL_WindowSupportsGPUPresentMode
  * @sa SDL_WaitAndAcquireGPUSwapchainTexture
  *
- * @from SDL_gpu.h:1248 SDL_GPU_PRESENTMODE_
+ * @from SDL_gpu.h:1331 SDL_GPU_PRESENTMODE_
  */
 export enum SDL_GPUPresentMode {
   VSYNC, 
@@ -1123,7 +1226,7 @@ export enum SDL_GPUPresentMode {
  * @sa SDL_WindowSupportsGPUSwapchainComposition
  * @sa SDL_WaitAndAcquireGPUSwapchainTexture
  *
- * @from SDL_gpu.h:1281 SDL_GPU_SWAPCHAINCOMPOSITION_
+ * @from SDL_gpu.h:1364 SDL_GPU_SWAPCHAINCOMPOSITION_
  */
 export enum SDL_GPUSwapchainComposition {
   SDR, 

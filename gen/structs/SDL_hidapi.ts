@@ -59,7 +59,7 @@ import * as _b from "../_structs/SDL_hidapi.ts";
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_hidapi.h:111
+ * @from SDL_hidapi.h:112
  */
 export interface hid_device_info {
     /** Platform-specific device path */

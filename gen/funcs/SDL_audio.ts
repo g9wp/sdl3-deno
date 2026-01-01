@@ -284,6 +284,15 @@ SDL_GetAudioRecordingDevices: {
 /**
  * Get the human-readable name of a specific audio device.
  *
+ * **WARNING**: this function will work with SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK
+ * and SDL_AUDIO_DEVICE_DEFAULT_RECORDING, returning the current default
+ * physical devices' names. However, as the default device may change at any
+ * time, it is likely better to show a generic name to the user, like "System
+ * default audio device" or perhaps "default [currently %s]". Do not store
+ * this name to disk to reidentify the device in a later run of the program,
+ * as the default might change in general, and the string will be the name of
+ * a specific device and not the abstract system default.
+ *
  * @param devid the instance ID of the device to query.
  * @returns the name of the audio device, or NULL on failure; call
  *          SDL_GetError() for more information.
@@ -295,7 +304,7 @@ SDL_GetAudioRecordingDevices: {
  * @sa SDL_GetAudioPlaybackDevices
  * @sa SDL_GetAudioRecordingDevices
  *
- * @from SDL_audio.h:590 const char * SDL_GetAudioDeviceName(SDL_AudioDeviceID devid);
+ * @from SDL_audio.h:599 const char * SDL_GetAudioDeviceName(SDL_AudioDeviceID devid);
  */
 SDL_GetAudioDeviceName: {
       parameters: ["u32"],
@@ -336,7 +345,7 @@ SDL_GetAudioDeviceName: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_audio.h:625 bool SDL_GetAudioDeviceFormat(SDL_AudioDeviceID devid, SDL_AudioSpec *spec, int *sample_frames);
+ * @from SDL_audio.h:634 bool SDL_GetAudioDeviceFormat(SDL_AudioDeviceID devid, SDL_AudioSpec *spec, int *sample_frames);
  */
 SDL_GetAudioDeviceFormat: {
       parameters: ["u32", "pointer", "pointer"],
@@ -365,7 +374,7 @@ SDL_GetAudioDeviceFormat: {
  *
  * @sa SDL_SetAudioStreamInputChannelMap
  *
- * @from SDL_audio.h:648 int * SDL_GetAudioDeviceChannelMap(SDL_AudioDeviceID devid, int *count);
+ * @from SDL_audio.h:657 int * SDL_GetAudioDeviceChannelMap(SDL_AudioDeviceID devid, int *count);
  */
 SDL_GetAudioDeviceChannelMap: {
       parameters: ["u32", "pointer"],
@@ -447,7 +456,7 @@ SDL_GetAudioDeviceChannelMap: {
  * @sa SDL_CloseAudioDevice
  * @sa SDL_GetAudioDeviceFormat
  *
- * @from SDL_audio.h:724 SDL_AudioDeviceID SDL_OpenAudioDevice(SDL_AudioDeviceID devid, const SDL_AudioSpec *spec);
+ * @from SDL_audio.h:733 SDL_AudioDeviceID SDL_OpenAudioDevice(SDL_AudioDeviceID devid, const SDL_AudioSpec *spec);
  */
 SDL_OpenAudioDevice: {
       parameters: ["u32", "pointer"],
@@ -478,7 +487,7 @@ SDL_OpenAudioDevice: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_audio.h:749 bool SDL_IsAudioDevicePhysical(SDL_AudioDeviceID devid);
+ * @from SDL_audio.h:758 bool SDL_IsAudioDevicePhysical(SDL_AudioDeviceID devid);
  */
 SDL_IsAudioDevicePhysical: {
       parameters: ["u32"],
@@ -498,7 +507,7 @@ SDL_IsAudioDevicePhysical: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_audio.h:763 bool SDL_IsAudioDevicePlayback(SDL_AudioDeviceID devid);
+ * @from SDL_audio.h:772 bool SDL_IsAudioDevicePlayback(SDL_AudioDeviceID devid);
  */
 SDL_IsAudioDevicePlayback: {
       parameters: ["u32"],
@@ -535,7 +544,7 @@ SDL_IsAudioDevicePlayback: {
  * @sa SDL_ResumeAudioDevice
  * @sa SDL_AudioDevicePaused
  *
- * @from SDL_audio.h:794 bool SDL_PauseAudioDevice(SDL_AudioDeviceID devid);
+ * @from SDL_audio.h:803 bool SDL_PauseAudioDevice(SDL_AudioDeviceID devid);
  */
 SDL_PauseAudioDevice: {
       parameters: ["u32"],
@@ -569,7 +578,7 @@ SDL_PauseAudioDevice: {
  * @sa SDL_AudioDevicePaused
  * @sa SDL_PauseAudioDevice
  *
- * @from SDL_audio.h:822 bool SDL_ResumeAudioDevice(SDL_AudioDeviceID devid);
+ * @from SDL_audio.h:831 bool SDL_ResumeAudioDevice(SDL_AudioDeviceID devid);
  */
 SDL_ResumeAudioDevice: {
       parameters: ["u32"],
@@ -597,7 +606,7 @@ SDL_ResumeAudioDevice: {
  * @sa SDL_PauseAudioDevice
  * @sa SDL_ResumeAudioDevice
  *
- * @from SDL_audio.h:844 bool SDL_AudioDevicePaused(SDL_AudioDeviceID devid);
+ * @from SDL_audio.h:853 bool SDL_AudioDevicePaused(SDL_AudioDeviceID devid);
  */
 SDL_AudioDevicePaused: {
       parameters: ["u32"],
@@ -626,7 +635,7 @@ SDL_AudioDevicePaused: {
  *
  * @sa SDL_SetAudioDeviceGain
  *
- * @from SDL_audio.h:867 float SDL_GetAudioDeviceGain(SDL_AudioDeviceID devid);
+ * @from SDL_audio.h:876 float SDL_GetAudioDeviceGain(SDL_AudioDeviceID devid);
  */
 SDL_GetAudioDeviceGain: {
       parameters: ["u32"],
@@ -667,7 +676,7 @@ SDL_GetAudioDeviceGain: {
  *
  * @sa SDL_GetAudioDeviceGain
  *
- * @from SDL_audio.h:902 bool SDL_SetAudioDeviceGain(SDL_AudioDeviceID devid, float gain);
+ * @from SDL_audio.h:911 bool SDL_SetAudioDeviceGain(SDL_AudioDeviceID devid, float gain);
  */
 SDL_SetAudioDeviceGain: {
       parameters: ["u32", "f32"],
@@ -694,7 +703,7 @@ SDL_SetAudioDeviceGain: {
  *
  * @sa SDL_OpenAudioDevice
  *
- * @from SDL_audio.h:923 void SDL_CloseAudioDevice(SDL_AudioDeviceID devid);
+ * @from SDL_audio.h:932 void SDL_CloseAudioDevice(SDL_AudioDeviceID devid);
  */
 SDL_CloseAudioDevice: {
       parameters: ["u32"],
@@ -740,7 +749,7 @@ SDL_CloseAudioDevice: {
  * @sa SDL_UnbindAudioStream
  * @sa SDL_GetAudioStreamDevice
  *
- * @from SDL_audio.h:963 bool SDL_BindAudioStreams(SDL_AudioDeviceID devid, SDL_AudioStream * const *streams, int num_streams);
+ * @from SDL_audio.h:972 bool SDL_BindAudioStreams(SDL_AudioDeviceID devid, SDL_AudioStream * const *streams, int num_streams);
  */
 SDL_BindAudioStreams: {
       parameters: ["u32", "pointer", "i32"],
@@ -767,7 +776,7 @@ SDL_BindAudioStreams: {
  * @sa SDL_UnbindAudioStream
  * @sa SDL_GetAudioStreamDevice
  *
- * @from SDL_audio.h:984 bool SDL_BindAudioStream(SDL_AudioDeviceID devid, SDL_AudioStream *stream);
+ * @from SDL_audio.h:993 bool SDL_BindAudioStream(SDL_AudioDeviceID devid, SDL_AudioStream *stream);
  */
 SDL_BindAudioStream: {
       parameters: ["u32", "pointer"],
@@ -794,7 +803,7 @@ SDL_BindAudioStream: {
  *
  * @sa SDL_BindAudioStreams
  *
- * @from SDL_audio.h:1005 void SDL_UnbindAudioStreams(SDL_AudioStream * const *streams, int num_streams);
+ * @from SDL_audio.h:1014 void SDL_UnbindAudioStreams(SDL_AudioStream * const *streams, int num_streams);
  */
 SDL_UnbindAudioStreams: {
       parameters: ["pointer", "i32"],
@@ -816,7 +825,7 @@ SDL_UnbindAudioStreams: {
  *
  * @sa SDL_BindAudioStream
  *
- * @from SDL_audio.h:1021 void SDL_UnbindAudioStream(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1030 void SDL_UnbindAudioStream(SDL_AudioStream *stream);
  */
 SDL_UnbindAudioStream: {
       parameters: ["pointer"],
@@ -827,7 +836,8 @@ SDL_UnbindAudioStream: {
 /**
  * Query an audio stream for its currently-bound device.
  *
- * This reports the logical audio device that an audio stream is currently bound to.
+ * This reports the logical audio device that an audio stream is currently
+ * bound to.
  *
  * If not bound, or invalid, this returns zero, which is not a valid device
  * ID.
@@ -842,7 +852,7 @@ SDL_UnbindAudioStream: {
  * @sa SDL_BindAudioStream
  * @sa SDL_BindAudioStreams
  *
- * @from SDL_audio.h:1041 SDL_AudioDeviceID SDL_GetAudioStreamDevice(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1051 SDL_AudioDeviceID SDL_GetAudioStreamDevice(SDL_AudioStream *stream);
  */
 SDL_GetAudioStreamDevice: {
       parameters: ["pointer"],
@@ -870,7 +880,7 @@ SDL_GetAudioStreamDevice: {
  * @sa SDL_SetAudioStreamFormat
  * @sa SDL_DestroyAudioStream
  *
- * @from SDL_audio.h:1063 SDL_AudioStream * SDL_CreateAudioStream(const SDL_AudioSpec *src_spec, const SDL_AudioSpec *dst_spec);
+ * @from SDL_audio.h:1073 SDL_AudioStream * SDL_CreateAudioStream(const SDL_AudioSpec *src_spec, const SDL_AudioSpec *dst_spec);
  */
 SDL_CreateAudioStream: {
       parameters: ["pointer", "pointer"],
@@ -881,6 +891,17 @@ SDL_CreateAudioStream: {
 /**
  * Get the properties associated with an audio stream.
  *
+ * The application can hang any data it wants here, but the following
+ * properties are understood by SDL:
+ *
+ * - `SDL_PROP_AUDIOSTREAM_AUTO_CLEANUP_BOOLEAN`: if true (the default), the
+ *   stream be automatically cleaned up when the audio subsystem quits. If set
+ *   to false, the streams will persist beyond that. This property is ignored
+ *   for streams created through SDL_OpenAudioDeviceStream(), and will always
+ *   be cleaned up. Streams that are not cleaned up will still be unbound from
+ *   devices when the audio subsystem quits. This property was added in SDL
+ *   3.4.0.
+ *
  * @param stream the SDL_AudioStream to query.
  * @returns a valid property ID on success or 0 on failure; call
  *          SDL_GetError() for more information.
@@ -889,7 +910,7 @@ SDL_CreateAudioStream: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_audio.h:1076 SDL_PropertiesID SDL_GetAudioStreamProperties(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1097 SDL_PropertiesID SDL_GetAudioStreamProperties(SDL_AudioStream *stream);
  */
 SDL_GetAudioStreamProperties: {
       parameters: ["pointer"],
@@ -913,7 +934,7 @@ SDL_GetAudioStreamProperties: {
  *
  * @sa SDL_SetAudioStreamFormat
  *
- * @from SDL_audio.h:1094 bool SDL_GetAudioStreamFormat(SDL_AudioStream *stream, SDL_AudioSpec *src_spec, SDL_AudioSpec *dst_spec);
+ * @from SDL_audio.h:1118 bool SDL_GetAudioStreamFormat(SDL_AudioStream *stream, SDL_AudioSpec *src_spec, SDL_AudioSpec *dst_spec);
  */
 SDL_GetAudioStreamFormat: {
       parameters: ["pointer", "pointer", "pointer"],
@@ -956,7 +977,7 @@ SDL_GetAudioStreamFormat: {
  * @sa SDL_GetAudioStreamFormat
  * @sa SDL_SetAudioStreamFrequencyRatio
  *
- * @from SDL_audio.h:1131 bool SDL_SetAudioStreamFormat(SDL_AudioStream *stream, const SDL_AudioSpec *src_spec, const SDL_AudioSpec *dst_spec);
+ * @from SDL_audio.h:1155 bool SDL_SetAudioStreamFormat(SDL_AudioStream *stream, const SDL_AudioSpec *src_spec, const SDL_AudioSpec *dst_spec);
  */
 SDL_SetAudioStreamFormat: {
       parameters: ["pointer", "pointer", "pointer"],
@@ -978,7 +999,7 @@ SDL_SetAudioStreamFormat: {
  *
  * @sa SDL_SetAudioStreamFrequencyRatio
  *
- * @from SDL_audio.h:1147 float SDL_GetAudioStreamFrequencyRatio(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1171 float SDL_GetAudioStreamFrequencyRatio(SDL_AudioStream *stream);
  */
 SDL_GetAudioStreamFrequencyRatio: {
       parameters: ["pointer"],
@@ -991,14 +1012,14 @@ SDL_GetAudioStreamFrequencyRatio: {
  *
  * The frequency ratio is used to adjust the rate at which input data is
  * consumed. Changing this effectively modifies the speed and pitch of the
- * audio. A value greater than 1.0 will play the audio faster, and at a higher
- * pitch. A value less than 1.0 will play the audio slower, and at a lower
- * pitch.
+ * audio. A value greater than 1.0f will play the audio faster, and at a
+ * higher pitch. A value less than 1.0f will play the audio slower, and at a
+ * lower pitch. 1.0f means play at normal speed.
  *
  * This is applied during SDL_GetAudioStreamData, and can be continuously
  * changed to create various effects.
  *
- * @param stream the stream the frequency ratio is being changed.
+ * @param stream the stream on which the frequency ratio is being changed.
  * @param ratio the frequency ratio. 1.0 is normal speed. Must be between 0.01
  *              and 100.
  * @returns true on success or false on failure; call SDL_GetError() for more
@@ -1012,7 +1033,7 @@ SDL_GetAudioStreamFrequencyRatio: {
  * @sa SDL_GetAudioStreamFrequencyRatio
  * @sa SDL_SetAudioStreamFormat
  *
- * @from SDL_audio.h:1175 bool SDL_SetAudioStreamFrequencyRatio(SDL_AudioStream *stream, float ratio);
+ * @from SDL_audio.h:1199 bool SDL_SetAudioStreamFrequencyRatio(SDL_AudioStream *stream, float ratio);
  */
 SDL_SetAudioStreamFrequencyRatio: {
       parameters: ["pointer", "f32"],
@@ -1039,7 +1060,7 @@ SDL_SetAudioStreamFrequencyRatio: {
  *
  * @sa SDL_SetAudioStreamGain
  *
- * @from SDL_audio.h:1196 float SDL_GetAudioStreamGain(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1220 float SDL_GetAudioStreamGain(SDL_AudioStream *stream);
  */
 SDL_GetAudioStreamGain: {
       parameters: ["pointer"],
@@ -1070,7 +1091,7 @@ SDL_GetAudioStreamGain: {
  *
  * @sa SDL_GetAudioStreamGain
  *
- * @from SDL_audio.h:1221 bool SDL_SetAudioStreamGain(SDL_AudioStream *stream, float gain);
+ * @from SDL_audio.h:1245 bool SDL_SetAudioStreamGain(SDL_AudioStream *stream, float gain);
  */
 SDL_SetAudioStreamGain: {
       parameters: ["pointer", "f32"],
@@ -1100,7 +1121,7 @@ SDL_SetAudioStreamGain: {
  *
  * @sa SDL_SetAudioStreamInputChannelMap
  *
- * @from SDL_audio.h:1245 int * SDL_GetAudioStreamInputChannelMap(SDL_AudioStream *stream, int *count);
+ * @from SDL_audio.h:1269 int * SDL_GetAudioStreamInputChannelMap(SDL_AudioStream *stream, int *count);
  */
 SDL_GetAudioStreamInputChannelMap: {
       parameters: ["pointer", "pointer"],
@@ -1130,7 +1151,7 @@ SDL_GetAudioStreamInputChannelMap: {
  *
  * @sa SDL_SetAudioStreamInputChannelMap
  *
- * @from SDL_audio.h:1269 int * SDL_GetAudioStreamOutputChannelMap(SDL_AudioStream *stream, int *count);
+ * @from SDL_audio.h:1293 int * SDL_GetAudioStreamOutputChannelMap(SDL_AudioStream *stream, int *count);
  */
 SDL_GetAudioStreamOutputChannelMap: {
       parameters: ["pointer", "pointer"],
@@ -1190,13 +1211,13 @@ SDL_GetAudioStreamOutputChannelMap: {
  * @threadsafety It is safe to call this function from any thread, as it holds
  *               a stream-specific mutex while running. Don't change the
  *               stream's format to have a different number of channels from a
- *               a different thread at the same time, though!
+ *               different thread at the same time, though!
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_SetAudioStreamInputChannelMap
  *
- * @from SDL_audio.h:1329 bool SDL_SetAudioStreamInputChannelMap(SDL_AudioStream *stream, const int *chmap, int count);
+ * @from SDL_audio.h:1353 bool SDL_SetAudioStreamInputChannelMap(SDL_AudioStream *stream, const int *chmap, int count);
  */
 SDL_SetAudioStreamInputChannelMap: {
       parameters: ["pointer", "pointer", "i32"],
@@ -1210,7 +1231,7 @@ SDL_SetAudioStreamInputChannelMap: {
  * Channel maps are optional; most things do not need them, instead passing
  * data in the [order that SDL expects](CategoryAudio#channel-layouts).
  *
- * The output channel map reorders data that leaving a stream via
+ * The output channel map reorders data that is leaving a stream via
  * SDL_GetAudioStreamData.
  *
  * Each item in the array represents an input channel, and its value is the
@@ -1260,7 +1281,7 @@ SDL_SetAudioStreamInputChannelMap: {
  *
  * @sa SDL_SetAudioStreamInputChannelMap
  *
- * @from SDL_audio.h:1387 bool SDL_SetAudioStreamOutputChannelMap(SDL_AudioStream *stream, const int *chmap, int count);
+ * @from SDL_audio.h:1411 bool SDL_SetAudioStreamOutputChannelMap(SDL_AudioStream *stream, const int *chmap, int count);
  */
 SDL_SetAudioStreamOutputChannelMap: {
       parameters: ["pointer", "pointer", "i32"],
@@ -1296,10 +1317,122 @@ SDL_SetAudioStreamOutputChannelMap: {
  * @sa SDL_GetAudioStreamData
  * @sa SDL_GetAudioStreamQueued
  *
- * @from SDL_audio.h:1417 bool SDL_PutAudioStreamData(SDL_AudioStream *stream, const void *buf, int len);
+ * @from SDL_audio.h:1441 bool SDL_PutAudioStreamData(SDL_AudioStream *stream, const void *buf, int len);
  */
 SDL_PutAudioStreamData: {
       parameters: ["pointer", "pointer", "i32"],
+      result: "bool"
+    },
+
+
+/**
+ * Add external data to an audio stream without copying it.
+ *
+ * Unlike SDL_PutAudioStreamData(), this function does not make a copy of the
+ * provided data, instead storing the provided pointer. This means that the
+ * put operation does not need to allocate and copy the data, but the original
+ * data must remain available until the stream is done with it, either by
+ * being read from the stream in its entirety, or a call to
+ * SDL_ClearAudioStream() or SDL_DestroyAudioStream().
+ *
+ * The data must match the format/channels/samplerate specified in the latest
+ * call to SDL_SetAudioStreamFormat, or the format specified when creating the
+ * stream if it hasn't been changed.
+ *
+ * An optional callback may be provided, which is called when the stream no
+ * longer needs the data. Once this callback fires, the stream will not access
+ * the data again. This callback will fire for any reason the data is no
+ * longer needed, including clearing or destroying the stream.
+ *
+ * Note that there is still an allocation to store tracking information, so
+ * this function is more efficient for larger blocks of data. If you're
+ * planning to put a few samples at a time, it will be more efficient to use
+ * SDL_PutAudioStreamData(), which allocates and buffers in blocks.
+ *
+ * @param stream the stream the audio data is being added to.
+ * @param buf a pointer to the audio data to add.
+ * @param len the number of bytes to add to the stream.
+ * @param callback the callback function to call when the data is no longer
+ *                 needed by the stream. May be NULL.
+ * @param userdata an opaque pointer provided to the callback for its own
+ *                 personal use.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread, but if the
+ *               stream has a callback set, the caller might need to manage
+ *               extra locking.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_ClearAudioStream
+ * @sa SDL_FlushAudioStream
+ * @sa SDL_GetAudioStreamData
+ * @sa SDL_GetAudioStreamQueued
+ *
+ * @from SDL_audio.h:1518 bool SDL_PutAudioStreamDataNoCopy(SDL_AudioStream *stream, const void *buf, int len, SDL_AudioStreamDataCompleteCallback callback, void *userdata);
+ */
+SDL_PutAudioStreamDataNoCopy: {
+      parameters: ["pointer", "pointer", "i32", "function", "pointer"],
+      result: "bool"
+    },
+
+
+/**
+ * Add data to the stream with each channel in a separate array.
+ *
+ * This data must match the format/channels/samplerate specified in the latest
+ * call to SDL_SetAudioStreamFormat, or the format specified when creating the
+ * stream if it hasn't been changed.
+ *
+ * The data will be interleaved and queued. Note that SDL_AudioStream only
+ * operates on interleaved data, so this is simply a convenience function for
+ * easily queueing data from sources that provide separate arrays. There is no
+ * equivalent function to retrieve planar data.
+ *
+ * The arrays in `channel_buffers` are ordered as they are to be interleaved;
+ * the first array will be the first sample in the interleaved data. Any
+ * individual array may be NULL; in this case, silence will be interleaved for
+ * that channel.
+ *
+ * `num_channels` specifies how many arrays are in `channel_buffers`. This can
+ * be used as a safety to prevent overflow, in case the stream format has
+ * changed elsewhere. If more channels are specified than the current input
+ * spec, they are ignored. If less channels are specified, the missing arrays
+ * are treated as if they are NULL (silence is written to those channels). If
+ * the count is -1, SDL will assume the array count matches the current input
+ * spec.
+ *
+ * Note that `num_samples` is the number of _samples per array_. This can also
+ * be thought of as the number of _sample frames_ to be queued. A value of 1
+ * with stereo arrays will queue two samples to the stream. This is different
+ * than SDL_PutAudioStreamData, which wants the size of a single array in
+ * bytes.
+ *
+ * @param stream the stream the audio data is being added to.
+ * @param channel_buffers a pointer to an array of arrays, one array per
+ *                        channel.
+ * @param num_channels the number of arrays in `channel_buffers` or -1.
+ * @param num_samples the number of _samples_ per array to write to the
+ *                    stream.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread, but if the
+ *               stream has a callback set, the caller might need to manage
+ *               extra locking.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_ClearAudioStream
+ * @sa SDL_FlushAudioStream
+ * @sa SDL_GetAudioStreamData
+ * @sa SDL_GetAudioStreamQueued
+ *
+ * @from SDL_audio.h:1571 bool SDL_PutAudioStreamPlanarData(SDL_AudioStream *stream, const void * const *channel_buffers, int num_channels, int num_samples);
+ */
+SDL_PutAudioStreamPlanarData: {
+      parameters: ["pointer", "pointer", "i32", "i32"],
       result: "bool"
     },
 
@@ -1332,7 +1465,7 @@ SDL_PutAudioStreamData: {
  * @sa SDL_GetAudioStreamAvailable
  * @sa SDL_PutAudioStreamData
  *
- * @from SDL_audio.h:1447 int SDL_GetAudioStreamData(SDL_AudioStream *stream, void *buf, int len);
+ * @from SDL_audio.h:1601 int SDL_GetAudioStreamData(SDL_AudioStream *stream, void *buf, int len);
  */
 SDL_GetAudioStreamData: {
       parameters: ["pointer", "pointer", "i32"],
@@ -1364,7 +1497,7 @@ SDL_GetAudioStreamData: {
  * @sa SDL_GetAudioStreamData
  * @sa SDL_PutAudioStreamData
  *
- * @from SDL_audio.h:1473 int SDL_GetAudioStreamAvailable(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1627 int SDL_GetAudioStreamAvailable(SDL_AudioStream *stream);
  */
 SDL_GetAudioStreamAvailable: {
       parameters: ["pointer"],
@@ -1408,7 +1541,7 @@ SDL_GetAudioStreamAvailable: {
  * @sa SDL_PutAudioStreamData
  * @sa SDL_ClearAudioStream
  *
- * @from SDL_audio.h:1512 int SDL_GetAudioStreamQueued(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1666 int SDL_GetAudioStreamQueued(SDL_AudioStream *stream);
  */
 SDL_GetAudioStreamQueued: {
       parameters: ["pointer"],
@@ -1434,7 +1567,7 @@ SDL_GetAudioStreamQueued: {
  *
  * @sa SDL_PutAudioStreamData
  *
- * @from SDL_audio.h:1533 bool SDL_FlushAudioStream(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1687 bool SDL_FlushAudioStream(SDL_AudioStream *stream);
  */
 SDL_FlushAudioStream: {
       parameters: ["pointer"],
@@ -1461,7 +1594,7 @@ SDL_FlushAudioStream: {
  * @sa SDL_GetAudioStreamQueued
  * @sa SDL_PutAudioStreamData
  *
- * @from SDL_audio.h:1554 bool SDL_ClearAudioStream(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1708 bool SDL_ClearAudioStream(SDL_AudioStream *stream);
  */
 SDL_ClearAudioStream: {
       parameters: ["pointer"],
@@ -1491,7 +1624,7 @@ SDL_ClearAudioStream: {
  *
  * @sa SDL_ResumeAudioStreamDevice
  *
- * @from SDL_audio.h:1578 bool SDL_PauseAudioStreamDevice(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1732 bool SDL_PauseAudioStreamDevice(SDL_AudioStream *stream);
  */
 SDL_PauseAudioStreamDevice: {
       parameters: ["pointer"],
@@ -1507,8 +1640,8 @@ SDL_PauseAudioStreamDevice: {
  * previously been paused. Once unpaused, any bound audio streams will begin
  * to progress again, and audio can be generated.
  *
- * Remember, SDL_OpenAudioDeviceStream opens device in a paused state, so this
- * function call is required for audio playback to begin on such device.
+ * SDL_OpenAudioDeviceStream opens audio devices in a paused state, so this
+ * function call is required for audio playback to begin on such devices.
  *
  * @param stream the audio stream associated with the audio device to resume.
  * @returns true on success or false on failure; call SDL_GetError() for more
@@ -1520,7 +1653,7 @@ SDL_PauseAudioStreamDevice: {
  *
  * @sa SDL_PauseAudioStreamDevice
  *
- * @from SDL_audio.h:1601 bool SDL_ResumeAudioStreamDevice(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1755 bool SDL_ResumeAudioStreamDevice(SDL_AudioStream *stream);
  */
 SDL_ResumeAudioStreamDevice: {
       parameters: ["pointer"],
@@ -1545,7 +1678,7 @@ SDL_ResumeAudioStreamDevice: {
  * @sa SDL_PauseAudioStreamDevice
  * @sa SDL_ResumeAudioStreamDevice
  *
- * @from SDL_audio.h:1620 bool SDL_AudioStreamDevicePaused(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1774 bool SDL_AudioStreamDevicePaused(SDL_AudioStream *stream);
  */
 SDL_AudioStreamDevicePaused: {
       parameters: ["pointer"],
@@ -1579,7 +1712,7 @@ SDL_AudioStreamDevicePaused: {
  *
  * @sa SDL_UnlockAudioStream
  *
- * @from SDL_audio.h:1649 bool SDL_LockAudioStream(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1803 bool SDL_LockAudioStream(SDL_AudioStream *stream);
  */
 SDL_LockAudioStream: {
       parameters: ["pointer"],
@@ -1603,7 +1736,7 @@ SDL_LockAudioStream: {
  *
  * @sa SDL_LockAudioStream
  *
- * @from SDL_audio.h:1668 bool SDL_UnlockAudioStream(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1822 bool SDL_UnlockAudioStream(SDL_AudioStream *stream);
  */
 SDL_UnlockAudioStream: {
       parameters: ["pointer"],
@@ -1655,7 +1788,7 @@ SDL_UnlockAudioStream: {
  *
  * @sa SDL_SetAudioStreamPutCallback
  *
- * @from SDL_audio.h:1756 bool SDL_SetAudioStreamGetCallback(SDL_AudioStream *stream, SDL_AudioStreamCallback callback, void *userdata);
+ * @from SDL_audio.h:1910 bool SDL_SetAudioStreamGetCallback(SDL_AudioStream *stream, SDL_AudioStreamCallback callback, void *userdata);
  */
 SDL_SetAudioStreamGetCallback: {
       parameters: ["pointer", "function", "pointer"],
@@ -1710,7 +1843,7 @@ SDL_SetAudioStreamGetCallback: {
  *
  * @sa SDL_SetAudioStreamGetCallback
  *
- * @from SDL_audio.h:1805 bool SDL_SetAudioStreamPutCallback(SDL_AudioStream *stream, SDL_AudioStreamCallback callback, void *userdata);
+ * @from SDL_audio.h:1959 bool SDL_SetAudioStreamPutCallback(SDL_AudioStream *stream, SDL_AudioStreamCallback callback, void *userdata);
  */
 SDL_SetAudioStreamPutCallback: {
       parameters: ["pointer", "function", "pointer"],
@@ -1737,7 +1870,7 @@ SDL_SetAudioStreamPutCallback: {
  *
  * @sa SDL_CreateAudioStream
  *
- * @from SDL_audio.h:1827 void SDL_DestroyAudioStream(SDL_AudioStream *stream);
+ * @from SDL_audio.h:1981 void SDL_DestroyAudioStream(SDL_AudioStream *stream);
  */
 SDL_DestroyAudioStream: {
       parameters: ["pointer"],
@@ -1761,7 +1894,7 @@ SDL_DestroyAudioStream: {
  * Also unlike other functions, the audio device begins paused. This is to map
  * more closely to SDL2-style behavior, since there is no extra step here to
  * bind a stream to begin audio flowing. The audio device should be resumed
- * with `SDL_ResumeAudioStreamDevice(stream);`
+ * with SDL_ResumeAudioStreamDevice().
  *
  * This function works with both playback and recording devices.
  *
@@ -1805,7 +1938,7 @@ SDL_DestroyAudioStream: {
  * @sa SDL_GetAudioStreamDevice
  * @sa SDL_ResumeAudioStreamDevice
  *
- * @from SDL_audio.h:1890 SDL_AudioStream * SDL_OpenAudioDeviceStream(SDL_AudioDeviceID devid, const SDL_AudioSpec *spec, SDL_AudioStreamCallback callback, void *userdata);
+ * @from SDL_audio.h:2044 SDL_AudioStream * SDL_OpenAudioDeviceStream(SDL_AudioDeviceID devid, const SDL_AudioSpec *spec, SDL_AudioStreamCallback callback, void *userdata);
  */
 SDL_OpenAudioDeviceStream: {
       parameters: ["u32", "pointer", "function", "pointer"],
@@ -1865,7 +1998,7 @@ SDL_OpenAudioDeviceStream: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_audio.h:1981 bool SDL_SetAudioPostmixCallback(SDL_AudioDeviceID devid, SDL_AudioPostmixCallback callback, void *userdata);
+ * @from SDL_audio.h:2135 bool SDL_SetAudioPostmixCallback(SDL_AudioDeviceID devid, SDL_AudioPostmixCallback callback, void *userdata);
  */
 SDL_SetAudioPostmixCallback: {
       parameters: ["u32", "function", "pointer"],
@@ -1951,7 +2084,7 @@ SDL_SetAudioPostmixCallback: {
  * @sa SDL_free
  * @sa SDL_LoadWAV
  *
- * @from SDL_audio.h:2062 bool SDL_LoadWAV_IO(SDL_IOStream *src, bool closeio, SDL_AudioSpec *spec, Uint8 **audio_buf, Uint32 *audio_len);
+ * @from SDL_audio.h:2216 bool SDL_LoadWAV_IO(SDL_IOStream *src, bool closeio, SDL_AudioSpec *spec, Uint8 **audio_buf, Uint32 *audio_len);
  */
 SDL_LoadWAV_IO: {
       parameters: ["pointer", "bool", "pointer", "pointer", "pointer"],
@@ -1993,7 +2126,7 @@ SDL_LoadWAV_IO: {
  * @sa SDL_free
  * @sa SDL_LoadWAV_IO
  *
- * @from SDL_audio.h:2098 bool SDL_LoadWAV(const char *path, SDL_AudioSpec *spec, Uint8 **audio_buf, Uint32 *audio_len);
+ * @from SDL_audio.h:2252 bool SDL_LoadWAV(const char *path, SDL_AudioSpec *spec, Uint8 **audio_buf, Uint32 *audio_len);
  */
 SDL_LoadWAV: {
       parameters: ["pointer", "pointer", "pointer", "pointer"],
@@ -2035,7 +2168,7 @@ SDL_LoadWAV: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_audio.h:2134 bool SDL_MixAudio(Uint8 *dst, const Uint8 *src, SDL_AudioFormat format, Uint32 len, float volume);
+ * @from SDL_audio.h:2288 bool SDL_MixAudio(Uint8 *dst, const Uint8 *src, SDL_AudioFormat format, Uint32 len, float volume);
  */
 SDL_MixAudio: {
       parameters: ["pointer", "pointer", "u32", "u32", "f32"],
@@ -2071,7 +2204,7 @@ SDL_MixAudio: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_audio.h:2164 bool SDL_ConvertAudioSamples(const SDL_AudioSpec *src_spec, const Uint8 *src_data, int src_len, const SDL_AudioSpec *dst_spec, Uint8 **dst_data, int *dst_len);
+ * @from SDL_audio.h:2318 bool SDL_ConvertAudioSamples(const SDL_AudioSpec *src_spec, const Uint8 *src_data, int src_len, const SDL_AudioSpec *dst_spec, Uint8 **dst_data, int *dst_len);
  */
 SDL_ConvertAudioSamples: {
       parameters: ["pointer", "pointer", "i32", "pointer", "pointer", "pointer"],
@@ -2090,7 +2223,7 @@ SDL_ConvertAudioSamples: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_audio.h:2177 const char * SDL_GetAudioFormatName(SDL_AudioFormat format);
+ * @from SDL_audio.h:2331 const char * SDL_GetAudioFormatName(SDL_AudioFormat format);
  */
 SDL_GetAudioFormatName: {
       parameters: ["u32"],
@@ -2112,7 +2245,7 @@ SDL_GetAudioFormatName: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_audio.h:2193 int SDL_GetSilenceValueForFormat(SDL_AudioFormat format);
+ * @from SDL_audio.h:2347 int SDL_GetSilenceValueForFormat(SDL_AudioFormat format);
  */
 SDL_GetSilenceValueForFormat: {
       parameters: ["u32"],

@@ -10,7 +10,7 @@
  * This category covers measuring time elapsed (SDL_GetTicks(),
  * SDL_GetPerformanceCounter()), putting a thread to sleep for a certain
  * amount of time (SDL_Delay(), SDL_DelayNS(), SDL_DelayPrecise()), and firing
- * a callback function after a certain amount of time has elasped
+ * a callback function after a certain amount of time has elapsed
  * (SDL_AddTimer(), etc).
  *
  * There are also useful macros to convert between time units, like
@@ -44,16 +44,20 @@
 export const symbols = {
 
 /**
- * Get the number of milliseconds since SDL library initialization.
+ * Get the number of milliseconds that have elapsed since the SDL library
+ * initialization.
  *
- * @returns an unsigned 64-bit value representing the number of milliseconds
- *          since the SDL library initialized.
+ * @returns an unsigned 64‑bit integer that represents the number of
+ *          milliseconds that have elapsed since the SDL library was
+ *          initialized (typically via a call to SDL_Init).
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_timer.h:196 Uint64 SDL_GetTicks(void);
+ * @sa SDL_GetTicksNS
+ *
+ * @from SDL_timer.h:200 Uint64 SDL_GetTicks(void);
  */
 SDL_GetTicks: {
       parameters: [],
@@ -71,7 +75,7 @@ SDL_GetTicks: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_timer.h:208 Uint64 SDL_GetTicksNS(void);
+ * @from SDL_timer.h:212 Uint64 SDL_GetTicksNS(void);
  */
 SDL_GetTicksNS: {
       parameters: [],
@@ -96,7 +100,7 @@ SDL_GetTicksNS: {
  *
  * @sa SDL_GetPerformanceFrequency
  *
- * @from SDL_timer.h:227 Uint64 SDL_GetPerformanceCounter(void);
+ * @from SDL_timer.h:231 Uint64 SDL_GetPerformanceCounter(void);
  */
 SDL_GetPerformanceCounter: {
       parameters: [],
@@ -115,7 +119,7 @@ SDL_GetPerformanceCounter: {
  *
  * @sa SDL_GetPerformanceCounter
  *
- * @from SDL_timer.h:240 Uint64 SDL_GetPerformanceFrequency(void);
+ * @from SDL_timer.h:244 Uint64 SDL_GetPerformanceFrequency(void);
  */
 SDL_GetPerformanceFrequency: {
       parameters: [],
@@ -139,7 +143,7 @@ SDL_GetPerformanceFrequency: {
  * @sa SDL_DelayNS
  * @sa SDL_DelayPrecise
  *
- * @from SDL_timer.h:258 void SDL_Delay(Uint32 ms);
+ * @from SDL_timer.h:262 void SDL_Delay(Uint32 ms);
  */
 SDL_Delay: {
       parameters: ["u32"],
@@ -163,7 +167,7 @@ SDL_Delay: {
  * @sa SDL_Delay
  * @sa SDL_DelayPrecise
  *
- * @from SDL_timer.h:276 void SDL_DelayNS(Uint64 ns);
+ * @from SDL_timer.h:280 void SDL_DelayNS(Uint64 ns);
  */
 SDL_DelayNS: {
       parameters: ["u64"],
@@ -187,7 +191,7 @@ SDL_DelayNS: {
  * @sa SDL_Delay
  * @sa SDL_DelayNS
  *
- * @from SDL_timer.h:294 void SDL_DelayPrecise(Uint64 ns);
+ * @from SDL_timer.h:298 void SDL_DelayPrecise(Uint64 ns);
  */
 SDL_DelayPrecise: {
       parameters: ["u64"],
@@ -229,7 +233,7 @@ SDL_DelayPrecise: {
  * @sa SDL_AddTimerNS
  * @sa SDL_RemoveTimer
  *
- * @from SDL_timer.h:363 SDL_TimerID SDL_AddTimer(Uint32 interval, SDL_TimerCallback callback, void *userdata);
+ * @from SDL_timer.h:367 SDL_TimerID SDL_AddTimer(Uint32 interval, SDL_TimerCallback callback, void *userdata);
  */
 SDL_AddTimer: {
       parameters: ["u32", "function", "pointer"],
@@ -271,7 +275,7 @@ SDL_AddTimer: {
  * @sa SDL_AddTimer
  * @sa SDL_RemoveTimer
  *
- * @from SDL_timer.h:425 SDL_TimerID SDL_AddTimerNS(Uint64 interval, SDL_NSTimerCallback callback, void *userdata);
+ * @from SDL_timer.h:429 SDL_TimerID SDL_AddTimerNS(Uint64 interval, SDL_NSTimerCallback callback, void *userdata);
  */
 SDL_AddTimerNS: {
       parameters: ["u64", "function", "pointer"],
@@ -292,7 +296,7 @@ SDL_AddTimerNS: {
  *
  * @sa SDL_AddTimer
  *
- * @from SDL_timer.h:440 bool SDL_RemoveTimer(SDL_TimerID id);
+ * @from SDL_timer.h:444 bool SDL_RemoveTimer(SDL_TimerID id);
  */
 SDL_RemoveTimer: {
       parameters: ["u32"],

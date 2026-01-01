@@ -128,32 +128,78 @@
 */
 
 /**
- * @from SDL_audio:150
+ * Mask of bits in an SDL_AudioFormat that contains the format bit size.
+ *
+ * Generally one should use SDL_AUDIO_BITSIZE instead of this macro directly.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_audio.h:150
  */
 export const SDL_AUDIO_MASK_BITSIZE = (0xFFu);
 
 /**
- * @from SDL_audio:159
+ * Mask of bits in an SDL_AudioFormat that contain the floating point flag.
+ *
+ * Generally one should use SDL_AUDIO_ISFLOAT instead of this macro directly.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_audio.h:159
  */
 export const SDL_AUDIO_MASK_FLOAT = (1u<<8);
 
 /**
- * @from SDL_audio:169
+ * Mask of bits in an SDL_AudioFormat that contain the bigendian flag.
+ *
+ * Generally one should use SDL_AUDIO_ISBIGENDIAN or SDL_AUDIO_ISLITTLEENDIAN
+ * instead of this macro directly.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_audio.h:169
  */
 export const SDL_AUDIO_MASK_BIG_ENDIAN = (1u<<12);
 
 /**
- * @from SDL_audio:178
+ * Mask of bits in an SDL_AudioFormat that contain the signed data flag.
+ *
+ * Generally one should use SDL_AUDIO_ISSIGNED instead of this macro directly.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_audio.h:178
  */
 export const SDL_AUDIO_MASK_SIGNED = (1u<<15);
 
 /**
- * @from SDL_audio:384
+ * A value used to request a default playback audio device.
+ *
+ * Several functions that require an SDL_AudioDeviceID will accept this value
+ * to signify the app just wants the system to choose a default device instead
+ * of the app providing a specific one.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_audio.h:384
  */
 export const SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK = ((SDL_AudioDeviceID) 0xFFFFFFFFu);
 
 /**
- * @from SDL_audio:395
+ * A value used to request a default recording audio device.
+ *
+ * Several functions that require an SDL_AudioDeviceID will accept this value
+ * to signify the app just wants the system to choose a default device instead
+ * of the app providing a specific one.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_audio.h:395
  */
 export const SDL_AUDIO_DEVICE_DEFAULT_RECORDING = ((SDL_AudioDeviceID) 0xFFFFFFFEu);
+
+/**
+ * @from SDL_audio:1099
+ */
+export const SDL_PROP_AUDIOSTREAM_AUTO_CLEANUP_BOOLEAN = "SDL.audiostream.auto_cleanup";
 

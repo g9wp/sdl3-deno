@@ -23,7 +23,7 @@ export abstract class EventUnion {
     this.push();
   }
 
-  /**< SDL_DISPLAYEVENT_* */
+  /**< SDL_EVENT_DISPLAY_* */
   get display(): _.DisplayEvent {
     return _.read_DisplayEvent(this.dt);
   }
@@ -257,6 +257,15 @@ export abstract class EventUnion {
     this.push();
   }
 
+  /**< ::SDL_EVENT_PINCH_BEGIN or ::SDL_EVENT_PINCH_UPDATE or ::SDL_EVENT_PINCH_END */
+  get pinchFinger(): _.PinchFingerEvent {
+    return _.read_PinchFingerEvent(this.dt);
+  }
+  pushPinchFinger(e: PartialComm_T<_.PinchFingerEvent>) {
+    _.write_PinchFingerEvent({ reserved: 0, timestamp: 0n, ...e }, this.dt);
+    this.push();
+  }
+
   /**< SDL_EVENT_PEN_PROXIMITY_IN or SDL_EVENT_PEN_PROXIMITY_OUT */
   get penProximity(): _.PenProximityEvent {
     return _.read_PenProximityEvent(this.dt);
@@ -338,7 +347,7 @@ export abstract class EventUnion {
     this.push();
   }
 
-  /**< SDL_EVENT_USER through SDL_EVENT_LAST-1, Uint32 because these are not in the SDL_EventType enumeration */
+  /**< SDL_EVENT_USER through SDL_EVENT_LAST, Uint32 because these are not in the SDL_EventType enumeration */
   get user(): _.UserEvent {
     return _.read_UserEvent(this.dt);
   }
@@ -359,6 +368,7 @@ export abstract class EventUnion {
     case EventType.DISPLAY_DESKTOP_MODE_CHANGED: return this.display;
     case EventType.DISPLAY_CURRENT_MODE_CHANGED: return this.display;
     case EventType.DISPLAY_CONTENT_SCALE_CHANGED: return this.display;
+    case EventType.DISPLAY_USABLE_BOUNDS_CHANGED: return this.display;
     case EventType.WINDOW_SHOWN: return this.window;
     case EventType.WINDOW_HIDDEN: return this.window;
     case EventType.WINDOW_EXPOSED: return this.window;
@@ -422,6 +432,9 @@ export abstract class EventUnion {
     case EventType.FINGER_UP: return this.touchFinger;
     case EventType.FINGER_MOTION: return this.touchFinger;
     case EventType.FINGER_CANCELED: return this.touchFinger;
+    case EventType.PINCH_BEGIN: return this.pinchFinger;
+    case EventType.PINCH_UPDATE: return this.pinchFinger;
+    case EventType.PINCH_END: return this.pinchFinger;
     case EventType.CLIPBOARD_UPDATE: return this.clipboard;
     case EventType.DROP_FILE: return this.drop;
     case EventType.DROP_TEXT: return this.drop;

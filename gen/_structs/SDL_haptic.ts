@@ -49,7 +49,7 @@
  * {
  *    SDL_Haptic *haptic;
  *    SDL_HapticEffect effect;
- *    int effect_id;
+ *    SDL_HapticEffectID effect_id;
  *
  *    // Open the device
  *    haptic = SDL_OpenHapticFromJoystick(joystick);
@@ -221,10 +221,10 @@ import * as _ from "@denosaurs/byte-type";
  * @sa SDL_HapticEffect
  * @sa SDL_GetNumHapticAxes
  *
- * @from SDL_haptic.h:545
+ * @from SDL_haptic.h:565
  */
 export const SDL_HapticDirection = new _.Struct({
-  type: _.u8, /**< Uint8 : The type of encoding. */
+  type: _.u8, /**< SDL_HapticDirectionType : The type of encoding. */
   dir: new _.ArrayType(_.i32, 3), /**< Sint32[3] : The encoded direction. */
 });
 
@@ -243,11 +243,11 @@ export const SDL_HapticDirection = new _.Struct({
  * @sa SDL_HAPTIC_CONSTANT
  * @sa SDL_HapticEffect
  *
- * @from SDL_haptic.h:565
+ * @from SDL_haptic.h:585
  */
 export const SDL_HapticConstant = new _.Struct({
     /* Header */
-  type: _.u16, /**< Uint16 : SDL_HAPTIC_CONSTANT */
+  type: _.u16, /**< SDL_HapticEffectType : SDL_HAPTIC_CONSTANT */
   direction: SDL_HapticDirection, /**< SDL_HapticDirection : Direction of the effect. */
     /* Replay */
   length: _.u32, /**< Uint32 : Duration of the effect. */
@@ -328,13 +328,13 @@ export const SDL_HapticConstant = new _.Struct({
  * @sa SDL_HAPTIC_SAWTOOTHDOWN
  * @sa SDL_HapticEffect
  *
- * @from SDL_haptic.h:651
+ * @from SDL_haptic.h:671
  */
 export const SDL_HapticPeriodic = new _.Struct({
     /* Header */
-  type: _.u16, /**< Uint16 : SDL_HAPTIC_SINE, SDL_HAPTIC_SQUARE
-                             SDL_HAPTIC_TRIANGLE, SDL_HAPTIC_SAWTOOTHUP or
-                             SDL_HAPTIC_SAWTOOTHDOWN */
+  type: _.u16, /**< SDL_HapticEffectType : SDL_HAPTIC_SINE, SDL_HAPTIC_SQUARE
+                                         SDL_HAPTIC_TRIANGLE, SDL_HAPTIC_SAWTOOTHUP or
+                                         SDL_HAPTIC_SAWTOOTHDOWN */
   direction: SDL_HapticDirection, /**< SDL_HapticDirection : Direction of the effect. */
     /* Replay */
   length: _.u32, /**< Uint32 : Duration of the effect. */
@@ -383,12 +383,12 @@ export const SDL_HapticPeriodic = new _.Struct({
  * @sa SDL_HAPTIC_FRICTION
  * @sa SDL_HapticEffect
  *
- * @from SDL_haptic.h:707
+ * @from SDL_haptic.h:727
  */
 export const SDL_HapticCondition = new _.Struct({
     /* Header */
-  type: _.u16, /**< Uint16 : SDL_HAPTIC_SPRING, SDL_HAPTIC_DAMPER,
-                                 SDL_HAPTIC_INERTIA or SDL_HAPTIC_FRICTION */
+  type: _.u16, /**< SDL_HapticEffectType : SDL_HAPTIC_SPRING, SDL_HAPTIC_DAMPER,
+                                         SDL_HAPTIC_INERTIA or SDL_HAPTIC_FRICTION */
   direction: SDL_HapticDirection, /**< SDL_HapticDirection : Direction of the effect. */
     /* Replay */
   length: _.u32, /**< Uint32 : Duration of the effect. */
@@ -422,11 +422,11 @@ export const SDL_HapticCondition = new _.Struct({
  * @sa SDL_HAPTIC_RAMP
  * @sa SDL_HapticEffect
  *
- * @from SDL_haptic.h:746
+ * @from SDL_haptic.h:766
  */
 export const SDL_HapticRamp = new _.Struct({
     /* Header */
-  type: _.u16, /**< Uint16 : SDL_HAPTIC_RAMP */
+  type: _.u16, /**< SDL_HapticEffectType : SDL_HAPTIC_RAMP */
   direction: SDL_HapticDirection, /**< SDL_HapticDirection : Direction of the effect. */
     /* Replay */
   length: _.u32, /**< Uint32 : Duration of the effect. */
@@ -460,11 +460,11 @@ export const SDL_HapticRamp = new _.Struct({
  * @sa SDL_HAPTIC_LEFTRIGHT
  * @sa SDL_HapticEffect
  *
- * @from SDL_haptic.h:785
+ * @from SDL_haptic.h:805
  */
 export const SDL_HapticLeftRight = new _.Struct({
     /* Header */
-  type: _.u16, /**< Uint16 : SDL_HAPTIC_LEFTRIGHT */
+  type: _.u16, /**< SDL_HapticEffectType : SDL_HAPTIC_LEFTRIGHT */
     /* Replay */
   length: _.u32, /**< Uint32 : Duration of the effect in milliseconds. */
     /* Rumble */
@@ -491,11 +491,11 @@ export const SDL_HapticLeftRight = new _.Struct({
  * @sa SDL_HAPTIC_CUSTOM
  * @sa SDL_HapticEffect
  *
- * @from SDL_haptic.h:815
+ * @from SDL_haptic.h:835
  */
 export const SDL_HapticCustom = new _.Struct({
     /* Header */
-  type: _.u16, /**< Uint16 : SDL_HAPTIC_CUSTOM */
+  type: _.u16, /**< SDL_HapticEffectType : SDL_HAPTIC_CUSTOM */
   direction: SDL_HapticDirection, /**< SDL_HapticDirection : Direction of the effect. */
     /* Replay */
   length: _.u32, /**< Uint32 : Duration of the effect. */

@@ -34,7 +34,9 @@
  * @from SDL_ttf:46 SDL_TTF_
  */
 export enum TTF {
-  MAJOR_VERSION = 3, 
+  MAJOR_VERSION = 3, /**
+ * Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
+ */
   MINOR_VERSION = 2, 
   MICRO_VERSION = 2, 
 }

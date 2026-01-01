@@ -49,7 +49,7 @@
  * {
  *    SDL_Haptic *haptic;
  *    SDL_HapticEffect effect;
- *    int effect_id;
+ *    SDL_HapticEffectID effect_id;
  *
  *    // Open the device
  *    haptic = SDL_OpenHapticFromJoystick(joystick);
@@ -222,24 +222,24 @@ import * as _b from "../_structs/SDL_haptic.ts";
  * @sa SDL_HapticEffect
  * @sa SDL_GetNumHapticAxes
  *
- * @from SDL_haptic.h:545
+ * @from SDL_haptic.h:565
  */
 export interface HapticDirection {
-  type: number; /**< Uint8 : The type of encoding. */
+  type: number; /**< SDL_HapticDirectionType : The type of encoding. */
   dir: number[]; /**< Sint32[3] : The encoded direction. */
 }
 
 export function read_HapticDirection(dt: DataView): HapticDirection {
   const t = _b.SDL_HapticDirection.read(dt);
   return {
-    type: t.type, /** Uint8 */
+    type: t.type, /** SDL_HapticDirectionType */
     dir: t.dir, /** Sint32 */
   };
 }
 
 export function write_HapticDirection(t: HapticDirection, dt: DataView) {
   _b.SDL_HapticDirection.write({
-    type: t.type, /** Uint8 */
+    type: t.type, /** SDL_HapticDirectionType */
     dir: t.dir, /** Sint32 */
   }, dt);
 }
@@ -258,11 +258,11 @@ export function write_HapticDirection(t: HapticDirection, dt: DataView) {
  * @sa SDL_HAPTIC_CONSTANT
  * @sa SDL_HapticEffect
  *
- * @from SDL_haptic.h:565
+ * @from SDL_haptic.h:585
  */
 export interface HapticConstant {
     /* Header */
-  type: number; /**< Uint16 : SDL_HAPTIC_CONSTANT */
+  type: number; /**< SDL_HapticEffectType : SDL_HAPTIC_CONSTANT */
   direction: HapticDirection; /**< SDL_HapticDirection : Direction of the effect. */
     /* Replay */
   length: number; /**< Uint32 : Duration of the effect. */
@@ -283,7 +283,7 @@ export function read_HapticConstant(dt: DataView): HapticConstant {
   const t = _b.SDL_HapticConstant.read(dt);
   return {
     /* Header */
-    type: t.type, /** Uint16 */
+    type: t.type, /** SDL_HapticEffectType */
     direction: t.direction, /** SDL_HapticDirection */
     /* Replay */
     length: t.length, /** Uint32 */
@@ -304,7 +304,7 @@ export function read_HapticConstant(dt: DataView): HapticConstant {
 export function write_HapticConstant(t: HapticConstant, dt: DataView) {
   _b.SDL_HapticConstant.write({
     /* Header */
-    type: t.type, /** Uint16 */
+    type: t.type, /** SDL_HapticEffectType */
     direction: t.direction, /** SDL_HapticDirection */
     /* Replay */
     length: t.length, /** Uint32 */
@@ -385,13 +385,13 @@ export function write_HapticConstant(t: HapticConstant, dt: DataView) {
  * @sa SDL_HAPTIC_SAWTOOTHDOWN
  * @sa SDL_HapticEffect
  *
- * @from SDL_haptic.h:651
+ * @from SDL_haptic.h:671
  */
 export interface HapticPeriodic {
     /* Header */
-  type: number; /**< Uint16 : SDL_HAPTIC_SINE, SDL_HAPTIC_SQUARE
-                             SDL_HAPTIC_TRIANGLE, SDL_HAPTIC_SAWTOOTHUP or
-                             SDL_HAPTIC_SAWTOOTHDOWN */
+  type: number; /**< SDL_HapticEffectType : SDL_HAPTIC_SINE, SDL_HAPTIC_SQUARE
+                                         SDL_HAPTIC_TRIANGLE, SDL_HAPTIC_SAWTOOTHUP or
+                                         SDL_HAPTIC_SAWTOOTHDOWN */
   direction: HapticDirection; /**< SDL_HapticDirection : Direction of the effect. */
     /* Replay */
   length: number; /**< Uint32 : Duration of the effect. */
@@ -415,7 +415,7 @@ export function read_HapticPeriodic(dt: DataView): HapticPeriodic {
   const t = _b.SDL_HapticPeriodic.read(dt);
   return {
     /* Header */
-    type: t.type, /** Uint16 */
+    type: t.type, /** SDL_HapticEffectType */
     direction: t.direction, /** SDL_HapticDirection */
     /* Replay */
     length: t.length, /** Uint32 */
@@ -439,7 +439,7 @@ export function read_HapticPeriodic(dt: DataView): HapticPeriodic {
 export function write_HapticPeriodic(t: HapticPeriodic, dt: DataView) {
   _b.SDL_HapticPeriodic.write({
     /* Header */
-    type: t.type, /** Uint16 */
+    type: t.type, /** SDL_HapticEffectType */
     direction: t.direction, /** SDL_HapticDirection */
     /* Replay */
     length: t.length, /** Uint32 */
@@ -488,12 +488,12 @@ export function write_HapticPeriodic(t: HapticPeriodic, dt: DataView) {
  * @sa SDL_HAPTIC_FRICTION
  * @sa SDL_HapticEffect
  *
- * @from SDL_haptic.h:707
+ * @from SDL_haptic.h:727
  */
 export interface HapticCondition {
     /* Header */
-  type: number; /**< Uint16 : SDL_HAPTIC_SPRING, SDL_HAPTIC_DAMPER,
-                                 SDL_HAPTIC_INERTIA or SDL_HAPTIC_FRICTION */
+  type: number; /**< SDL_HapticEffectType : SDL_HAPTIC_SPRING, SDL_HAPTIC_DAMPER,
+                                         SDL_HAPTIC_INERTIA or SDL_HAPTIC_FRICTION */
   direction: HapticDirection; /**< SDL_HapticDirection : Direction of the effect. */
     /* Replay */
   length: number; /**< Uint32 : Duration of the effect. */
@@ -514,7 +514,7 @@ export function read_HapticCondition(dt: DataView): HapticCondition {
   const t = _b.SDL_HapticCondition.read(dt);
   return {
     /* Header */
-    type: t.type, /** Uint16 */
+    type: t.type, /** SDL_HapticEffectType */
     direction: t.direction, /** SDL_HapticDirection */
     /* Replay */
     length: t.length, /** Uint32 */
@@ -535,7 +535,7 @@ export function read_HapticCondition(dt: DataView): HapticCondition {
 export function write_HapticCondition(t: HapticCondition, dt: DataView) {
   _b.SDL_HapticCondition.write({
     /* Header */
-    type: t.type, /** Uint16 */
+    type: t.type, /** SDL_HapticEffectType */
     direction: t.direction, /** SDL_HapticDirection */
     /* Replay */
     length: t.length, /** Uint32 */
@@ -569,11 +569,11 @@ export function write_HapticCondition(t: HapticCondition, dt: DataView) {
  * @sa SDL_HAPTIC_RAMP
  * @sa SDL_HapticEffect
  *
- * @from SDL_haptic.h:746
+ * @from SDL_haptic.h:766
  */
 export interface HapticRamp {
     /* Header */
-  type: number; /**< Uint16 : SDL_HAPTIC_RAMP */
+  type: number; /**< SDL_HapticEffectType : SDL_HAPTIC_RAMP */
   direction: HapticDirection; /**< SDL_HapticDirection : Direction of the effect. */
     /* Replay */
   length: number; /**< Uint32 : Duration of the effect. */
@@ -595,7 +595,7 @@ export function read_HapticRamp(dt: DataView): HapticRamp {
   const t = _b.SDL_HapticRamp.read(dt);
   return {
     /* Header */
-    type: t.type, /** Uint16 */
+    type: t.type, /** SDL_HapticEffectType */
     direction: t.direction, /** SDL_HapticDirection */
     /* Replay */
     length: t.length, /** Uint32 */
@@ -617,7 +617,7 @@ export function read_HapticRamp(dt: DataView): HapticRamp {
 export function write_HapticRamp(t: HapticRamp, dt: DataView) {
   _b.SDL_HapticRamp.write({
     /* Header */
-    type: t.type, /** Uint16 */
+    type: t.type, /** SDL_HapticEffectType */
     direction: t.direction, /** SDL_HapticDirection */
     /* Replay */
     length: t.length, /** Uint32 */
@@ -651,11 +651,11 @@ export function write_HapticRamp(t: HapticRamp, dt: DataView) {
  * @sa SDL_HAPTIC_LEFTRIGHT
  * @sa SDL_HapticEffect
  *
- * @from SDL_haptic.h:785
+ * @from SDL_haptic.h:805
  */
 export interface HapticLeftRight {
     /* Header */
-  type: number; /**< Uint16 : SDL_HAPTIC_LEFTRIGHT */
+  type: number; /**< SDL_HapticEffectType : SDL_HAPTIC_LEFTRIGHT */
     /* Replay */
   length: number; /**< Uint32 : Duration of the effect in milliseconds. */
     /* Rumble */
@@ -667,7 +667,7 @@ export function read_HapticLeftRight(dt: DataView): HapticLeftRight {
   const t = _b.SDL_HapticLeftRight.read(dt);
   return {
     /* Header */
-    type: t.type, /** Uint16 */
+    type: t.type, /** SDL_HapticEffectType */
     /* Replay */
     length: t.length, /** Uint32 */
     /* Rumble */
@@ -679,7 +679,7 @@ export function read_HapticLeftRight(dt: DataView): HapticLeftRight {
 export function write_HapticLeftRight(t: HapticLeftRight, dt: DataView) {
   _b.SDL_HapticLeftRight.write({
     /* Header */
-    type: t.type, /** Uint16 */
+    type: t.type, /** SDL_HapticEffectType */
     /* Replay */
     length: t.length, /** Uint32 */
     /* Rumble */
@@ -706,11 +706,11 @@ export function write_HapticLeftRight(t: HapticLeftRight, dt: DataView) {
  * @sa SDL_HAPTIC_CUSTOM
  * @sa SDL_HapticEffect
  *
- * @from SDL_haptic.h:815
+ * @from SDL_haptic.h:835
  */
 export interface HapticCustom {
     /* Header */
-  type: number; /**< Uint16 : SDL_HAPTIC_CUSTOM */
+  type: number; /**< SDL_HapticEffectType : SDL_HAPTIC_CUSTOM */
   direction: HapticDirection; /**< SDL_HapticDirection : Direction of the effect. */
     /* Replay */
   length: number; /**< Uint32 : Duration of the effect. */
@@ -734,7 +734,7 @@ export function read_HapticCustom(dt: DataView): HapticCustom {
   const t = _b.SDL_HapticCustom.read(dt);
   return {
     /* Header */
-    type: t.type, /** Uint16 */
+    type: t.type, /** SDL_HapticEffectType */
     direction: t.direction, /** SDL_HapticDirection */
     /* Replay */
     length: t.length, /** Uint32 */
@@ -758,7 +758,7 @@ export function read_HapticCustom(dt: DataView): HapticCustom {
 export function write_HapticCustom(t: HapticCustom, dt: DataView) {
   _b.SDL_HapticCustom.write({
     /* Header */
-    type: t.type, /** Uint16 */
+    type: t.type, /** SDL_HapticEffectType */
     direction: t.direction, /** SDL_HapticDirection */
     /* Replay */
     length: t.length, /** Uint32 */

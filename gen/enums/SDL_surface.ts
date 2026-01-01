@@ -8,12 +8,16 @@
  * provides a reasonable toolbox for transforming the data, including copying
  * between surfaces, filling rectangles in the image data, etc.
  *
- * There is also a simple .bmp loader, SDL_LoadBMP(). SDL itself does not
- * provide loaders for various other file formats, but there are several
- * excellent external libraries that do, including its own satellite library,
- * SDL_image:
+ * There is also a simple .bmp loader, SDL_LoadBMP(), and a simple .png
+ * loader, SDL_LoadPNG(). SDL itself does not provide loaders for other file
+ * formats, but there are several excellent external libraries that do,
+ * including its own satellite library,
+ * [SDL_image](https://wiki.libsdl.org/SDL3_image)
+ * .
  *
- * https://github.com/libsdl-org/SDL_image
+ * In general these functions are thread-safe in that they can be called on
+ * different threads with different surfaces. You should not try to modify any
+ * surface from two threads simultaneously.
  *
  * @module
  */
@@ -40,7 +44,7 @@
 */
 
 /**
- * @from SDL_surface:65 SDL_SURFACE_
+ * @from SDL_surface:69 SDL_SURFACE_
  */
 export enum SURFACE {
   PREALLOCATED = 0x00000001, /**< Surface uses preallocated pixel memory */
@@ -52,7 +56,7 @@ export enum SURFACE {
 
 
 /**
- * @from SDL_surface:248 SDL_PROP_SURFACE_
+ * @from SDL_surface:260 SDL_PROP_SURFACE_
  */
 export enum PROP_SURFACE {
   SDR_WHITE_POINT_FLOAT = "SDL.surface.SDR_white_point", 
@@ -60,6 +64,7 @@ export enum PROP_SURFACE {
   TONEMAP_OPERATOR_STRING = "SDL.surface.tonemap", 
   HOTSPOT_X_NUMBER = "SDL.surface.hotspot.x", 
   HOTSPOT_Y_NUMBER = "SDL.surface.hotspot.y", 
+  ROTATION_FLOAT = "SDL.surface.rotation", 
 }
 
 
@@ -69,12 +74,13 @@ export enum PROP_SURFACE {
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @from SDL_surface.h:82 SDL_SCALEMODE_
+ * @from SDL_surface.h:86 SDL_SCALEMODE_
  */
 export enum SDL_ScaleMode {
   INVALID = -1, 
   NEAREST, /**< nearest pixel sampling */
   LINEAR, /**< linear filtering */
+  PIXELART, /**< nearest pixel sampling with improved scaling for pixel art, available since SDL 3.4.0 */
 }
 
 
@@ -84,12 +90,13 @@ export enum SDL_ScaleMode {
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @from SDL_surface.h:94 SDL_FLIP_
+ * @from SDL_surface.h:99 SDL_FLIP_
  */
 export enum SDL_FlipMode {
   NONE, /**< Do not flip */
   HORIZONTAL, /**< flip horizontally */
   VERTICAL, /**< flip vertically */
+  HORIZONTAL_AND_VERTICAL = (HORIZONTAL | VERTICAL)    , /**< flip horizontally and vertically (not a diagonal flip) */
 }
 
 

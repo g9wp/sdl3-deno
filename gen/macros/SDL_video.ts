@@ -49,27 +49,75 @@
 */
 
 /**
- * @from SDL_video:100
+ * The pointer to the global `wl_display` object used by the Wayland video
+ * backend.
+ *
+ * Can be set before the video subsystem is initialized to import an external
+ * `wl_display` object from an application or toolkit for use in SDL, or read
+ * after initialization to export the `wl_display` used by the Wayland video
+ * backend. Setting this property after the video subsystem has been
+ * initialized has no effect, and reading it when the video subsystem is
+ * uninitialized will either return the user provided value, if one was set
+ * prior to initialization, or NULL. See docs/README-wayland.md for more
+ * information.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_video.h:102
  */
 export const SDL_PROP_GLOBAL_VIDEO_WAYLAND_WL_DISPLAY_POINTER = "SDL.video.wayland.wl_display";
 
 /**
- * @from SDL_video:223
+ * A magic value used with SDL_WINDOWPOS_UNDEFINED.
+ *
+ * Generally this macro isn't used directly, but rather through
+ * SDL_WINDOWPOS_UNDEFINED or SDL_WINDOWPOS_UNDEFINED_DISPLAY.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_SetWindowPosition
+ *
+ * @from SDL_video.h:234
  */
 export const SDL_WINDOWPOS_UNDEFINED_MASK = 0x1FFF0000u;
 
 /**
- * @from SDL_video:244
+ * Used to indicate that you don't care what the window position/display is.
+ *
+ * This always uses the primary display.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_SetWindowPosition
+ *
+ * @from SDL_video.h:259
  */
 export const SDL_WINDOWPOS_UNDEFINED = SDL_WINDOWPOS_UNDEFINED_DISPLAY(0);
 
 /**
- * @from SDL_video:263
+ * A magic value used with SDL_WINDOWPOS_CENTERED.
+ *
+ * Generally this macro isn't used directly, but rather through
+ * SDL_WINDOWPOS_CENTERED or SDL_WINDOWPOS_CENTERED_DISPLAY.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_SetWindowPosition
+ *
+ * @from SDL_video.h:282
  */
 export const SDL_WINDOWPOS_CENTERED_MASK = 0x2FFF0000u;
 
 /**
- * @from SDL_video:284
+ * Used to indicate that the window position should be centered.
+ *
+ * This always uses the primary display.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_SetWindowPosition
+ *
+ * @from SDL_video.h:307
  */
 export const SDL_WINDOWPOS_CENTERED = SDL_WINDOWPOS_CENTERED_DISPLAY(0);
 

@@ -49,7 +49,7 @@
 */
 
 /**
- * @from SDL_video:188 SDL_WINDOW_
+ * @from SDL_video:196 SDL_WINDOW_
  */
 export enum WINDOW {
   FULLSCREEN = (0x0000000000000001), /**< window is in fullscreen mode */
@@ -73,6 +73,7 @@ export enum WINDOW {
   TOOLTIP = (0x0000000000040000), /**< window should be treated as a tooltip and does not get mouse or keyboard focus, requires a parent window */
   POPUP_MENU = (0x0000000000080000), /**< window should be treated as a popup menu, requires a parent window */
   KEYBOARD_GRABBED = (0x0000000000100000), /**< window has grabbed keyboard input */
+  FILL_DOCUMENT = (0x0000000000200000), /**< window is in fill-document mode (Emscripten only), since SDL 3.4.0 */
   VULKAN = (0x0000000010000000), /**< window usable for Vulkan surface */
   METAL = (0x0000000020000000), /**< window usable for Metal view */
   TRANSPARENT = (0x0000000040000000), /**< window with transparent buffer */
@@ -82,7 +83,7 @@ export enum WINDOW {
 
 
 /**
- * @from SDL_video:465 SDL_GL_CONTEXT_PROFILE_
+ * @from SDL_video:508 SDL_GL_CONTEXT_PROFILE_
  */
 export enum GL_CONTEXT_PROFILE {
   CORE = 0x0001, /**< OpenGL Core Profile context */
@@ -93,7 +94,7 @@ export enum GL_CONTEXT_PROFILE {
 
 
 /**
- * @from SDL_video:477 SDL_GL_CONTEXT_
+ * @from SDL_video:520 SDL_GL_CONTEXT_
  */
 export enum GL_CONTEXT {
   DEBUG_FLAG = 0x0001, 
@@ -105,7 +106,7 @@ export enum GL_CONTEXT {
 
 
 /**
- * @from SDL_video:491 SDL_GL_CONTEXT_RELEASE_BEHAVIOR_
+ * @from SDL_video:534 SDL_GL_CONTEXT_RELEASE_BEHAVIOR_
  */
 export enum GL_CONTEXT_RELEASE_BEHAVIOR {
   NONE = 0x0000, 
@@ -115,7 +116,7 @@ export enum GL_CONTEXT_RELEASE_BEHAVIOR {
 
 
 /**
- * @from SDL_video:502 SDL_GL_CONTEXT_RESET_
+ * @from SDL_video:545 SDL_GL_CONTEXT_RESET_
  */
 export enum GL_CONTEXT_RESET {
   NO_NOTIFICATION = 0x0000, 
@@ -125,17 +126,19 @@ export enum GL_CONTEXT_RESET {
 
 
 /**
- * @from SDL_video:629 SDL_PROP_DISPLAY_
+ * @from SDL_video:683 SDL_PROP_DISPLAY_
  */
 export enum PROP_DISPLAY {
   HDR_ENABLED_BOOLEAN = "SDL.display.HDR_enabled", 
   KMSDRM_PANEL_ORIENTATION_NUMBER = "SDL.display.KMSDRM.panel_orientation", 
+  WAYLAND_WL_OUTPUT_POINTER = "SDL.display.wayland.wl_output", 
+  WINDOWS_HMONITOR_POINTER = "SDL.display.windows.hmonitor", 
 }
 
 
 
 /**
- * @from SDL_video:1333 SDL_PROP_WINDOW_CREATE_
+ * @from SDL_video:1410 SDL_PROP_WINDOW_CREATE_
  */
 export enum PROP_WINDOW_CREATE {
   ALWAYS_ON_TOP_BOOLEAN = "SDL.window.create.always_on_top", 
@@ -167,18 +170,21 @@ export enum PROP_WINDOW_CREATE {
   Y_NUMBER = "SDL.window.create.y", 
   COCOA_WINDOW_POINTER = "SDL.window.create.cocoa.window", 
   COCOA_VIEW_POINTER = "SDL.window.create.cocoa.view", 
+  WINDOWSCENE_POINTER = "SDL.window.create.uikit.windowscene", 
   WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN = "SDL.window.create.wayland.surface_role_custom", 
   WAYLAND_CREATE_EGL_WINDOW_BOOLEAN = "SDL.window.create.wayland.create_egl_window", 
   WAYLAND_WL_SURFACE_POINTER = "SDL.window.create.wayland.wl_surface", 
   WIN32_HWND_POINTER = "SDL.window.create.win32.hwnd", 
   WIN32_PIXEL_FORMAT_HWND_POINTER = "SDL.window.create.win32.pixel_format_hwnd", 
   X11_WINDOW_NUMBER = "SDL.window.create.x11.window", 
+  EMSCRIPTEN_CANVAS_ID_STRING = "SDL.window.create.emscripten.canvas_id", 
+  EMSCRIPTEN_KEYBOARD_ELEMENT_STRING = "SDL.window.create.emscripten.keyboard_element", 
 }
 
 
 
 /**
- * @from SDL_video:1542 SDL_PROP_WINDOW_
+ * @from SDL_video:1629 SDL_PROP_WINDOW_
  */
 export enum PROP_WINDOW {
   SHAPE_POINTER = "SDL.window.shape", 
@@ -197,7 +203,7 @@ export enum PROP_WINDOW {
   KMSDRM_GBM_DEVICE_POINTER = "SDL.window.kmsdrm.gbm_dev", 
   COCOA_WINDOW_POINTER = "SDL.window.cocoa.window", 
   COCOA_METAL_VIEW_TAG_NUMBER = "SDL.window.cocoa.metal_view_tag", 
-  OPENVR_OVERLAY_ID = "SDL.window.openvr.overlay_id", 
+  OPENVR_OVERLAY_ID_NUMBER = "SDL.window.openvr.overlay_id", 
   VIVANTE_DISPLAY_POINTER = "SDL.window.vivante.display", 
   VIVANTE_WINDOW_POINTER = "SDL.window.vivante.window", 
   VIVANTE_SURFACE_POINTER = "SDL.window.vivante.surface", 
@@ -216,12 +222,14 @@ export enum PROP_WINDOW {
   X11_DISPLAY_POINTER = "SDL.window.x11.display", 
   X11_SCREEN_NUMBER = "SDL.window.x11.screen", 
   X11_WINDOW_NUMBER = "SDL.window.x11.window", 
+  EMSCRIPTEN_CANVAS_ID_STRING = "SDL.window.emscripten.canvas_id", 
+  EMSCRIPTEN_KEYBOARD_ELEMENT_STRING = "SDL.window.emscripten.keyboard_element", 
 }
 
 
 
 /**
- * @from SDL_video:2337 SDL_WINDOW_SURFACE_VSYNC_
+ * @from SDL_video:2462 SDL_WINDOW_SURFACE_VSYNC_
  */
 export enum WINDOW_SURFACE_VSYNC {
   DISABLED = 0, 
@@ -235,7 +243,7 @@ export enum WINDOW_SURFACE_VSYNC {
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @from SDL_video.h:107 SDL_SYSTEM_THEME_
+ * @from SDL_video.h:109 SDL_SYSTEM_THEME_
  */
 export enum SDL_SystemTheme {
   UNKNOWN, /**< Unknown system theme */
@@ -250,7 +258,7 @@ export enum SDL_SystemTheme {
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @from SDL_video.h:156 SDL_ORIENTATION_
+ * @from SDL_video.h:158 SDL_ORIENTATION_
  */
 export enum SDL_DisplayOrientation {
   UNKNOWN, /**< The display orientation can't be determined */
@@ -267,12 +275,30 @@ export enum SDL_DisplayOrientation {
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @from SDL_video.h:302 SDL_FLASH_
+ * @from SDL_video.h:327 SDL_FLASH_
  */
 export enum SDL_FlashOperation {
   CANCEL, /**< Cancel any window flash state */
   BRIEFLY, /**< Flash the window briefly to get attention */
   UNTIL_FOCUSED, /**< Flash the window until it gets focus */
+}
+
+
+
+/**
+ * Window progress state
+ *
+ * @since This enum is available since SDL 3.2.8.
+ *
+ * @from SDL_video.h:339 SDL_PROGRESS_STATE_
+ */
+export enum SDL_ProgressState {
+  INVALID = -1, /**< An invalid progress state indicating an error; check SDL_GetError() */
+  NONE, /**< No progress bar is shown */
+  INDETERMINATE, /**< The progress bar is shown in a indeterminate state */
+  NORMAL, /**< The progress bar is shown in a normal state */
+  PAUSED, /**< The progress bar is shown in a paused state */
+  ERROR, /**< The progress bar is shown in a state indicating the application had an error */
 }
 
 
@@ -294,7 +320,7 @@ export enum SDL_FlashOperation {
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @from SDL_video.h:426 SDL_GL_
+ * @from SDL_video.h:469 SDL_GL_
  */
 export enum SDL_GLAttr {
   RED_SIZE, /**< the minimum number of bits for the red channel of the color buffer; defaults to 8. */
@@ -319,7 +345,7 @@ export enum SDL_GLAttr {
   CONTEXT_FLAGS, /**< some combination of 0 or more of elements of the SDL_GLContextFlag enumeration; defaults to 0. */
   CONTEXT_PROFILE_MASK, /**< type of GL context (Core, Compatibility, ES). See SDL_GLProfile; default value depends on platform. */
   SHARE_WITH_CURRENT_CONTEXT, /**< OpenGL context sharing; defaults to 0. */
-  FRAMEBUFFER_SRGB_CAPABLE, /**< requests sRGB capable visual; defaults to 0. */
+  FRAMEBUFFER_SRGB_CAPABLE, /**< requests sRGB-capable visual if 1. Defaults to -1 ("don't care"). This is a request; GL drivers might not comply! */
   CONTEXT_RELEASE_BEHAVIOR, /**< sets context the release behavior. See SDL_GLContextReleaseFlag; defaults to FLUSH. */
   CONTEXT_RESET_NOTIFICATION, /**< set context reset notification. See SDL_GLContextResetNotification; defaults to NO_NOTIFICATION. */
   CONTEXT_NO_ERROR, 
@@ -338,7 +364,7 @@ export enum SDL_GLAttr {
  *
  * @sa SDL_HitTest
  *
- * @from SDL_video.h:2703 SDL_HITTEST_
+ * @from SDL_video.h:2827 SDL_HITTEST_
  */
 export enum SDL_HitTestResult {
   NORMAL, /**< Region is normal. No special properties. */

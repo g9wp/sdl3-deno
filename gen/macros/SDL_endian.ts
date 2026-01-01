@@ -41,12 +41,44 @@
 */
 
 /**
- * @from SDL_endian:85
+ * A value to represent littleendian byteorder.
+ *
+ * This is used with the preprocessor macro SDL_BYTEORDER, to determine a
+ * platform's byte ordering:
+ *
+ * ```c
+ * #if SDL_BYTEORDER == SDL_LIL_ENDIAN
+ * SDL_Log("This system is littleendian.");
+ * #endif
+ * ```
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_BYTEORDER
+ * @sa SDL_BIG_ENDIAN
+ *
+ * @from SDL_endian.h:85
  */
 export const SDL_LIL_ENDIAN = 1234;
 
 /**
- * @from SDL_endian:104
+ * A value to represent bigendian byteorder.
+ *
+ * This is used with the preprocessor macro SDL_BYTEORDER, to determine a
+ * platform's byte ordering:
+ *
+ * ```c
+ * #if SDL_BYTEORDER == SDL_BIG_ENDIAN
+ * SDL_Log("This system is bigendian.");
+ * #endif
+ * ```
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_BYTEORDER
+ * @sa SDL_LIL_ENDIAN
+ *
+ * @from SDL_endian.h:104
  */
 export const SDL_BIG_ENDIAN = 4321;
 

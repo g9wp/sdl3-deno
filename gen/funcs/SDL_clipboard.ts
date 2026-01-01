@@ -230,7 +230,8 @@ SDL_HasPrimarySelectionText: {
  * @param cleanup a function pointer to the function that cleans up the
  *                clipboard data.
  * @param userdata an opaque pointer that will be forwarded to the callbacks.
- * @param mime_types a list of mime-types that are being offered. SDL copies the given list.
+ * @param mime_types a list of mime-types that are being offered. SDL copies
+ *                   the given list.
  * @param num_mime_types the number of mime-types in the mime_types list.
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.

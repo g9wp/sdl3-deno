@@ -18,9 +18,9 @@
  * may also be stretched with linear interpolation.
  *
  * This API is designed to accelerate simple 2D operations. You may want more
- * functionality such as polygons and particle effects and in that case you
- * should use SDL's OpenGL/Direct3D support, the SDL3 GPU API, or one of the
- * many good 3D engines.
+ * functionality such as 3D polygons and particle effects, and in that case
+ * you should use SDL's OpenGL/Direct3D support, the SDL3 GPU API, or one of
+ * the many good 3D engines.
  *
  * These functions must be called from the main thread. See this bug for
  * details: https://github.com/libsdl-org/SDL/issues/986
@@ -60,6 +60,7 @@ export {
   PROP_TEXTURE as PROP_TEXTURE,
   RENDERER_VSYNC as RENDERER_VSYNC,
   SDL_TextureAccess as TEXTUREACCESS,
+  SDL_TextureAddressMode as TEXTURE_ADDRESS,
   SDL_RendererLogicalPresentation as LOGICAL_PRESENTATION,
 } from "../enums/SDL_render.ts"
 
@@ -81,7 +82,7 @@ export {
  * @sa SDL_CreateRenderer
  * @sa SDL_GetRenderDriver
  *
- * @from SDL_render.h:164 int SDL_GetNumRenderDrivers(void);
+ * @from SDL_render.h:191 int SDL_GetNumRenderDrivers(void);
  */
 export function getNumRenderDrivers(): number {
   return lib.symbols.SDL_GetNumRenderDrivers();
@@ -109,7 +110,7 @@ export function getNumRenderDrivers(): number {
  *
  * @sa SDL_GetNumRenderDrivers
  *
- * @from SDL_render.h:188 const char * SDL_GetRenderDriver(int index);
+ * @from SDL_render.h:215 const char * SDL_GetRenderDriver(int index);
  */
 export function getRenderDriver(index: number): string {
   return _p.getCstr2(lib.symbols.SDL_GetRenderDriver(index));
@@ -135,7 +136,7 @@ export function getRenderDriver(index: number): string {
  * @sa SDL_CreateRenderer
  * @sa SDL_CreateWindow
  *
- * @from SDL_render.h:210 bool SDL_CreateWindowAndRenderer(const char *title, int width, int height, SDL_WindowFlags window_flags, SDL_Window **window, SDL_Renderer **renderer);
+ * @from SDL_render.h:237 bool SDL_CreateWindowAndRenderer(const char *title, int width, int height, SDL_WindowFlags window_flags, SDL_Window **window, SDL_Renderer **renderer);
  */
 export function createWindowAndRenderer(
     title: string,
@@ -181,7 +182,7 @@ export function createWindowAndRenderer(
  * @sa SDL_GetRenderDriver
  * @sa SDL_GetRendererName
  *
- * @from SDL_render.h:245 SDL_Renderer * SDL_CreateRenderer(SDL_Window *window, const char *name);
+ * @from SDL_render.h:272 SDL_Renderer * SDL_CreateRenderer(SDL_Window *window, const char *name);
  */
 export function createRenderer(window: Deno.PointerValue<"SDL_Window">, name: string): Deno.PointerValue<"SDL_Renderer"> {
   return lib.symbols.SDL_CreateRenderer(window, _p.toCstr(name)) as Deno.PointerValue<"SDL_Renderer">;
@@ -208,6 +209,17 @@ export function createRenderer(window: Deno.PointerValue<"SDL_Window">, name: st
  * - `SDL_PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want
  *   present synchronized with the refresh rate. This property can take any
  *   value that is supported by SDL_SetRenderVSync() for the renderer.
+ *
+ * With the SDL GPU renderer (since SDL 3.4.0):
+ *
+ * - `SDL_PROP_RENDERER_CREATE_GPU_DEVICE_POINTER`: the device to use with the
+ *   renderer, optional.
+ * - `SDL_PROP_RENDERER_CREATE_GPU_SHADERS_SPIRV_BOOLEAN`: the app is able to
+ *   provide SPIR-V shaders to SDL_GPURenderState, optional.
+ * - `SDL_PROP_RENDERER_CREATE_GPU_SHADERS_DXIL_BOOLEAN`: the app is able to
+ *   provide DXIL shaders to SDL_GPURenderState, optional.
+ * - `SDL_PROP_RENDERER_CREATE_GPU_SHADERS_MSL_BOOLEAN`: the app is able to
+ *   provide MSL shaders to SDL_GPURenderState, optional.
  *
  * With the vulkan renderer:
  *
@@ -238,10 +250,65 @@ export function createRenderer(window: Deno.PointerValue<"SDL_Window">, name: st
  * @sa SDL_DestroyRenderer
  * @sa SDL_GetRendererName
  *
- * @from SDL_render.h:298 SDL_Renderer * SDL_CreateRendererWithProperties(SDL_PropertiesID props);
+ * @from SDL_render.h:336 SDL_Renderer * SDL_CreateRendererWithProperties(SDL_PropertiesID props);
  */
 export function createRendererWithProperties(props: number): Deno.PointerValue<"SDL_Renderer"> {
   return lib.symbols.SDL_CreateRendererWithProperties(props) as Deno.PointerValue<"SDL_Renderer">;
+}
+
+/**
+ * Create a 2D GPU rendering context.
+ *
+ * The GPU device to use is passed in as a parameter. If this is NULL, then a
+ * device will be created normally and can be retrieved using
+ * SDL_GetGPURendererDevice().
+ *
+ * The window to use is passed in as a parameter. If this is NULL, then this
+ * will become an offscreen renderer. In that case, you should call
+ * SDL_SetRenderTarget() to setup rendering to a texture, and then call
+ * SDL_RenderPresent() normally to complete drawing a frame.
+ *
+ * @param device the GPU device to use with the renderer, or NULL to create a
+ *               device.
+ * @param window the window where rendering is displayed, or NULL to create an
+ *               offscreen renderer.
+ * @returns a valid rendering context or NULL if there was an error; call
+ *          SDL_GetError() for more information.
+ *
+ * @threadsafety If this function is called with a valid GPU device, it should
+ *               be called on the thread that created the device. If this
+ *               function is called with a valid window, it should be called
+ *               on the thread that created the window.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_CreateRendererWithProperties
+ * @sa SDL_GetGPURendererDevice
+ * @sa SDL_CreateGPUShader
+ * @sa SDL_CreateGPURenderState
+ * @sa SDL_SetGPURenderState
+ *
+ * @from SDL_render.h:386 SDL_Renderer * SDL_CreateGPURenderer(SDL_GPUDevice *device, SDL_Window *window);
+ */
+export function createGpuRenderer(device: Deno.PointerValue<"SDL_GPUDevice">, window: Deno.PointerValue<"SDL_Window">): Deno.PointerValue<"SDL_Renderer"> {
+  return lib.symbols.SDL_CreateGPURenderer(device, window) as Deno.PointerValue<"SDL_Renderer">;
+}
+
+/**
+ * Return the GPU device used by a renderer.
+ *
+ * @param renderer the rendering context.
+ * @returns the GPU device used by the renderer, or NULL if the renderer is
+ *          not a GPU renderer; call SDL_GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @from SDL_render.h:399 SDL_GPUDevice * SDL_GetGPURendererDevice(SDL_Renderer *renderer);
+ */
+export function getGpuRendererDevice(renderer: Deno.PointerValue<"SDL_Renderer">): Deno.PointerValue<"SDL_GPUDevice"> {
+  return lib.symbols.SDL_GetGPURendererDevice(renderer) as Deno.PointerValue<"SDL_GPUDevice">;
 }
 
 /**
@@ -257,13 +324,13 @@ export function createRendererWithProperties(props: number): Deno.PointerValue<"
  * @returns a valid rendering context or NULL if there was an error; call
  *          SDL_GetError() for more information.
  *
- * @threadsafety This function should only be called on the main thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_DestroyRenderer
  *
- * @from SDL_render.h:331 SDL_Renderer * SDL_CreateSoftwareRenderer(SDL_Surface *surface);
+ * @from SDL_render.h:420 SDL_Renderer * SDL_CreateSoftwareRenderer(SDL_Surface *surface);
  */
 export function createSoftwareRenderer(surface: Deno.PointerValue<"SDL_Surface">): Deno.PointerValue<"SDL_Renderer"> {
   return lib.symbols.SDL_CreateSoftwareRenderer(surface) as Deno.PointerValue<"SDL_Renderer">;
@@ -280,7 +347,7 @@ export function createSoftwareRenderer(surface: Deno.PointerValue<"SDL_Surface">
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_render.h:344 SDL_Renderer * SDL_GetRenderer(SDL_Window *window);
+ * @from SDL_render.h:433 SDL_Renderer * SDL_GetRenderer(SDL_Window *window);
  */
 export function getRenderer(window: Deno.PointerValue<"SDL_Window">): Deno.PointerValue<"SDL_Renderer"> {
   return lib.symbols.SDL_GetRenderer(window) as Deno.PointerValue<"SDL_Renderer">;
@@ -297,7 +364,7 @@ export function getRenderer(window: Deno.PointerValue<"SDL_Window">): Deno.Point
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_render.h:357 SDL_Window * SDL_GetRenderWindow(SDL_Renderer *renderer);
+ * @from SDL_render.h:446 SDL_Window * SDL_GetRenderWindow(SDL_Renderer *renderer);
  */
 export function getRenderWindow(renderer: Deno.PointerValue<"SDL_Renderer">): Deno.PointerValue<"SDL_Window"> {
   return lib.symbols.SDL_GetRenderWindow(renderer) as Deno.PointerValue<"SDL_Window">;
@@ -317,7 +384,7 @@ export function getRenderWindow(renderer: Deno.PointerValue<"SDL_Renderer">): De
  * @sa SDL_CreateRenderer
  * @sa SDL_CreateRendererWithProperties
  *
- * @from SDL_render.h:373 const char * SDL_GetRendererName(SDL_Renderer *renderer);
+ * @from SDL_render.h:462 const char * SDL_GetRendererName(SDL_Renderer *renderer);
  */
 export function getRendererName(renderer: Deno.PointerValue<"SDL_Renderer">): string {
   return _p.getCstr2(lib.symbols.SDL_GetRendererName(renderer));
@@ -339,6 +406,8 @@ export function getRendererName(renderer: Deno.PointerValue<"SDL_Renderer">): st
  * - `SDL_PROP_RENDERER_TEXTURE_FORMATS_POINTER`: a (const SDL_PixelFormat *)
  *   array of pixel formats, terminated with SDL_PIXELFORMAT_UNKNOWN,
  *   representing the available texture formats for this renderer.
+ * - `SDL_PROP_RENDERER_TEXTURE_WRAPPING_BOOLEAN`: true if the renderer
+ *   supports SDL_TEXTURE_ADDRESS_WRAP on non-power-of-two textures.
  * - `SDL_PROP_RENDERER_OUTPUT_COLORSPACE_NUMBER`: an SDL_Colorspace value
  *   describing the colorspace for output to the display, defaults to
  *   SDL_COLORSPACE_SRGB.
@@ -407,7 +476,7 @@ export function getRendererName(renderer: Deno.PointerValue<"SDL_Renderer">): st
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_render.h:459 SDL_PropertiesID SDL_GetRendererProperties(SDL_Renderer *renderer);
+ * @from SDL_render.h:550 SDL_PropertiesID SDL_GetRendererProperties(SDL_Renderer *renderer);
  */
 export function getRendererProperties(renderer: Deno.PointerValue<"SDL_Renderer">): number {
   return lib.symbols.SDL_GetRendererProperties(renderer);
@@ -434,7 +503,7 @@ export function getRendererProperties(renderer: Deno.PointerValue<"SDL_Renderer"
  *
  * @sa SDL_GetCurrentRenderOutputSize
  *
- * @from SDL_render.h:507 bool SDL_GetRenderOutputSize(SDL_Renderer *renderer, int *w, int *h);
+ * @from SDL_render.h:599 bool SDL_GetRenderOutputSize(SDL_Renderer *renderer, int *w, int *h);
  */
 export function getRenderOutputSize(renderer: Deno.PointerValue<"SDL_Renderer">): { w: number; h: number } {
   if(!lib.symbols.SDL_GetRenderOutputSize(renderer, _p.i32.p0, _p.i32.p1))
@@ -463,7 +532,7 @@ export function getRenderOutputSize(renderer: Deno.PointerValue<"SDL_Renderer">)
  *
  * @sa SDL_GetRenderOutputSize
  *
- * @from SDL_render.h:530 bool SDL_GetCurrentRenderOutputSize(SDL_Renderer *renderer, int *w, int *h);
+ * @from SDL_render.h:622 bool SDL_GetCurrentRenderOutputSize(SDL_Renderer *renderer, int *w, int *h);
  */
 export function getCurrentRenderOutputSize(renderer: Deno.PointerValue<"SDL_Renderer">): { w: number; h: number } {
   if(!lib.symbols.SDL_GetCurrentRenderOutputSize(renderer, _p.i32.p0, _p.i32.p1))
@@ -494,7 +563,7 @@ export function getCurrentRenderOutputSize(renderer: Deno.PointerValue<"SDL_Rend
  * @sa SDL_GetTextureSize
  * @sa SDL_UpdateTexture
  *
- * @from SDL_render.h:555 SDL_Texture * SDL_CreateTexture(SDL_Renderer *renderer, SDL_PixelFormat format, SDL_TextureAccess access, int w, int h);
+ * @from SDL_render.h:647 SDL_Texture * SDL_CreateTexture(SDL_Renderer *renderer, SDL_PixelFormat format, SDL_TextureAccess access, int w, int h);
  */
 export function createTexture(
     renderer: Deno.PointerValue<"SDL_Renderer">,
@@ -532,7 +601,7 @@ export function createTexture(
  * @sa SDL_CreateTextureWithProperties
  * @sa SDL_DestroyTexture
  *
- * @from SDL_render.h:583 SDL_Texture * SDL_CreateTextureFromSurface(SDL_Renderer *renderer, SDL_Surface *surface);
+ * @from SDL_render.h:675 SDL_Texture * SDL_CreateTextureFromSurface(SDL_Renderer *renderer, SDL_Surface *surface);
  */
 export function createTextureFromSurface(renderer: Deno.PointerValue<"SDL_Renderer">, surface: Deno.PointerValue<"SDL_Surface">): Deno.PointerValue<"SDL_Texture"> {
   return lib.symbols.SDL_CreateTextureFromSurface(renderer, surface) as Deno.PointerValue<"SDL_Texture">;
@@ -556,6 +625,9 @@ export function createTextureFromSurface(renderer: Deno.PointerValue<"SDL_Render
  *   pixels, required
  * - `SDL_PROP_TEXTURE_CREATE_HEIGHT_NUMBER`: the height of the texture in
  *   pixels, required
+ * - `SDL_PROP_TEXTURE_CREATE_PALETTE_POINTER`: an SDL_Palette to use with
+ *   palettized texture formats. This can be set later with
+ *   SDL_SetTexturePalette()
  * - `SDL_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating
  *   point textures, this defines the value of 100% diffuse white, with higher
  *   values being displayed in the High Dynamic Range headroom. This defaults
@@ -628,9 +700,24 @@ export function createTextureFromSurface(renderer: Deno.PointerValue<"SDL_Render
  *
  * With the vulkan renderer:
  *
- * - `SDL_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout
- *   VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
- *   you want to wrap an existing texture.
+ * - `SDL_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage associated
+ *   with the texture, if you want to wrap an existing texture.
+ * - `SDL_PROP_TEXTURE_CREATE_VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
+ *   VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
+ *
+ * With the GPU renderer:
+ *
+ * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_POINTER`: the SDL_GPUTexture
+ *   associated with the texture, if you want to wrap an existing texture.
+ * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the SDL_GPUTexture
+ *   associated with the UV plane of an NV12 texture, if you want to wrap an
+ *   existing texture.
+ * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_NUMBER`: the SDL_GPUTexture
+ *   associated with the U plane of a YUV texture, if you want to wrap an
+ *   existing texture.
+ * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_NUMBER`: the SDL_GPUTexture
+ *   associated with the V plane of a YUV texture, if you want to wrap an
+ *   existing texture.
  *
  * @param renderer the rendering context.
  * @param props the properties to use.
@@ -648,7 +735,7 @@ export function createTextureFromSurface(renderer: Deno.PointerValue<"SDL_Render
  * @sa SDL_GetTextureSize
  * @sa SDL_UpdateTexture
  *
- * @from SDL_render.h:695 SDL_Texture * SDL_CreateTextureWithProperties(SDL_Renderer *renderer, SDL_PropertiesID props);
+ * @from SDL_render.h:805 SDL_Texture * SDL_CreateTextureWithProperties(SDL_Renderer *renderer, SDL_PropertiesID props);
  */
 export function createTextureWithProperties(renderer: Deno.PointerValue<"SDL_Renderer">, props: number): Deno.PointerValue<"SDL_Texture"> {
   return lib.symbols.SDL_CreateTextureWithProperties(renderer, props) as Deno.PointerValue<"SDL_Texture">;
@@ -732,6 +819,17 @@ export function createTextureWithProperties(renderer: Deno.PointerValue<"SDL_Ren
  * - `SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_TARGET_NUMBER`: the GLenum for the
  *   texture target (`GL_TEXTURE_2D`, `GL_TEXTURE_EXTERNAL_OES`, etc)
  *
+ * With the gpu renderer:
+ *
+ * - `SDL_PROP_TEXTURE_GPU_TEXTURE_POINTER`: the SDL_GPUTexture associated
+ *   with the texture
+ * - `SDL_PROP_TEXTURE_GPU_TEXTURE_UV_POINTER`: the SDL_GPUTexture associated
+ *   with the UV plane of an NV12 texture
+ * - `SDL_PROP_TEXTURE_GPU_TEXTURE_U_POINTER`: the SDL_GPUTexture associated
+ *   with the U plane of a YUV texture
+ * - `SDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER`: the SDL_GPUTexture associated
+ *   with the V plane of a YUV texture
+ *
  * @param texture the texture to query.
  * @returns a valid property ID on success or 0 on failure; call
  *          SDL_GetError() for more information.
@@ -740,7 +838,7 @@ export function createTextureWithProperties(renderer: Deno.PointerValue<"SDL_Ren
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_render.h:807 SDL_PropertiesID SDL_GetTextureProperties(SDL_Texture *texture);
+ * @from SDL_render.h:934 SDL_PropertiesID SDL_GetTextureProperties(SDL_Texture *texture);
  */
 export function getTextureProperties(texture: Deno.PointerValue<"SDL_Texture">): number {
   return lib.symbols.SDL_GetTextureProperties(texture);
@@ -757,7 +855,7 @@ export function getTextureProperties(texture: Deno.PointerValue<"SDL_Texture">):
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_render.h:847 SDL_Renderer * SDL_GetRendererFromTexture(SDL_Texture *texture);
+ * @from SDL_render.h:978 SDL_Renderer * SDL_GetRendererFromTexture(SDL_Texture *texture);
  */
 export function getRendererFromTexture(texture: Deno.PointerValue<"SDL_Texture">): Deno.PointerValue<"SDL_Renderer"> {
   return lib.symbols.SDL_GetRendererFromTexture(texture) as Deno.PointerValue<"SDL_Renderer">;
@@ -778,12 +876,57 @@ export function getRendererFromTexture(texture: Deno.PointerValue<"SDL_Texture">
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_render.h:864 bool SDL_GetTextureSize(SDL_Texture *texture, float *w, float *h);
+ * @from SDL_render.h:995 bool SDL_GetTextureSize(SDL_Texture *texture, float *w, float *h);
  */
 export function getTextureSize(texture: Deno.PointerValue<"SDL_Texture">): { w: number; h: number } {
   if(!lib.symbols.SDL_GetTextureSize(texture, _p.f32.p0, _p.f32.p1))
     throw new Error(`SDL_GetTextureSize: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return { w: _p.f32.v0, h: _p.f32.v1 };
+}
+
+/**
+ * Set the palette used by a texture.
+ *
+ * Setting the palette keeps an internal reference to the palette, which can
+ * be safely destroyed afterwards.
+ *
+ * A single palette can be shared with many textures.
+ *
+ * @param texture the texture to update.
+ * @param palette the SDL_Palette structure to use.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_CreatePalette
+ * @sa SDL_GetTexturePalette
+ *
+ * @from SDL_render.h:1017 bool SDL_SetTexturePalette(SDL_Texture *texture, SDL_Palette *palette);
+ */
+export function setTexturePalette(texture: Deno.PointerValue<"SDL_Texture">, palette: Deno.PointerValue<"SDL_Palette">): boolean {
+  return lib.symbols.SDL_SetTexturePalette(texture, palette);
+}
+
+/**
+ * Get the palette used by a texture.
+ *
+ * @param texture the texture to query.
+ * @returns a pointer to the palette used by the texture, or NULL if there is
+ *          no palette used.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_SetTexturePalette
+ *
+ * @from SDL_render.h:1032 SDL_Palette * SDL_GetTexturePalette(SDL_Texture *texture);
+ */
+export function getTexturePalette(texture: Deno.PointerValue<"SDL_Texture">): Deno.PointerValue<"SDL_Palette"> {
+  return lib.symbols.SDL_GetTexturePalette(texture) as Deno.PointerValue<"SDL_Palette">;
 }
 
 /**
@@ -813,7 +956,7 @@ export function getTextureSize(texture: Deno.PointerValue<"SDL_Texture">): { w: 
  * @sa SDL_SetTextureAlphaMod
  * @sa SDL_SetTextureColorModFloat
  *
- * @from SDL_render.h:893 bool SDL_SetTextureColorMod(SDL_Texture *texture, Uint8 r, Uint8 g, Uint8 b);
+ * @from SDL_render.h:1061 bool SDL_SetTextureColorMod(SDL_Texture *texture, Uint8 r, Uint8 g, Uint8 b);
  */
 export function setTextureColorMod(
     texture: Deno.PointerValue<"SDL_Texture">,
@@ -851,7 +994,7 @@ export function setTextureColorMod(
  * @sa SDL_SetTextureAlphaModFloat
  * @sa SDL_SetTextureColorMod
  *
- * @from SDL_render.h:923 bool SDL_SetTextureColorModFloat(SDL_Texture *texture, float r, float g, float b);
+ * @from SDL_render.h:1091 bool SDL_SetTextureColorModFloat(SDL_Texture *texture, float r, float g, float b);
  */
 export function setTextureColorModFloat(
     texture: Deno.PointerValue<"SDL_Texture">,
@@ -880,7 +1023,7 @@ export function setTextureColorModFloat(
  * @sa SDL_GetTextureColorModFloat
  * @sa SDL_SetTextureColorMod
  *
- * @from SDL_render.h:944 bool SDL_GetTextureColorMod(SDL_Texture *texture, Uint8 *r, Uint8 *g, Uint8 *b);
+ * @from SDL_render.h:1112 bool SDL_GetTextureColorMod(SDL_Texture *texture, Uint8 *r, Uint8 *g, Uint8 *b);
  */
 export function getTextureColorMod(texture: Deno.PointerValue<"SDL_Texture">): { r: number; g: number; b: number } {
   if(!lib.symbols.SDL_GetTextureColorMod(texture, _p.u8.p0, _p.u8.p1, _p.u8.p2))
@@ -906,7 +1049,7 @@ export function getTextureColorMod(texture: Deno.PointerValue<"SDL_Texture">): {
  * @sa SDL_GetTextureColorMod
  * @sa SDL_SetTextureColorModFloat
  *
- * @from SDL_render.h:964 bool SDL_GetTextureColorModFloat(SDL_Texture *texture, float *r, float *g, float *b);
+ * @from SDL_render.h:1132 bool SDL_GetTextureColorModFloat(SDL_Texture *texture, float *r, float *g, float *b);
  */
 export function getTextureColorModFloat(texture: Deno.PointerValue<"SDL_Texture">): { r: number; g: number; b: number } {
   if(!lib.symbols.SDL_GetTextureColorModFloat(texture, _p.f32.p0, _p.f32.p1, _p.f32.p2))
@@ -938,7 +1081,7 @@ export function getTextureColorModFloat(texture: Deno.PointerValue<"SDL_Texture"
  * @sa SDL_SetTextureAlphaModFloat
  * @sa SDL_SetTextureColorMod
  *
- * @from SDL_render.h:990 bool SDL_SetTextureAlphaMod(SDL_Texture *texture, Uint8 alpha);
+ * @from SDL_render.h:1158 bool SDL_SetTextureAlphaMod(SDL_Texture *texture, Uint8 alpha);
  */
 export function setTextureAlphaMod(texture: Deno.PointerValue<"SDL_Texture">, alpha: number): boolean {
   return lib.symbols.SDL_SetTextureAlphaMod(texture, alpha);
@@ -968,7 +1111,7 @@ export function setTextureAlphaMod(texture: Deno.PointerValue<"SDL_Texture">, al
  * @sa SDL_SetTextureAlphaMod
  * @sa SDL_SetTextureColorModFloat
  *
- * @from SDL_render.h:1016 bool SDL_SetTextureAlphaModFloat(SDL_Texture *texture, float alpha);
+ * @from SDL_render.h:1184 bool SDL_SetTextureAlphaModFloat(SDL_Texture *texture, float alpha);
  */
 export function setTextureAlphaModFloat(texture: Deno.PointerValue<"SDL_Texture">, alpha: number): boolean {
   return lib.symbols.SDL_SetTextureAlphaModFloat(texture, alpha);
@@ -990,7 +1133,7 @@ export function setTextureAlphaModFloat(texture: Deno.PointerValue<"SDL_Texture"
  * @sa SDL_GetTextureColorMod
  * @sa SDL_SetTextureAlphaMod
  *
- * @from SDL_render.h:1034 bool SDL_GetTextureAlphaMod(SDL_Texture *texture, Uint8 *alpha);
+ * @from SDL_render.h:1202 bool SDL_GetTextureAlphaMod(SDL_Texture *texture, Uint8 *alpha);
  */
 export function getTextureAlphaMod(texture: Deno.PointerValue<"SDL_Texture">): number {
   if(!lib.symbols.SDL_GetTextureAlphaMod(texture, _p.u8.p0))
@@ -1014,7 +1157,7 @@ export function getTextureAlphaMod(texture: Deno.PointerValue<"SDL_Texture">): n
  * @sa SDL_GetTextureColorModFloat
  * @sa SDL_SetTextureAlphaModFloat
  *
- * @from SDL_render.h:1052 bool SDL_GetTextureAlphaModFloat(SDL_Texture *texture, float *alpha);
+ * @from SDL_render.h:1220 bool SDL_GetTextureAlphaModFloat(SDL_Texture *texture, float *alpha);
  */
 export function getTextureAlphaModFloat(texture: Deno.PointerValue<"SDL_Texture">): number {
   if(!lib.symbols.SDL_GetTextureAlphaModFloat(texture, _p.f32.p0))
@@ -1039,7 +1182,7 @@ export function getTextureAlphaModFloat(texture: Deno.PointerValue<"SDL_Texture"
  *
  * @sa SDL_GetTextureBlendMode
  *
- * @from SDL_render.h:1071 bool SDL_SetTextureBlendMode(SDL_Texture *texture, SDL_BlendMode blendMode);
+ * @from SDL_render.h:1239 bool SDL_SetTextureBlendMode(SDL_Texture *texture, SDL_BlendMode blendMode);
  */
 export function setTextureBlendMode(texture: Deno.PointerValue<"SDL_Texture">, blendMode: number): boolean {
   return lib.symbols.SDL_SetTextureBlendMode(texture, blendMode);
@@ -1059,7 +1202,7 @@ export function setTextureBlendMode(texture: Deno.PointerValue<"SDL_Texture">, b
  *
  * @sa SDL_SetTextureBlendMode
  *
- * @from SDL_render.h:1087 bool SDL_GetTextureBlendMode(SDL_Texture *texture, SDL_BlendMode *blendMode);
+ * @from SDL_render.h:1255 bool SDL_GetTextureBlendMode(SDL_Texture *texture, SDL_BlendMode *blendMode);
  */
 export function getTextureBlendMode(texture: Deno.PointerValue<"SDL_Texture">): number {
   if(!lib.symbols.SDL_GetTextureBlendMode(texture, _p.u32.p0))
@@ -1085,7 +1228,7 @@ export function getTextureBlendMode(texture: Deno.PointerValue<"SDL_Texture">): 
  *
  * @sa SDL_GetTextureScaleMode
  *
- * @from SDL_render.h:1107 bool SDL_SetTextureScaleMode(SDL_Texture *texture, SDL_ScaleMode scaleMode);
+ * @from SDL_render.h:1275 bool SDL_SetTextureScaleMode(SDL_Texture *texture, SDL_ScaleMode scaleMode);
  */
 export function setTextureScaleMode(texture: Deno.PointerValue<"SDL_Texture">, scaleMode: number): boolean {
   return lib.symbols.SDL_SetTextureScaleMode(texture, scaleMode);
@@ -1105,7 +1248,7 @@ export function setTextureScaleMode(texture: Deno.PointerValue<"SDL_Texture">, s
  *
  * @sa SDL_SetTextureScaleMode
  *
- * @from SDL_render.h:1123 bool SDL_GetTextureScaleMode(SDL_Texture *texture, SDL_ScaleMode *scaleMode);
+ * @from SDL_render.h:1291 bool SDL_GetTextureScaleMode(SDL_Texture *texture, SDL_ScaleMode *scaleMode);
  */
 export function getTextureScaleMode(texture: Deno.PointerValue<"SDL_Texture">): number {
   if(!lib.symbols.SDL_GetTextureScaleMode(texture, _p.u32.p0))
@@ -1145,7 +1288,7 @@ export function getTextureScaleMode(texture: Deno.PointerValue<"SDL_Texture">): 
  * @sa SDL_UpdateNVTexture
  * @sa SDL_UpdateYUVTexture
  *
- * @from SDL_render.h:1157 bool SDL_UpdateTexture(SDL_Texture *texture, const SDL_Rect *rect, const void *pixels, int pitch);
+ * @from SDL_render.h:1325 bool SDL_UpdateTexture(SDL_Texture *texture, const SDL_Rect *rect, const void *pixels, int pitch);
  */
 export function updateTexture(
     texture: Deno.PointerValue<"SDL_Texture">,
@@ -1187,7 +1330,7 @@ export function updateTexture(
  * @sa SDL_UpdateNVTexture
  * @sa SDL_UpdateTexture
  *
- * @from SDL_render.h:1189 bool SDL_UpdateYUVTexture(SDL_Texture *texture, const SDL_Rect *rect, const Uint8 *Yplane, int Ypitch, const Uint8 *Uplane, int Upitch, const Uint8 *Vplane, int Vpitch);
+ * @from SDL_render.h:1357 bool SDL_UpdateYUVTexture(SDL_Texture *texture, const SDL_Rect *rect, const Uint8 *Yplane, int Ypitch, const Uint8 *Uplane, int Upitch, const Uint8 *Vplane, int Vpitch);
  */
 export function updateYuvTexture(
     texture: Deno.PointerValue<"SDL_Texture">,
@@ -1234,7 +1377,7 @@ export function updateYuvTexture(
  * @sa SDL_UpdateTexture
  * @sa SDL_UpdateYUVTexture
  *
- * @from SDL_render.h:1221 bool SDL_UpdateNVTexture(SDL_Texture *texture, const SDL_Rect *rect, const Uint8 *Yplane, int Ypitch, const Uint8 *UVplane, int UVpitch);
+ * @from SDL_render.h:1389 bool SDL_UpdateNVTexture(SDL_Texture *texture, const SDL_Rect *rect, const Uint8 *Yplane, int Ypitch, const Uint8 *UVplane, int UVpitch);
  */
 export function updateNvTexture(
     texture: Deno.PointerValue<"SDL_Texture">,
@@ -1282,7 +1425,7 @@ export function updateNvTexture(
  * @sa SDL_LockTextureToSurface
  * @sa SDL_UnlockTexture
  *
- * @from SDL_render.h:1256 bool SDL_LockTexture(SDL_Texture *texture, const SDL_Rect *rect, void **pixels, int *pitch);
+ * @from SDL_render.h:1424 bool SDL_LockTexture(SDL_Texture *texture, const SDL_Rect *rect, void **pixels, int *pitch);
  */
 export function lockTexture(texture: Deno.PointerValue<"SDL_Texture">, rect: { x: number; y: number; w: number; h: number; } | null, pixels: Deno.PointerValue): number {
   if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
@@ -1325,7 +1468,7 @@ export function lockTexture(texture: Deno.PointerValue<"SDL_Texture">, rect: { x
  * @sa SDL_LockTexture
  * @sa SDL_UnlockTexture
  *
- * @from SDL_render.h:1294 bool SDL_LockTextureToSurface(SDL_Texture *texture, const SDL_Rect *rect, SDL_Surface **surface);
+ * @from SDL_render.h:1462 bool SDL_LockTextureToSurface(SDL_Texture *texture, const SDL_Rect *rect, SDL_Surface **surface);
  */
 export function lockTextureToSurface(texture: Deno.PointerValue<"SDL_Texture">, rect: { x: number; y: number; w: number; h: number; } | null): Deno.PointerValue<"SDL_Surface"> {
   if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
@@ -1353,7 +1496,7 @@ export function lockTextureToSurface(texture: Deno.PointerValue<"SDL_Texture">, 
  *
  * @sa SDL_LockTexture
  *
- * @from SDL_render.h:1315 void SDL_UnlockTexture(SDL_Texture *texture);
+ * @from SDL_render.h:1483 void SDL_UnlockTexture(SDL_Texture *texture);
  */
 export function unlockTexture(texture: Deno.PointerValue<"SDL_Texture">): void {
   return lib.symbols.SDL_UnlockTexture(texture);
@@ -1384,7 +1527,7 @@ export function unlockTexture(texture: Deno.PointerValue<"SDL_Texture">): void {
  *
  * @sa SDL_GetRenderTarget
  *
- * @from SDL_render.h:1342 bool SDL_SetRenderTarget(SDL_Renderer *renderer, SDL_Texture *texture);
+ * @from SDL_render.h:1510 bool SDL_SetRenderTarget(SDL_Renderer *renderer, SDL_Texture *texture);
  */
 export function setRenderTarget(renderer: Deno.PointerValue<"SDL_Renderer">, texture: Deno.PointerValue<"SDL_Texture">): boolean {
   return lib.symbols.SDL_SetRenderTarget(renderer, texture);
@@ -1405,7 +1548,7 @@ export function setRenderTarget(renderer: Deno.PointerValue<"SDL_Renderer">, tex
  *
  * @sa SDL_SetRenderTarget
  *
- * @from SDL_render.h:1359 SDL_Texture * SDL_GetRenderTarget(SDL_Renderer *renderer);
+ * @from SDL_render.h:1527 SDL_Texture * SDL_GetRenderTarget(SDL_Renderer *renderer);
  */
 export function getRenderTarget(renderer: Deno.PointerValue<"SDL_Renderer">): Deno.PointerValue<"SDL_Texture"> {
   return lib.symbols.SDL_GetRenderTarget(renderer) as Deno.PointerValue<"SDL_Texture">;
@@ -1438,14 +1581,6 @@ export function getRenderTarget(renderer: Deno.PointerValue<"SDL_Renderer">): De
  * specific dimensions but to make fonts look sharp, the app turns off logical
  * presentation while drawing text, for example.
  *
- * For the renderer's window, letterboxing is drawn into the framebuffer if
- * logical presentation is enabled during SDL_RenderPresent; be sure to
- * reenable it before presenting if you were toggling it, otherwise the
- * letterbox areas might have artifacts from previous frames (or artifacts
- * from external overlays, etc). Letterboxing is never drawn into texture
- * render targets; be sure to call SDL_RenderClear() before drawing into the
- * texture so the letterboxing areas are cleared, if appropriate.
- *
  * You can convert coordinates in an event into rendering coordinates using
  * SDL_ConvertEventToRenderCoordinates().
  *
@@ -1464,7 +1599,7 @@ export function getRenderTarget(renderer: Deno.PointerValue<"SDL_Renderer">): De
  * @sa SDL_GetRenderLogicalPresentation
  * @sa SDL_GetRenderLogicalPresentationRect
  *
- * @from SDL_render.h:1414 bool SDL_SetRenderLogicalPresentation(SDL_Renderer *renderer, int w, int h, SDL_RendererLogicalPresentation mode);
+ * @from SDL_render.h:1574 bool SDL_SetRenderLogicalPresentation(SDL_Renderer *renderer, int w, int h, SDL_RendererLogicalPresentation mode);
  */
 export function setRenderLogicalPresentation(
     renderer: Deno.PointerValue<"SDL_Renderer">,
@@ -1479,15 +1614,16 @@ export function setRenderLogicalPresentation(
  * Get device independent resolution and presentation mode for rendering.
  *
  * This function gets the width and height of the logical rendering output, or
- * the output size in pixels if a logical resolution is not enabled.
+ * 0 if a logical resolution is not enabled.
  *
  * Each render target has its own logical presentation state. This function
  * gets the state for the current render target.
  *
  * @param renderer the rendering context.
- * @param w an int to be filled with the width.
- * @param h an int to be filled with the height.
- * @param mode the presentation mode used.
+ * @param w an int filled with the logical presentation width.
+ * @param h an int filled with the logical presentation height.
+ * @param mode a variable filled with the logical presentation mode being
+ *             used.
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
@@ -1497,7 +1633,7 @@ export function setRenderLogicalPresentation(
  *
  * @sa SDL_SetRenderLogicalPresentation
  *
- * @from SDL_render.h:1438 bool SDL_GetRenderLogicalPresentation(SDL_Renderer *renderer, int *w, int *h, SDL_RendererLogicalPresentation *mode);
+ * @from SDL_render.h:1599 bool SDL_GetRenderLogicalPresentation(SDL_Renderer *renderer, int *w, int *h, SDL_RendererLogicalPresentation *mode);
  */
 export function getRenderLogicalPresentation(renderer: Deno.PointerValue<"SDL_Renderer">): { w: number; h: number; mode: number } {
   if(!lib.symbols.SDL_GetRenderLogicalPresentation(renderer, _p.i32.p0, _p.i32.p1, _p.u32.p0))
@@ -1528,7 +1664,7 @@ export function getRenderLogicalPresentation(renderer: Deno.PointerValue<"SDL_Re
  *
  * @sa SDL_SetRenderLogicalPresentation
  *
- * @from SDL_render.h:1463 bool SDL_GetRenderLogicalPresentationRect(SDL_Renderer *renderer, SDL_FRect *rect);
+ * @from SDL_render.h:1624 bool SDL_GetRenderLogicalPresentationRect(SDL_Renderer *renderer, SDL_FRect *rect);
  */
 export function getRenderLogicalPresentationRect(renderer: Deno.PointerValue<"SDL_Renderer">): { x: number; y: number; w: number; h: number; } | null {
   if(!lib.symbols.SDL_GetRenderLogicalPresentationRect(renderer, _p.f32.p0))
@@ -1561,7 +1697,7 @@ export function getRenderLogicalPresentationRect(renderer: Deno.PointerValue<"SD
  * @sa SDL_SetRenderLogicalPresentation
  * @sa SDL_SetRenderScale
  *
- * @from SDL_render.h:1490 bool SDL_RenderCoordinatesFromWindow(SDL_Renderer *renderer, float window_x, float window_y, float *x, float *y);
+ * @from SDL_render.h:1651 bool SDL_RenderCoordinatesFromWindow(SDL_Renderer *renderer, float window_x, float window_y, float *x, float *y);
  */
 export function renderCoordinatesFromWindow(renderer: Deno.PointerValue<"SDL_Renderer">, window_x: number, window_y: number): { x: number; y: number } {
   if(!lib.symbols.SDL_RenderCoordinatesFromWindow(renderer, window_x, window_y, _p.f32.p0, _p.f32.p1))
@@ -1597,7 +1733,7 @@ export function renderCoordinatesFromWindow(renderer: Deno.PointerValue<"SDL_Ren
  * @sa SDL_SetRenderScale
  * @sa SDL_SetRenderViewport
  *
- * @from SDL_render.h:1520 bool SDL_RenderCoordinatesToWindow(SDL_Renderer *renderer, float x, float y, float *window_x, float *window_y);
+ * @from SDL_render.h:1681 bool SDL_RenderCoordinatesToWindow(SDL_Renderer *renderer, float x, float y, float *window_x, float *window_y);
  */
 export function renderCoordinatesToWindow(renderer: Deno.PointerValue<"SDL_Renderer">, x: number, y: number): { window_x: number; window_y: number } {
   if(!lib.symbols.SDL_RenderCoordinatesToWindow(renderer, x, y, _p.f32.p0, _p.f32.p1))
@@ -1630,8 +1766,8 @@ export function renderCoordinatesToWindow(renderer: Deno.PointerValue<"SDL_Rende
  *
  * @param renderer the rendering context.
  * @param event the event to modify.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
+ * @returns true if the event is converted or doesn't need conversion, or
+ *          false on failure; call SDL_GetError() for more information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -1639,7 +1775,7 @@ export function renderCoordinatesToWindow(renderer: Deno.PointerValue<"SDL_Rende
  *
  * @sa SDL_RenderCoordinatesFromWindow
  *
- * @from SDL_render.h:1556 bool SDL_ConvertEventToRenderCoordinates(SDL_Renderer *renderer, SDL_Event *event);
+ * @from SDL_render.h:1717 bool SDL_ConvertEventToRenderCoordinates(SDL_Renderer *renderer, SDL_Event *event);
  */
 export function convertEventToRenderCoordinates(renderer: Deno.PointerValue<"SDL_Renderer">, event: Deno.PointerValue<"SDL_Event">): boolean {
   return lib.symbols.SDL_ConvertEventToRenderCoordinates(renderer, event);
@@ -1670,7 +1806,7 @@ export function convertEventToRenderCoordinates(renderer: Deno.PointerValue<"SDL
  * @sa SDL_GetRenderViewport
  * @sa SDL_RenderViewportSet
  *
- * @from SDL_render.h:1583 bool SDL_SetRenderViewport(SDL_Renderer *renderer, const SDL_Rect *rect);
+ * @from SDL_render.h:1744 bool SDL_SetRenderViewport(SDL_Renderer *renderer, const SDL_Rect *rect);
  */
 export function setRenderViewport(renderer: Deno.PointerValue<"SDL_Renderer">, rect: { x: number; y: number; w: number; h: number; } | null): boolean {
   if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
@@ -1695,7 +1831,7 @@ export function setRenderViewport(renderer: Deno.PointerValue<"SDL_Renderer">, r
  * @sa SDL_RenderViewportSet
  * @sa SDL_SetRenderViewport
  *
- * @from SDL_render.h:1603 bool SDL_GetRenderViewport(SDL_Renderer *renderer, SDL_Rect *rect);
+ * @from SDL_render.h:1764 bool SDL_GetRenderViewport(SDL_Renderer *renderer, SDL_Rect *rect);
  */
 export function getRenderViewport(renderer: Deno.PointerValue<"SDL_Renderer">): { x: number; y: number; w: number; h: number; } | null {
   if(!lib.symbols.SDL_GetRenderViewport(renderer, _p.i32.p0))
@@ -1723,7 +1859,7 @@ export function getRenderViewport(renderer: Deno.PointerValue<"SDL_Renderer">): 
  * @sa SDL_GetRenderViewport
  * @sa SDL_SetRenderViewport
  *
- * @from SDL_render.h:1625 bool SDL_RenderViewportSet(SDL_Renderer *renderer);
+ * @from SDL_render.h:1786 bool SDL_RenderViewportSet(SDL_Renderer *renderer);
  */
 export function renderViewportSet(renderer: Deno.PointerValue<"SDL_Renderer">): boolean {
   return lib.symbols.SDL_RenderViewportSet(renderer);
@@ -1749,7 +1885,7 @@ export function renderViewportSet(renderer: Deno.PointerValue<"SDL_Renderer">): 
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_render.h:1647 bool SDL_GetRenderSafeArea(SDL_Renderer *renderer, SDL_Rect *rect);
+ * @from SDL_render.h:1808 bool SDL_GetRenderSafeArea(SDL_Renderer *renderer, SDL_Rect *rect);
  */
 export function getRenderSafeArea(renderer: Deno.PointerValue<"SDL_Renderer">): { x: number; y: number; w: number; h: number; } | null {
   if(!lib.symbols.SDL_GetRenderSafeArea(renderer, _p.i32.p0))
@@ -1776,7 +1912,7 @@ export function getRenderSafeArea(renderer: Deno.PointerValue<"SDL_Renderer">): 
  * @sa SDL_GetRenderClipRect
  * @sa SDL_RenderClipEnabled
  *
- * @from SDL_render.h:1668 bool SDL_SetRenderClipRect(SDL_Renderer *renderer, const SDL_Rect *rect);
+ * @from SDL_render.h:1829 bool SDL_SetRenderClipRect(SDL_Renderer *renderer, const SDL_Rect *rect);
  */
 export function setRenderClipRect(renderer: Deno.PointerValue<"SDL_Renderer">, rect: { x: number; y: number; w: number; h: number; } | null): boolean {
   if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
@@ -1802,7 +1938,7 @@ export function setRenderClipRect(renderer: Deno.PointerValue<"SDL_Renderer">, r
  * @sa SDL_RenderClipEnabled
  * @sa SDL_SetRenderClipRect
  *
- * @from SDL_render.h:1689 bool SDL_GetRenderClipRect(SDL_Renderer *renderer, SDL_Rect *rect);
+ * @from SDL_render.h:1850 bool SDL_GetRenderClipRect(SDL_Renderer *renderer, SDL_Rect *rect);
  */
 export function getRenderClipRect(renderer: Deno.PointerValue<"SDL_Renderer">): { x: number; y: number; w: number; h: number; } | null {
   if(!lib.symbols.SDL_GetRenderClipRect(renderer, _p.i32.p0))
@@ -1827,7 +1963,7 @@ export function getRenderClipRect(renderer: Deno.PointerValue<"SDL_Renderer">): 
  * @sa SDL_GetRenderClipRect
  * @sa SDL_SetRenderClipRect
  *
- * @from SDL_render.h:1708 bool SDL_RenderClipEnabled(SDL_Renderer *renderer);
+ * @from SDL_render.h:1869 bool SDL_RenderClipEnabled(SDL_Renderer *renderer);
  */
 export function renderClipEnabled(renderer: Deno.PointerValue<"SDL_Renderer">): boolean {
   return lib.symbols.SDL_RenderClipEnabled(renderer);
@@ -1859,7 +1995,7 @@ export function renderClipEnabled(renderer: Deno.PointerValue<"SDL_Renderer">): 
  *
  * @sa SDL_GetRenderScale
  *
- * @from SDL_render.h:1736 bool SDL_SetRenderScale(SDL_Renderer *renderer, float scaleX, float scaleY);
+ * @from SDL_render.h:1897 bool SDL_SetRenderScale(SDL_Renderer *renderer, float scaleX, float scaleY);
  */
 export function setRenderScale(renderer: Deno.PointerValue<"SDL_Renderer">, scaleX: number, scaleY: number): boolean {
   return lib.symbols.SDL_SetRenderScale(renderer, scaleX, scaleY);
@@ -1883,7 +2019,7 @@ export function setRenderScale(renderer: Deno.PointerValue<"SDL_Renderer">, scal
  *
  * @sa SDL_SetRenderScale
  *
- * @from SDL_render.h:1756 bool SDL_GetRenderScale(SDL_Renderer *renderer, float *scaleX, float *scaleY);
+ * @from SDL_render.h:1917 bool SDL_GetRenderScale(SDL_Renderer *renderer, float *scaleX, float *scaleY);
  */
 export function getRenderScale(renderer: Deno.PointerValue<"SDL_Renderer">): { scaleX: number; scaleY: number } {
   if(!lib.symbols.SDL_GetRenderScale(renderer, _p.f32.p0, _p.f32.p1))
@@ -1914,7 +2050,7 @@ export function getRenderScale(renderer: Deno.PointerValue<"SDL_Renderer">): { s
  * @sa SDL_GetRenderDrawColor
  * @sa SDL_SetRenderDrawColorFloat
  *
- * @from SDL_render.h:1781 bool SDL_SetRenderDrawColor(SDL_Renderer *renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+ * @from SDL_render.h:1942 bool SDL_SetRenderDrawColor(SDL_Renderer *renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
  */
 export function setRenderDrawColor(
     renderer: Deno.PointerValue<"SDL_Renderer">,
@@ -1949,7 +2085,7 @@ export function setRenderDrawColor(
  * @sa SDL_GetRenderDrawColorFloat
  * @sa SDL_SetRenderDrawColor
  *
- * @from SDL_render.h:1806 bool SDL_SetRenderDrawColorFloat(SDL_Renderer *renderer, float r, float g, float b, float a);
+ * @from SDL_render.h:1967 bool SDL_SetRenderDrawColorFloat(SDL_Renderer *renderer, float r, float g, float b, float a);
  */
 export function setRenderDrawColorFloat(
     renderer: Deno.PointerValue<"SDL_Renderer">,
@@ -1983,7 +2119,7 @@ export function setRenderDrawColorFloat(
  * @sa SDL_GetRenderDrawColorFloat
  * @sa SDL_SetRenderDrawColor
  *
- * @from SDL_render.h:1830 bool SDL_GetRenderDrawColor(SDL_Renderer *renderer, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);
+ * @from SDL_render.h:1991 bool SDL_GetRenderDrawColor(SDL_Renderer *renderer, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);
  */
 export function getRenderDrawColor(renderer: Deno.PointerValue<"SDL_Renderer">): { r: number; g: number; b: number; a: number } {
   if(!lib.symbols.SDL_GetRenderDrawColor(renderer, _p.u8.p0, _p.u8.p1, _p.u8.p2, _p.u8.p3))
@@ -2013,7 +2149,7 @@ export function getRenderDrawColor(renderer: Deno.PointerValue<"SDL_Renderer">):
  * @sa SDL_SetRenderDrawColorFloat
  * @sa SDL_GetRenderDrawColor
  *
- * @from SDL_render.h:1854 bool SDL_GetRenderDrawColorFloat(SDL_Renderer *renderer, float *r, float *g, float *b, float *a);
+ * @from SDL_render.h:2015 bool SDL_GetRenderDrawColorFloat(SDL_Renderer *renderer, float *r, float *g, float *b, float *a);
  */
 export function getRenderDrawColorFloat(renderer: Deno.PointerValue<"SDL_Renderer">): { r: number; g: number; b: number; a: number } {
   if(!lib.symbols.SDL_GetRenderDrawColorFloat(renderer, _p.f32.p0, _p.f32.p1, _p.f32.p2, _p.f32.p3))
@@ -2043,7 +2179,7 @@ export function getRenderDrawColorFloat(renderer: Deno.PointerValue<"SDL_Rendere
  *
  * @sa SDL_GetRenderColorScale
  *
- * @from SDL_render.h:1878 bool SDL_SetRenderColorScale(SDL_Renderer *renderer, float scale);
+ * @from SDL_render.h:2039 bool SDL_SetRenderColorScale(SDL_Renderer *renderer, float scale);
  */
 export function setRenderColorScale(renderer: Deno.PointerValue<"SDL_Renderer">, scale: number): boolean {
   return lib.symbols.SDL_SetRenderColorScale(renderer, scale);
@@ -2063,7 +2199,7 @@ export function setRenderColorScale(renderer: Deno.PointerValue<"SDL_Renderer">,
  *
  * @sa SDL_SetRenderColorScale
  *
- * @from SDL_render.h:1894 bool SDL_GetRenderColorScale(SDL_Renderer *renderer, float *scale);
+ * @from SDL_render.h:2055 bool SDL_GetRenderColorScale(SDL_Renderer *renderer, float *scale);
  */
 export function getRenderColorScale(renderer: Deno.PointerValue<"SDL_Renderer">): number {
   if(!lib.symbols.SDL_GetRenderColorScale(renderer, _p.f32.p0))
@@ -2087,7 +2223,7 @@ export function getRenderColorScale(renderer: Deno.PointerValue<"SDL_Renderer">)
  *
  * @sa SDL_GetRenderDrawBlendMode
  *
- * @from SDL_render.h:1912 bool SDL_SetRenderDrawBlendMode(SDL_Renderer *renderer, SDL_BlendMode blendMode);
+ * @from SDL_render.h:2073 bool SDL_SetRenderDrawBlendMode(SDL_Renderer *renderer, SDL_BlendMode blendMode);
  */
 export function setRenderDrawBlendMode(renderer: Deno.PointerValue<"SDL_Renderer">, blendMode: number): boolean {
   return lib.symbols.SDL_SetRenderDrawBlendMode(renderer, blendMode);
@@ -2107,7 +2243,7 @@ export function setRenderDrawBlendMode(renderer: Deno.PointerValue<"SDL_Renderer
  *
  * @sa SDL_SetRenderDrawBlendMode
  *
- * @from SDL_render.h:1928 bool SDL_GetRenderDrawBlendMode(SDL_Renderer *renderer, SDL_BlendMode *blendMode);
+ * @from SDL_render.h:2089 bool SDL_GetRenderDrawBlendMode(SDL_Renderer *renderer, SDL_BlendMode *blendMode);
  */
 export function getRenderDrawBlendMode(renderer: Deno.PointerValue<"SDL_Renderer">): number {
   if(!lib.symbols.SDL_GetRenderDrawBlendMode(renderer, _p.u32.p0))
@@ -2133,7 +2269,7 @@ export function getRenderDrawBlendMode(renderer: Deno.PointerValue<"SDL_Renderer
  *
  * @sa SDL_SetRenderDrawColor
  *
- * @from SDL_render.h:1948 bool SDL_RenderClear(SDL_Renderer *renderer);
+ * @from SDL_render.h:2109 bool SDL_RenderClear(SDL_Renderer *renderer);
  */
 export function renderClear(renderer: Deno.PointerValue<"SDL_Renderer">): boolean {
   return lib.symbols.SDL_RenderClear(renderer);
@@ -2154,7 +2290,7 @@ export function renderClear(renderer: Deno.PointerValue<"SDL_Renderer">): boolea
  *
  * @sa SDL_RenderPoints
  *
- * @from SDL_render.h:1965 bool SDL_RenderPoint(SDL_Renderer *renderer, float x, float y);
+ * @from SDL_render.h:2126 bool SDL_RenderPoint(SDL_Renderer *renderer, float x, float y);
  */
 export function renderPoint(renderer: Deno.PointerValue<"SDL_Renderer">, x: number, y: number): boolean {
   return lib.symbols.SDL_RenderPoint(renderer, x, y);
@@ -2175,7 +2311,7 @@ export function renderPoint(renderer: Deno.PointerValue<"SDL_Renderer">, x: numb
  *
  * @sa SDL_RenderPoint
  *
- * @from SDL_render.h:1982 bool SDL_RenderPoints(SDL_Renderer *renderer, const SDL_FPoint *points, int count);
+ * @from SDL_render.h:2143 bool SDL_RenderPoints(SDL_Renderer *renderer, const SDL_FPoint *points, int count);
  */
 export function renderPoints(renderer: Deno.PointerValue<"SDL_Renderer">, points: { x: number; y: number; } | null, count: number): boolean {
   if (points) _p.f32.arr.set([points.x, points.y], 0);
@@ -2199,7 +2335,7 @@ export function renderPoints(renderer: Deno.PointerValue<"SDL_Renderer">, points
  *
  * @sa SDL_RenderLines
  *
- * @from SDL_render.h:2001 bool SDL_RenderLine(SDL_Renderer *renderer, float x1, float y1, float x2, float y2);
+ * @from SDL_render.h:2162 bool SDL_RenderLine(SDL_Renderer *renderer, float x1, float y1, float x2, float y2);
  */
 export function renderLine(
     renderer: Deno.PointerValue<"SDL_Renderer">,
@@ -2227,7 +2363,7 @@ export function renderLine(
  *
  * @sa SDL_RenderLine
  *
- * @from SDL_render.h:2019 bool SDL_RenderLines(SDL_Renderer *renderer, const SDL_FPoint *points, int count);
+ * @from SDL_render.h:2180 bool SDL_RenderLines(SDL_Renderer *renderer, const SDL_FPoint *points, int count);
  */
 export function renderLines(renderer: Deno.PointerValue<"SDL_Renderer">, points: { x: number; y: number; } | null, count: number): boolean {
   if (points) _p.f32.arr.set([points.x, points.y], 0);
@@ -2249,7 +2385,7 @@ export function renderLines(renderer: Deno.PointerValue<"SDL_Renderer">, points:
  *
  * @sa SDL_RenderRects
  *
- * @from SDL_render.h:2036 bool SDL_RenderRect(SDL_Renderer *renderer, const SDL_FRect *rect);
+ * @from SDL_render.h:2197 bool SDL_RenderRect(SDL_Renderer *renderer, const SDL_FRect *rect);
  */
 export function renderRect(renderer: Deno.PointerValue<"SDL_Renderer">, rect: { x: number; y: number; w: number; h: number; } | null): boolean {
   if (rect) _p.f32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
@@ -2272,7 +2408,7 @@ export function renderRect(renderer: Deno.PointerValue<"SDL_Renderer">, rect: { 
  *
  * @sa SDL_RenderRect
  *
- * @from SDL_render.h:2054 bool SDL_RenderRects(SDL_Renderer *renderer, const SDL_FRect *rects, int count);
+ * @from SDL_render.h:2215 bool SDL_RenderRects(SDL_Renderer *renderer, const SDL_FRect *rects, int count);
  */
 export function renderRects(renderer: Deno.PointerValue<"SDL_Renderer">, rects: { x: number; y: number; w: number; h: number; } | null, count: number): boolean {
   if (rects) _p.f32.arr.set([rects.x, rects.y, rects.w, rects.h], 0);
@@ -2295,7 +2431,7 @@ export function renderRects(renderer: Deno.PointerValue<"SDL_Renderer">, rects: 
  *
  * @sa SDL_RenderFillRects
  *
- * @from SDL_render.h:2072 bool SDL_RenderFillRect(SDL_Renderer *renderer, const SDL_FRect *rect);
+ * @from SDL_render.h:2233 bool SDL_RenderFillRect(SDL_Renderer *renderer, const SDL_FRect *rect);
  */
 export function renderFillRect(renderer: Deno.PointerValue<"SDL_Renderer">, rect: { x: number; y: number; w: number; h: number; } | null): boolean {
   if (rect) _p.f32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
@@ -2318,7 +2454,7 @@ export function renderFillRect(renderer: Deno.PointerValue<"SDL_Renderer">, rect
  *
  * @sa SDL_RenderFillRect
  *
- * @from SDL_render.h:2090 bool SDL_RenderFillRects(SDL_Renderer *renderer, const SDL_FRect *rects, int count);
+ * @from SDL_render.h:2251 bool SDL_RenderFillRects(SDL_Renderer *renderer, const SDL_FRect *rects, int count);
  */
 export function renderFillRects(renderer: Deno.PointerValue<"SDL_Renderer">, rects: { x: number; y: number; w: number; h: number; } | null, count: number): boolean {
   if (rects) _p.f32.arr.set([rects.x, rects.y, rects.w, rects.h], 0);
@@ -2345,7 +2481,7 @@ export function renderFillRects(renderer: Deno.PointerValue<"SDL_Renderer">, rec
  * @sa SDL_RenderTextureRotated
  * @sa SDL_RenderTextureTiled
  *
- * @from SDL_render.h:2112 bool SDL_RenderTexture(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect);
+ * @from SDL_render.h:2273 bool SDL_RenderTexture(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect);
  */
 export function renderTexture(
     renderer: Deno.PointerValue<"SDL_Renderer">,
@@ -2384,7 +2520,7 @@ export function renderTexture(
  *
  * @sa SDL_RenderTexture
  *
- * @from SDL_render.h:2140 bool SDL_RenderTextureRotated(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect, double angle, const SDL_FPoint *center, SDL_FlipMode flip);
+ * @from SDL_render.h:2301 bool SDL_RenderTextureRotated(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect, double angle, const SDL_FPoint *center, SDL_FlipMode flip);
  */
 export function renderTextureRotated(
     renderer: Deno.PointerValue<"SDL_Renderer">,
@@ -2427,7 +2563,7 @@ export function renderTextureRotated(
  *
  * @sa SDL_RenderTexture
  *
- * @from SDL_render.h:2171 bool SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);
+ * @from SDL_render.h:2332 bool SDL_RenderTextureAffine(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down);
  */
 export function renderTextureAffine(
     renderer: Deno.PointerValue<"SDL_Renderer">,
@@ -2469,7 +2605,7 @@ export function renderTextureAffine(
  *
  * @sa SDL_RenderTexture
  *
- * @from SDL_render.h:2200 bool SDL_RenderTextureTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float scale, const SDL_FRect *dstrect);
+ * @from SDL_render.h:2361 bool SDL_RenderTextureTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float scale, const SDL_FRect *dstrect);
  */
 export function renderTextureTiled(
     renderer: Deno.PointerValue<"SDL_Renderer">,
@@ -2514,8 +2650,9 @@ export function renderTextureTiled(
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_RenderTexture
+ * @sa SDL_RenderTexture9GridTiled
  *
- * @from SDL_render.h:2234 bool SDL_RenderTexture9Grid(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect);
+ * @from SDL_render.h:2396 bool SDL_RenderTexture9Grid(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect);
  */
 export function renderTexture9Grid(
     renderer: Deno.PointerValue<"SDL_Renderer">,
@@ -2531,6 +2668,61 @@ export function renderTexture9Grid(
   if (srcrect) _p.f32.arr.set([srcrect.x, srcrect.y, srcrect.w, srcrect.h], 0);
   if (dstrect) _p.f32.arr.set([dstrect.x, dstrect.y, dstrect.w, dstrect.h], 4);
   return lib.symbols.SDL_RenderTexture9Grid(renderer, texture, srcrect ? _p.f32.p0 : null, left_width, right_width, top_height, bottom_height, scale, dstrect ? _p.f32.p4 : null);
+}
+
+/**
+ * Perform a scaled copy using the 9-grid algorithm to the current rendering
+ * target at subpixel precision.
+ *
+ * The pixels in the texture are split into a 3x3 grid, using the different
+ * corner sizes for each corner, and the sides and center making up the
+ * remaining pixels. The corners are then scaled using `scale` and fit into
+ * the corners of the destination rectangle. The sides and center are then
+ * tiled into place to cover the remaining destination rectangle.
+ *
+ * @param renderer the renderer which should copy parts of a texture.
+ * @param texture the source texture.
+ * @param srcrect the SDL_Rect structure representing the rectangle to be used
+ *                for the 9-grid, or NULL to use the entire texture.
+ * @param left_width the width, in pixels, of the left corners in `srcrect`.
+ * @param right_width the width, in pixels, of the right corners in `srcrect`.
+ * @param top_height the height, in pixels, of the top corners in `srcrect`.
+ * @param bottom_height the height, in pixels, of the bottom corners in
+ *                      `srcrect`.
+ * @param scale the scale used to transform the corner of `srcrect` into the
+ *              corner of `dstrect`, or 0.0f for an unscaled copy.
+ * @param dstrect a pointer to the destination rectangle, or NULL for the
+ *                entire rendering target.
+ * @param tileScale the scale used to transform the borders and center of
+ *                  `srcrect` into the borders and middle of `dstrect`, or
+ *                  1.0f for an unscaled copy.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_RenderTexture
+ * @sa SDL_RenderTexture9Grid
+ *
+ * @from SDL_render.h:2434 bool SDL_RenderTexture9GridTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect, float tileScale);
+ */
+export function renderTexture9GridTiled(
+    renderer: Deno.PointerValue<"SDL_Renderer">,
+    texture: Deno.PointerValue<"SDL_Texture">,
+    srcrect: { x: number; y: number; w: number; h: number; } | null,
+    left_width: number,
+    right_width: number,
+    top_height: number,
+    bottom_height: number,
+    scale: number,
+    dstrect: { x: number; y: number; w: number; h: number; } | null,
+    tileScale: number,
+): boolean {
+  if (srcrect) _p.f32.arr.set([srcrect.x, srcrect.y, srcrect.w, srcrect.h], 0);
+  if (dstrect) _p.f32.arr.set([dstrect.x, dstrect.y, dstrect.w, dstrect.h], 4);
+  return lib.symbols.SDL_RenderTexture9GridTiled(renderer, texture, srcrect ? _p.f32.p0 : null, left_width, right_width, top_height, bottom_height, scale, dstrect ? _p.f32.p4 : null, tileScale);
 }
 
 /**
@@ -2554,8 +2746,9 @@ export function renderTexture9Grid(
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_RenderGeometryRaw
+ * @sa SDL_SetRenderTextureAddressMode
  *
- * @from SDL_render.h:2258 bool SDL_RenderGeometry(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_Vertex *vertices, int num_vertices, const int *indices, int num_indices);
+ * @from SDL_render.h:2459 bool SDL_RenderGeometry(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_Vertex *vertices, int num_vertices, const int *indices, int num_indices);
  */
 export function renderGeometry(
     renderer: Deno.PointerValue<"SDL_Renderer">,
@@ -2597,8 +2790,9 @@ export function renderGeometry(
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_RenderGeometry
+ * @sa SDL_SetRenderTextureAddressMode
  *
- * @from SDL_render.h:2290 bool SDL_RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const SDL_FColor *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices);
+ * @from SDL_render.h:2492 bool SDL_RenderGeometryRaw(SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const SDL_FColor *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices);
  */
 export function renderGeometryRaw(
     renderer: Deno.PointerValue<"SDL_Renderer">,
@@ -2620,6 +2814,54 @@ export function renderGeometryRaw(
   if(!lib.symbols.SDL_RenderGeometryRaw(renderer, texture, _p.f32.p0, xy_stride, color ? _p.f32.p1 : null, color_stride, _p.f32.p5, uv_stride, num_vertices, indices, num_indices, size_indices))
     throw new Error(`SDL_RenderGeometryRaw: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
   return { xy: _p.f32.v0, uv: _p.f32.v5 };
+}
+
+/**
+ * Set the texture addressing mode used in SDL_RenderGeometry().
+ *
+ * @param renderer the rendering context.
+ * @param u_mode the SDL_TextureAddressMode to use for horizontal texture
+ *               coordinates in SDL_RenderGeometry().
+ * @param v_mode the SDL_TextureAddressMode to use for vertical texture
+ *               coordinates in SDL_RenderGeometry().
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_RenderGeometry
+ * @sa SDL_RenderGeometryRaw
+ * @sa SDL_GetRenderTextureAddressMode
+ *
+ * @from SDL_render.h:2517 bool SDL_SetRenderTextureAddressMode(SDL_Renderer *renderer, SDL_TextureAddressMode u_mode, SDL_TextureAddressMode v_mode);
+ */
+export function setRenderTextureAddressMode(renderer: Deno.PointerValue<"SDL_Renderer">, u_mode: number, v_mode: number): boolean {
+  return lib.symbols.SDL_SetRenderTextureAddressMode(renderer, u_mode, v_mode);
+}
+
+/**
+ * Get the texture addressing mode used in SDL_RenderGeometry().
+ *
+ * @param renderer the rendering context.
+ * @param u_mode a pointer filled in with the SDL_TextureAddressMode to use
+ *               for horizontal texture coordinates in SDL_RenderGeometry(),
+ *               may be NULL.
+ * @param v_mode a pointer filled in with the SDL_TextureAddressMode to use
+ *               for vertical texture coordinates in SDL_RenderGeometry(), may
+ *               be NULL.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_SetRenderTextureAddressMode
+ *
+ * @from SDL_render.h:2536 bool SDL_GetRenderTextureAddressMode(SDL_Renderer *renderer, SDL_TextureAddressMode *u_mode, SDL_TextureAddressMode *v_mode);
+ */
+export function getRenderTextureAddressMode(renderer: Deno.PointerValue<"SDL_Renderer">): { u_mode: number; v_mode: number } {
+  if(!lib.symbols.SDL_GetRenderTextureAddressMode(renderer, _p.u32.p0, _p.u32.p1))
+    throw new Error(`SDL_GetRenderTextureAddressMode: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return { u_mode: _p.u32.v0, v_mode: _p.u32.v1 };
 }
 
 /**
@@ -2647,7 +2889,7 @@ export function renderGeometryRaw(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_render.h:2323 SDL_Surface * SDL_RenderReadPixels(SDL_Renderer *renderer, const SDL_Rect *rect);
+ * @from SDL_render.h:2563 SDL_Surface * SDL_RenderReadPixels(SDL_Renderer *renderer, const SDL_Rect *rect);
  */
 export function renderReadPixels(renderer: Deno.PointerValue<"SDL_Renderer">, rect: { x: number; y: number; w: number; h: number; } | null): Deno.PointerValue<"SDL_Surface"> {
   if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
@@ -2678,8 +2920,7 @@ export function renderReadPixels(renderer: Deno.PointerValue<"SDL_Renderer">, re
  * should not be done; you are only required to change back the rendering
  * target to default via `SDL_SetRenderTarget(renderer, NULL)` afterwards, as
  * textures by themselves do not have a concept of backbuffers. Calling
- * SDL_RenderPresent while rendering to a texture will still update the screen
- * with any current drawing that has been done _to the window itself_.
+ * SDL_RenderPresent while rendering to a texture will fail.
  *
  * @param renderer the rendering context.
  * @returns true on success or false on failure; call SDL_GetError() for more
@@ -2702,7 +2943,7 @@ export function renderReadPixels(renderer: Deno.PointerValue<"SDL_Renderer">, re
  * @sa SDL_SetRenderDrawBlendMode
  * @sa SDL_SetRenderDrawColor
  *
- * @from SDL_render.h:2373 bool SDL_RenderPresent(SDL_Renderer *renderer);
+ * @from SDL_render.h:2612 bool SDL_RenderPresent(SDL_Renderer *renderer);
  */
 export function renderPresent(renderer: Deno.PointerValue<"SDL_Renderer">): boolean {
   return lib.symbols.SDL_RenderPresent(renderer);
@@ -2723,7 +2964,7 @@ export function renderPresent(renderer: Deno.PointerValue<"SDL_Renderer">): bool
  * @sa SDL_CreateTexture
  * @sa SDL_CreateTextureFromSurface
  *
- * @from SDL_render.h:2390 void SDL_DestroyTexture(SDL_Texture *texture);
+ * @from SDL_render.h:2629 void SDL_DestroyTexture(SDL_Texture *texture);
  */
 export function destroyTexture(texture: Deno.PointerValue<"SDL_Texture">): void {
   return lib.symbols.SDL_DestroyTexture(texture);
@@ -2743,7 +2984,7 @@ export function destroyTexture(texture: Deno.PointerValue<"SDL_Texture">): void 
  *
  * @sa SDL_CreateRenderer
  *
- * @from SDL_render.h:2406 void SDL_DestroyRenderer(SDL_Renderer *renderer);
+ * @from SDL_render.h:2645 void SDL_DestroyRenderer(SDL_Renderer *renderer);
  */
 export function destroyRenderer(renderer: Deno.PointerValue<"SDL_Renderer">): void {
   return lib.symbols.SDL_DestroyRenderer(renderer);
@@ -2780,7 +3021,7 @@ export function destroyRenderer(renderer: Deno.PointerValue<"SDL_Renderer">): vo
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_render.h:2439 bool SDL_FlushRenderer(SDL_Renderer *renderer);
+ * @from SDL_render.h:2678 bool SDL_FlushRenderer(SDL_Renderer *renderer);
  */
 export function flushRenderer(renderer: Deno.PointerValue<"SDL_Renderer">): boolean {
   return lib.symbols.SDL_FlushRenderer(renderer);
@@ -2802,7 +3043,7 @@ export function flushRenderer(renderer: Deno.PointerValue<"SDL_Renderer">): bool
  *
  * @sa SDL_GetRenderMetalCommandEncoder
  *
- * @from SDL_render.h:2457 void * SDL_GetRenderMetalLayer(SDL_Renderer *renderer);
+ * @from SDL_render.h:2696 void * SDL_GetRenderMetalLayer(SDL_Renderer *renderer);
  */
 export function getRenderMetalLayer(renderer: Deno.PointerValue<"SDL_Renderer">): Deno.PointerValue {
   return lib.symbols.SDL_GetRenderMetalLayer(renderer);
@@ -2829,7 +3070,7 @@ export function getRenderMetalLayer(renderer: Deno.PointerValue<"SDL_Renderer">)
  *
  * @sa SDL_GetRenderMetalLayer
  *
- * @from SDL_render.h:2480 void * SDL_GetRenderMetalCommandEncoder(SDL_Renderer *renderer);
+ * @from SDL_render.h:2719 void * SDL_GetRenderMetalCommandEncoder(SDL_Renderer *renderer);
  */
 export function getRenderMetalCommandEncoder(renderer: Deno.PointerValue<"SDL_Renderer">): Deno.PointerValue {
   return lib.symbols.SDL_GetRenderMetalCommandEncoder(renderer);
@@ -2863,7 +3104,7 @@ export function getRenderMetalCommandEncoder(renderer: Deno.PointerValue<"SDL_Re
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_render.h:2511 bool SDL_AddVulkanRenderSemaphores(SDL_Renderer *renderer, Uint32 wait_stage_mask, Sint64 wait_semaphore, Sint64 signal_semaphore);
+ * @from SDL_render.h:2750 bool SDL_AddVulkanRenderSemaphores(SDL_Renderer *renderer, Uint32 wait_stage_mask, Sint64 wait_semaphore, Sint64 signal_semaphore);
  */
 export function addVulkanRenderSemaphores(
     renderer: Deno.PointerValue<"SDL_Renderer">,
@@ -2897,7 +3138,7 @@ export function addVulkanRenderSemaphores(
  *
  * @sa SDL_GetRenderVSync
  *
- * @from SDL_render.h:2536 bool SDL_SetRenderVSync(SDL_Renderer *renderer, int vsync);
+ * @from SDL_render.h:2775 bool SDL_SetRenderVSync(SDL_Renderer *renderer, int vsync);
  */
 export function setRenderVSync(renderer: Deno.PointerValue<"SDL_Renderer">, vsync: number): boolean {
   return lib.symbols.SDL_SetRenderVSync(renderer, vsync);
@@ -2918,7 +3159,7 @@ export function setRenderVSync(renderer: Deno.PointerValue<"SDL_Renderer">, vsyn
  *
  * @sa SDL_SetRenderVSync
  *
- * @from SDL_render.h:2556 bool SDL_GetRenderVSync(SDL_Renderer *renderer, int *vsync);
+ * @from SDL_render.h:2795 bool SDL_GetRenderVSync(SDL_Renderer *renderer, int *vsync);
  */
 export function getRenderVSync(renderer: Deno.PointerValue<"SDL_Renderer">): number {
   if(!lib.symbols.SDL_GetRenderVSync(renderer, _p.i32.p0))
@@ -2936,8 +3177,8 @@ export function getRenderVSync(renderer: Deno.PointerValue<"SDL_Renderer">): num
  * Among these limitations:
  *
  * - It accepts UTF-8 strings, but will only renders ASCII characters.
- * - It has a single, tiny size (8x8 pixels). One can use logical presentation
- *   or scaling to adjust it, but it will be blurry.
+ * - It has a single, tiny size (8x8 pixels). You can use logical presentation
+ *   or SDL_SetRenderScale() to adjust it.
  * - It uses a simple, hardcoded bitmap font. It does not allow different font
  *   selections and it does not support truetype, for proper scaling.
  * - It does no word-wrapping and does not treat newline characters as a line
@@ -2965,7 +3206,7 @@ export function getRenderVSync(renderer: Deno.PointerValue<"SDL_Renderer">): num
  * @sa SDL_RenderDebugTextFormat
  * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
  *
- * @from SDL_render.h:2608 bool SDL_RenderDebugText(SDL_Renderer *renderer, float x, float y, const char *str);
+ * @from SDL_render.h:2847 bool SDL_RenderDebugText(SDL_Renderer *renderer, float x, float y, const char *str);
  */
 export function renderDebugText(
     renderer: Deno.PointerValue<"SDL_Renderer">,
@@ -2974,5 +3215,143 @@ export function renderDebugText(
     str: string,
 ): boolean {
   return lib.symbols.SDL_RenderDebugText(renderer, x, y, _p.toCstr(str));
+}
+
+/**
+ * Set default scale mode for new textures for given renderer.
+ *
+ * When a renderer is created, scale_mode defaults to SDL_SCALEMODE_LINEAR.
+ *
+ * @param renderer the renderer to update.
+ * @param scale_mode the scale mode to change to for new textures.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_GetDefaultTextureScaleMode
+ *
+ * @from SDL_render.h:2893 bool SDL_SetDefaultTextureScaleMode(SDL_Renderer *renderer, SDL_ScaleMode scale_mode);
+ */
+export function setDefaultTextureScaleMode(renderer: Deno.PointerValue<"SDL_Renderer">, scale_mode: number): boolean {
+  return lib.symbols.SDL_SetDefaultTextureScaleMode(renderer, scale_mode);
+}
+
+/**
+ * Get default texture scale mode of the given renderer.
+ *
+ * @param renderer the renderer to get data from.
+ * @param scale_mode a SDL_ScaleMode filled with current default scale mode.
+ *                   See SDL_SetDefaultTextureScaleMode() for the meaning of
+ *                   the value.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_SetDefaultTextureScaleMode
+ *
+ * @from SDL_render.h:2911 bool SDL_GetDefaultTextureScaleMode(SDL_Renderer *renderer, SDL_ScaleMode *scale_mode);
+ */
+export function getDefaultTextureScaleMode(renderer: Deno.PointerValue<"SDL_Renderer">): number {
+  if(!lib.symbols.SDL_GetDefaultTextureScaleMode(renderer, _p.u32.p0))
+    throw new Error(`SDL_GetDefaultTextureScaleMode: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.u32.v0;
+}
+
+/**
+ * Create custom GPU render state.
+ *
+ * @param renderer the renderer to use.
+ * @param createinfo a struct describing the GPU render state to create.
+ * @returns a custom GPU render state or NULL on failure; call SDL_GetError()
+ *          for more information.
+ *
+ * @threadsafety This function should be called on the thread that created the
+ *               renderer.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_SetGPURenderStateFragmentUniforms
+ * @sa SDL_SetGPURenderState
+ * @sa SDL_DestroyGPURenderState
+ *
+ * @from SDL_render.h:2965 SDL_GPURenderState * SDL_CreateGPURenderState(SDL_Renderer *renderer, SDL_GPURenderStateCreateInfo *createinfo);
+ */
+export function createGpuRenderState(renderer: Deno.PointerValue<"SDL_Renderer">, createinfo: Deno.PointerValue<"SDL_GPURenderStateCreateInfo">): Deno.PointerValue<"SDL_GPURenderState"> {
+  return lib.symbols.SDL_CreateGPURenderState(renderer, createinfo) as Deno.PointerValue<"SDL_GPURenderState">;
+}
+
+/**
+ * Set fragment shader uniform variables in a custom GPU render state.
+ *
+ * The data is copied and will be pushed using
+ * SDL_PushGPUFragmentUniformData() during draw call execution.
+ *
+ * @param state the state to modify.
+ * @param slot_index the fragment uniform slot to push data to.
+ * @param data client data to write.
+ * @param length the length of the data to write.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety This function should be called on the thread that created the
+ *               renderer.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @from SDL_render.h:2985 bool SDL_SetGPURenderStateFragmentUniforms(SDL_GPURenderState *state, Uint32 slot_index, const void *data, Uint32 length);
+ */
+export function setGpuRenderStateFragmentUniforms(
+    state: Deno.PointerValue<"SDL_GPURenderState">,
+    slot_index: number,
+    data: Deno.PointerValue,
+    length: number,
+): boolean {
+  return lib.symbols.SDL_SetGPURenderStateFragmentUniforms(state, slot_index, data, length);
+}
+
+/**
+ * Set custom GPU render state.
+ *
+ * This function sets custom GPU render state for subsequent draw calls. This
+ * allows using custom shaders with the GPU renderer.
+ *
+ * @param renderer the renderer to use.
+ * @param state the state to to use, or NULL to clear custom GPU render state.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety This function should be called on the thread that created the
+ *               renderer.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @from SDL_render.h:3003 bool SDL_SetGPURenderState(SDL_Renderer *renderer, SDL_GPURenderState *state);
+ */
+export function setGpuRenderState(renderer: Deno.PointerValue<"SDL_Renderer">, state: Deno.PointerValue<"SDL_GPURenderState">): boolean {
+  return lib.symbols.SDL_SetGPURenderState(renderer, state);
+}
+
+/**
+ * Destroy custom GPU render state.
+ *
+ * @param state the state to destroy.
+ *
+ * @threadsafety This function should be called on the thread that created the
+ *               renderer.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_CreateGPURenderState
+ *
+ * @from SDL_render.h:3017 void SDL_DestroyGPURenderState(SDL_GPURenderState *state);
+ */
+export function destroyGpuRenderState(state: Deno.PointerValue<"SDL_GPURenderState">): void {
+  return lib.symbols.SDL_DestroyGPURenderState(state);
 }
 

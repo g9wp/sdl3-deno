@@ -91,7 +91,7 @@ export const symbols = {
  *
  * @sa SDL_GetCameraDriver
  *
- * @from SDL_camera.h:160 int SDL_GetNumCameraDrivers(void);
+ * @from SDL_camera.h:174 int SDL_GetNumCameraDrivers(void);
  */
 SDL_GetNumCameraDrivers: {
       parameters: [],
@@ -121,7 +121,7 @@ SDL_GetNumCameraDrivers: {
  *
  * @sa SDL_GetNumCameraDrivers
  *
- * @from SDL_camera.h:184 const char * SDL_GetCameraDriver(int index);
+ * @from SDL_camera.h:198 const char * SDL_GetCameraDriver(int index);
  */
 SDL_GetCameraDriver: {
       parameters: ["i32"],
@@ -143,7 +143,7 @@ SDL_GetCameraDriver: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_camera.h:200 const char * SDL_GetCurrentCameraDriver(void);
+ * @from SDL_camera.h:214 const char * SDL_GetCurrentCameraDriver(void);
  */
 SDL_GetCurrentCameraDriver: {
       parameters: [],
@@ -166,7 +166,7 @@ SDL_GetCurrentCameraDriver: {
  *
  * @sa SDL_OpenCamera
  *
- * @from SDL_camera.h:217 SDL_CameraID * SDL_GetCameras(int *count);
+ * @from SDL_camera.h:231 SDL_CameraID * SDL_GetCameras(int *count);
  */
 SDL_GetCameras: {
       parameters: ["pointer"],
@@ -211,7 +211,7 @@ SDL_GetCameras: {
  * @sa SDL_GetCameras
  * @sa SDL_OpenCamera
  *
- * @from SDL_camera.h:256 SDL_CameraSpec ** SDL_GetCameraSupportedFormats(SDL_CameraID instance_id, int *count);
+ * @from SDL_camera.h:270 SDL_CameraSpec ** SDL_GetCameraSupportedFormats(SDL_CameraID instance_id, int *count);
  */
 SDL_GetCameraSupportedFormats: {
       parameters: ["u32", "pointer"],
@@ -232,7 +232,7 @@ SDL_GetCameraSupportedFormats: {
  *
  * @sa SDL_GetCameras
  *
- * @from SDL_camera.h:271 const char * SDL_GetCameraName(SDL_CameraID instance_id);
+ * @from SDL_camera.h:285 const char * SDL_GetCameraName(SDL_CameraID instance_id);
  */
 SDL_GetCameraName: {
       parameters: ["u32"],
@@ -257,7 +257,7 @@ SDL_GetCameraName: {
  *
  * @sa SDL_GetCameras
  *
- * @from SDL_camera.h:290 SDL_CameraPosition SDL_GetCameraPosition(SDL_CameraID instance_id);
+ * @from SDL_camera.h:304 SDL_CameraPosition SDL_GetCameraPosition(SDL_CameraID instance_id);
  */
 SDL_GetCameraPosition: {
       parameters: ["u32"],
@@ -310,7 +310,7 @@ SDL_GetCameraPosition: {
  * @sa SDL_GetCameras
  * @sa SDL_GetCameraFormat
  *
- * @from SDL_camera.h:337 SDL_Camera * SDL_OpenCamera(SDL_CameraID instance_id, const SDL_CameraSpec *spec);
+ * @from SDL_camera.h:351 SDL_Camera * SDL_OpenCamera(SDL_CameraID instance_id, const SDL_CameraSpec *spec);
  */
 SDL_OpenCamera: {
       parameters: ["u32", "pointer"],
@@ -327,8 +327,9 @@ SDL_OpenCamera: {
  * on others the approval might be implicit and not alert the user at all.
  *
  * This function can be used to check the status of that approval. It will
- * return 0 if still waiting for user response, 1 if the camera is approved
- * for use, and -1 if the user denied access.
+ * return SDL_CAMERA_PERMISSION_STATE_PENDING if waiting for user response,
+ * SDL_CAMERA_PERMISSION_STATE_APPROVED if the camera is approved for use, and
+ * SDL_CAMERA_PERMISSION_STATE_DENIED if the user denied access.
  *
  * Instead of polling with this function, you can wait for a
  * SDL_EVENT_CAMERA_DEVICE_APPROVED (or SDL_EVENT_CAMERA_DEVICE_DENIED) event
@@ -339,8 +340,9 @@ SDL_OpenCamera: {
  * SDL_CloseCamera() to dispose of it.
  *
  * @param camera the opened camera device to query.
- * @returns -1 if user denied access to the camera, 1 if user approved access,
- *          0 if no decision has been made yet.
+ * @returns an SDL_CameraPermissionState value indicating if access is
+ *          granted, or `SDL_CAMERA_PERMISSION_STATE_PENDING` if the decision
+ *          is still pending.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -349,11 +351,11 @@ SDL_OpenCamera: {
  * @sa SDL_OpenCamera
  * @sa SDL_CloseCamera
  *
- * @from SDL_camera.h:370 int SDL_GetCameraPermissionState(SDL_Camera *camera);
+ * @from SDL_camera.h:386 SDL_CameraPermissionState SDL_GetCameraPermissionState(SDL_Camera *camera);
  */
 SDL_GetCameraPermissionState: {
       parameters: ["pointer"],
-      result: "i32"
+      result: "u32"
     },
 
 
@@ -370,7 +372,7 @@ SDL_GetCameraPermissionState: {
  *
  * @sa SDL_OpenCamera
  *
- * @from SDL_camera.h:385 SDL_CameraID SDL_GetCameraID(SDL_Camera *camera);
+ * @from SDL_camera.h:401 SDL_CameraID SDL_GetCameraID(SDL_Camera *camera);
  */
 SDL_GetCameraID: {
       parameters: ["pointer"],
@@ -389,7 +391,7 @@ SDL_GetCameraID: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_camera.h:398 SDL_PropertiesID SDL_GetCameraProperties(SDL_Camera *camera);
+ * @from SDL_camera.h:414 SDL_PropertiesID SDL_GetCameraProperties(SDL_Camera *camera);
  */
 SDL_GetCameraProperties: {
       parameters: ["pointer"],
@@ -421,7 +423,7 @@ SDL_GetCameraProperties: {
  *
  * @sa SDL_OpenCamera
  *
- * @from SDL_camera.h:424 bool SDL_GetCameraFormat(SDL_Camera *camera, SDL_CameraSpec *spec);
+ * @from SDL_camera.h:440 bool SDL_GetCameraFormat(SDL_Camera *camera, SDL_CameraSpec *spec);
  */
 SDL_GetCameraFormat: {
       parameters: ["pointer", "pointer"],
@@ -470,7 +472,7 @@ SDL_GetCameraFormat: {
  *
  * @sa SDL_ReleaseCameraFrame
  *
- * @from SDL_camera.h:467 SDL_Surface * SDL_AcquireCameraFrame(SDL_Camera *camera, Uint64 *timestampNS);
+ * @from SDL_camera.h:483 SDL_Surface * SDL_AcquireCameraFrame(SDL_Camera *camera, Uint64 *timestampNS);
  */
 SDL_AcquireCameraFrame: {
       parameters: ["pointer", "pointer"],
@@ -504,7 +506,7 @@ SDL_AcquireCameraFrame: {
  *
  * @sa SDL_AcquireCameraFrame
  *
- * @from SDL_camera.h:495 void SDL_ReleaseCameraFrame(SDL_Camera *camera, SDL_Surface *frame);
+ * @from SDL_camera.h:511 void SDL_ReleaseCameraFrame(SDL_Camera *camera, SDL_Surface *frame);
  */
 SDL_ReleaseCameraFrame: {
       parameters: ["pointer", "pointer"],
@@ -525,7 +527,7 @@ SDL_ReleaseCameraFrame: {
  *
  * @sa SDL_OpenCamera
  *
- * @from SDL_camera.h:510 void SDL_CloseCamera(SDL_Camera *camera);
+ * @from SDL_camera.h:526 void SDL_CloseCamera(SDL_Camera *camera);
  */
 SDL_CloseCamera: {
       parameters: ["pointer"],

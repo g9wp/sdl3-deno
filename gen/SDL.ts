@@ -17,6 +17,7 @@ export * from "./sdl/camera.ts";
 export * from "./sdl/clipboard.ts";
 export * from "./sdl/cpuinfo.ts";
 export * from "./sdl/dialog.ts";
+export * from "./sdl/dlopennote.ts";
 export * from "./sdl/error.ts";
 export * from "./sdl/events.ts";
 export * from "./sdl/filesystem.ts";

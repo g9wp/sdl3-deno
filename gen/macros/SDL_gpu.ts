@@ -183,14 +183,20 @@
  * underlying graphics API. While it's possible that we have done something
  * inefficiently, it's very unlikely especially if you are relatively
  * inexperienced with GPU rendering. Please see the performance tips above and
- * make sure you are following them. Additionally, tools like RenderDoc can be
- * very helpful for diagnosing incorrect behavior and performance issues.
+ * make sure you are following them. Additionally, tools like
+ * [RenderDoc](https://renderdoc.org/)
+ * can be very helpful for diagnosing incorrect behavior and performance
+ * issues.
  *
  * ## System Requirements
  *
- * **Vulkan:** Supported on Windows, Linux, Nintendo Switch, and certain
- * Android devices. Requires Vulkan 1.0 with the following extensions and
- * device features:
+ * ### Vulkan
+ *
+ * SDL driver name: "vulkan" (for use in SDL_CreateGPUDevice() and
+ * SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING)
+ *
+ * Supported on Windows, Linux, Nintendo Switch, and certain Android devices.
+ * Requires Vulkan 1.0 with the following extensions and device features:
  *
  * - `VK_KHR_swapchain`
  * - `VK_KHR_maintenance1`
@@ -199,19 +205,63 @@
  * - `depthClamp`
  * - `shaderClipDistance`
  * - `drawIndirectFirstInstance`
+ * - `sampleRateShading`
  *
- * **D3D12:** Supported on Windows 10 or newer, Xbox One (GDK), and Xbox
- * Series X|S (GDK). Requires a GPU that supports DirectX 12 Feature Level 11_0 and
+ * You can remove some of these requirements to increase compatibility with
+ * Android devices by using these properties when creating the GPU device with
+ * SDL_CreateGPUDeviceWithProperties():
+ *
+ * - SDL_PROP_GPU_DEVICE_CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN
+ * - SDL_PROP_GPU_DEVICE_CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN
+ * - SDL_PROP_GPU_DEVICE_CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN
+ * - SDL_PROP_GPU_DEVICE_CREATE_FEATURE_ANISOTROPY_BOOLEAN
+ *
+ * ### D3D12
+ *
+ * SDL driver name: "direct3d12"
+ *
+ * Supported on Windows 10 or newer, Xbox One (GDK), and Xbox Series X|S
+ * (GDK). Requires a GPU that supports DirectX 12 Feature Level 11_0 and
  * Resource Binding Tier 2 or above.
  *
- * **Metal:** Supported on macOS 10.14+ and iOS/tvOS 13.0+. Hardware
- * requirements vary by operating system:
+ * You can remove the Tier 2 resource binding requirement to support Intel
+ * Haswell and Broadwell GPUs by using this property when creating the GPU
+ * device with SDL_CreateGPUDeviceWithProperties():
+ *
+ * - SDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN
+ *
+ * ### Metal
+ *
+ * SDL driver name: "metal"
+ *
+ * Supported on macOS 10.14+ and iOS/tvOS 13.0+. Hardware requirements vary by
+ * operating system:
  *
  * - macOS requires an Apple Silicon or
  *   [Intel Mac2 family](https://developer.apple.com/documentation/metal/mtlfeatureset/mtlfeatureset_macos_gpufamily2_v1?language=objc)
  *   GPU
  * - iOS/tvOS requires an A9 GPU or newer
  * - iOS Simulator and tvOS Simulator are unsupported
+ *
+ * ## Coordinate System
+ *
+ * The GPU API uses a left-handed coordinate system, following the convention
+ * of D3D12 and Metal. Specifically:
+ *
+ * - **Normalized Device Coordinates:** The lower-left corner has an x,y
+ *   coordinate of `(-1.0, -1.0)`. The upper-right corner is `(1.0, 1.0)`. Z
+ *   values range from `[0.0, 1.0]` where 0 is the near plane.
+ * - **Viewport Coordinates:** The top-left corner has an x,y coordinate of
+ *   `(0, 0)` and extends to the bottom-right corner at `(viewportWidth,
+ *   viewportHeight)`. +Y is down.
+ * - **Texture Coordinates:** The top-left corner has an x,y coordinate of
+ *   `(0, 0)` and extends to the bottom-right corner at `(1.0, 1.0)`. +Y is
+ *   down.
+ *
+ * If the backend driver differs from this convention (e.g. Vulkan, which has
+ * an NDC that assumes +Y is down), SDL will automatically convert the
+ * coordinate system behind the scenes, so you don't need to perform any
+ * coordinate flipping logic in your shaders.
  *
  * ## Uniform Data
  *
@@ -279,6 +329,39 @@
  * section of data that has already been referenced will produce unexpected
  * results.
  *
+ * ## Debugging
+ *
+ * At some point of your GPU journey, you will probably encounter issues that
+ * are not traceable with regular debugger - for example, your code compiles
+ * but you get an empty screen, or your shader fails in runtime.
+ *
+ * For debugging such cases, there are tools that allow visually inspecting
+ * the whole GPU frame, every drawcall, every bound resource, memory buffers,
+ * etc. They are the following, per platform:
+ *
+ * * For Windows/Linux, use
+ *   [RenderDoc](https://renderdoc.org/)
+ * * For MacOS (Metal), use Xcode built-in debugger (Open XCode, go to Debug >
+ *   Debug Executable..., select your application, set "GPU Frame Capture" to
+ *   "Metal" in scheme "Options" window, run your app, and click the small
+ *   Metal icon on the bottom to capture a frame)
+ *
+ * Aside from that, you may want to enable additional debug layers to receive
+ * more detailed error messages, based on your GPU backend:
+ *
+ * * For D3D12, the debug layer is an optional feature that can be installed
+ *   via "Windows Settings -> System -> Optional features" and adding the
+ *   "Graphics Tools" optional feature.
+ * * For Vulkan, you will need to install Vulkan SDK on Windows, and on Linux,
+ *   you usually have some sort of `vulkan-validation-layers` system package
+ *   that should be installed.
+ * * For Metal, it should be enough just to run the application from XCode to
+ *   receive detailed errors or warnings in the output.
+ *
+ * Don't hesitate to use tools as RenderDoc when encountering runtime issues
+ * or unexpected output on screen, quick GPU frame inspection can usually help
+ * you fix the majority of such problems.
+ *
  * @module
  */
 
@@ -304,32 +387,32 @@
 */
 
 /**
- * @from SDL_gpu:2303
+ * @from SDL_gpu:2607
  */
 export const SDL_PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING = "SDL.gpu.computepipeline.create.name";
 
 /**
- * @from SDL_gpu:2330
+ * @from SDL_gpu:2634
  */
 export const SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING = "SDL.gpu.graphicspipeline.create.name";
 
 /**
- * @from SDL_gpu:2357
+ * @from SDL_gpu:2661
  */
 export const SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING = "SDL.gpu.sampler.create.name";
 
 /**
- * @from SDL_gpu:2436
+ * @from SDL_gpu:2740
  */
 export const SDL_PROP_GPU_SHADER_CREATE_NAME_STRING = "SDL.gpu.shader.create.name";
 
 /**
- * @from SDL_gpu:2553
+ * @from SDL_gpu:2860
  */
 export const SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING = "SDL.gpu.buffer.create.name";
 
 /**
- * @from SDL_gpu:2586
+ * @from SDL_gpu:2893
  */
 export const SDL_PROP_GPU_TRANSFERBUFFER_CREATE_NAME_STRING = "SDL.gpu.transferbuffer.create.name";
 

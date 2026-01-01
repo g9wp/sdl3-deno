@@ -47,67 +47,188 @@
 */
 
 /**
- * @from SDL_intrin:64
+ * Defined if (and only if) the compiler supports Loongarch LSX intrinsics.
+ *
+ * If this macro is defined, SDL will have already included `<lsxintrin.h>`
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_LASX_INTRINSICS
+ *
+ * @from SDL_intrin.h:64
  */
 export const SDL_LSX_INTRINSICS = 1;
 
 /**
- * @from SDL_intrin:75
+ * Defined if (and only if) the compiler supports Loongarch LSX intrinsics.
+ *
+ * If this macro is defined, SDL will have already included `<lasxintrin.h>`
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_LASX_INTRINSICS
+ *
+ * @from SDL_intrin.h:75
  */
 export const SDL_LASX_INTRINSICS = 1;
 
 /**
- * @from SDL_intrin:85
+ * Defined if (and only if) the compiler supports ARM NEON intrinsics.
+ *
+ * If this macro is defined, SDL will have already included `<armintr.h>`
+ * `<arm_neon.h>`, `<arm64intr.h>`, and `<arm64_neon.h>`, as appropriate.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_intrin.h:85
  */
 export const SDL_NEON_INTRINSICS = 1;
 
 /**
- * @from SDL_intrin:94
+ * Defined if (and only if) the compiler supports PowerPC Altivec intrinsics.
+ *
+ * If this macro is defined, SDL will have already included `<altivec.h>`
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_intrin.h:94
  */
 export const SDL_ALTIVEC_INTRINSICS = 1;
 
 /**
- * @from SDL_intrin:105
+ * Defined if (and only if) the compiler supports Intel MMX intrinsics.
+ *
+ * If this macro is defined, SDL will have already included `<mmintrin.h>`
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_SSE_INTRINSICS
+ *
+ * @from SDL_intrin.h:105
  */
 export const SDL_MMX_INTRINSICS = 1;
 
 /**
- * @from SDL_intrin:119
+ * Defined if (and only if) the compiler supports Intel SSE intrinsics.
+ *
+ * If this macro is defined, SDL will have already included `<xmmintrin.h>`
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_SSE2_INTRINSICS
+ * @sa SDL_SSE3_INTRINSICS
+ * @sa SDL_SSE4_1_INTRINSICS
+ * @sa SDL_SSE4_2_INTRINSICS
+ *
+ * @from SDL_intrin.h:119
  */
 export const SDL_SSE_INTRINSICS = 1;
 
 /**
- * @from SDL_intrin:133
+ * Defined if (and only if) the compiler supports Intel SSE2 intrinsics.
+ *
+ * If this macro is defined, SDL will have already included `<emmintrin.h>`
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_SSE_INTRINSICS
+ * @sa SDL_SSE3_INTRINSICS
+ * @sa SDL_SSE4_1_INTRINSICS
+ * @sa SDL_SSE4_2_INTRINSICS
+ *
+ * @from SDL_intrin.h:133
  */
 export const SDL_SSE2_INTRINSICS = 1;
 
 /**
- * @from SDL_intrin:147
+ * Defined if (and only if) the compiler supports Intel SSE3 intrinsics.
+ *
+ * If this macro is defined, SDL will have already included `<pmmintrin.h>`
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_SSE_INTRINSICS
+ * @sa SDL_SSE2_INTRINSICS
+ * @sa SDL_SSE4_1_INTRINSICS
+ * @sa SDL_SSE4_2_INTRINSICS
+ *
+ * @from SDL_intrin.h:147
  */
 export const SDL_SSE3_INTRINSICS = 1;
 
 /**
- * @from SDL_intrin:161
+ * Defined if (and only if) the compiler supports Intel SSE4.1 intrinsics.
+ *
+ * If this macro is defined, SDL will have already included `<smmintrin.h>`
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_SSE_INTRINSICS
+ * @sa SDL_SSE2_INTRINSICS
+ * @sa SDL_SSE3_INTRINSICS
+ * @sa SDL_SSE4_2_INTRINSICS
+ *
+ * @from SDL_intrin.h:161
  */
 export const SDL_SSE4_1_INTRINSICS = 1;
 
 /**
- * @from SDL_intrin:175
+ * Defined if (and only if) the compiler supports Intel SSE4.2 intrinsics.
+ *
+ * If this macro is defined, SDL will have already included `<nmmintrin.h>`
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_SSE_INTRINSICS
+ * @sa SDL_SSE2_INTRINSICS
+ * @sa SDL_SSE3_INTRINSICS
+ * @sa SDL_SSE4_1_INTRINSICS
+ *
+ * @from SDL_intrin.h:175
  */
 export const SDL_SSE4_2_INTRINSICS = 1;
 
 /**
- * @from SDL_intrin:187
+ * Defined if (and only if) the compiler supports Intel AVX intrinsics.
+ *
+ * If this macro is defined, SDL will have already included `<immintrin.h>`
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_AVX2_INTRINSICS
+ * @sa SDL_AVX512F_INTRINSICS
+ *
+ * @from SDL_intrin.h:187
  */
 export const SDL_AVX_INTRINSICS = 1;
 
 /**
- * @from SDL_intrin:199
+ * Defined if (and only if) the compiler supports Intel AVX2 intrinsics.
+ *
+ * If this macro is defined, SDL will have already included `<immintrin.h>`
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_AVX_INTRINSICS
+ * @sa SDL_AVX512F_INTRINSICS
+ *
+ * @from SDL_intrin.h:199
  */
 export const SDL_AVX2_INTRINSICS = 1;
 
 /**
- * @from SDL_intrin:213
+ * Defined if (and only if) the compiler supports Intel AVX-512F intrinsics.
+ *
+ * AVX-512F is also sometimes referred to as "AVX-512 Foundation."
+ *
+ * If this macro is defined, SDL will have already included `<immintrin.h>`
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_AVX_INTRINSICS
+ * @sa SDL_AVX2_INTRINSICS
+ *
+ * @from SDL_intrin.h:213
  */
 export const SDL_AVX512F_INTRINSICS = 1;
 
@@ -142,72 +263,72 @@ export const __ARM_NEON = 1;/* Set __ARM_NEON so that it can be used elsewhere, 
 export const SDL_NEON_INTRINSICS = 1;
 
 /**
- * @from SDL_intrin:349
+ * @from SDL_intrin:352
  */
 export const SDL_LSX_INTRINSICS = 1;
 
 /**
- * @from SDL_intrin:353
+ * @from SDL_intrin:356
  */
 export const SDL_LASX_INTRINSICS = 1;
 
 /**
- * @from SDL_intrin:360
+ * @from SDL_intrin:363
  */
 export const SDL_MMX_INTRINSICS = 1;
 
 /**
- * @from SDL_intrin:364
+ * @from SDL_intrin:367
  */
 export const SDL_SSE_INTRINSICS = 1;
 
 /**
- * @from SDL_intrin:368
+ * @from SDL_intrin:371
  */
 export const SDL_SSE2_INTRINSICS = 1;
 
 /**
- * @from SDL_intrin:372
+ * @from SDL_intrin:375
  */
 export const SDL_SSE3_INTRINSICS = 1;
 
 /**
- * @from SDL_intrin:376
+ * @from SDL_intrin:379
  */
 export const SDL_SSE4_1_INTRINSICS = 1;
 
 /**
- * @from SDL_intrin:380
+ * @from SDL_intrin:383
  */
 export const SDL_SSE4_2_INTRINSICS = 1;
 
 /**
- * @from SDL_intrin:384
+ * @from SDL_intrin:387
  */
 export const SDL_DISABLE_AVX = ;/* see https://reviews.llvm.org/D20291 and https://reviews.llvm.org/D79194 */
 
 /**
- * @from SDL_intrin:387
+ * @from SDL_intrin:390
  */
 export const SDL_AVX_INTRINSICS = 1;
 
 /**
- * @from SDL_intrin:391
+ * @from SDL_intrin:394
  */
 export const SDL_DISABLE_AVX2 = ;/* see https://reviews.llvm.org/D20291 and https://reviews.llvm.org/D79194 */
 
 /**
- * @from SDL_intrin:394
+ * @from SDL_intrin:397
  */
 export const SDL_AVX2_INTRINSICS = 1;
 
 /**
- * @from SDL_intrin:398
+ * @from SDL_intrin:401
  */
 export const SDL_DISABLE_AVX512F = ;/* see https://reviews.llvm.org/D20291 and https://reviews.llvm.org/D79194 */
 
 /**
- * @from SDL_intrin:401
+ * @from SDL_intrin:404
  */
 export const SDL_AVX512F_INTRINSICS = 1;
 

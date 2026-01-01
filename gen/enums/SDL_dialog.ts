@@ -37,7 +37,7 @@
 */
 
 /**
- * @from SDL_dialog:325 SDL_PROP_FILE_DIALOG_
+ * @from SDL_dialog:327 SDL_PROP_FILE_DIALOG_
  */
 export enum PROP_FILE_DIALOG {
   FILTERS_POINTER = "SDL.filedialog.filters", 
@@ -62,7 +62,7 @@ export enum PROP_FILE_DIALOG {
  *
  * @sa SDL_ShowFileDialogWithProperties
  *
- * @from SDL_dialog.h:269 SDL_FILEDIALOG_
+ * @from SDL_dialog.h:271 SDL_FILEDIALOG_
  */
 export enum SDL_FileDialogType {
   OPENFILE, 

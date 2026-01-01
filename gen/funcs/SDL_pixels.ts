@@ -344,7 +344,7 @@ SDL_MapRGBA: {
  * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
  * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
  *
- * @param pixel a pixel value.
+ * @param pixelvalue a pixel value.
  * @param format a pointer to SDL_PixelFormatDetails describing the pixel
  *               format.
  * @param palette an optional palette for indexed formats, may be NULL.
@@ -362,7 +362,7 @@ SDL_MapRGBA: {
  * @sa SDL_MapRGB
  * @sa SDL_MapRGBA
  *
- * @from SDL_pixels.h:1399 void SDL_GetRGB(Uint32 pixel, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b);
+ * @from SDL_pixels.h:1399 void SDL_GetRGB(Uint32 pixelvalue, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b);
  */
 SDL_GetRGB: {
       parameters: ["u32", "pointer", "pointer", "pointer", "pointer", "pointer"],
@@ -381,7 +381,7 @@ SDL_GetRGB: {
  * If the surface has no alpha component, the alpha will be returned as 0xff
  * (100% opaque).
  *
- * @param pixel a pixel value.
+ * @param pixelvalue a pixel value.
  * @param format a pointer to SDL_PixelFormatDetails describing the pixel
  *               format.
  * @param palette an optional palette for indexed formats, may be NULL.
@@ -400,7 +400,7 @@ SDL_GetRGB: {
  * @sa SDL_MapRGB
  * @sa SDL_MapRGBA
  *
- * @from SDL_pixels.h:1431 void SDL_GetRGBA(Uint32 pixel, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);
+ * @from SDL_pixels.h:1431 void SDL_GetRGBA(Uint32 pixelvalue, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);
  */
 SDL_GetRGBA: {
       parameters: ["u32", "pointer", "pointer", "pointer", "pointer", "pointer", "pointer"],
