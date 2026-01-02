@@ -58,19 +58,19 @@ import type { SurfacePointer } from "./pointer_type.ts";
 export class Surface {
   pointer: SurfacePointer = null;
 
-  static IMG_load: (file: string) => SurfacePointer = SDL.loadBmp;
+  static IMG_load: (file: string) => SurfacePointer = SDL.loadSurface;
   static IMG_loadIo: (
     src: Deno.PointerValue<"SDL_IOStream">,
     closeio: boolean,
-  ) => SurfacePointer = SDL.loadBmpIo;
+  ) => SurfacePointer = SDL.loadSurfaceIo;
   static IMG_loadTypedIo: (
     src: Deno.PointerValue<"SDL_IOStream">,
     closeio: boolean,
     type: string,
-  ) => SurfacePointer = SDL.loadBmpIo;
+  ) => SurfacePointer = SDL.loadSurfaceIo;
 
   static async enableImageLib() {
-    if (SDL.loadBmp !== Surface.IMG_load) return;
+    if (SDL.loadSurface !== Surface.IMG_load) return;
     const img = await import("../gen/IMG.ts");
     Surface.IMG_load = img.load;
     Surface.IMG_loadIo = img.loadIo;
