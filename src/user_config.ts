@@ -19,7 +19,7 @@ export interface UserConfig {
    *
    * @default ['sdl3', 'lib', `${import.meta.dirname}/../sdl3`, `${import.meta.dirname}/../lib`]
    */
-  lib?: string|string[];
+  lib?: string | string[];
 
   /**
    * Environment variable to use for the library path.
@@ -29,9 +29,9 @@ export interface UserConfig {
    *
    * Set to `false` to disable environment variable lookup.
    */
-  env?: string|boolean;
+  env?: string | boolean;
 }
 
 export function defineConfig(config: UserConfig): UserConfig {
-  return config
+  return config;
 }

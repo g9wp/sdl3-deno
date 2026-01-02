@@ -47,10 +47,12 @@ import type { WindowPointer } from "./pointer_type.ts";
  *                 it will be invoked.
  * @param window the window that the dialog should be modal for, may be NULL.
  *               Not all platforms support this option.
- * @param filters a list of filters, may be NULL. Not all platforms support
- *                this option, and platforms that do support it may allow the
- *                user to ignore the filters. If non-NULL, it must remain
- *                valid at least until the callback is invoked.
+ * @param filters a list of filters, may be NULL. See the
+ *                [`SDL_DialogFileFilter`](SDL_DialogFileFilter#code-examples)
+ *                documentation for examples]. Not all platforms support this
+ *                option, and platforms that do support it may allow the user
+ *                to ignore the filters. If non-NULL, it must remain valid at
+ *                least until the callback is invoked.
  * @param nfilters the number of filters. Ignored if filters is NULL.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be NULL. Not all platforms support this option.
@@ -69,7 +71,7 @@ import type { WindowPointer } from "./pointer_type.ts";
  * @sa SDL_ShowOpenFolderDialog
  * @sa SDL_ShowFileDialogWithProperties
  *
- * @from SDL_dialog.h:163 void SDL_ShowOpenFileDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const SDL_DialogFileFilter *filters, int nfilters, const char *default_location, bool allow_many);
+ * @from SDL_dialog.h:165 void SDL_ShowOpenFileDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const SDL_DialogFileFilter *filters, int nfilters, const char *default_location, bool allow_many);
  */
 export function openFile(
   options: {
@@ -145,7 +147,7 @@ export function openFile(
  * @sa SDL_ShowOpenFolderDialog
  * @sa SDL_ShowFileDialogWithProperties
  *
- * @from SDL_dialog.h:212 void SDL_ShowSaveFileDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const SDL_DialogFileFilter *filters, int nfilters, const char *default_location);
+ * @from SDL_dialog.h:214 void SDL_ShowSaveFileDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const SDL_DialogFileFilter *filters, int nfilters, const char *default_location);
  */
 export function saveFile(
   options: {
@@ -214,7 +216,7 @@ export function saveFile(
  * @sa SDL_ShowSaveFileDialog
  * @sa SDL_ShowFileDialogWithProperties
  *
- * @from SDL_dialog.h:257 void SDL_ShowOpenFolderDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const char *default_location, bool allow_many);
+ * @from SDL_dialog.h:259 void SDL_ShowOpenFolderDialog(SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const char *default_location, bool allow_many);
  */
 export function openFolder(
   options: {
@@ -286,7 +288,7 @@ export function openFolder(
  * @sa SDL_ShowSaveFileDialog
  * @sa SDL_ShowOpenFolderDialog
  *
- * @from SDL_dialog.h:323 void SDL_ShowFileDialogWithProperties(SDL_FileDialogType type, SDL_DialogFileCallback callback, void *userdata, SDL_PropertiesID props);
+ * @from SDL_dialog.h:325 void SDL_ShowFileDialogWithProperties(SDL_FileDialogType type, SDL_DialogFileCallback callback, void *userdata, SDL_PropertiesID props);
  */
 export function withProperties(
   options: {
