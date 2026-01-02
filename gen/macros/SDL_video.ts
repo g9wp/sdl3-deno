@@ -79,7 +79,7 @@ export const SDL_PROP_GLOBAL_VIDEO_WAYLAND_WL_DISPLAY_POINTER = "SDL.video.wayla
  *
  * @from SDL_video.h:234
  */
-export const SDL_WINDOWPOS_UNDEFINED_MASK = 0x1FFF0000u;
+export const SDL_WINDOWPOS_UNDEFINED_MASK = 0x1FFF0000;
 
 /**
  * Used to indicate that you don't care what the window position/display is.
@@ -92,7 +92,7 @@ export const SDL_WINDOWPOS_UNDEFINED_MASK = 0x1FFF0000u;
  *
  * @from SDL_video.h:259
  */
-export const SDL_WINDOWPOS_UNDEFINED = SDL_WINDOWPOS_UNDEFINED_DISPLAY(0);
+// export const SDL_WINDOWPOS_UNDEFINED = SDL_WINDOWPOS_UNDEFINED_DISPLAY(0);
 
 /**
  * A magic value used with SDL_WINDOWPOS_CENTERED.
@@ -106,7 +106,7 @@ export const SDL_WINDOWPOS_UNDEFINED = SDL_WINDOWPOS_UNDEFINED_DISPLAY(0);
  *
  * @from SDL_video.h:282
  */
-export const SDL_WINDOWPOS_CENTERED_MASK = 0x2FFF0000u;
+export const SDL_WINDOWPOS_CENTERED_MASK = 0x2FFF0000;
 
 /**
  * Used to indicate that the window position should be centered.
@@ -119,5 +119,4 @@ export const SDL_WINDOWPOS_CENTERED_MASK = 0x2FFF0000u;
  *
  * @from SDL_video.h:307
  */
-export const SDL_WINDOWPOS_CENTERED = SDL_WINDOWPOS_CENTERED_DISPLAY(0);
-
+// export const SDL_WINDOWPOS_CENTERED = SDL_WINDOWPOS_CENTERED_DISPLAY(0);

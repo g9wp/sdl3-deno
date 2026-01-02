@@ -124,7 +124,7 @@
  *
  * @from SDL_haptic.h:162
  */
-export const SDL_HAPTIC_INFINITY = 4294967295U;
+export const SDL_HAPTIC_INFINITY = 4294967295;
 
 /**
  * Constant effect supported.
@@ -423,4 +423,3 @@ export const SDL_HAPTIC_SPHERICAL = 2;
  * @from SDL_haptic.h:445
  */
 export const SDL_HAPTIC_STEERING_AXIS = 3;
-

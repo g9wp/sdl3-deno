@@ -305,7 +305,7 @@ export const SDL_SSE4_2_INTRINSICS = 1;
 /**
  * @from SDL_intrin:387
  */
-export const SDL_DISABLE_AVX = ;/* see https://reviews.llvm.org/D20291 and https://reviews.llvm.org/D79194 */
+// export const SDL_DISABLE_AVX = ;/* see https://reviews.llvm.org/D20291 and https://reviews.llvm.org/D79194 */
 
 /**
  * @from SDL_intrin:390
@@ -315,7 +315,7 @@ export const SDL_AVX_INTRINSICS = 1;
 /**
  * @from SDL_intrin:394
  */
-export const SDL_DISABLE_AVX2 = ;/* see https://reviews.llvm.org/D20291 and https://reviews.llvm.org/D79194 */
+// export const SDL_DISABLE_AVX2 = ;/* see https://reviews.llvm.org/D20291 and https://reviews.llvm.org/D79194 */
 
 /**
  * @from SDL_intrin:397
@@ -325,10 +325,9 @@ export const SDL_AVX2_INTRINSICS = 1;
 /**
  * @from SDL_intrin:401
  */
-export const SDL_DISABLE_AVX512F = ;/* see https://reviews.llvm.org/D20291 and https://reviews.llvm.org/D79194 */
+// export const SDL_DISABLE_AVX512F = ;/* see https://reviews.llvm.org/D20291 and https://reviews.llvm.org/D79194 */
 
 /**
  * @from SDL_intrin:404
  */
 export const SDL_AVX512F_INTRINSICS = 1;
-
