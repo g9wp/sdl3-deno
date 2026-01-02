@@ -293,6 +293,64 @@ export class Render {
     return new Render(r);
   }
 
+
+  /**
+   * Create a 2D GPU rendering context.
+   *
+   * The GPU device to use is passed in as a parameter. If this is NULL, then a
+   * device will be created normally and can be retrieved using
+   * SDL_GetGPURendererDevice().
+   *
+   * The window to use is passed in as a parameter. If this is NULL, then this
+   * will become an offscreen renderer. In that case, you should call
+   * SDL_SetRenderTarget() to setup rendering to a texture, and then call
+   * SDL_RenderPresent() normally to complete drawing a frame.
+   *
+   * @param device the GPU device to use with the renderer, or NULL to create a
+   *               device.
+   * @param window the window where rendering is displayed, or NULL to create an
+   *               offscreen renderer.
+   * @returns a valid rendering context or NULL if there was an error; call
+   *          SDL_GetError() for more information.
+   *
+   * @threadsafety If this function is called with a valid GPU device, it should
+   *               be called on the thread that created the device. If this
+   *               function is called with a valid window, it should be called
+   *               on the thread that created the window.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa SDL_CreateRendererWithProperties
+   * @sa SDL_GetGPURendererDevice
+   * @sa SDL_CreateGPUShader
+   * @sa SDL_CreateGPURenderState
+   * @sa SDL_SetGPURenderState
+   *
+   * @from SDL_render.h:386 SDL_Renderer * SDL_CreateGPURenderer(SDL_GPUDevice *device, SDL_Window *window);
+   */
+  createGpu(device: Deno.PointerValue<"SDL_GPUDevice">, window: Deno.PointerValue<"SDL_Window">): Render {
+    const r = SDL.createGpuRenderer(device, window);
+    if (!r) throw SdlError("createGpu");
+    return new Render(r);
+  }
+
+  /**
+   * Return the GPU device used by a renderer.
+   *
+   * @param renderer the rendering context.
+   * @returns the GPU device used by the renderer, or NULL if the renderer is
+   *          not a GPU renderer; call SDL_GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @from SDL_render.h:399 SDL_GPUDevice * SDL_GetGPURendererDevice(SDL_Renderer *renderer);
+   */
+  get gpuDevice(): Deno.PointerValue<"SDL_GPUDevice"> {
+    return SDL.getGpuRendererDevice(this.pointer);
+  }
+
   /**
    * Create a 2D software rendering context for a surface.
    *
@@ -1884,6 +1942,59 @@ export class Render {
     );
   }
 
+
+  /**
+   * Perform a scaled copy using the 9-grid algorithm to the current rendering
+   * target at subpixel precision.
+   *
+   * The pixels in the texture are split into a 3x3 grid, using the different
+   * corner sizes for each corner, and the sides and center making up the
+   * remaining pixels. The corners are then scaled using `scale` and fit into
+   * the corners of the destination rectangle. The sides and center are then
+   * tiled into place to cover the remaining destination rectangle.
+   *
+   * @param renderer the renderer which should copy parts of a texture.
+   * @param texture the source texture.
+   * @param srcrect the SDL_Rect structure representing the rectangle to be used
+   *                for the 9-grid, or NULL to use the entire texture.
+   * @param left_width the width, in pixels, of the left corners in `srcrect`.
+   * @param right_width the width, in pixels, of the right corners in `srcrect`.
+   * @param top_height the height, in pixels, of the top corners in `srcrect`.
+   * @param bottom_height the height, in pixels, of the bottom corners in
+   *                      `srcrect`.
+   * @param scale the scale used to transform the corner of `srcrect` into the
+   *              corner of `dstrect`, or 0.0f for an unscaled copy.
+   * @param dstrect a pointer to the destination rectangle, or NULL for the
+   *                entire rendering target.
+   * @param tileScale the scale used to transform the borders and center of
+   *                  `srcrect` into the borders and middle of `dstrect`, or
+   *                  1.0f for an unscaled copy.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa SDL_RenderTexture
+   * @sa SDL_RenderTexture9Grid
+   *
+   * @from SDL_render.h:2434 bool SDL_RenderTexture9GridTiled(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect, float tileScale);
+   */
+  texture9GridTiled(
+      texture: Deno.PointerValue<"SDL_Texture">,
+      srcrect: { x: number; y: number; w: number; h: number; } | null,
+      left_width: number,
+      right_width: number,
+      top_height: number,
+      bottom_height: number,
+      scale: number,
+      dstrect: { x: number; y: number; w: number; h: number; } | null,
+      tileScale: number,
+  ): boolean {
+    return SDL.renderTexture9GridTiled(this.pointer, texture, srcrect, left_width, right_width, top_height, bottom_height, scale, dstrect, tileScale);
+  }
+
   /**
    * Render a list of triangles, optionally using a texture and indices into the
    * vertex array Color and alpha modulation is done per vertex
@@ -1989,6 +2100,54 @@ export class Render {
       size_indices,
     );
   }
+
+
+  /**
+   * Set the texture addressing mode used in SDL_RenderGeometry().
+   *
+   * @param renderer the rendering context.
+   * @param u_mode the SDL_TextureAddressMode to use for horizontal texture
+   *               coordinates in SDL_RenderGeometry().
+   * @param v_mode the SDL_TextureAddressMode to use for vertical texture
+   *               coordinates in SDL_RenderGeometry().
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa SDL_RenderGeometry
+   * @sa SDL_RenderGeometryRaw
+   * @sa SDL_GetRenderTextureAddressMode
+   *
+   * @from SDL_render.h:2517 bool SDL_SetRenderTextureAddressMode(SDL_Renderer *renderer, SDL_TextureAddressMode u_mode, SDL_TextureAddressMode v_mode);
+   */
+  setTextureAddressMode(u_mode: number, v_mode: number): boolean {
+    return SDL.setRenderTextureAddressMode(this.pointer, u_mode, v_mode);
+  }
+
+  /**
+   * Get the texture addressing mode used in SDL_RenderGeometry().
+   *
+   * @param renderer the rendering context.
+   * @param u_mode a pointer filled in with the SDL_TextureAddressMode to use
+   *               for horizontal texture coordinates in SDL_RenderGeometry(),
+   *               may be NULL.
+   * @param v_mode a pointer filled in with the SDL_TextureAddressMode to use
+   *               for vertical texture coordinates in SDL_RenderGeometry(), may
+   *               be NULL.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa SDL_SetRenderTextureAddressMode
+   *
+   * @from SDL_render.h:2536 bool SDL_GetRenderTextureAddressMode(SDL_Renderer *renderer, SDL_TextureAddressMode *u_mode, SDL_TextureAddressMode *v_mode);
+   */
+  get textureAddressMode(): { u_mode: number; v_mode: number } {
+    return SDL.getRenderTextureAddressMode(this.pointer)
+  }
+
 
   /**
    * Read pixels from the current rendering target.
@@ -2327,6 +2486,97 @@ export class Render {
   debugText(x: number, y: number, str: string): boolean {
     return SDL.renderDebugText(this.pointer, x, y, str);
   }
+
+
+  /**
+   * Set default scale mode for new textures for given renderer.
+   *
+   * When a renderer is created, scale_mode defaults to SDL_SCALEMODE_LINEAR.
+   *
+   * @param renderer the renderer to update.
+   * @param scale_mode the scale mode to change to for new textures.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa SDL_GetDefaultTextureScaleMode
+   *
+   * @from SDL_render.h:2893 bool SDL_SetDefaultTextureScaleMode(SDL_Renderer *renderer, SDL_ScaleMode scale_mode);
+   */
+  setDefaultTextureScaleMode(scale_mode: number): boolean {
+    return SDL.setDefaultTextureScaleMode(this.pointer, scale_mode);
+  }
+
+  /**
+   * Get default texture scale mode of the given renderer.
+   *
+   * @param renderer the renderer to get data from.
+   * @param scale_mode a SDL_ScaleMode filled with current default scale mode.
+   *                   See SDL_SetDefaultTextureScaleMode() for the meaning of
+   *                   the value.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa SDL_SetDefaultTextureScaleMode
+   *
+   * @from SDL_render.h:2911 bool SDL_GetDefaultTextureScaleMode(SDL_Renderer *renderer, SDL_ScaleMode *scale_mode);
+   */
+  get defaultTextureScaleMode(): number {
+    return SDL.getDefaultTextureScaleMode(this.pointer)
+  }
+
+  /**
+   * Create custom GPU render state.
+   *
+   * @param renderer the renderer to use.
+   * @param createinfo a struct describing the GPU render state to create.
+   * @returns a custom GPU render state or NULL on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               renderer.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa SDL_SetGPURenderStateFragmentUniforms
+   * @sa SDL_SetGPURenderState
+   * @sa SDL_DestroyGPURenderState
+   *
+   * @from SDL_render.h:2965 SDL_GPURenderState * SDL_CreateGPURenderState(SDL_Renderer *renderer, SDL_GPURenderStateCreateInfo *createinfo);
+   */
+  createGpuState(createinfo: Deno.PointerValue<"SDL_GPURenderStateCreateInfo">): Deno.PointerValue<"SDL_GPURenderState"> {
+    return SDL.createGpuRenderState(this.pointer, createinfo) as Deno.PointerValue<"SDL_GPURenderState">;
+  }
+
+
+  /**
+   * Set custom GPU render state.
+   *
+   * This function sets custom GPU render state for subsequent draw calls. This
+   * allows using custom shaders with the GPU renderer.
+   *
+   * @param renderer the renderer to use.
+   * @param state the state to to use, or NULL to clear custom GPU render state.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               renderer.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @from SDL_render.h:3003 bool SDL_SetGPURenderState(SDL_Renderer *renderer, SDL_GPURenderState *state);
+   */
+  setGpuRenderState(state: Deno.PointerValue<"SDL_GPURenderState">): boolean {
+    return SDL.setGpuRenderState(this.pointer, state);
+  }
 }
 
 /**
@@ -2483,6 +2733,51 @@ export class Texture {
    */
   get size(): Size {
     return SDL.getTextureSize(this.pointer);
+  }
+
+  /**
+   * Set the palette used by a texture.
+   *
+   * Setting the palette keeps an internal reference to the palette, which can
+   * be safely destroyed afterwards.
+   *
+   * A single palette can be shared with many textures.
+   *
+   * @param texture the texture to update.
+   * @param palette the SDL_Palette structure to use.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa SDL_CreatePalette
+   * @sa SDL_GetTexturePalette
+   *
+   * @from SDL_render.h:1017 bool SDL_SetTexturePalette(SDL_Texture *texture, SDL_Palette *palette);
+   */
+  setPalette(palette: Deno.PointerValue<"SDL_Palette">): boolean {
+    return SDL.setTexturePalette(this.pointer, palette);
+  }
+
+  /**
+   * Get the palette used by a texture.
+   *
+   * @param texture the texture to query.
+   * @returns a pointer to the palette used by the texture, or NULL if there is
+   *          no palette used.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa SDL_SetTexturePalette
+   *
+   * @from SDL_render.h:1032 SDL_Palette * SDL_GetTexturePalette(SDL_Texture *texture);
+   */
+  get palette(): Deno.PointerValue<"SDL_Palette"> {
+    return SDL.getTexturePalette(this.pointer);
   }
 
   /**
@@ -3054,3 +3349,59 @@ export class Texture {
     this.destroy();
   }
 }
+
+export class GpuRenderState {
+  constructor(public pointer: Deno.PointerValue<"SDL_GPURenderState">) {}
+
+  /**
+  * Set fragment shader uniform variables in a custom GPU render state.
+  *
+  * The data is copied and will be pushed using
+  * SDL_PushGPUFragmentUniformData() during draw call execution.
+  *
+  * @param state the state to modify.
+  * @param slot_index the fragment uniform slot to push data to.
+  * @param data client data to write.
+  * @param length the length of the data to write.
+  * @returns true on success or false on failure; call SDL_GetError() for more
+  *          information.
+  *
+  * @threadsafety This function should be called on the thread that created the
+  *               renderer.
+  *
+  * @since This function is available since SDL 3.4.0.
+  *
+  * @from SDL_render.h:2985 bool SDL_SetGPURenderStateFragmentUniforms(SDL_GPURenderState *state, Uint32 slot_index, const void *data, Uint32 length);
+  */
+  setFragmentUniforms(
+      slot_index: number,
+      data: Deno.PointerValue,
+      length: number,
+  ): boolean {
+    return SDL.setGpuRenderStateFragmentUniforms(this.pointer, slot_index, data, length);
+  }
+
+  /**
+  * Destroy custom GPU render state.
+  *
+  * @param state the state to destroy.
+  *
+  * @threadsafety This function should be called on the thread that created the
+  *               renderer.
+  *
+  * @since This function is available since SDL 3.4.0.
+  *
+  * @sa SDL_CreateGPURenderState
+  *
+  * @from SDL_render.h:3017 void SDL_DestroyGPURenderState(SDL_GPURenderState *state);
+  */
+  destroy(): void {
+    if (!this.pointer) return;
+    SDL.destroyGpuRenderState(this.pointer);
+    this.pointer = null;
+  }
+
+  [Symbol.dispose]() {
+    this.destroy();
+  }
+};

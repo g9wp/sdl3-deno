@@ -1971,6 +1971,43 @@ export class Window {
     return SDL.setWindowAlwaysOnTop(this.pointer, on_top);
   }
 
+
+  /**
+   * Set the window to fill the current document space (Emscripten only).
+   *
+   * This will add or remove the window's `SDL_WINDOW_FILL_DOCUMENT` flag.
+   *
+   * Currently this flag only applies to the Emscripten target.
+   *
+   * When enabled, the canvas element fills the entire document. Resize events
+   * will be generated as the browser window is resized, as that will adjust the
+   * canvas size as well. The canvas will cover anything else on the page,
+   * including any controls provided by Emscripten in its generated HTML file
+   * (in fact, any elements on the page that aren't the canvas will be moved
+   * into a hidden `div` element).
+   *
+   * Often times this is desirable for a browser-based game, but it means
+   * several things that we expect of an SDL window on other platforms might not
+   * work as expected, such as minimum window sizes and aspect ratios.
+   *
+   * @param window the window of which to change the fill-document state.
+   * @param fill true to set the window to fill the document, false to disable.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa SDL_GetWindowFlags
+   *
+   * @from SDL_video.h:2182 bool SDL_SetWindowFillDocument(SDL_Window *window, bool fill);
+   */
+  setFillDocument(fill: boolean): boolean {
+    return SDL.setWindowFillDocument(this.pointer, fill);
+  }
+
+
   /**
    * Show a window.
    *
@@ -2760,6 +2797,79 @@ export class Window {
    */
   flash(operation: number): boolean {
     return SDL.flashWindow(this.pointer, operation);
+  }
+
+
+  /**
+   * Sets the state of the progress bar for the given window’s taskbar icon.
+   *
+   * @param window the window whose progress state is to be modified.
+   * @param state the progress state. `SDL_PROGRESS_STATE_NONE` stops displaying
+   *              the progress bar.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @from SDL_video.h:2954 bool SDL_SetWindowProgressState(SDL_Window *window, SDL_ProgressState state);
+   */
+  setProgressState(state: number): boolean {
+    return SDL.setWindowProgressState(this.pointer, state);
+  }
+
+  /**
+   * Get the state of the progress bar for the given window’s taskbar icon.
+   *
+   * @param window the window to get the current progress state from.
+   * @returns the progress state, or `SDL_PROGRESS_STATE_INVALID` on failure;
+   *          call SDL_GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @from SDL_video.h:2967 SDL_ProgressState SDL_GetWindowProgressState(SDL_Window *window);
+   */
+  get progressState(): number {
+    return SDL.getWindowProgressState(this.pointer);
+  }
+
+  /**
+   * Sets the value of the progress bar for the given window’s taskbar icon.
+   *
+   * @param window the window whose progress value is to be modified.
+   * @param value the progress value in the range of [0.0f - 1.0f]. If the value
+   *              is outside the valid range, it gets clamped.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @from SDL_video.h:2982 bool SDL_SetWindowProgressValue(SDL_Window *window, float value);
+   */
+  setProgressValue(value: number): boolean {
+    return SDL.setWindowProgressValue(this.pointer, value);
+  }
+
+  /**
+   * Get the value of the progress bar for the given window’s taskbar icon.
+   *
+   * @param window the window to get the current progress value from.
+   * @returns the progress value in the range of [0.0f - 1.0f], or -1.0f on
+   *          failure; call SDL_GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @from SDL_video.h:2995 float SDL_GetWindowProgressValue(SDL_Window *window);
+   */
+  get progressValue(): number {
+    return SDL.getWindowProgressValue(this.pointer);
   }
 
   /**
