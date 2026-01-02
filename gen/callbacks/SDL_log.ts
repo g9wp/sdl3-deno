@@ -85,7 +85,7 @@ import { symbols } from './symbols/SDL_log.ts';
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @from SDL_log.h:482 typedef void (*SDL_LogOutputFunction)(void *userdata, int category, SDL_LogPriority priority, const char *message);
+ * @from SDL_log.h:484 typedef void (*SDL_LogOutputFunction)(void *userdata, int category, SDL_LogPriority priority, const char *message);
  */
 export function LogOutputFunction(cb: (
     userdata: Deno.PointerValue, 

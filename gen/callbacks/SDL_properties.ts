@@ -70,7 +70,7 @@ import { symbols } from './symbols/SDL_properties.ts';
  *
  * @sa SDL_SetPointerPropertyWithCleanup
  *
- * @from SDL_properties.h:186 typedef void (*SDL_CleanupPropertyCallback)(void *userdata, void *value);
+ * @from SDL_properties.h:213 typedef void (*SDL_CleanupPropertyCallback)(void *userdata, void *value);
  */
 export function CleanupPropertyCallback(cb: (
     userdata: Deno.PointerValue, 
@@ -96,7 +96,7 @@ export function CleanupPropertyCallback(cb: (
  *
  * @sa SDL_EnumerateProperties
  *
- * @from SDL_properties.h:498 typedef void (*SDL_EnumeratePropertiesCallback)(void *userdata, SDL_PropertiesID props, const char *name);
+ * @from SDL_properties.h:525 typedef void (*SDL_EnumeratePropertiesCallback)(void *userdata, SDL_PropertiesID props, const char *name);
  */
 export function EnumeratePropertiesCallback(cb: (
     userdata: Deno.PointerValue, 

@@ -27,6 +27,9 @@
  * SDL_INIT_GAMEPAD flag. This causes SDL to scan the system for gamepads, and
  * load appropriate drivers.
  *
+ * If you're using SDL gamepad support in a Steam game, you must call
+ * SteamAPI_InitEx() before calling SDL_Init().
+ *
  * If you would like to receive gamepad updates while the application is in
  * the background, you should set the following hint before calling
  * SDL_Init(): SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS
@@ -82,7 +85,7 @@
  * simply most closely match that console's controllers (does it have A/B/X/Y
  * buttons or X/O/Square/Triangle? Does it have a touchpad? etc).
  *
- * @from SDL_gamepad.h:107 SDL_GAMEPAD_TYPE_
+ * @from SDL_gamepad.h:110 SDL_GAMEPAD_TYPE_
  */
 export enum SDL_GamepadType {
   UNKNOWN = 0, 
@@ -96,6 +99,7 @@ export enum SDL_GamepadType {
   NINTENDO_SWITCH_JOYCON_LEFT, 
   NINTENDO_SWITCH_JOYCON_RIGHT, 
   NINTENDO_SWITCH_JOYCON_PAIR, 
+  GAMECUBE, 
   COUNT, 
 }
 
@@ -107,8 +111,9 @@ export enum SDL_GamepadType {
  * For controllers that use a diamond pattern for the face buttons, the
  * south/east/west/north buttons below correspond to the locations in the
  * diamond pattern. For Xbox controllers, this would be A/B/X/Y, for Nintendo
- * Switch controllers, this would be B/A/Y/X, for PlayStation controllers this
- * would be Cross/Circle/Square/Triangle.
+ * Switch controllers, this would be B/A/Y/X, for GameCube controllers this
+ * would be A/X/B/Y, for PlayStation controllers this would be
+ * Cross/Circle/Square/Triangle.
  *
  * For controllers that don't use a diamond pattern for the face buttons, the
  * south/east/west/north buttons indicate the buttons labeled A, B, C, D, or
@@ -124,7 +129,7 @@ export enum SDL_GamepadType {
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @from SDL_gamepad.h:146 SDL_GAMEPAD_BUTTON_
+ * @from SDL_gamepad.h:151 SDL_GAMEPAD_BUTTON_
  */
 export enum SDL_GamepadButton {
   INVALID = -1, 
@@ -144,14 +149,14 @@ export enum SDL_GamepadButton {
   DPAD_LEFT, 
   DPAD_RIGHT, 
   MISC1, /**< Additional button (e.g. Xbox Series X share button, PS5 microphone button, Nintendo Switch Pro capture button, Amazon Luna microphone button, Google Stadia capture button) */
-  RIGHT_PADDLE1, /**< Upper or primary paddle, under your right hand (e.g. Xbox Elite paddle P1) */
-  LEFT_PADDLE1, /**< Upper or primary paddle, under your left hand (e.g. Xbox Elite paddle P3) */
-  RIGHT_PADDLE2, /**< Lower or secondary paddle, under your right hand (e.g. Xbox Elite paddle P2) */
-  LEFT_PADDLE2, /**< Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4) */
+  RIGHT_PADDLE1, /**< Upper or primary paddle, under your right hand (e.g. Xbox Elite paddle P1, DualSense Edge RB button, Right Joy-Con SR button) */
+  LEFT_PADDLE1, /**< Upper or primary paddle, under your left hand (e.g. Xbox Elite paddle P3, DualSense Edge LB button, Left Joy-Con SL button) */
+  RIGHT_PADDLE2, /**< Lower or secondary paddle, under your right hand (e.g. Xbox Elite paddle P2, DualSense Edge right Fn button, Right Joy-Con SL button) */
+  LEFT_PADDLE2, /**< Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4, DualSense Edge left Fn button, Left Joy-Con SR button) */
   TOUCHPAD, /**< PS4/PS5 touchpad button */
   MISC2, /**< Additional button */
-  MISC3, /**< Additional button */
-  MISC4, /**< Additional button */
+  MISC3, /**< Additional button (e.g. Nintendo GameCube left trigger click) */
+  MISC4, /**< Additional button (e.g. Nintendo GameCube right trigger click) */
   MISC5, /**< Additional button */
   MISC6, /**< Additional button */
   COUNT, 
@@ -170,7 +175,7 @@ export enum SDL_GamepadButton {
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @from SDL_gamepad.h:189 SDL_GAMEPAD_BUTTON_LABEL_
+ * @from SDL_gamepad.h:194 SDL_GAMEPAD_BUTTON_LABEL_
  */
 export enum SDL_GamepadButtonLabel {
   UNKNOWN, 
@@ -200,7 +205,7 @@ export enum SDL_GamepadButtonLabel {
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @from SDL_gamepad.h:216 SDL_GAMEPAD_AXIS_
+ * @from SDL_gamepad.h:221 SDL_GAMEPAD_AXIS_
  */
 export enum SDL_GamepadAxis {
   INVALID = -1, 
@@ -225,7 +230,7 @@ export enum SDL_GamepadAxis {
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @from SDL_gamepad.h:238 SDL_GAMEPAD_BINDTYPE_
+ * @from SDL_gamepad.h:243 SDL_GAMEPAD_BINDTYPE_
  */
 export enum SDL_GamepadBindingType {
   NONE = 0, 

@@ -33,7 +33,7 @@
 */
 
 /**
- * @from SDL_iostream:275 SDL_PROP_IOSTREAM_
+ * @from SDL_iostream:279 SDL_PROP_IOSTREAM_
  */
 export enum PROP_IOSTREAM {
   WINDOWS_HANDLE_POINTER = "SDL.iostream.windows.handle", 
@@ -45,17 +45,18 @@ export enum PROP_IOSTREAM {
 
 
 /**
- * @from SDL_iostream:321 SDL_PROP_IOSTREAM_MEMORY_
+ * @from SDL_iostream:331 SDL_PROP_IOSTREAM_MEMORY_
  */
 export enum PROP_IOSTREAM_MEMORY {
   POINTER = "SDL.iostream.memory.base", 
   SIZE_NUMBER = "SDL.iostream.memory.size", 
+  FREE_FUNC_POINTER = "SDL.iostream.memory.free", 
 }
 
 
 
 /**
- * @from SDL_iostream:395 SDL_PROP_IOSTREAM_DYNAMIC_
+ * @from SDL_iostream:412 SDL_PROP_IOSTREAM_DYNAMIC_
  */
 export enum PROP_IOSTREAM_DYNAMIC {
   MEMORY_POINTER = "SDL.iostream.dynamic.memory", 

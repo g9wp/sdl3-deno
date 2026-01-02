@@ -33,9 +33,11 @@
  * @from SDL_image:45 SDL_IMAGE_
  */
 export enum IMAGE {
-  MAJOR_VERSION = 3, 
+  MAJOR_VERSION = 3, /**
+ * Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
+ */
   MINOR_VERSION = 2, 
-  MICRO_VERSION = 4, 
+  MICRO_VERSION = 6, 
 }
 
 

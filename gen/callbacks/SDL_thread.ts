@@ -13,7 +13,8 @@
  * will report failure without doing anything.
  *
  * If you're going to work with threads, you almost certainly need to have a
- * good understanding of [CategoryMutex](CategoryMutex) as well.
+ * good understanding of thread safety measures: locking and synchronization
+ * mechanisms are handled by the functions in SDL_mutex.h.
  *
  * @module
  */
@@ -51,7 +52,7 @@ import { symbols } from './symbols/SDL_thread.ts';
  *
  * @sa SDL_SetTLS
  *
- * @from SDL_thread.h:528 typedef void (*SDL_TLSDestructorCallback)(void *value);
+ * @from SDL_thread.h:529 typedef void (*SDL_TLSDestructorCallback)(void *value);
  */
 export function TLSDestructorCallback(cb: (
     value: Deno.PointerValue, 

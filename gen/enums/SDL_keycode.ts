@@ -33,7 +33,7 @@
 */
 
 /**
- * @from SDL_keycode:56 SDLK_
+ * @from SDL_keycode:60 SDLK_
  */
 export enum SDLK {
   EXTENDED_MASK = (1 << 29),
@@ -299,7 +299,7 @@ export enum SDLK {
 
 
 /**
- * @from SDL_keycode:323 SDL_KMOD_
+ * @from SDL_keycode:327 SDL_KMOD_
  */
 export enum KMOD {
   NONE = 0x0000, /**< no modifier is applicable. */

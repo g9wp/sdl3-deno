@@ -13,7 +13,8 @@
  * will report failure without doing anything.
  *
  * If you're going to work with threads, you almost certainly need to have a
- * good understanding of [CategoryMutex](CategoryMutex) as well.
+ * good understanding of thread safety measures: locking and synchronization
+ * mechanisms are handled by the functions in SDL_mutex.h.
  *
  * @module
  */
@@ -106,7 +107,7 @@ export const symbols = {
  * @sa SDL_CreateThread
  * @sa SDL_WaitThread
  *
- * @from SDL_thread.h:280 SDL_Thread * SDL_CreateThreadWithProperties(SDL_PropertiesID props);
+ * @from SDL_thread.h:281 SDL_Thread * SDL_CreateThreadWithProperties(SDL_PropertiesID props);
  */
 /*SDL_CreateThreadWithProperties: {
       parameters: ["u32"],
@@ -126,7 +127,7 @@ export const symbols = {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_thread.h:346 SDL_Thread * SDL_CreateThreadWithPropertiesRuntime(SDL_PropertiesID props, SDL_FunctionPointer pfnBeginThread, SDL_FunctionPointer pfnEndThread);
+ * @from SDL_thread.h:347 SDL_Thread * SDL_CreateThreadWithPropertiesRuntime(SDL_PropertiesID props, SDL_FunctionPointer pfnBeginThread, SDL_FunctionPointer pfnEndThread);
  */
 SDL_CreateThreadWithPropertiesRuntime: {
       parameters: ["u32", "function", "function"],
@@ -143,7 +144,7 @@ SDL_CreateThreadWithPropertiesRuntime: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_thread.h:366 const char * SDL_GetThreadName(SDL_Thread *thread);
+ * @from SDL_thread.h:367 const char * SDL_GetThreadName(SDL_Thread *thread);
  */
 SDL_GetThreadName: {
       parameters: ["pointer"],
@@ -167,7 +168,7 @@ SDL_GetThreadName: {
  *
  * @sa SDL_GetThreadID
  *
- * @from SDL_thread.h:384 SDL_ThreadID SDL_GetCurrentThreadID(void);
+ * @from SDL_thread.h:385 SDL_ThreadID SDL_GetCurrentThreadID(void);
  */
 SDL_GetCurrentThreadID: {
       parameters: [],
@@ -190,7 +191,7 @@ SDL_GetCurrentThreadID: {
  *
  * @sa SDL_GetCurrentThreadID
  *
- * @from SDL_thread.h:401 SDL_ThreadID SDL_GetThreadID(SDL_Thread *thread);
+ * @from SDL_thread.h:402 SDL_ThreadID SDL_GetThreadID(SDL_Thread *thread);
  */
 SDL_GetThreadID: {
       parameters: ["pointer"],
@@ -211,7 +212,7 @@ SDL_GetThreadID: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_thread.h:416 bool SDL_SetCurrentThreadPriority(SDL_ThreadPriority priority);
+ * @from SDL_thread.h:417 bool SDL_SetCurrentThreadPriority(SDL_ThreadPriority priority);
  */
 SDL_SetCurrentThreadPriority: {
       parameters: ["u32"],
@@ -252,7 +253,7 @@ SDL_SetCurrentThreadPriority: {
  * @sa SDL_CreateThread
  * @sa SDL_DetachThread
  *
- * @from SDL_thread.h:451 void SDL_WaitThread(SDL_Thread *thread, int *status);
+ * @from SDL_thread.h:452 void SDL_WaitThread(SDL_Thread *thread, int *status);
  */
 SDL_WaitThread: {
       parameters: ["pointer", "pointer"],
@@ -271,7 +272,7 @@ SDL_WaitThread: {
  *
  * @sa SDL_ThreadState
  *
- * @from SDL_thread.h:464 SDL_ThreadState SDL_GetThreadState(SDL_Thread *thread);
+ * @from SDL_thread.h:465 SDL_ThreadState SDL_GetThreadState(SDL_Thread *thread);
  */
 SDL_GetThreadState: {
       parameters: ["pointer"],
@@ -313,7 +314,7 @@ SDL_GetThreadState: {
  * @sa SDL_CreateThread
  * @sa SDL_WaitThread
  *
- * @from SDL_thread.h:500 void SDL_DetachThread(SDL_Thread *thread);
+ * @from SDL_thread.h:501 void SDL_DetachThread(SDL_Thread *thread);
  */
 SDL_DetachThread: {
       parameters: ["pointer"],
@@ -334,7 +335,7 @@ SDL_DetachThread: {
  *
  * @sa SDL_SetTLS
  *
- * @from SDL_thread.h:515 void * SDL_GetTLS(SDL_TLSID *id);
+ * @from SDL_thread.h:516 void * SDL_GetTLS(SDL_TLSID *id);
  */
 SDL_GetTLS: {
       parameters: ["pointer"],
@@ -368,7 +369,7 @@ SDL_GetTLS: {
  *
  * @sa SDL_GetTLS
  *
- * @from SDL_thread.h:556 bool SDL_SetTLS(SDL_TLSID *id, const void *value, SDL_TLSDestructorCallback destructor);
+ * @from SDL_thread.h:557 bool SDL_SetTLS(SDL_TLSID *id, const void *value, SDL_TLSDestructorCallback destructor);
  */
 SDL_SetTLS: {
       parameters: ["pointer", "pointer", "function"],
@@ -387,7 +388,7 @@ SDL_SetTLS: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_thread.h:569 void SDL_CleanupTLS(void);
+ * @from SDL_thread.h:570 void SDL_CleanupTLS(void);
  */
 SDL_CleanupTLS: {
       parameters: [],

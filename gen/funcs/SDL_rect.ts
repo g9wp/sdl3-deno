@@ -46,7 +46,7 @@ export const symbols = {
  *
  * @sa SDL_GetRectIntersection
  *
- * @from SDL_rect.h:223 bool SDL_HasRectIntersection(const SDL_Rect *A, const SDL_Rect *B);
+ * @from SDL_rect.h:226 bool SDL_HasRectIntersection(const SDL_Rect *A, const SDL_Rect *B);
  */
 SDL_HasRectIntersection: {
       parameters: ["pointer", "pointer"],
@@ -69,7 +69,7 @@ SDL_HasRectIntersection: {
  *
  * @sa SDL_HasRectIntersection
  *
- * @from SDL_rect.h:240 bool SDL_GetRectIntersection(const SDL_Rect *A, const SDL_Rect *B, SDL_Rect *result);
+ * @from SDL_rect.h:243 bool SDL_GetRectIntersection(const SDL_Rect *A, const SDL_Rect *B, SDL_Rect *result);
  */
 SDL_GetRectIntersection: {
       parameters: ["pointer", "pointer", "pointer"],
@@ -89,7 +89,7 @@ SDL_GetRectIntersection: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_rect.h:254 bool SDL_GetRectUnion(const SDL_Rect *A, const SDL_Rect *B, SDL_Rect *result);
+ * @from SDL_rect.h:257 bool SDL_GetRectUnion(const SDL_Rect *A, const SDL_Rect *B, SDL_Rect *result);
  */
 SDL_GetRectUnion: {
       parameters: ["pointer", "pointer", "pointer"],
@@ -114,7 +114,7 @@ SDL_GetRectUnion: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_rect.h:273 bool SDL_GetRectEnclosingPoints(const SDL_Point *points, int count, const SDL_Rect *clip, SDL_Rect *result);
+ * @from SDL_rect.h:276 bool SDL_GetRectEnclosingPoints(const SDL_Point *points, int count, const SDL_Rect *clip, SDL_Rect *result);
  */
 SDL_GetRectEnclosingPoints: {
       parameters: ["pointer", "i32", "pointer", "pointer"],
@@ -140,7 +140,7 @@ SDL_GetRectEnclosingPoints: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_rect.h:293 bool SDL_GetRectAndLineIntersection(const SDL_Rect *rect, int *X1, int *Y1, int *X2, int *Y2);
+ * @from SDL_rect.h:296 bool SDL_GetRectAndLineIntersection(const SDL_Rect *rect, int *X1, int *Y1, int *X2, int *Y2);
  */
 SDL_GetRectAndLineIntersection: {
       parameters: ["pointer", "pointer", "pointer", "pointer", "pointer"],
@@ -161,7 +161,7 @@ SDL_GetRectAndLineIntersection: {
  *
  * @sa SDL_GetRectIntersection
  *
- * @from SDL_rect.h:426 bool SDL_HasRectIntersectionFloat(const SDL_FRect *A, const SDL_FRect *B);
+ * @from SDL_rect.h:429 bool SDL_HasRectIntersectionFloat(const SDL_FRect *A, const SDL_FRect *B);
  */
 SDL_HasRectIntersectionFloat: {
       parameters: ["pointer", "pointer"],
@@ -184,7 +184,7 @@ SDL_HasRectIntersectionFloat: {
  *
  * @sa SDL_HasRectIntersectionFloat
  *
- * @from SDL_rect.h:443 bool SDL_GetRectIntersectionFloat(const SDL_FRect *A, const SDL_FRect *B, SDL_FRect *result);
+ * @from SDL_rect.h:446 bool SDL_GetRectIntersectionFloat(const SDL_FRect *A, const SDL_FRect *B, SDL_FRect *result);
  */
 SDL_GetRectIntersectionFloat: {
       parameters: ["pointer", "pointer", "pointer"],
@@ -204,7 +204,7 @@ SDL_GetRectIntersectionFloat: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_rect.h:457 bool SDL_GetRectUnionFloat(const SDL_FRect *A, const SDL_FRect *B, SDL_FRect *result);
+ * @from SDL_rect.h:460 bool SDL_GetRectUnionFloat(const SDL_FRect *A, const SDL_FRect *B, SDL_FRect *result);
  */
 SDL_GetRectUnionFloat: {
       parameters: ["pointer", "pointer", "pointer"],
@@ -230,7 +230,7 @@ SDL_GetRectUnionFloat: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_rect.h:477 bool SDL_GetRectEnclosingPointsFloat(const SDL_FPoint *points, int count, const SDL_FRect *clip, SDL_FRect *result);
+ * @from SDL_rect.h:480 bool SDL_GetRectEnclosingPointsFloat(const SDL_FPoint *points, int count, const SDL_FRect *clip, SDL_FRect *result);
  */
 SDL_GetRectEnclosingPointsFloat: {
       parameters: ["pointer", "i32", "pointer", "pointer"],
@@ -257,7 +257,7 @@ SDL_GetRectEnclosingPointsFloat: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_rect.h:498 bool SDL_GetRectAndLineIntersectionFloat(const SDL_FRect *rect, float *X1, float *Y1, float *X2, float *Y2);
+ * @from SDL_rect.h:501 bool SDL_GetRectAndLineIntersectionFloat(const SDL_FRect *rect, float *X1, float *Y1, float *X2, float *Y2);
  */
 SDL_GetRectAndLineIntersectionFloat: {
       parameters: ["pointer", "pointer", "pointer", "pointer", "pointer"],

@@ -55,7 +55,7 @@
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @from SDL_hidapi.h:76 SDL_HID_API_BUS_
+ * @from SDL_hidapi.h:77 SDL_HID_API_BUS_
  */
 export enum SDL_hid_bus_type {
     /** Unknown bus type */

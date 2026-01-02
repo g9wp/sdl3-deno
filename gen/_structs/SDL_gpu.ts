@@ -183,14 +183,20 @@
  * underlying graphics API. While it's possible that we have done something
  * inefficiently, it's very unlikely especially if you are relatively
  * inexperienced with GPU rendering. Please see the performance tips above and
- * make sure you are following them. Additionally, tools like RenderDoc can be
- * very helpful for diagnosing incorrect behavior and performance issues.
+ * make sure you are following them. Additionally, tools like
+ * [RenderDoc](https://renderdoc.org/)
+ * can be very helpful for diagnosing incorrect behavior and performance
+ * issues.
  *
  * ## System Requirements
  *
- * **Vulkan:** Supported on Windows, Linux, Nintendo Switch, and certain
- * Android devices. Requires Vulkan 1.0 with the following extensions and
- * device features:
+ * ### Vulkan
+ *
+ * SDL driver name: "vulkan" (for use in SDL_CreateGPUDevice() and
+ * SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING)
+ *
+ * Supported on Windows, Linux, Nintendo Switch, and certain Android devices.
+ * Requires Vulkan 1.0 with the following extensions and device features:
  *
  * - `VK_KHR_swapchain`
  * - `VK_KHR_maintenance1`
@@ -199,19 +205,63 @@
  * - `depthClamp`
  * - `shaderClipDistance`
  * - `drawIndirectFirstInstance`
+ * - `sampleRateShading`
  *
- * **D3D12:** Supported on Windows 10 or newer, Xbox One (GDK), and Xbox
- * Series X|S (GDK). Requires a GPU that supports DirectX 12 Feature Level 11_0 and
+ * You can remove some of these requirements to increase compatibility with
+ * Android devices by using these properties when creating the GPU device with
+ * SDL_CreateGPUDeviceWithProperties():
+ *
+ * - SDL_PROP_GPU_DEVICE_CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN
+ * - SDL_PROP_GPU_DEVICE_CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN
+ * - SDL_PROP_GPU_DEVICE_CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN
+ * - SDL_PROP_GPU_DEVICE_CREATE_FEATURE_ANISOTROPY_BOOLEAN
+ *
+ * ### D3D12
+ *
+ * SDL driver name: "direct3d12"
+ *
+ * Supported on Windows 10 or newer, Xbox One (GDK), and Xbox Series X|S
+ * (GDK). Requires a GPU that supports DirectX 12 Feature Level 11_0 and
  * Resource Binding Tier 2 or above.
  *
- * **Metal:** Supported on macOS 10.14+ and iOS/tvOS 13.0+. Hardware
- * requirements vary by operating system:
+ * You can remove the Tier 2 resource binding requirement to support Intel
+ * Haswell and Broadwell GPUs by using this property when creating the GPU
+ * device with SDL_CreateGPUDeviceWithProperties():
+ *
+ * - SDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN
+ *
+ * ### Metal
+ *
+ * SDL driver name: "metal"
+ *
+ * Supported on macOS 10.14+ and iOS/tvOS 13.0+. Hardware requirements vary by
+ * operating system:
  *
  * - macOS requires an Apple Silicon or
  *   [Intel Mac2 family](https://developer.apple.com/documentation/metal/mtlfeatureset/mtlfeatureset_macos_gpufamily2_v1?language=objc)
  *   GPU
  * - iOS/tvOS requires an A9 GPU or newer
  * - iOS Simulator and tvOS Simulator are unsupported
+ *
+ * ## Coordinate System
+ *
+ * The GPU API uses a left-handed coordinate system, following the convention
+ * of D3D12 and Metal. Specifically:
+ *
+ * - **Normalized Device Coordinates:** The lower-left corner has an x,y
+ *   coordinate of `(-1.0, -1.0)`. The upper-right corner is `(1.0, 1.0)`. Z
+ *   values range from `[0.0, 1.0]` where 0 is the near plane.
+ * - **Viewport Coordinates:** The top-left corner has an x,y coordinate of
+ *   `(0, 0)` and extends to the bottom-right corner at `(viewportWidth,
+ *   viewportHeight)`. +Y is down.
+ * - **Texture Coordinates:** The top-left corner has an x,y coordinate of
+ *   `(0, 0)` and extends to the bottom-right corner at `(1.0, 1.0)`. +Y is
+ *   down.
+ *
+ * If the backend driver differs from this convention (e.g. Vulkan, which has
+ * an NDC that assumes +Y is down), SDL will automatically convert the
+ * coordinate system behind the scenes, so you don't need to perform any
+ * coordinate flipping logic in your shaders.
  *
  * ## Uniform Data
  *
@@ -279,6 +329,39 @@
  * section of data that has already been referenced will produce unexpected
  * results.
  *
+ * ## Debugging
+ *
+ * At some point of your GPU journey, you will probably encounter issues that
+ * are not traceable with regular debugger - for example, your code compiles
+ * but you get an empty screen, or your shader fails in runtime.
+ *
+ * For debugging such cases, there are tools that allow visually inspecting
+ * the whole GPU frame, every drawcall, every bound resource, memory buffers,
+ * etc. They are the following, per platform:
+ *
+ * * For Windows/Linux, use
+ *   [RenderDoc](https://renderdoc.org/)
+ * * For MacOS (Metal), use Xcode built-in debugger (Open XCode, go to Debug >
+ *   Debug Executable..., select your application, set "GPU Frame Capture" to
+ *   "Metal" in scheme "Options" window, run your app, and click the small
+ *   Metal icon on the bottom to capture a frame)
+ *
+ * Aside from that, you may want to enable additional debug layers to receive
+ * more detailed error messages, based on your GPU backend:
+ *
+ * * For D3D12, the debug layer is an optional feature that can be installed
+ *   via "Windows Settings -> System -> Optional features" and adding the
+ *   "Graphics Tools" optional feature.
+ * * For Vulkan, you will need to install Vulkan SDK on Windows, and on Linux,
+ *   you usually have some sort of `vulkan-validation-layers` system package
+ *   that should be installed.
+ * * For Metal, it should be enough just to run the application from XCode to
+ *   receive detailed errors or warnings in the output.
+ *
+ * Don't hesitate to use tools as RenderDoc when encountering runtime issues
+ * or unexpected output on screen, quick GPU frame inspection can usually help
+ * you fix the majority of such problems.
+ *
  * @module
  */
 
@@ -314,7 +397,7 @@ import {SDL_FColor} from "./SDL_pixels.ts";
  *
  * @sa SDL_SetGPUViewport
  *
- * @from SDL_gpu.h:1298
+ * @from SDL_gpu.h:1381
  */
 export const SDL_GPUViewport = new _.Struct({
   x: _.f32, /**< float : The left offset of the viewport. */
@@ -331,12 +414,23 @@ export const SDL_GPUViewport = new _.Struct({
  * A structure specifying parameters related to transferring data to or from a
  * texture.
  *
+ * If either of `pixels_per_row` or `rows_per_layer` is zero, then width and
+ * height of passed SDL_GPUTextureRegion to SDL_UploadToGPUTexture or
+ * SDL_DownloadFromGPUTexture are used as default values respectively and data
+ * is considered to be tightly packed.
+ *
+ * **WARNING**: Direct3D 12 requires texture data row pitch to be 256 byte
+ * aligned, and offsets to be aligned to 512 bytes. If they are not, SDL will
+ * make a temporary copy of the data that is properly aligned, but this adds
+ * overhead to the transfer process. Apps can avoid this by aligning their
+ * data appropriately, or using a different GPU backend than Direct3D 12.
+ *
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa SDL_UploadToGPUTexture
  * @sa SDL_DownloadFromGPUTexture
  *
- * @from SDL_gpu.h:1317
+ * @from SDL_gpu.h:1411
  */
 export const SDL_GPUTextureTransferInfo = new _.Struct({
   transfer_buffer: _.u64, /**< SDL_GPUTransferBuffer * : The transfer buffer used in the transfer operation. */
@@ -357,7 +451,7 @@ export const SDL_GPUTextureTransferInfo = new _.Struct({
  * @sa SDL_UploadToGPUBuffer
  * @sa SDL_DownloadFromGPUBuffer
  *
- * @from SDL_gpu.h:1335
+ * @from SDL_gpu.h:1429
  */
 export const SDL_GPUTransferBufferLocation = new _.Struct({
   transfer_buffer: _.u64, /**< SDL_GPUTransferBuffer * : The transfer buffer used in the transfer operation. */
@@ -375,7 +469,7 @@ export const SDL_GPUTransferBufferLocation = new _.Struct({
  *
  * @sa SDL_CopyGPUTextureToTexture
  *
- * @from SDL_gpu.h:1350
+ * @from SDL_gpu.h:1444
  */
 export const SDL_GPUTextureLocation = new _.Struct({
   texture: _.u64, /**< SDL_GPUTexture * : The texture used in the copy operation. */
@@ -399,7 +493,7 @@ export const SDL_GPUTextureLocation = new _.Struct({
  * @sa SDL_DownloadFromGPUTexture
  * @sa SDL_CreateGPUTexture
  *
- * @from SDL_gpu.h:1371
+ * @from SDL_gpu.h:1465
  */
 export const SDL_GPUTextureRegion = new _.Struct({
   texture: _.u64, /**< SDL_GPUTexture * : The texture used in the copy operation. */
@@ -422,7 +516,7 @@ export const SDL_GPUTextureRegion = new _.Struct({
  *
  * @sa SDL_BlitGPUTexture
  *
- * @from SDL_gpu.h:1391
+ * @from SDL_gpu.h:1485
  */
 export const SDL_GPUBlitRegion = new _.Struct({
   texture: _.u64, /**< SDL_GPUTexture * : The texture. */
@@ -445,7 +539,7 @@ export const SDL_GPUBlitRegion = new _.Struct({
  *
  * @sa SDL_CopyGPUBufferToBuffer
  *
- * @from SDL_gpu.h:1411
+ * @from SDL_gpu.h:1505
  */
 export const SDL_GPUBufferLocation = new _.Struct({
   buffer: _.u64, /**< SDL_GPUBuffer * : The buffer. */
@@ -464,7 +558,7 @@ export const SDL_GPUBufferLocation = new _.Struct({
  * @sa SDL_UploadToGPUBuffer
  * @sa SDL_DownloadFromGPUBuffer
  *
- * @from SDL_gpu.h:1427
+ * @from SDL_gpu.h:1521
  */
 export const SDL_GPUBufferRegion = new _.Struct({
   buffer: _.u64, /**< SDL_GPUBuffer * : The buffer. */
@@ -488,7 +582,7 @@ export const SDL_GPUBufferRegion = new _.Struct({
  *
  * @sa SDL_DrawGPUPrimitivesIndirect
  *
- * @from SDL_gpu.h:1448
+ * @from SDL_gpu.h:1542
  */
 export const SDL_GPUIndirectDrawCommand = new _.Struct({
   num_vertices: _.u32, /**< Uint32 : The number of vertices to draw. */
@@ -513,7 +607,7 @@ export const SDL_GPUIndirectDrawCommand = new _.Struct({
  *
  * @sa SDL_DrawGPUIndexedPrimitivesIndirect
  *
- * @from SDL_gpu.h:1470
+ * @from SDL_gpu.h:1564
  */
 export const SDL_GPUIndexedIndirectDrawCommand = new _.Struct({
   num_indices: _.u32, /**< Uint32 : The number of indices to draw per instance. */
@@ -532,7 +626,7 @@ export const SDL_GPUIndexedIndirectDrawCommand = new _.Struct({
  *
  * @sa SDL_DispatchGPUComputeIndirect
  *
- * @from SDL_gpu.h:1486
+ * @from SDL_gpu.h:1580
  */
 export const SDL_GPUIndirectDispatchCommand = new _.Struct({
   groupcount_x: _.u32, /**< Uint32 : The number of local workgroups to dispatch in the X dimension. */
@@ -556,7 +650,7 @@ export const SDL_GPUIndirectDispatchCommand = new _.Struct({
  * @sa SDL_GPUSamplerAddressMode
  * @sa SDL_GPUCompareOp
  *
- * @from SDL_gpu.h:1509
+ * @from SDL_gpu.h:1603
  */
 export const SDL_GPUSamplerCreateInfo = new _.Struct({
   min_filter: _.u32, /**< SDL_GPUFilter : The minification filter to apply to lookups. */
@@ -597,7 +691,7 @@ export const SDL_GPUSamplerCreateInfo = new _.Struct({
  * @sa SDL_GPUVertexAttribute
  * @sa SDL_GPUVertexInputRate
  *
- * @from SDL_gpu.h:1548
+ * @from SDL_gpu.h:1642
  */
 export const SDL_GPUVertexBufferDescription = new _.Struct({
   slot: _.u32, /**< Uint32 : The binding slot of the vertex buffer. */
@@ -620,7 +714,7 @@ export const SDL_GPUVertexBufferDescription = new _.Struct({
  * @sa SDL_GPUVertexInputState
  * @sa SDL_GPUVertexElementFormat
  *
- * @from SDL_gpu.h:1568
+ * @from SDL_gpu.h:1662
  */
 export const SDL_GPUVertexAttribute = new _.Struct({
   location: _.u32, /**< Uint32 : The shader input location index. */
@@ -641,7 +735,7 @@ export const SDL_GPUVertexAttribute = new _.Struct({
  * @sa SDL_GPUVertexBufferDescription
  * @sa SDL_GPUVertexAttribute
  *
- * @from SDL_gpu.h:1586
+ * @from SDL_gpu.h:1680
  */
 export const SDL_GPUVertexInputState = new _.Struct({
   vertex_buffer_descriptions: _.u64, /**< const SDL_GPUVertexBufferDescription * : A pointer to an array of vertex buffer descriptions. */
@@ -659,7 +753,7 @@ export const SDL_GPUVertexInputState = new _.Struct({
  *
  * @sa SDL_GPUDepthStencilState
  *
- * @from SDL_gpu.h:1601
+ * @from SDL_gpu.h:1695
  */
 export const SDL_GPUStencilOpState = new _.Struct({
   fail_op: _.u32, /**< SDL_GPUStencilOp : The action performed on samples that fail the stencil test. */
@@ -676,8 +770,11 @@ export const SDL_GPUStencilOpState = new _.Struct({
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa SDL_GPUColorTargetDescription
+ * @sa SDL_GPUBlendFactor
+ * @sa SDL_GPUBlendOp
+ * @sa SDL_GPUColorComponentFlags
  *
- * @from SDL_gpu.h:1616
+ * @from SDL_gpu.h:1713
  */
 export const SDL_GPUColorTargetBlendState = new _.Struct({
   src_color_blendfactor: _.u32, /**< SDL_GPUBlendFactor : The value to be multiplied by the source RGB value. */
@@ -701,8 +798,10 @@ export const SDL_GPUColorTargetBlendState = new _.Struct({
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa SDL_CreateGPUShader
+ * @sa SDL_GPUShaderFormat
+ * @sa SDL_GPUShaderStage
  *
- * @from SDL_gpu.h:1639
+ * @from SDL_gpu.h:1738
  */
 export const SDL_GPUShaderCreateInfo = new _.Struct({
   code_size: _.u64, /**< size_t : The size in bytes of the code pointed to. */
@@ -734,7 +833,7 @@ export const SDL_GPUShaderCreateInfo = new _.Struct({
  * @sa SDL_GPUTextureUsageFlags
  * @sa SDL_GPUSampleCount
  *
- * @from SDL_gpu.h:1669
+ * @from SDL_gpu.h:1768
  */
 export const SDL_GPUTextureCreateInfo = new _.Struct({
   type: _.u32, /**< SDL_GPUTextureType : The base dimensionality of the texture. */
@@ -761,7 +860,7 @@ export const SDL_GPUTextureCreateInfo = new _.Struct({
  * @sa SDL_CreateGPUBuffer
  * @sa SDL_GPUBufferUsageFlags
  *
- * @from SDL_gpu.h:1694
+ * @from SDL_gpu.h:1793
  */
 export const SDL_GPUBufferCreateInfo = new _.Struct({
   usage: _.u32, /**< SDL_GPUBufferUsageFlags : How the buffer is intended to be used by the client. */
@@ -778,7 +877,7 @@ export const SDL_GPUBufferCreateInfo = new _.Struct({
  *
  * @sa SDL_CreateGPUTransferBuffer
  *
- * @from SDL_gpu.h:1709
+ * @from SDL_gpu.h:1808
  */
 export const SDL_GPUTransferBufferCreateInfo = new _.Struct({
   usage: _.u32, /**< SDL_GPUTransferBufferUsage : How the transfer buffer is intended to be used by the client. */
@@ -804,7 +903,7 @@ export const SDL_GPUTransferBufferCreateInfo = new _.Struct({
  *
  * @sa SDL_GPUGraphicsPipelineCreateInfo
  *
- * @from SDL_gpu.h:1735
+ * @from SDL_gpu.h:1834
  */
 export const SDL_GPURasterizerState = new _.Struct({
   fill_mode: _.u32, /**< SDL_GPUFillMode : Whether polygons will be filled in or drawn as lines. */
@@ -829,13 +928,13 @@ export const SDL_GPURasterizerState = new _.Struct({
  *
  * @sa SDL_GPUGraphicsPipelineCreateInfo
  *
- * @from SDL_gpu.h:1757
+ * @from SDL_gpu.h:1856
  */
 export const SDL_GPUMultisampleState = new _.Struct({
   sample_count: _.u32, /**< SDL_GPUSampleCount : The number of samples to be used in rasterization. */
   sample_mask: _.u32, /**< Uint32 : Reserved for future use. Must be set to 0. */
   enable_mask: _.bool, /**< bool : Reserved for future use. Must be set to false. */
-  padding1: _.u8, /* Uint8 */
+  enable_alpha_to_coverage: _.bool, /**< bool : true enables the alpha-to-coverage feature. */
   padding2: _.u8, /* Uint8 */
   padding3: _.u8, /* Uint8 */
 });
@@ -850,7 +949,7 @@ export const SDL_GPUMultisampleState = new _.Struct({
  *
  * @sa SDL_GPUGraphicsPipelineCreateInfo
  *
- * @from SDL_gpu.h:1775
+ * @from SDL_gpu.h:1874
  */
 export const SDL_GPUDepthStencilState = new _.Struct({
   compare_op: _.u32, /**< SDL_GPUCompareOp : The comparison operator used for depth testing. */
@@ -876,7 +975,7 @@ export const SDL_GPUDepthStencilState = new _.Struct({
  *
  * @sa SDL_GPUGraphicsPipelineTargetInfo
  *
- * @from SDL_gpu.h:1798
+ * @from SDL_gpu.h:1897
  */
 export const SDL_GPUColorTargetDescription = new _.Struct({
   format: _.u32, /**< SDL_GPUTextureFormat : The pixel format of the texture to be used as a color target. */
@@ -895,7 +994,7 @@ export const SDL_GPUColorTargetDescription = new _.Struct({
  * @sa SDL_GPUColorTargetDescription
  * @sa SDL_GPUTextureFormat
  *
- * @from SDL_gpu.h:1814
+ * @from SDL_gpu.h:1913
  */
 export const SDL_GPUGraphicsPipelineTargetInfo = new _.Struct({
   color_target_descriptions: _.u64, /**< const SDL_GPUColorTargetDescription * : A pointer to an array of color target descriptions. */
@@ -923,7 +1022,7 @@ export const SDL_GPUGraphicsPipelineTargetInfo = new _.Struct({
  * @sa SDL_GPUDepthStencilState
  * @sa SDL_GPUGraphicsPipelineTargetInfo
  *
- * @from SDL_gpu.h:1839
+ * @from SDL_gpu.h:1938
  */
 export const SDL_GPUGraphicsPipelineCreateInfo = new _.Struct({
   vertex_shader: _.u64, /**< SDL_GPUShader * : The vertex shader used by the graphics pipeline. */
@@ -947,7 +1046,7 @@ export const SDL_GPUGraphicsPipelineCreateInfo = new _.Struct({
  * @sa SDL_CreateGPUComputePipeline
  * @sa SDL_GPUShaderFormat
  *
- * @from SDL_gpu.h:1861
+ * @from SDL_gpu.h:1960
  */
 export const SDL_GPUComputePipelineCreateInfo = new _.Struct({
   code_size: _.u64, /**< size_t : The size in bytes of the compute shader code pointed to. */
@@ -1002,8 +1101,9 @@ export const SDL_GPUComputePipelineCreateInfo = new _.Struct({
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa SDL_BeginGPURenderPass
+ * @sa SDL_FColor
  *
- * @from SDL_gpu.h:1915
+ * @from SDL_gpu.h:2015
  */
 export const SDL_GPUColorTargetInfo = new _.Struct({
   texture: _.u64, /**< SDL_GPUTexture * : The texture that will be used as a color target by a render pass. */
@@ -1063,11 +1163,14 @@ export const SDL_GPUColorTargetInfo = new _.Struct({
  *
  * Note that depth/stencil targets do not support multisample resolves.
  *
+ * Due to ABI limitations, depth textures with more than 255 layers are not
+ * supported.
+ *
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa SDL_BeginGPURenderPass
  *
- * @from SDL_gpu.h:1976
+ * @from SDL_gpu.h:2079
  */
 export const SDL_GPUDepthStencilTargetInfo = new _.Struct({
   texture: _.u64, /**< SDL_GPUTexture * : The texture that will be used as the depth stencil target by the render pass. */
@@ -1078,8 +1181,8 @@ export const SDL_GPUDepthStencilTargetInfo = new _.Struct({
   stencil_store_op: _.u32, /**< SDL_GPUStoreOp : What is done with the stencil results of the render pass. */
   cycle: _.bool, /**< bool : true cycles the texture if the texture is bound and any load ops are not LOAD */
   clear_stencil: _.u8, /**< Uint8 : The value to clear the stencil component to at the beginning of the render pass. Ignored if SDL_GPU_LOADOP_CLEAR is not used. */
-  padding1: _.u8, /* Uint8 */
-  padding2: _.u8, /* Uint8 */
+  mip_level: _.u8, /**< Uint8 : The mip level to use as the depth stencil target. */
+  layer: _.u8, /**< Uint8 : The layer index to use as the depth stencil target. */
 });
 
 
@@ -1091,7 +1194,7 @@ export const SDL_GPUDepthStencilTargetInfo = new _.Struct({
  *
  * @sa SDL_BlitGPUTexture
  *
- * @from SDL_gpu.h:1997
+ * @from SDL_gpu.h:2100
  */
 export const SDL_GPUBlitInfo = new _.Struct({
   source: SDL_GPUBlitRegion, /**< SDL_GPUBlitRegion : The source region for the blit. */
@@ -1116,7 +1219,7 @@ export const SDL_GPUBlitInfo = new _.Struct({
  * @sa SDL_BindGPUVertexBuffers
  * @sa SDL_BindGPUIndexBuffer
  *
- * @from SDL_gpu.h:2020
+ * @from SDL_gpu.h:2123
  */
 export const SDL_GPUBufferBinding = new _.Struct({
   buffer: _.u64, /**< SDL_GPUBuffer * : The buffer to bind. Must have been created with SDL_GPU_BUFFERUSAGE_VERTEX for SDL_BindGPUVertexBuffers, or SDL_GPU_BUFFERUSAGE_INDEX for SDL_BindGPUIndexBuffer. */
@@ -1132,8 +1235,10 @@ export const SDL_GPUBufferBinding = new _.Struct({
  *
  * @sa SDL_BindGPUVertexSamplers
  * @sa SDL_BindGPUFragmentSamplers
+ * @sa SDL_GPUTexture
+ * @sa SDL_GPUSampler
  *
- * @from SDL_gpu.h:2034
+ * @from SDL_gpu.h:2139
  */
 export const SDL_GPUTextureSamplerBinding = new _.Struct({
   texture: _.u64, /**< SDL_GPUTexture * : The texture to bind. Must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER. */
@@ -1150,7 +1255,7 @@ export const SDL_GPUTextureSamplerBinding = new _.Struct({
  *
  * @sa SDL_BeginGPUComputePass
  *
- * @from SDL_gpu.h:2048
+ * @from SDL_gpu.h:2153
  */
 export const SDL_GPUStorageBufferReadWriteBinding = new _.Struct({
   buffer: _.u64, /**< SDL_GPUBuffer * : The buffer to bind. Must have been created with SDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE. */
@@ -1170,7 +1275,7 @@ export const SDL_GPUStorageBufferReadWriteBinding = new _.Struct({
  *
  * @sa SDL_BeginGPUComputePass
  *
- * @from SDL_gpu.h:2065
+ * @from SDL_gpu.h:2170
  */
 export const SDL_GPUStorageTextureReadWriteBinding = new _.Struct({
   texture: _.u64, /**< SDL_GPUTexture * : The texture to bind. Must have been created with SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_WRITE or SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_SIMULTANEOUS_READ_WRITE. */
@@ -1180,6 +1285,36 @@ export const SDL_GPUStorageTextureReadWriteBinding = new _.Struct({
   padding1: _.u8, /* Uint8 */
   padding2: _.u8, /* Uint8 */
   padding3: _.u8, /* Uint8 */
+});
+
+
+
+/**
+ * A structure specifying additional options when using Vulkan.
+ *
+ * When no such structure is provided, SDL will use Vulkan API version 1.0 and
+ * a minimal set of features. The requested API version influences how the
+ * feature_list is processed by SDL. When requesting API version 1.0, the
+ * feature_list is ignored. Only the vulkan_10_physical_device_features and
+ * the extension lists are used. When requesting API version 1.1, the
+ * feature_list is scanned for feature structures introduced in Vulkan 1.1.
+ * When requesting Vulkan 1.2 or higher, the feature_list is additionally
+ * scanned for compound feature structs such as
+ * VkPhysicalDeviceVulkan11Features. The device and instance extension lists,
+ * as well as vulkan_10_physical_device_features, are always processed.
+ *
+ * @since This struct is available since SDL 3.4.0.
+ *
+ * @from SDL_gpu.h:2373
+ */
+export const SDL_GPUVulkanOptions = new _.Struct({
+  vulkan_api_version: _.u32, /**< Uint32 : The Vulkan API version to request for the instance. Use Vulkan's VK_MAKE_VERSION or VK_MAKE_API_VERSION. */
+  feature_list: _.u64, /**< void * : Pointer to the first element of a chain of Vulkan feature structs. (Requires API version 1.1 or higher.)*/
+  vulkan_10_physical_device_features: _.u64, /**< void * : Pointer to a VkPhysicalDeviceFeatures struct to enable additional Vulkan 1.0 features. */
+  device_extension_count: _.u32, /**< Uint32 : Number of additional device extensions to require. */
+  device_extension_names: _.u64, /**< const char ** : Pointer to a list of additional device extensions to require. */
+  instance_extension_count: _.u32, /**< Uint32 : Number of additional instance extensions to require. */
+  instance_extension_names: _.u64, /**< const char ** : Pointer to a list of additional instance extensions to require. */
 });
 
 

@@ -88,17 +88,16 @@ import { symbols } from './symbols/SDL_clipboard.ts';
  * @param mime_type the requested mime-type.
  * @param size a pointer filled in with the length of the returned data.
  * @returns a pointer to the data for the provided mime-type. Returning NULL
- *          or setting the length to 0 will cause no data to be sent to the
- *          "receiver". It is up to the receiver to handle this. Essentially
- *          returning no data is more or less undefined behavior and may cause
- *          breakage in receiving applications. The returned data will not be
- *          freed, so it needs to be retained and dealt with internally.
+ *          or setting the length to 0 will cause zero length data to be sent
+ *          to the "receiver", which should be able to handle this. The
+ *          returned data will not be freed, so it needs to be retained and
+ *          dealt with internally.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_SetClipboardData
  *
- * @from SDL_clipboard.h:210 typedef const void *(*SDL_ClipboardDataCallback)(void *userdata, const char *mime_type, size_t *size);
+ * @from SDL_clipboard.h:209 typedef const void *(*SDL_ClipboardDataCallback)(void *userdata, const char *mime_type, size_t *size);
  */
 export function ClipboardDataCallback(cb: (
     userdata: Deno.PointerValue, 
@@ -109,8 +108,8 @@ export function ClipboardDataCallback(cb: (
 }
 
 /**
- * Callback function that will be called when the clipboard is cleared, or when new
- * data is set.
+ * Callback function that will be called when the clipboard is cleared, or
+ * when new data is set.
  *
  * @param userdata a pointer to the provided user data.
  *
@@ -118,7 +117,7 @@ export function ClipboardDataCallback(cb: (
  *
  * @sa SDL_SetClipboardData
  *
- * @from SDL_clipboard.h:222 typedef void (*SDL_ClipboardCleanupCallback)(void *userdata);
+ * @from SDL_clipboard.h:221 typedef void (*SDL_ClipboardCleanupCallback)(void *userdata);
  */
 export function ClipboardCleanupCallback(cb: (
     userdata: Deno.PointerValue, 

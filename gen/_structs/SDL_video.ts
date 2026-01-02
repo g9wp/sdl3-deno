@@ -62,7 +62,7 @@ import * as _ from "@denosaurs/byte-type";
  * @sa SDL_SetWindowFullscreenMode
  * @sa SDL_GetWindowFullscreenMode
  *
- * @from SDL_video.h:136
+ * @from SDL_video.h:138
  */
 export const SDL_DisplayMode = new _.Struct({
   displayID: _.u32, /**< SDL_DisplayID : the display this mode is associated with */

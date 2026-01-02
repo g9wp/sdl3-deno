@@ -70,7 +70,7 @@ export interface IOStreamInterface {
   seek: Deno.PointerValue; /*     Sint64 (SDLCALL *seek)(void *userdata, Sint64 offset, SDL_IOWhence whence); */
     /**
      *  Read up to `size` bytes from the data stream to the area pointed
-     *  at by `ptr`.
+     *  at by `ptr`. `size` will always be > 0.
      *
      *  On an incomplete read, you should set `*status` to a value from the
      *  SDL_IOStatus enum. You do not have to explicitly set this on
@@ -81,7 +81,7 @@ export interface IOStreamInterface {
   read: Deno.PointerValue; /*     size_t (SDLCALL *read)(void *userdata, void *ptr, size_t size, SDL_IOStatus *status); */
     /**
      *  Write exactly `size` bytes from the area pointed at by `ptr`
-     *  to data stream.
+     *  to data stream. `size` will always be > 0.
      *
      *  On an incomplete write, you should set `*status` to a value from the
      *  SDL_IOStatus enum. You do not have to explicitly set this on
@@ -134,7 +134,7 @@ export function read_IOStreamInterface(dt: DataView): IOStreamInterface {
     seek: Deno.UnsafePointer.create(t.seek), /**     Sint64 (SDLCALL *seek)(void *userdata, Sint64 offset, SDL_IOWhence whence); */
     /**
      *  Read up to `size` bytes from the data stream to the area pointed
-     *  at by `ptr`.
+     *  at by `ptr`. `size` will always be > 0.
      *
      *  On an incomplete read, you should set `*status` to a value from the
      *  SDL_IOStatus enum. You do not have to explicitly set this on
@@ -145,7 +145,7 @@ export function read_IOStreamInterface(dt: DataView): IOStreamInterface {
     read: Deno.UnsafePointer.create(t.read), /**     size_t (SDLCALL *read)(void *userdata, void *ptr, size_t size, SDL_IOStatus *status); */
     /**
      *  Write exactly `size` bytes from the area pointed at by `ptr`
-     *  to data stream.
+     *  to data stream. `size` will always be > 0.
      *
      *  On an incomplete write, you should set `*status` to a value from the
      *  SDL_IOStatus enum. You do not have to explicitly set this on
@@ -198,7 +198,7 @@ export function write_IOStreamInterface(t: IOStreamInterface, dt: DataView) {
     seek: Deno.UnsafePointer.value(t.seek), /**     Sint64 (SDLCALL *seek)(void *userdata, Sint64 offset, SDL_IOWhence whence); */
     /**
      *  Read up to `size` bytes from the data stream to the area pointed
-     *  at by `ptr`.
+     *  at by `ptr`. `size` will always be > 0.
      *
      *  On an incomplete read, you should set `*status` to a value from the
      *  SDL_IOStatus enum. You do not have to explicitly set this on
@@ -209,7 +209,7 @@ export function write_IOStreamInterface(t: IOStreamInterface, dt: DataView) {
     read: Deno.UnsafePointer.value(t.read), /**     size_t (SDLCALL *read)(void *userdata, void *ptr, size_t size, SDL_IOStatus *status); */
     /**
      *  Write exactly `size` bytes from the area pointed at by `ptr`
-     *  to data stream.
+     *  to data stream. `size` will always be > 0.
      *
      *  On an incomplete write, you should set `*status` to a value from the
      *  SDL_IOStatus enum. You do not have to explicitly set this on

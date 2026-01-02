@@ -9,7 +9,7 @@
  * coming and going, the system changing in some way, etc.
  *
  * An app generally takes a moment, perhaps at the start of a new frame, to
- * examine any events that have occured since the last time and process or
+ * examine any events that have occurred since the last time and process or
  * ignore them. This is generally done by calling SDL_PollEvent() in a loop
  * until it returns false (or, if using the main callbacks, events are
  * provided one at a time in calls to SDL_AppEvent() before the next call to
@@ -80,7 +80,7 @@ export {
  * @sa SDL_PollEvent
  * @sa SDL_WaitEvent
  *
- * @from SDL_events.h:1070 void SDL_PumpEvents(void);
+ * @from SDL_events.h:1099 void SDL_PumpEvents(void);
  */
 export function pumpEvents(): void {
   return lib.symbols.SDL_PumpEvents();
@@ -128,7 +128,7 @@ export function pumpEvents(): void {
  * @sa SDL_PumpEvents
  * @sa SDL_PushEvent
  *
- * @from SDL_events.h:1128 int SDL_PeepEvents(SDL_Event *events, int numevents, SDL_EventAction action, Uint32 minType, Uint32 maxType);
+ * @from SDL_events.h:1157 int SDL_PeepEvents(SDL_Event *events, int numevents, SDL_EventAction action, Uint32 minType, Uint32 maxType);
  */
 export function peepEvents(
     events: Deno.PointerValue<"SDL_Event">,
@@ -156,7 +156,7 @@ export function peepEvents(
  *
  * @sa SDL_HasEvents
  *
- * @from SDL_events.h:1147 bool SDL_HasEvent(Uint32 type);
+ * @from SDL_events.h:1176 bool SDL_HasEvent(Uint32 type);
  */
 export function hasEvent(type: number): boolean {
   return lib.symbols.SDL_HasEvent(type);
@@ -180,7 +180,7 @@ export function hasEvent(type: number): boolean {
  *
  * @sa SDL_HasEvents
  *
- * @from SDL_events.h:1168 bool SDL_HasEvents(Uint32 minType, Uint32 maxType);
+ * @from SDL_events.h:1197 bool SDL_HasEvents(Uint32 minType, Uint32 maxType);
  */
 export function hasEvents(minType: number, maxType: number): boolean {
   return lib.symbols.SDL_HasEvents(minType, maxType);
@@ -212,7 +212,7 @@ export function hasEvents(minType: number, maxType: number): boolean {
  *
  * @sa SDL_FlushEvents
  *
- * @from SDL_events.h:1196 void SDL_FlushEvent(Uint32 type);
+ * @from SDL_events.h:1225 void SDL_FlushEvent(Uint32 type);
  */
 export function flushEvent(type: number): void {
   return lib.symbols.SDL_FlushEvent(type);
@@ -243,7 +243,7 @@ export function flushEvent(type: number): void {
  *
  * @sa SDL_FlushEvent
  *
- * @from SDL_events.h:1223 void SDL_FlushEvents(Uint32 minType, Uint32 maxType);
+ * @from SDL_events.h:1252 void SDL_FlushEvents(Uint32 minType, Uint32 maxType);
  */
 export function flushEvents(minType: number, maxType: number): void {
   return lib.symbols.SDL_FlushEvents(minType, maxType);
@@ -281,6 +281,13 @@ export function flushEvents(minType: number, maxType: number): void {
  * }
  * ```
  *
+ * Note that Windows (and possibly other platforms) has a quirk about how it
+ * handles events while dragging/resizing a window, which can cause this
+ * function to block for significant amounts of time. Technical explanations
+ * and solutions are discussed on the wiki:
+ *
+ * https://wiki.libsdl.org/SDL3/AppFreezeDuringDrag
+ *
  * @param event the SDL_Event structure to be filled with the next event from
  *              the queue, or NULL.
  * @returns true if this got an event or false if there are none available.
@@ -293,7 +300,7 @@ export function flushEvents(minType: number, maxType: number): void {
  * @sa SDL_WaitEvent
  * @sa SDL_WaitEventTimeout
  *
- * @from SDL_events.h:1269 bool SDL_PollEvent(SDL_Event *event);
+ * @from SDL_events.h:1305 bool SDL_PollEvent(SDL_Event *event);
  */
 export function pollEvent(event: Deno.PointerValue<"SDL_Event">): boolean {
   return lib.symbols.SDL_PollEvent(event);
@@ -321,7 +328,7 @@ export function pollEvent(event: Deno.PointerValue<"SDL_Event">): boolean {
  * @sa SDL_PushEvent
  * @sa SDL_WaitEventTimeout
  *
- * @from SDL_events.h:1293 bool SDL_WaitEvent(SDL_Event *event);
+ * @from SDL_events.h:1329 bool SDL_WaitEvent(SDL_Event *event);
  */
 export function waitEvent(event: Deno.PointerValue<"SDL_Event">): boolean {
   return lib.symbols.SDL_WaitEvent(event);
@@ -355,7 +362,7 @@ export function waitEvent(event: Deno.PointerValue<"SDL_Event">): boolean {
  * @sa SDL_PushEvent
  * @sa SDL_WaitEvent
  *
- * @from SDL_events.h:1323 bool SDL_WaitEventTimeout(SDL_Event *event, Sint32 timeoutMS);
+ * @from SDL_events.h:1359 bool SDL_WaitEventTimeout(SDL_Event *event, Sint32 timeoutMS);
  */
 export function waitEventTimeout(event: Deno.PointerValue<"SDL_Event">, timeoutMS: number): boolean {
   return lib.symbols.SDL_WaitEventTimeout(event, timeoutMS);
@@ -393,7 +400,7 @@ export function waitEventTimeout(event: Deno.PointerValue<"SDL_Event">, timeoutM
  * @sa SDL_PollEvent
  * @sa SDL_RegisterEvents
  *
- * @from SDL_events.h:1357 bool SDL_PushEvent(SDL_Event *event);
+ * @from SDL_events.h:1393 bool SDL_PushEvent(SDL_Event *event);
  */
 export function pushEvent(event: Deno.PointerValue<"SDL_Event">): boolean {
   return lib.symbols.SDL_PushEvent(event);
@@ -412,7 +419,10 @@ export function pushEvent(event: Deno.PointerValue<"SDL_Event">): boolean {
  * allows selective filtering of dynamically arriving events.
  *
  * **WARNING**: Be very careful of what you do in the event filter function,
- * as it may run in a different thread!
+ * as it may run in a different thread! The exception is handling of
+ * SDL_EVENT_WINDOW_EXPOSED, which is guaranteed to be sent from the OS on the
+ * main thread and you are expected to redraw your window in response to this
+ * event.
  *
  * On platforms that support it, if the quit event is generated by an
  * interrupt signal (e.g. pressing Ctrl-C), it will be delivered to the
@@ -425,7 +435,7 @@ export function pushEvent(event: Deno.PointerValue<"SDL_Event">): boolean {
  * the event filter, but events pushed onto the queue with SDL_PeepEvents() do
  * not.
  *
- * @param filter an SDL_EventFilter function to call when an event happens.
+ * @param filter a function to call when an event happens.
  * @param userdata a pointer that is passed to `filter`.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -438,7 +448,7 @@ export function pushEvent(event: Deno.PointerValue<"SDL_Event">): boolean {
  * @sa SDL_PeepEvents
  * @sa SDL_PushEvent
  *
- * @from SDL_events.h:1419 void SDL_SetEventFilter(SDL_EventFilter filter, void *userdata);
+ * @from SDL_events.h:1458 void SDL_SetEventFilter(SDL_EventFilter filter, void *userdata);
  */
 export function setEventFilter(filter: Deno.PointerValue, userdata: Deno.PointerValue): void {
   return lib.symbols.SDL_SetEventFilter(filter, userdata);
@@ -461,7 +471,7 @@ export function setEventFilter(filter: Deno.PointerValue, userdata: Deno.Pointer
  *
  * @sa SDL_SetEventFilter
  *
- * @from SDL_events.h:1438 bool SDL_GetEventFilter(SDL_EventFilter *filter, void **userdata);
+ * @from SDL_events.h:1477 bool SDL_GetEventFilter(SDL_EventFilter *filter, void **userdata);
  */
 export function getEventFilter(): { filter: Deno.PointerValue<"SDL_EventFilter">; userdata: Deno.PointerValue } | null {
   if(!lib.symbols.SDL_GetEventFilter(_p.ptr.p0, _p.ptr.p1))
@@ -499,7 +509,7 @@ export function getEventFilter(): { filter: Deno.PointerValue<"SDL_EventFilter">
  * @sa SDL_RemoveEventWatch
  * @sa SDL_SetEventFilter
  *
- * @from SDL_events.h:1470 bool SDL_AddEventWatch(SDL_EventFilter filter, void *userdata);
+ * @from SDL_events.h:1509 bool SDL_AddEventWatch(SDL_EventFilter filter, void *userdata);
  */
 export function addEventWatch(filter: Deno.PointerValue, userdata: Deno.PointerValue): boolean {
   return lib.symbols.SDL_AddEventWatch(filter, userdata);
@@ -520,7 +530,7 @@ export function addEventWatch(filter: Deno.PointerValue, userdata: Deno.PointerV
  *
  * @sa SDL_AddEventWatch
  *
- * @from SDL_events.h:1487 void SDL_RemoveEventWatch(SDL_EventFilter filter, void *userdata);
+ * @from SDL_events.h:1526 void SDL_RemoveEventWatch(SDL_EventFilter filter, void *userdata);
  */
 export function removeEventWatch(filter: Deno.PointerValue, userdata: Deno.PointerValue): void {
   return lib.symbols.SDL_RemoveEventWatch(filter, userdata);
@@ -544,7 +554,7 @@ export function removeEventWatch(filter: Deno.PointerValue, userdata: Deno.Point
  * @sa SDL_GetEventFilter
  * @sa SDL_SetEventFilter
  *
- * @from SDL_events.h:1507 void SDL_FilterEvents(SDL_EventFilter filter, void *userdata);
+ * @from SDL_events.h:1546 void SDL_FilterEvents(SDL_EventFilter filter, void *userdata);
  */
 export function filterEvents(filter: Deno.PointerValue, userdata: Deno.PointerValue): void {
   return lib.symbols.SDL_FilterEvents(filter, userdata);
@@ -562,7 +572,7 @@ export function filterEvents(filter: Deno.PointerValue, userdata: Deno.PointerVa
  *
  * @sa SDL_EventEnabled
  *
- * @from SDL_events.h:1521 void SDL_SetEventEnabled(Uint32 type, bool enabled);
+ * @from SDL_events.h:1560 void SDL_SetEventEnabled(Uint32 type, bool enabled);
  */
 export function setEventEnabled(type: number, enabled: boolean): void {
   return lib.symbols.SDL_SetEventEnabled(type, enabled);
@@ -580,7 +590,7 @@ export function setEventEnabled(type: number, enabled: boolean): void {
  *
  * @sa SDL_SetEventEnabled
  *
- * @from SDL_events.h:1535 bool SDL_EventEnabled(Uint32 type);
+ * @from SDL_events.h:1574 bool SDL_EventEnabled(Uint32 type);
  */
 export function eventEnabled(type: number): boolean {
   return lib.symbols.SDL_EventEnabled(type);
@@ -600,7 +610,7 @@ export function eventEnabled(type: number): boolean {
  *
  * @sa SDL_PushEvent
  *
- * @from SDL_events.h:1551 Uint32 SDL_RegisterEvents(int numevents);
+ * @from SDL_events.h:1590 Uint32 SDL_RegisterEvents(int numevents);
  */
 export function registerEvents(numevents: number): number {
   return lib.symbols.SDL_RegisterEvents(numevents);
@@ -620,8 +630,47 @@ export function registerEvents(numevents: number): number {
  * @sa SDL_WaitEvent
  * @sa SDL_WaitEventTimeout
  *
- * @from SDL_events.h:1567 SDL_Window * SDL_GetWindowFromEvent(const SDL_Event *event);
+ * @from SDL_events.h:1606 SDL_Window * SDL_GetWindowFromEvent(const SDL_Event *event);
  */
 export function getWindowFromEvent(event: Deno.PointerValue<"SDL_Event">): Deno.PointerValue<"SDL_Window"> {
   return lib.symbols.SDL_GetWindowFromEvent(event) as Deno.PointerValue<"SDL_Window">;
 }
+
+/**
+ * Generate an English description of an event.
+ *
+ * This will fill `buf` with a null-terminated string that might look
+ * something like this:
+ *
+ * ```
+ * SDL_EVENT_MOUSE_MOTION (timestamp=1140256324 windowid=2 which=0 state=0 x=492.99 y=139.09 xrel=52 yrel=6)
+ * ```
+ *
+ * The exact format of the string is not guaranteed; it is intended for
+ * logging purposes, to be read by a human, and not parsed by a computer.
+ *
+ * The returned value follows the same rules as SDL_snprintf(): `buf` will
+ * always be NULL-terminated (unless `buflen` is zero), and will be truncated
+ * if `buflen` is too small. The return code is the number of bytes needed for
+ * the complete string, not counting the NULL-terminator, whether the string
+ * was truncated or not. Unlike SDL_snprintf(), though, this function never
+ * returns -1.
+ *
+ * @param event an event to describe. May be NULL.
+ * @param buf the buffer to fill with the description string. May be NULL.
+ * @param buflen the maximum bytes that can be written to `buf`.
+ * @returns number of bytes needed for the full string, not counting the
+ *          null-terminator byte.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @from SDL_events.h:1638 int SDL_GetEventDescription(const SDL_Event *event, char *buf, int buflen);
+ */
+export function getEventDescription(event: Deno.PointerValue<"SDL_Event">, buflen: number): string {
+  if(!lib.symbols.SDL_GetEventDescription(event, _p.cstr.p0, buflen))
+    throw new Error(`SDL_GetEventDescription: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  return _p.cstr.v0;
+}
+

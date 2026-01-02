@@ -1,4 +1,4 @@
 /**
  * @from SDL_revision:37
  */
-export const SDL_REVISION = "release-3.2.22-0-ga96677bdf";
+export const SDL_REVISION = "SDL-release-3.4.0-0-ga962f40bb";

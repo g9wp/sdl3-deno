@@ -63,7 +63,7 @@ import * as _b from "../_structs/SDL_video.ts";
  * @sa SDL_SetWindowFullscreenMode
  * @sa SDL_GetWindowFullscreenMode
  *
- * @from SDL_video.h:136
+ * @from SDL_video.h:138
  */
 export interface DisplayMode {
   displayID: number; /**< SDL_DisplayID : the display this mode is associated with */

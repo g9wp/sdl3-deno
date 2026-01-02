@@ -248,6 +248,10 @@ export const symbols = {
 /**
  * Opens up a read-only container for the application's filesystem.
  *
+ * By default, SDL_OpenTitleStorage uses the generic storage implementation.
+ * When the path override is not provided, the generic implementation will use
+ * the output of SDL_GetBasePath as the base path.
+ *
  * @param override a path to override the backend's default title root.
  * @param props a property list that may contain backend-specific information.
  * @returns a title storage container on success or NULL on failure; call
@@ -260,7 +264,7 @@ export const symbols = {
  * @sa SDL_OpenUserStorage
  * @sa SDL_ReadStorageFile
  *
- * @from SDL_storage.h:348 SDL_Storage * SDL_OpenTitleStorage(const char *override, SDL_PropertiesID props);
+ * @from SDL_storage.h:352 SDL_Storage * SDL_OpenTitleStorage(const char *override, SDL_PropertiesID props);
  */
 SDL_OpenTitleStorage: {
       parameters: ["pointer", "u32"],
@@ -292,7 +296,7 @@ SDL_OpenTitleStorage: {
  * @sa SDL_StorageReady
  * @sa SDL_WriteStorageFile
  *
- * @from SDL_storage.h:374 SDL_Storage * SDL_OpenUserStorage(const char *org, const char *app, SDL_PropertiesID props);
+ * @from SDL_storage.h:378 SDL_Storage * SDL_OpenUserStorage(const char *org, const char *app, SDL_PropertiesID props);
  */
 SDL_OpenUserStorage: {
       parameters: ["pointer", "pointer", "u32"],
@@ -322,7 +326,7 @@ SDL_OpenUserStorage: {
  * @sa SDL_ReadStorageFile
  * @sa SDL_WriteStorageFile
  *
- * @from SDL_storage.h:398 SDL_Storage * SDL_OpenFileStorage(const char *path);
+ * @from SDL_storage.h:402 SDL_Storage * SDL_OpenFileStorage(const char *path);
  */
 SDL_OpenFileStorage: {
       parameters: ["pointer"],
@@ -357,7 +361,7 @@ SDL_OpenFileStorage: {
  * @sa SDL_StorageReady
  * @sa SDL_WriteStorageFile
  *
- * @from SDL_storage.h:427 SDL_Storage * SDL_OpenStorage(const SDL_StorageInterface *iface, void *userdata);
+ * @from SDL_storage.h:431 SDL_Storage * SDL_OpenStorage(const SDL_StorageInterface *iface, void *userdata);
  */
 SDL_OpenStorage: {
       parameters: ["pointer", "pointer"],
@@ -381,7 +385,7 @@ SDL_OpenStorage: {
  * @sa SDL_OpenTitleStorage
  * @sa SDL_OpenUserStorage
  *
- * @from SDL_storage.h:445 bool SDL_CloseStorage(SDL_Storage *storage);
+ * @from SDL_storage.h:449 bool SDL_CloseStorage(SDL_Storage *storage);
  */
 SDL_CloseStorage: {
       parameters: ["pointer"],
@@ -402,7 +406,7 @@ SDL_CloseStorage: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_storage.h:460 bool SDL_StorageReady(SDL_Storage *storage);
+ * @from SDL_storage.h:464 bool SDL_StorageReady(SDL_Storage *storage);
  */
 SDL_StorageReady: {
       parameters: ["pointer"],
@@ -424,7 +428,7 @@ SDL_StorageReady: {
  * @sa SDL_ReadStorageFile
  * @sa SDL_StorageReady
  *
- * @from SDL_storage.h:476 bool SDL_GetStorageFileSize(SDL_Storage *storage, const char *path, Uint64 *length);
+ * @from SDL_storage.h:480 bool SDL_GetStorageFileSize(SDL_Storage *storage, const char *path, Uint64 *length);
  */
 SDL_GetStorageFileSize: {
       parameters: ["pointer", "pointer", "pointer"],
@@ -453,7 +457,7 @@ SDL_GetStorageFileSize: {
  * @sa SDL_StorageReady
  * @sa SDL_WriteStorageFile
  *
- * @from SDL_storage.h:499 bool SDL_ReadStorageFile(SDL_Storage *storage, const char *path, void *destination, Uint64 length);
+ * @from SDL_storage.h:503 bool SDL_ReadStorageFile(SDL_Storage *storage, const char *path, void *destination, Uint64 length);
  */
 SDL_ReadStorageFile: {
       parameters: ["pointer", "pointer", "pointer", "u64"],
@@ -477,7 +481,7 @@ SDL_ReadStorageFile: {
  * @sa SDL_ReadStorageFile
  * @sa SDL_StorageReady
  *
- * @from SDL_storage.h:517 bool SDL_WriteStorageFile(SDL_Storage *storage, const char *path, const void *source, Uint64 length);
+ * @from SDL_storage.h:521 bool SDL_WriteStorageFile(SDL_Storage *storage, const char *path, const void *source, Uint64 length);
  */
 SDL_WriteStorageFile: {
       parameters: ["pointer", "pointer", "pointer", "u64"],
@@ -497,7 +501,7 @@ SDL_WriteStorageFile: {
  *
  * @sa SDL_StorageReady
  *
- * @from SDL_storage.h:531 bool SDL_CreateStorageDirectory(SDL_Storage *storage, const char *path);
+ * @from SDL_storage.h:535 bool SDL_CreateStorageDirectory(SDL_Storage *storage, const char *path);
  */
 SDL_CreateStorageDirectory: {
       parameters: ["pointer", "pointer"],
@@ -532,7 +536,7 @@ SDL_CreateStorageDirectory: {
  *
  * @sa SDL_StorageReady
  *
- * @from SDL_storage.h:560 bool SDL_EnumerateStorageDirectory(SDL_Storage *storage, const char *path, SDL_EnumerateDirectoryCallback callback, void *userdata);
+ * @from SDL_storage.h:564 bool SDL_EnumerateStorageDirectory(SDL_Storage *storage, const char *path, SDL_EnumerateDirectoryCallback callback, void *userdata);
  */
 SDL_EnumerateStorageDirectory: {
       parameters: ["pointer", "pointer", "function", "pointer"],
@@ -552,7 +556,7 @@ SDL_EnumerateStorageDirectory: {
  *
  * @sa SDL_StorageReady
  *
- * @from SDL_storage.h:574 bool SDL_RemoveStoragePath(SDL_Storage *storage, const char *path);
+ * @from SDL_storage.h:578 bool SDL_RemoveStoragePath(SDL_Storage *storage, const char *path);
  */
 SDL_RemoveStoragePath: {
       parameters: ["pointer", "pointer"],
@@ -573,7 +577,7 @@ SDL_RemoveStoragePath: {
  *
  * @sa SDL_StorageReady
  *
- * @from SDL_storage.h:589 bool SDL_RenameStoragePath(SDL_Storage *storage, const char *oldpath, const char *newpath);
+ * @from SDL_storage.h:593 bool SDL_RenameStoragePath(SDL_Storage *storage, const char *oldpath, const char *newpath);
  */
 SDL_RenameStoragePath: {
       parameters: ["pointer", "pointer", "pointer"],
@@ -594,7 +598,7 @@ SDL_RenameStoragePath: {
  *
  * @sa SDL_StorageReady
  *
- * @from SDL_storage.h:604 bool SDL_CopyStorageFile(SDL_Storage *storage, const char *oldpath, const char *newpath);
+ * @from SDL_storage.h:608 bool SDL_CopyStorageFile(SDL_Storage *storage, const char *oldpath, const char *newpath);
  */
 SDL_CopyStorageFile: {
       parameters: ["pointer", "pointer", "pointer"],
@@ -616,7 +620,7 @@ SDL_CopyStorageFile: {
  *
  * @sa SDL_StorageReady
  *
- * @from SDL_storage.h:620 bool SDL_GetStoragePathInfo(SDL_Storage *storage, const char *path, SDL_PathInfo *info);
+ * @from SDL_storage.h:624 bool SDL_GetStoragePathInfo(SDL_Storage *storage, const char *path, SDL_PathInfo *info);
  */
 SDL_GetStoragePathInfo: {
       parameters: ["pointer", "pointer", "pointer"],
@@ -635,7 +639,7 @@ SDL_GetStoragePathInfo: {
  * @sa SDL_StorageReady
  * @sa SDL_WriteStorageFile
  *
- * @from SDL_storage.h:633 Uint64 SDL_GetStorageSpaceRemaining(SDL_Storage *storage);
+ * @from SDL_storage.h:637 Uint64 SDL_GetStorageSpaceRemaining(SDL_Storage *storage);
  */
 SDL_GetStorageSpaceRemaining: {
       parameters: ["pointer"],
@@ -681,7 +685,7 @@ SDL_GetStorageSpaceRemaining: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_storage.h:673 char ** SDL_GlobStorageDirectory(SDL_Storage *storage, const char *path, const char *pattern, SDL_GlobFlags flags, int *count);
+ * @from SDL_storage.h:677 char ** SDL_GlobStorageDirectory(SDL_Storage *storage, const char *path, const char *pattern, SDL_GlobFlags flags, int *count);
  */
 SDL_GlobStorageDirectory: {
       parameters: ["pointer", "pointer", "pointer", "u32", "pointer"],

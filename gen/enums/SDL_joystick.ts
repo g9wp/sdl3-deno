@@ -8,8 +8,8 @@
  * instead.
  *
  * The term "instance_id" is the current instantiation of a joystick device in
- * the system, if the joystick is removed and then re-inserted then it will
- * get a new instance_id, instance_id's are monotonically increasing
+ * the system. If the joystick is removed and then re-inserted then it will
+ * get a new instance_id. instance_id's are monotonically increasing
  * identifiers of a joystick plugged in.
  *
  * The term "player_index" is the number assigned to a player on a specific
@@ -27,6 +27,14 @@
  * If you would like to receive joystick updates while the application is in
  * the background, you should set the following hint before calling
  * SDL_Init(): SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS
+ *
+ * SDL can provide virtual joysticks as well: the app defines an imaginary
+ * controller with SDL_AttachVirtualJoystick(), and then can provide inputs
+ * for it via SDL_SetJoystickVirtualAxis(), SDL_SetJoystickVirtualButton(),
+ * etc. As this data is supplied, it will look like a normal joystick to SDL,
+ * just not backed by a hardware driver. This has been used to make unusual
+ * devices, like VR headset controllers, look like normal joysticks, or
+ * provide recording/playback of game inputs, etc.
  *
  * @module
  */
@@ -53,7 +61,7 @@
 */
 
 /**
- * @from SDL_joystick:654 SDL_PROP_JOYSTICK_CAP_
+ * @from SDL_joystick:771 SDL_PROP_JOYSTICK_CAP_
  */
 export enum PROP_JOYSTICK_CAP {
   MONO_LED_BOOLEAN = "SDL.joystick.cap.mono_led", 
@@ -66,7 +74,7 @@ export enum PROP_JOYSTICK_CAP {
 
 
 /**
- * @from SDL_joystick:1044 SDL_HAT_
+ * @from SDL_joystick:1211 SDL_HAT_
  */
 export enum HAT {
   CENTERED = 0x00, 
@@ -92,9 +100,13 @@ export enum HAT {
  * This is by no means a complete list of everything that can be plugged into
  * a computer.
  *
+ * You may refer to
+ * [XInput Controller Types](https://learn.microsoft.com/en-us/windows/win32/xinput/xinput-and-controller-subtypes)
+ * table for a general understanding of each joystick type.
+ *
  * @since This enum is available since SDL 3.2.0.
  *
- * @from SDL_joystick.h:111 SDL_JOYSTICK_TYPE_
+ * @from SDL_joystick.h:123 SDL_JOYSTICK_TYPE_
  */
 export enum SDL_JoystickType {
   UNKNOWN, 
@@ -120,7 +132,7 @@ export enum SDL_JoystickType {
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @from SDL_joystick.h:134 SDL_JOYSTICK_CONNECTION_
+ * @from SDL_joystick.h:146 SDL_JOYSTICK_CONNECTION_
  */
 export enum SDL_JoystickConnectionState {
   INVALID = -1, 

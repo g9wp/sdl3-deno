@@ -68,7 +68,7 @@ import { symbols } from './symbols/SDL_filesystem.ts';
  *
  * @sa SDL_EnumerateDirectory
  *
- * @from SDL_filesystem.h:327 typedef SDL_EnumerationResult (*SDL_EnumerateDirectoryCallback)(void *userdata, const char *dirname, const char *fname);
+ * @from SDL_filesystem.h:344 typedef SDL_EnumerationResult (*SDL_EnumerateDirectoryCallback)(void *userdata, const char *dirname, const char *fname);
  */
 export function EnumerateDirectoryCallback(cb: (
     userdata: Deno.PointerValue, 

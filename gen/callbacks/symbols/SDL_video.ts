@@ -72,7 +72,7 @@ export const symbols = {
  *
  * @sa SDL_EGL_SetAttributeCallbacks
  *
- * @from SDL_video.h:376 typedef SDL_EGLAttrib *(*SDL_EGLAttribArrayCallback)(void *userdata);
+ * @from SDL_video.h:419 typedef SDL_EGLAttrib *(*SDL_EGLAttribArrayCallback)(void *userdata);
  */
 SDL_EGLAttribArrayCallback: {
       parameters: ["pointer"],
@@ -105,7 +105,7 @@ SDL_EGLAttribArrayCallback: {
  *
  * @sa SDL_EGL_SetAttributeCallbacks
  *
- * @from SDL_video.h:376 typedef SDL_EGLAttrib *(*SDL_EGLAttribArrayCallback)(void *userdata);
+ * @from SDL_video.h:419 typedef SDL_EGLAttrib *(*SDL_EGLAttribArrayCallback)(void *userdata);
  */
 export function EGLAttribArrayCallback(cb: (
     userdata: Deno.PointerValue, 

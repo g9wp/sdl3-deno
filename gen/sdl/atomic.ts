@@ -335,6 +335,28 @@ export function getAtomicU32(a: Deno.PointerValue<"SDL_AtomicU32">): number {
 }
 
 /**
+ * Add to an atomic variable.
+ *
+ * This function also acts as a full memory barrier.
+ *
+ * ***Note: If you don't know what this function is for, you shouldn't use
+ * it!***
+ *
+ * @param a a pointer to an SDL_AtomicU32 variable to be modified.
+ * @param v the desired value to add or subtract.
+ * @returns the previous value of the atomic variable.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @from SDL_atomic.h:614 Uint32 SDL_AddAtomicU32(SDL_AtomicU32 *a, int v);
+ */
+export function addAtomicU32(a: Deno.PointerValue<"SDL_AtomicU32">, v: number): number {
+  return lib.symbols.SDL_AddAtomicU32(a, v);
+}
+
+/**
  * Set a pointer to a new value if it is currently an old value.
  *
  * ***Note: If you don't know what this function is for, you shouldn't use
@@ -353,7 +375,7 @@ export function getAtomicU32(a: Deno.PointerValue<"SDL_AtomicU32">): number {
  * @sa SDL_GetAtomicPointer
  * @sa SDL_SetAtomicPointer
  *
- * @from SDL_atomic.h:617 bool SDL_CompareAndSwapAtomicPointer(void **a, void *oldval, void *newval);
+ * @from SDL_atomic.h:635 bool SDL_CompareAndSwapAtomicPointer(void **a, void *oldval, void *newval);
  */
 export function compareAndSwapAtomicPointer(a: Deno.PointerValue, oldval: Deno.PointerValue, newval: Deno.PointerValue): boolean {
   return lib.symbols.SDL_CompareAndSwapAtomicPointer(a, oldval, newval);
@@ -376,7 +398,7 @@ export function compareAndSwapAtomicPointer(a: Deno.PointerValue, oldval: Deno.P
  * @sa SDL_CompareAndSwapAtomicPointer
  * @sa SDL_GetAtomicPointer
  *
- * @from SDL_atomic.h:636 void * SDL_SetAtomicPointer(void **a, void *v);
+ * @from SDL_atomic.h:654 void * SDL_SetAtomicPointer(void **a, void *v);
  */
 export function setAtomicPointer(a: Deno.PointerValue, v: Deno.PointerValue): Deno.PointerValue {
   return lib.symbols.SDL_SetAtomicPointer(a, v);
@@ -398,7 +420,7 @@ export function setAtomicPointer(a: Deno.PointerValue, v: Deno.PointerValue): De
  * @sa SDL_CompareAndSwapAtomicPointer
  * @sa SDL_SetAtomicPointer
  *
- * @from SDL_atomic.h:654 void * SDL_GetAtomicPointer(void **a);
+ * @from SDL_atomic.h:672 void * SDL_GetAtomicPointer(void **a);
  */
 export function getAtomicPointer(a: Deno.PointerValue): Deno.PointerValue {
   return lib.symbols.SDL_GetAtomicPointer(a);

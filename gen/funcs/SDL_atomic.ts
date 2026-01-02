@@ -354,6 +354,30 @@ SDL_GetAtomicU32: {
 
 
 /**
+ * Add to an atomic variable.
+ *
+ * This function also acts as a full memory barrier.
+ *
+ * ***Note: If you don't know what this function is for, you shouldn't use
+ * it!***
+ *
+ * @param a a pointer to an SDL_AtomicU32 variable to be modified.
+ * @param v the desired value to add or subtract.
+ * @returns the previous value of the atomic variable.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @from SDL_atomic.h:614 Uint32 SDL_AddAtomicU32(SDL_AtomicU32 *a, int v);
+ */
+SDL_AddAtomicU32: {
+      parameters: ["pointer", "i32"],
+      result: "u32"
+    },
+
+
+/**
  * Set a pointer to a new value if it is currently an old value.
  *
  * ***Note: If you don't know what this function is for, you shouldn't use
@@ -372,7 +396,7 @@ SDL_GetAtomicU32: {
  * @sa SDL_GetAtomicPointer
  * @sa SDL_SetAtomicPointer
  *
- * @from SDL_atomic.h:617 bool SDL_CompareAndSwapAtomicPointer(void **a, void *oldval, void *newval);
+ * @from SDL_atomic.h:635 bool SDL_CompareAndSwapAtomicPointer(void **a, void *oldval, void *newval);
  */
 SDL_CompareAndSwapAtomicPointer: {
       parameters: ["pointer", "pointer", "pointer"],
@@ -397,7 +421,7 @@ SDL_CompareAndSwapAtomicPointer: {
  * @sa SDL_CompareAndSwapAtomicPointer
  * @sa SDL_GetAtomicPointer
  *
- * @from SDL_atomic.h:636 void * SDL_SetAtomicPointer(void **a, void *v);
+ * @from SDL_atomic.h:654 void * SDL_SetAtomicPointer(void **a, void *v);
  */
 SDL_SetAtomicPointer: {
       parameters: ["pointer", "pointer"],
@@ -421,7 +445,7 @@ SDL_SetAtomicPointer: {
  * @sa SDL_CompareAndSwapAtomicPointer
  * @sa SDL_SetAtomicPointer
  *
- * @from SDL_atomic.h:654 void * SDL_GetAtomicPointer(void **a);
+ * @from SDL_atomic.h:672 void * SDL_GetAtomicPointer(void **a);
  */
 SDL_GetAtomicPointer: {
       parameters: ["pointer"],

@@ -41,11 +41,11 @@ import * as _b from "../_structs/SDL_image.ts";
  * @from SDL_image.h:1974
  */
 export interface Animation {
-  w: number; /* int */
-  h: number; /* int */
-  count: number; /* int */
-  frames: Deno.PointerValue; /* SDL_Surface ** */
-  delays: Deno.PointerValue; /* int * */
+  w: number; /**< int : The width of the frames */
+  h: number; /**< int : The height of the frames */
+  count: number; /**< int : The number of frames */
+  frames: Deno.PointerValue; /**< SDL_Surface ** : An array of frames */
+  delays: Deno.PointerValue; /**< int * : An array of frame delays, in milliseconds */
 }
 
 export function read_Animation(dt: DataView): Animation {

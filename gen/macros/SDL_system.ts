@@ -34,12 +34,22 @@
 */
 
 /**
- * @from SDL_system:409
+ * See the official Android developer guide for more information:
+ * http://developer.android.com/guide/topics/data/data-storage.html
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_system.h:409
  */
 export const SDL_ANDROID_EXTERNAL_STORAGE_READ = 0x01;
 
 /**
- * @from SDL_system:417
+ * See the official Android developer guide for more information:
+ * http://developer.android.com/guide/topics/data/data-storage.html
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_system.h:417
  */
 export const SDL_ANDROID_EXTERNAL_STORAGE_WRITE = 0x02;
 

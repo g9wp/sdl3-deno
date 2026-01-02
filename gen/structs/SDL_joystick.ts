@@ -8,8 +8,8 @@
  * instead.
  *
  * The term "instance_id" is the current instantiation of a joystick device in
- * the system, if the joystick is removed and then re-inserted then it will
- * get a new instance_id, instance_id's are monotonically increasing
+ * the system. If the joystick is removed and then re-inserted then it will
+ * get a new instance_id. instance_id's are monotonically increasing
  * identifiers of a joystick plugged in.
  *
  * The term "player_index" is the number assigned to a player on a specific
@@ -27,6 +27,14 @@
  * If you would like to receive joystick updates while the application is in
  * the background, you should set the following hint before calling
  * SDL_Init(): SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS
+ *
+ * SDL can provide virtual joysticks as well: the app defines an imaginary
+ * controller with SDL_AttachVirtualJoystick(), and then can provide inputs
+ * for it via SDL_SetJoystickVirtualAxis(), SDL_SetJoystickVirtualButton(),
+ * etc. As this data is supplied, it will look like a normal joystick to SDL,
+ * just not backed by a hardware driver. This has been used to make unusual
+ * devices, like VR headset controllers, look like normal joysticks, or
+ * provide recording/playback of game inputs, etc.
  *
  * @module
  */
@@ -63,7 +71,7 @@ import * as _b from "../_structs/SDL_joystick.ts";
  *
  * @sa SDL_VirtualJoystickDesc
  *
- * @from SDL_joystick.h:389
+ * @from SDL_joystick.h:432
  */
 export interface VirtualJoystickTouchpadDesc {
   nfingers: number; /**< Uint16 : the number of simultaneous fingers on this touchpad */
@@ -93,7 +101,7 @@ export function write_VirtualJoystickTouchpadDesc(t: VirtualJoystickTouchpadDesc
  *
  * @sa SDL_VirtualJoystickDesc
  *
- * @from SDL_joystick.h:402
+ * @from SDL_joystick.h:445
  */
 export interface VirtualJoystickSensorDesc {
   type: number; /**< SDL_SensorType : the type of this sensor */
@@ -129,7 +137,7 @@ export function write_VirtualJoystickSensorDesc(t: VirtualJoystickSensorDesc, dt
  * @sa SDL_VirtualJoystickSensorDesc
  * @sa SDL_VirtualJoystickTouchpadDesc
  *
- * @from SDL_joystick.h:421
+ * @from SDL_joystick.h:464
  */
 export interface VirtualJoystickDesc {
   version: number; /**< Uint32 : the version of this interface */

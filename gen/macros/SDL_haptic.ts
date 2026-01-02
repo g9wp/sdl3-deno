@@ -49,7 +49,7 @@
  * {
  *    SDL_Haptic *haptic;
  *    SDL_HapticEffect effect;
- *    int effect_id;
+ *    SDL_HapticEffectID effect_id;
  *
  *    // Open the device
  *    haptic = SDL_OpenHapticFromJoystick(joystick);
@@ -116,127 +116,311 @@
 */
 
 /**
- * @from SDL_haptic:173
+ * Used to play a device an infinite number of times.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_RunHapticEffect
+ *
+ * @from SDL_haptic.h:162
+ */
+export const SDL_HAPTIC_INFINITY = 4294967295U;
+
+/**
+ * Constant effect supported.
+ *
+ * Constant haptic effect.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_HapticCondition
+ *
+ * @from SDL_haptic.h:191
  */
 export const SDL_HAPTIC_CONSTANT = (1<<0);
 
 /**
- * @from SDL_haptic:184
+ * Sine wave effect supported.
+ *
+ * Periodic haptic effect that simulates sine waves.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_HapticPeriodic
+ *
+ * @from SDL_haptic.h:202
  */
 export const SDL_HAPTIC_SINE = (1<<1);
 
 /**
- * @from SDL_haptic:195
+ * Square wave effect supported.
+ *
+ * Periodic haptic effect that simulates square waves.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_HapticPeriodic
+ *
+ * @from SDL_haptic.h:213
  */
 export const SDL_HAPTIC_SQUARE = (1<<2);
 
 /**
- * @from SDL_haptic:206
+ * Triangle wave effect supported.
+ *
+ * Periodic haptic effect that simulates triangular waves.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_HapticPeriodic
+ *
+ * @from SDL_haptic.h:224
  */
 export const SDL_HAPTIC_TRIANGLE = (1<<3);
 
 /**
- * @from SDL_haptic:217
+ * Sawtoothup wave effect supported.
+ *
+ * Periodic haptic effect that simulates saw tooth up waves.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_HapticPeriodic
+ *
+ * @from SDL_haptic.h:235
  */
 export const SDL_HAPTIC_SAWTOOTHUP = (1<<4);
 
 /**
- * @from SDL_haptic:228
+ * Sawtoothdown wave effect supported.
+ *
+ * Periodic haptic effect that simulates saw tooth down waves.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_HapticPeriodic
+ *
+ * @from SDL_haptic.h:246
  */
 export const SDL_HAPTIC_SAWTOOTHDOWN = (1<<5);
 
 /**
- * @from SDL_haptic:239
+ * Ramp effect supported.
+ *
+ * Ramp haptic effect.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_HapticRamp
+ *
+ * @from SDL_haptic.h:257
  */
 export const SDL_HAPTIC_RAMP = (1<<6);
 
 /**
- * @from SDL_haptic:251
+ * Spring effect supported - uses axes position.
+ *
+ * Condition haptic effect that simulates a spring. Effect is based on the
+ * axes position.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_HapticCondition
+ *
+ * @from SDL_haptic.h:269
  */
 export const SDL_HAPTIC_SPRING = (1<<7);
 
 /**
- * @from SDL_haptic:263
+ * Damper effect supported - uses axes velocity.
+ *
+ * Condition haptic effect that simulates dampening. Effect is based on the
+ * axes velocity.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_HapticCondition
+ *
+ * @from SDL_haptic.h:281
  */
 export const SDL_HAPTIC_DAMPER = (1<<8);
 
 /**
- * @from SDL_haptic:275
+ * Inertia effect supported - uses axes acceleration.
+ *
+ * Condition haptic effect that simulates inertia. Effect is based on the axes
+ * acceleration.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_HapticCondition
+ *
+ * @from SDL_haptic.h:293
  */
 export const SDL_HAPTIC_INERTIA = (1<<9);
 
 /**
- * @from SDL_haptic:287
+ * Friction effect supported - uses axes movement.
+ *
+ * Condition haptic effect that simulates friction. Effect is based on the
+ * axes movement.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_HapticCondition
+ *
+ * @from SDL_haptic.h:305
  */
 export const SDL_HAPTIC_FRICTION = (1<<10);
 
 /**
- * @from SDL_haptic:298
+ * Left/Right effect supported.
+ *
+ * Haptic effect for direct control over high/low frequency motors.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_HapticLeftRight
+ *
+ * @from SDL_haptic.h:316
  */
 export const SDL_HAPTIC_LEFTRIGHT = (1<<11);
 
 /**
- * @from SDL_haptic:305
+ * Reserved for future use.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_haptic.h:323
  */
 export const SDL_HAPTIC_RESERVED1 = (1<<12);
 
 /**
- * @from SDL_haptic:312
+ * Reserved for future use.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_haptic.h:330
  */
 export const SDL_HAPTIC_RESERVED2 = (1<<13);
 
 /**
- * @from SDL_haptic:319
+ * Reserved for future use.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_haptic.h:337
  */
 export const SDL_HAPTIC_RESERVED3 = (1<<14);
 
 /**
- * @from SDL_haptic:328
+ * Custom effect is supported.
+ *
+ * User defined custom haptic effect.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_haptic.h:346
  */
 export const SDL_HAPTIC_CUSTOM = (1<<15);
 
 /**
- * @from SDL_haptic:343
+ * Device can set global gain.
+ *
+ * Device supports setting the global gain.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_SetHapticGain
+ *
+ * @from SDL_haptic.h:361
  */
 export const SDL_HAPTIC_GAIN = (1<<16);
 
 /**
- * @from SDL_haptic:354
+ * Device can set autocenter.
+ *
+ * Device supports setting autocenter.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_SetHapticAutocenter
+ *
+ * @from SDL_haptic.h:372
  */
 export const SDL_HAPTIC_AUTOCENTER = (1<<17);
 
 /**
- * @from SDL_haptic:365
+ * Device can be queried for effect status.
+ *
+ * Device supports querying effect status.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetHapticEffectStatus
+ *
+ * @from SDL_haptic.h:383
  */
 export const SDL_HAPTIC_STATUS = (1<<18);
 
 /**
- * @from SDL_haptic:377
+ * Device can be paused.
+ *
+ * Devices supports being paused.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_PauseHaptic
+ * @sa SDL_ResumeHaptic
+ *
+ * @from SDL_haptic.h:395
  */
 export const SDL_HAPTIC_PAUSE = (1<<19);
 
 /**
- * @from SDL_haptic:392
+ * Uses polar coordinates for the direction.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_HapticDirection
+ *
+ * @from SDL_haptic.h:415
  */
 export const SDL_HAPTIC_POLAR = 0;
 
 /**
- * @from SDL_haptic:401
+ * Uses cartesian coordinates for the direction.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_HapticDirection
+ *
+ * @from SDL_haptic.h:424
  */
 export const SDL_HAPTIC_CARTESIAN = 1;
 
 /**
- * @from SDL_haptic:410
+ * Uses spherical coordinates for the direction.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_HapticDirection
+ *
+ * @from SDL_haptic.h:433
  */
 export const SDL_HAPTIC_SPHERICAL = 2;
 
 /**
- * @from SDL_haptic:422
+ * Use this value to play an effect on the steering wheel axis.
+ *
+ * This provides better compatibility across platforms and devices as SDL will
+ * guess the correct axis.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_HapticDirection
+ *
+ * @from SDL_haptic.h:445
  */
 export const SDL_HAPTIC_STEERING_AXIS = 3;
-
-/**
- * @from SDL_haptic:439
- */
-export const SDL_HAPTIC_INFINITY = 4294967295;
 

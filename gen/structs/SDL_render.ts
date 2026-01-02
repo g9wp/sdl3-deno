@@ -18,9 +18,9 @@
  * may also be stretched with linear interpolation.
  *
  * This API is designed to accelerate simple 2D operations. You may want more
- * functionality such as polygons and particle effects and in that case you
- * should use SDL's OpenGL/Direct3D support, the SDL3 GPU API, or one of the
- * many good 3D engines.
+ * functionality such as 3D polygons and particle effects, and in that case
+ * you should use SDL's OpenGL/Direct3D support, the SDL3 GPU API, or one of
+ * the many good 3D engines.
  *
  * These functions must be called from the main thread. See this bug for
  * details: https://github.com/libsdl-org/SDL/issues/986
@@ -60,7 +60,7 @@ import { FColor } from "./SDL_pixels.ts";
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_render.h:80
+ * @from SDL_render.h:88
  */
 export interface Vertex {
   position: { x: number; y: number; }; /**< SDL_FPoint : Vertex position, in SDL_Renderer coordinates  */
@@ -96,7 +96,7 @@ export function write_Vertex(t: Vertex, dt: DataView) {
  * @sa SDL_CreateTextureWithProperties
  * @sa SDL_DestroyTexture
  *
- * @from SDL_render.h:132
+ * @from SDL_render.h:159
  */
 export interface Texture {
   format: number; /**< SDL_PixelFormat : The format of the texture, read-only */
@@ -121,6 +121,54 @@ export function write_Texture(t: Texture, dt: DataView) {
     w: t.w, /** int */
     h: t.h, /** int */
     refcount: t.refcount, /** int */
+  }, dt);
+}
+
+
+/**
+ * A structure specifying the parameters of a GPU render state.
+ *
+ * @since This struct is available since SDL 3.4.0.
+ *
+ * @sa SDL_CreateGPURenderState
+ *
+ * @from SDL_render.h:2920
+ */
+export interface GPURenderStateCreateInfo {
+  fragment_shader: Deno.PointerValue; /**< SDL_GPUShader * : The fragment shader to use when this render state is active */
+  num_sampler_bindings: number; /**< Sint32 : The number of additional fragment samplers to bind when this render state is active */
+  sampler_bindings: Deno.PointerValue; /**< const SDL_GPUTextureSamplerBinding * : Additional fragment samplers to bind when this render state is active */
+  num_storage_textures: number; /**< Sint32 : The number of storage textures to bind when this render state is active */
+  storage_textures: Deno.PointerValue; /**< SDL_GPUTexture *const * : Storage textures to bind when this render state is active */
+  num_storage_buffers: number; /**< Sint32 : The number of storage buffers to bind when this render state is active */
+  storage_buffers: Deno.PointerValue; /**< SDL_GPUBuffer *const * : Storage buffers to bind when this render state is active */
+  props: number; /**< SDL_PropertiesID : A properties ID for extensions. Should be 0 if no extensions are needed. */
+}
+
+export function read_GPURenderStateCreateInfo(dt: DataView): GPURenderStateCreateInfo {
+  const t = _b.SDL_GPURenderStateCreateInfo.read(dt);
+  return {
+    fragment_shader: Deno.UnsafePointer.create(t.fragment_shader), /** SDL_GPUShader * */
+    num_sampler_bindings: t.num_sampler_bindings, /** Sint32 */
+    sampler_bindings: Deno.UnsafePointer.create(t.sampler_bindings), /** const SDL_GPUTextureSamplerBinding * */
+    num_storage_textures: t.num_storage_textures, /** Sint32 */
+    storage_textures: Deno.UnsafePointer.create(t.storage_textures), /** SDL_GPUTexture *const * */
+    num_storage_buffers: t.num_storage_buffers, /** Sint32 */
+    storage_buffers: Deno.UnsafePointer.create(t.storage_buffers), /** SDL_GPUBuffer *const * */
+    props: t.props, /** SDL_PropertiesID */
+  };
+}
+
+export function write_GPURenderStateCreateInfo(t: GPURenderStateCreateInfo, dt: DataView) {
+  _b.SDL_GPURenderStateCreateInfo.write({
+    fragment_shader: Deno.UnsafePointer.value(t.fragment_shader), /** SDL_GPUShader * */
+    num_sampler_bindings: t.num_sampler_bindings, /** Sint32 */
+    sampler_bindings: Deno.UnsafePointer.value(t.sampler_bindings), /** const SDL_GPUTextureSamplerBinding * */
+    num_storage_textures: t.num_storage_textures, /** Sint32 */
+    storage_textures: Deno.UnsafePointer.value(t.storage_textures), /** SDL_GPUTexture *const * */
+    num_storage_buffers: t.num_storage_buffers, /** Sint32 */
+    storage_buffers: Deno.UnsafePointer.value(t.storage_buffers), /** SDL_GPUBuffer *const * */
+    props: t.props, /** SDL_PropertiesID */
   }, dt);
 }
 

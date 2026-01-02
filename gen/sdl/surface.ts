@@ -8,12 +8,16 @@
  * provides a reasonable toolbox for transforming the data, including copying
  * between surfaces, filling rectangles in the image data, etc.
  *
- * There is also a simple .bmp loader, SDL_LoadBMP(). SDL itself does not
- * provide loaders for various other file formats, but there are several
- * excellent external libraries that do, including its own satellite library,
- * SDL_image:
+ * There is also a simple .bmp loader, SDL_LoadBMP(), and a simple .png
+ * loader, SDL_LoadPNG(). SDL itself does not provide loaders for other file
+ * formats, but there are several excellent external libraries that do,
+ * including its own satellite library,
+ * [SDL_image](https://wiki.libsdl.org/SDL3_image)
+ * .
  *
- * https://github.com/libsdl-org/SDL_image
+ * In general these functions are thread-safe in that they can be called on
+ * different threads with different surfaces. You should not try to modify any
+ * surface from two threads simultaneously.
  *
  * @module
  */
@@ -68,7 +72,7 @@ export {
  * @sa SDL_CreateSurfaceFrom
  * @sa SDL_DestroySurface
  *
- * @from SDL_surface.h:166 SDL_Surface * SDL_CreateSurface(int width, int height, SDL_PixelFormat format);
+ * @from SDL_surface.h:172 SDL_Surface * SDL_CreateSurface(int width, int height, SDL_PixelFormat format);
  */
 export function createSurface(width: number, height: number, format: number): Deno.PointerValue<"SDL_Surface"> {
   return lib.symbols.SDL_CreateSurface(width, height, format) as Deno.PointerValue<"SDL_Surface">;
@@ -102,7 +106,7 @@ export function createSurface(width: number, height: number, format: number): De
  * @sa SDL_CreateSurface
  * @sa SDL_DestroySurface
  *
- * @from SDL_surface.h:196 SDL_Surface * SDL_CreateSurfaceFrom(int width, int height, SDL_PixelFormat format, void *pixels, int pitch);
+ * @from SDL_surface.h:202 SDL_Surface * SDL_CreateSurfaceFrom(int width, int height, SDL_PixelFormat format, void *pixels, int pitch);
  */
 export function createSurfaceFrom(
     width: number,
@@ -128,7 +132,7 @@ export function createSurfaceFrom(
  * @sa SDL_CreateSurface
  * @sa SDL_CreateSurfaceFrom
  *
- * @from SDL_surface.h:212 void SDL_DestroySurface(SDL_Surface *surface);
+ * @from SDL_surface.h:218 void SDL_DestroySurface(SDL_Surface *surface);
  */
 export function destroySurface(surface: Deno.PointerValue<"SDL_Surface">): void {
   return lib.symbols.SDL_DestroySurface(surface);
@@ -157,6 +161,12 @@ export function destroySurface(surface: Deno.PointerValue<"SDL_Surface">): void 
  *   left edge of the image, if this surface is being used as a cursor.
  * - `SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the
  *   top edge of the image, if this surface is being used as a cursor.
+ * - `SDL_PROP_SURFACE_ROTATION_FLOAT`: the number of degrees a surface's data
+ *   is meant to be rotated clockwise to make the image right-side up. Default
+ *   0. This is used by the camera API, if a mobile device is oriented
+ *   differently than what its camera provides (i.e. - the camera always
+ *   provides portrait images but the phone is being held in landscape
+ *   orientation). Since SDL 3.4.0.
  *
  * @param surface the SDL_Surface structure to query.
  * @returns a valid property ID on success or 0 on failure; call
@@ -166,7 +176,7 @@ export function destroySurface(surface: Deno.PointerValue<"SDL_Surface">): void 
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_surface.h:246 SDL_PropertiesID SDL_GetSurfaceProperties(SDL_Surface *surface);
+ * @from SDL_surface.h:258 SDL_PropertiesID SDL_GetSurfaceProperties(SDL_Surface *surface);
  */
 export function getSurfaceProperties(surface: Deno.PointerValue<"SDL_Surface">): number {
   return lib.symbols.SDL_GetSurfaceProperties(surface);
@@ -184,13 +194,14 @@ export function getSurfaceProperties(surface: Deno.PointerValue<"SDL_Surface">):
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_GetSurfaceColorspace
  *
- * @from SDL_surface.h:272 bool SDL_SetSurfaceColorspace(SDL_Surface *surface, SDL_Colorspace colorspace);
+ * @from SDL_surface.h:286 bool SDL_SetSurfaceColorspace(SDL_Surface *surface, SDL_Colorspace colorspace);
  */
 export function setSurfaceColorspace(surface: Deno.PointerValue<"SDL_Surface">, colorspace: number): boolean {
   return lib.symbols.SDL_SetSurfaceColorspace(surface, colorspace);
@@ -207,13 +218,14 @@ export function setSurfaceColorspace(surface: Deno.PointerValue<"SDL_Surface">, 
  * @returns the colorspace used by the surface, or SDL_COLORSPACE_UNKNOWN if
  *          the surface is NULL.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_SetSurfaceColorspace
  *
- * @from SDL_surface.h:291 SDL_Colorspace SDL_GetSurfaceColorspace(SDL_Surface *surface);
+ * @from SDL_surface.h:306 SDL_Colorspace SDL_GetSurfaceColorspace(SDL_Surface *surface);
  */
 export function getSurfaceColorspace(surface: Deno.PointerValue<"SDL_Surface">): number {
   return lib.symbols.SDL_GetSurfaceColorspace(surface);
@@ -241,13 +253,14 @@ export function getSurfaceColorspace(surface: Deno.PointerValue<"SDL_Surface">):
  *          the surface didn't have an index format); call SDL_GetError() for
  *          more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_SetPaletteColors
  *
- * @from SDL_surface.h:321 SDL_Palette * SDL_CreateSurfacePalette(SDL_Surface *surface);
+ * @from SDL_surface.h:337 SDL_Palette * SDL_CreateSurfacePalette(SDL_Surface *surface);
  */
 export function createSurfacePalette(surface: Deno.PointerValue<"SDL_Surface">): Deno.PointerValue<"SDL_Palette"> {
   return lib.symbols.SDL_CreateSurfacePalette(surface) as Deno.PointerValue<"SDL_Palette">;
@@ -256,6 +269,9 @@ export function createSurfacePalette(surface: Deno.PointerValue<"SDL_Surface">):
 /**
  * Set the palette used by a surface.
  *
+ * Setting the palette keeps an internal reference to the palette, which can
+ * be safely destroyed afterwards.
+ *
  * A single palette can be shared with many surfaces.
  *
  * @param surface the SDL_Surface structure to update.
@@ -263,14 +279,15 @@ export function createSurfacePalette(surface: Deno.PointerValue<"SDL_Surface">):
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_CreatePalette
  * @sa SDL_GetSurfacePalette
  *
- * @from SDL_surface.h:340 bool SDL_SetSurfacePalette(SDL_Surface *surface, SDL_Palette *palette);
+ * @from SDL_surface.h:360 bool SDL_SetSurfacePalette(SDL_Surface *surface, SDL_Palette *palette);
  */
 export function setSurfacePalette(surface: Deno.PointerValue<"SDL_Surface">, palette: Deno.PointerValue<"SDL_Palette">): boolean {
   return lib.symbols.SDL_SetSurfacePalette(surface, palette);
@@ -289,7 +306,7 @@ export function setSurfacePalette(surface: Deno.PointerValue<"SDL_Surface">, pal
  *
  * @sa SDL_SetSurfacePalette
  *
- * @from SDL_surface.h:355 SDL_Palette * SDL_GetSurfacePalette(SDL_Surface *surface);
+ * @from SDL_surface.h:375 SDL_Palette * SDL_GetSurfacePalette(SDL_Surface *surface);
  */
 export function getSurfacePalette(surface: Deno.PointerValue<"SDL_Surface">): Deno.PointerValue<"SDL_Palette"> {
   return lib.symbols.SDL_GetSurfacePalette(surface) as Deno.PointerValue<"SDL_Palette">;
@@ -312,7 +329,8 @@ export function getSurfacePalette(surface: Deno.PointerValue<"SDL_Surface">): De
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -320,7 +338,7 @@ export function getSurfacePalette(surface: Deno.PointerValue<"SDL_Surface">): De
  * @sa SDL_GetSurfaceImages
  * @sa SDL_SurfaceHasAlternateImages
  *
- * @from SDL_surface.h:382 bool SDL_AddSurfaceAlternateImage(SDL_Surface *surface, SDL_Surface *image);
+ * @from SDL_surface.h:403 bool SDL_AddSurfaceAlternateImage(SDL_Surface *surface, SDL_Surface *image);
  */
 export function addSurfaceAlternateImage(surface: Deno.PointerValue<"SDL_Surface">, image: Deno.PointerValue<"SDL_Surface">): boolean {
   return lib.symbols.SDL_AddSurfaceAlternateImage(surface, image);
@@ -340,7 +358,7 @@ export function addSurfaceAlternateImage(surface: Deno.PointerValue<"SDL_Surface
  * @sa SDL_RemoveSurfaceAlternateImages
  * @sa SDL_GetSurfaceImages
  *
- * @from SDL_surface.h:398 bool SDL_SurfaceHasAlternateImages(SDL_Surface *surface);
+ * @from SDL_surface.h:419 bool SDL_SurfaceHasAlternateImages(SDL_Surface *surface);
  */
 export function surfaceHasAlternateImages(surface: Deno.PointerValue<"SDL_Surface">): boolean {
   return lib.symbols.SDL_SurfaceHasAlternateImages(surface);
@@ -363,7 +381,8 @@ export function surfaceHasAlternateImages(surface: Deno.PointerValue<"SDL_Surfac
  *          failure; call SDL_GetError() for more information. This should be
  *          freed with SDL_free() when it is no longer needed.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -371,7 +390,7 @@ export function surfaceHasAlternateImages(surface: Deno.PointerValue<"SDL_Surfac
  * @sa SDL_RemoveSurfaceAlternateImages
  * @sa SDL_SurfaceHasAlternateImages
  *
- * @from SDL_surface.h:425 SDL_Surface ** SDL_GetSurfaceImages(SDL_Surface *surface, int *count);
+ * @from SDL_surface.h:447 SDL_Surface ** SDL_GetSurfaceImages(SDL_Surface *surface, int *count);
  */
 export function getSurfaceImages(surface: Deno.PointerValue<"SDL_Surface">): { count: number; ret: Deno.PointerValue } {
   const ret = lib.symbols.SDL_GetSurfaceImages(surface, _p.i32.p0) as Deno.PointerValue;
@@ -387,7 +406,8 @@ export function getSurfaceImages(surface: Deno.PointerValue<"SDL_Surface">): { c
  *
  * @param surface the SDL_Surface structure to update.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -395,7 +415,7 @@ export function getSurfaceImages(surface: Deno.PointerValue<"SDL_Surface">): { c
  * @sa SDL_GetSurfaceImages
  * @sa SDL_SurfaceHasAlternateImages
  *
- * @from SDL_surface.h:443 void SDL_RemoveSurfaceAlternateImages(SDL_Surface *surface);
+ * @from SDL_surface.h:466 void SDL_RemoveSurfaceAlternateImages(SDL_Surface *surface);
  */
 export function removeSurfaceAlternateImages(surface: Deno.PointerValue<"SDL_Surface">): void {
   return lib.symbols.SDL_RemoveSurfaceAlternateImages(surface);
@@ -417,16 +437,17 @@ export function removeSurfaceAlternateImages(surface: Deno.PointerValue<"SDL_Sur
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe. The locking referred to by
- *               this function is making the pixels available for direct
- *               access, not thread-safe locking.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces. The locking referred to by this function
+ *               is making the pixels available for direct access, not
+ *               thread-safe locking.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_MUSTLOCK
  * @sa SDL_UnlockSurface
  *
- * @from SDL_surface.h:470 bool SDL_LockSurface(SDL_Surface *surface);
+ * @from SDL_surface.h:494 bool SDL_LockSurface(SDL_Surface *surface);
  */
 export function lockSurface(surface: Deno.PointerValue<"SDL_Surface">): boolean {
   return lib.symbols.SDL_LockSurface(surface);
@@ -445,10 +466,58 @@ export function lockSurface(surface: Deno.PointerValue<"SDL_Surface">): boolean 
  *
  * @sa SDL_LockSurface
  *
- * @from SDL_surface.h:485 void SDL_UnlockSurface(SDL_Surface *surface);
+ * @from SDL_surface.h:509 void SDL_UnlockSurface(SDL_Surface *surface);
  */
 export function unlockSurface(surface: Deno.PointerValue<"SDL_Surface">): void {
   return lib.symbols.SDL_UnlockSurface(surface);
+}
+
+/**
+ * Load a BMP or PNG image from a seekable SDL data stream.
+ *
+ * The new surface should be freed with SDL_DestroySurface(). Not doing so
+ * will result in a memory leak.
+ *
+ * @param src the data stream for the surface.
+ * @param closeio if true, calls SDL_CloseIO() on `src` before returning, even
+ *                in the case of an error.
+ * @returns a pointer to a new SDL_Surface structure or NULL on failure; call
+ *          SDL_GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_DestroySurface
+ * @sa SDL_LoadSurface
+ *
+ * @from SDL_surface.h:530 SDL_Surface * SDL_LoadSurface_IO(SDL_IOStream *src, bool closeio);
+ */
+export function loadSurfaceIo(src: Deno.PointerValue<"SDL_IOStream">, closeio: boolean): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.SDL_LoadSurface_IO(src, closeio) as Deno.PointerValue<"SDL_Surface">;
+}
+
+/**
+ * Load a BMP or PNG image from a file.
+ *
+ * The new surface should be freed with SDL_DestroySurface(). Not doing so
+ * will result in a memory leak.
+ *
+ * @param file the file to load.
+ * @returns a pointer to a new SDL_Surface structure or NULL on failure; call
+ *          SDL_GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_DestroySurface
+ * @sa SDL_LoadSurface_IO
+ *
+ * @from SDL_surface.h:549 SDL_Surface * SDL_LoadSurface(const char *file);
+ */
+export function loadSurface(file: string): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.SDL_LoadSurface(_p.toCstr(file)) as Deno.PointerValue<"SDL_Surface">;
 }
 
 /**
@@ -471,7 +540,7 @@ export function unlockSurface(surface: Deno.PointerValue<"SDL_Surface">): void {
  * @sa SDL_LoadBMP
  * @sa SDL_SaveBMP_IO
  *
- * @from SDL_surface.h:507 SDL_Surface * SDL_LoadBMP_IO(SDL_IOStream *src, bool closeio);
+ * @from SDL_surface.h:571 SDL_Surface * SDL_LoadBMP_IO(SDL_IOStream *src, bool closeio);
  */
 export function loadBmpIo(src: Deno.PointerValue<"SDL_IOStream">, closeio: boolean): Deno.PointerValue<"SDL_Surface"> {
   return lib.symbols.SDL_LoadBMP_IO(src, closeio) as Deno.PointerValue<"SDL_Surface">;
@@ -495,7 +564,7 @@ export function loadBmpIo(src: Deno.PointerValue<"SDL_IOStream">, closeio: boole
  * @sa SDL_LoadBMP_IO
  * @sa SDL_SaveBMP
  *
- * @from SDL_surface.h:527 SDL_Surface * SDL_LoadBMP(const char *file);
+ * @from SDL_surface.h:591 SDL_Surface * SDL_LoadBMP(const char *file);
  */
 export function loadBmp(file: string): Deno.PointerValue<"SDL_Surface"> {
   return lib.symbols.SDL_LoadBMP(_p.toCstr(file)) as Deno.PointerValue<"SDL_Surface">;
@@ -517,21 +586,22 @@ export function loadBmp(file: string): Deno.PointerValue<"SDL_Surface"> {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_LoadBMP_IO
  * @sa SDL_SaveBMP
  *
- * @from SDL_surface.h:552 bool SDL_SaveBMP_IO(SDL_Surface *surface, SDL_IOStream *dst, bool closeio);
+ * @from SDL_surface.h:617 bool SDL_SaveBMP_IO(SDL_Surface *surface, SDL_IOStream *dst, bool closeio);
  */
 export function saveBmpIo(surface: Deno.PointerValue<"SDL_Surface">, dst: Deno.PointerValue<"SDL_IOStream">, closeio: boolean): boolean {
   return lib.symbols.SDL_SaveBMP_IO(surface, dst, closeio);
 }
 
 /**
- * Save a surface to a file.
+ * Save a surface to a file in BMP format.
  *
  * Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the
  * BMP directly. Other RGB formats with 8-bit or higher get converted to a
@@ -544,17 +614,122 @@ export function saveBmpIo(surface: Deno.PointerValue<"SDL_Surface">, dst: Deno.P
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_LoadBMP
  * @sa SDL_SaveBMP_IO
  *
- * @from SDL_surface.h:575 bool SDL_SaveBMP(SDL_Surface *surface, const char *file);
+ * @from SDL_surface.h:641 bool SDL_SaveBMP(SDL_Surface *surface, const char *file);
  */
 export function saveBmp(surface: Deno.PointerValue<"SDL_Surface">, file: string): boolean {
   return lib.symbols.SDL_SaveBMP(surface, _p.toCstr(file));
+}
+
+/**
+ * Load a PNG image from a seekable SDL data stream.
+ *
+ * This is intended as a convenience function for loading images from trusted
+ * sources. If you want to load arbitrary images you should use libpng or
+ * another image loading library designed with security in mind.
+ *
+ * The new surface should be freed with SDL_DestroySurface(). Not doing so
+ * will result in a memory leak.
+ *
+ * @param src the data stream for the surface.
+ * @param closeio if true, calls SDL_CloseIO() on `src` before returning, even
+ *                in the case of an error.
+ * @returns a pointer to a new SDL_Surface structure or NULL on failure; call
+ *          SDL_GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_DestroySurface
+ * @sa SDL_LoadPNG
+ * @sa SDL_SavePNG_IO
+ *
+ * @from SDL_surface.h:667 SDL_Surface * SDL_LoadPNG_IO(SDL_IOStream *src, bool closeio);
+ */
+export function loadPngIo(src: Deno.PointerValue<"SDL_IOStream">, closeio: boolean): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.SDL_LoadPNG_IO(src, closeio) as Deno.PointerValue<"SDL_Surface">;
+}
+
+/**
+ * Load a PNG image from a file.
+ *
+ * This is intended as a convenience function for loading images from trusted
+ * sources. If you want to load arbitrary images you should use libpng or
+ * another image loading library designed with security in mind.
+ *
+ * The new surface should be freed with SDL_DestroySurface(). Not doing so
+ * will result in a memory leak.
+ *
+ * @param file the PNG file to load.
+ * @returns a pointer to a new SDL_Surface structure or NULL on failure; call
+ *          SDL_GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_DestroySurface
+ * @sa SDL_LoadPNG_IO
+ * @sa SDL_SavePNG
+ *
+ * @from SDL_surface.h:691 SDL_Surface * SDL_LoadPNG(const char *file);
+ */
+export function loadPng(file: string): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.SDL_LoadPNG(_p.toCstr(file)) as Deno.PointerValue<"SDL_Surface">;
+}
+
+/**
+ * Save a surface to a seekable SDL data stream in PNG format.
+ *
+ * @param surface the SDL_Surface structure containing the image to be saved.
+ * @param dst a data stream to save to.
+ * @param closeio if true, calls SDL_CloseIO() on `dst` before returning, even
+ *                in the case of an error.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_LoadPNG_IO
+ * @sa SDL_SavePNG
+ *
+ * @from SDL_surface.h:711 bool SDL_SavePNG_IO(SDL_Surface *surface, SDL_IOStream *dst, bool closeio);
+ */
+export function savePngIo(surface: Deno.PointerValue<"SDL_Surface">, dst: Deno.PointerValue<"SDL_IOStream">, closeio: boolean): boolean {
+  return lib.symbols.SDL_SavePNG_IO(surface, dst, closeio);
+}
+
+/**
+ * Save a surface to a file in PNG format.
+ *
+ * @param surface the SDL_Surface structure containing the image to be saved.
+ * @param file a file to save to.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa SDL_LoadPNG
+ * @sa SDL_SavePNG_IO
+ *
+ * @from SDL_surface.h:729 bool SDL_SavePNG(SDL_Surface *surface, const char *file);
+ */
+export function savePng(surface: Deno.PointerValue<"SDL_Surface">, file: string): boolean {
+  return lib.symbols.SDL_SavePNG(surface, _p.toCstr(file));
 }
 
 /**
@@ -568,7 +743,8 @@ export function saveBmp(surface: Deno.PointerValue<"SDL_Surface">, file: string)
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -576,7 +752,7 @@ export function saveBmp(surface: Deno.PointerValue<"SDL_Surface">, file: string)
  * @sa SDL_LockSurface
  * @sa SDL_UnlockSurface
  *
- * @from SDL_surface.h:596 bool SDL_SetSurfaceRLE(SDL_Surface *surface, bool enabled);
+ * @from SDL_surface.h:751 bool SDL_SetSurfaceRLE(SDL_Surface *surface, bool enabled);
  */
 export function setSurfaceRle(surface: Deno.PointerValue<"SDL_Surface">, enabled: boolean): boolean {
   return lib.symbols.SDL_SetSurfaceRLE(surface, enabled);
@@ -596,7 +772,7 @@ export function setSurfaceRle(surface: Deno.PointerValue<"SDL_Surface">, enabled
  *
  * @sa SDL_SetSurfaceRLE
  *
- * @from SDL_surface.h:612 bool SDL_SurfaceHasRLE(SDL_Surface *surface);
+ * @from SDL_surface.h:767 bool SDL_SurfaceHasRLE(SDL_Surface *surface);
  */
 export function surfaceHasRle(surface: Deno.PointerValue<"SDL_Surface">): boolean {
   return lib.symbols.SDL_SurfaceHasRLE(surface);
@@ -618,7 +794,8 @@ export function surfaceHasRle(surface: Deno.PointerValue<"SDL_Surface">): boolea
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -626,7 +803,7 @@ export function surfaceHasRle(surface: Deno.PointerValue<"SDL_Surface">): boolea
  * @sa SDL_SetSurfaceRLE
  * @sa SDL_SurfaceHasColorKey
  *
- * @from SDL_surface.h:638 bool SDL_SetSurfaceColorKey(SDL_Surface *surface, bool enabled, Uint32 key);
+ * @from SDL_surface.h:794 bool SDL_SetSurfaceColorKey(SDL_Surface *surface, bool enabled, Uint32 key);
  */
 export function setSurfaceColorKey(surface: Deno.PointerValue<"SDL_Surface">, enabled: boolean, key: number): boolean {
   return lib.symbols.SDL_SetSurfaceColorKey(surface, enabled, key);
@@ -647,7 +824,7 @@ export function setSurfaceColorKey(surface: Deno.PointerValue<"SDL_Surface">, en
  * @sa SDL_SetSurfaceColorKey
  * @sa SDL_GetSurfaceColorKey
  *
- * @from SDL_surface.h:655 bool SDL_SurfaceHasColorKey(SDL_Surface *surface);
+ * @from SDL_surface.h:811 bool SDL_SurfaceHasColorKey(SDL_Surface *surface);
  */
 export function surfaceHasColorKey(surface: Deno.PointerValue<"SDL_Surface">): boolean {
   return lib.symbols.SDL_SurfaceHasColorKey(surface);
@@ -673,7 +850,7 @@ export function surfaceHasColorKey(surface: Deno.PointerValue<"SDL_Surface">): b
  * @sa SDL_SetSurfaceColorKey
  * @sa SDL_SurfaceHasColorKey
  *
- * @from SDL_surface.h:677 bool SDL_GetSurfaceColorKey(SDL_Surface *surface, Uint32 *key);
+ * @from SDL_surface.h:833 bool SDL_GetSurfaceColorKey(SDL_Surface *surface, Uint32 *key);
  */
 export function getSurfaceColorKey(surface: Deno.PointerValue<"SDL_Surface">): number {
   if(!lib.symbols.SDL_GetSurfaceColorKey(surface, _p.u32.p0))
@@ -697,14 +874,15 @@ export function getSurfaceColorKey(surface: Deno.PointerValue<"SDL_Surface">): n
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_GetSurfaceColorMod
  * @sa SDL_SetSurfaceAlphaMod
  *
- * @from SDL_surface.h:702 bool SDL_SetSurfaceColorMod(SDL_Surface *surface, Uint8 r, Uint8 g, Uint8 b);
+ * @from SDL_surface.h:859 bool SDL_SetSurfaceColorMod(SDL_Surface *surface, Uint8 r, Uint8 g, Uint8 b);
  */
 export function setSurfaceColorMod(
     surface: Deno.PointerValue<"SDL_Surface">,
@@ -725,14 +903,15 @@ export function setSurfaceColorMod(
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_GetSurfaceAlphaMod
  * @sa SDL_SetSurfaceColorMod
  *
- * @from SDL_surface.h:722 bool SDL_GetSurfaceColorMod(SDL_Surface *surface, Uint8 *r, Uint8 *g, Uint8 *b);
+ * @from SDL_surface.h:880 bool SDL_GetSurfaceColorMod(SDL_Surface *surface, Uint8 *r, Uint8 *g, Uint8 *b);
  */
 export function getSurfaceColorMod(surface: Deno.PointerValue<"SDL_Surface">): { r: number; g: number; b: number } {
   if(!lib.symbols.SDL_GetSurfaceColorMod(surface, _p.u8.p0, _p.u8.p1, _p.u8.p2))
@@ -753,14 +932,15 @@ export function getSurfaceColorMod(surface: Deno.PointerValue<"SDL_Surface">): {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_GetSurfaceAlphaMod
  * @sa SDL_SetSurfaceColorMod
  *
- * @from SDL_surface.h:744 bool SDL_SetSurfaceAlphaMod(SDL_Surface *surface, Uint8 alpha);
+ * @from SDL_surface.h:903 bool SDL_SetSurfaceAlphaMod(SDL_Surface *surface, Uint8 alpha);
  */
 export function setSurfaceAlphaMod(surface: Deno.PointerValue<"SDL_Surface">, alpha: number): boolean {
   return lib.symbols.SDL_SetSurfaceAlphaMod(surface, alpha);
@@ -781,7 +961,7 @@ export function setSurfaceAlphaMod(surface: Deno.PointerValue<"SDL_Surface">, al
  * @sa SDL_GetSurfaceColorMod
  * @sa SDL_SetSurfaceAlphaMod
  *
- * @from SDL_surface.h:761 bool SDL_GetSurfaceAlphaMod(SDL_Surface *surface, Uint8 *alpha);
+ * @from SDL_surface.h:920 bool SDL_GetSurfaceAlphaMod(SDL_Surface *surface, Uint8 *alpha);
  */
 export function getSurfaceAlphaMod(surface: Deno.PointerValue<"SDL_Surface">): number {
   if(!lib.symbols.SDL_GetSurfaceAlphaMod(surface, _p.u8.p0))
@@ -801,13 +981,14 @@ export function getSurfaceAlphaMod(surface: Deno.PointerValue<"SDL_Surface">): n
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_GetSurfaceBlendMode
  *
- * @from SDL_surface.h:781 bool SDL_SetSurfaceBlendMode(SDL_Surface *surface, SDL_BlendMode blendMode);
+ * @from SDL_surface.h:941 bool SDL_SetSurfaceBlendMode(SDL_Surface *surface, SDL_BlendMode blendMode);
  */
 export function setSurfaceBlendMode(surface: Deno.PointerValue<"SDL_Surface">, blendMode: number): boolean {
   return lib.symbols.SDL_SetSurfaceBlendMode(surface, blendMode);
@@ -827,7 +1008,7 @@ export function setSurfaceBlendMode(surface: Deno.PointerValue<"SDL_Surface">, b
  *
  * @sa SDL_SetSurfaceBlendMode
  *
- * @from SDL_surface.h:797 bool SDL_GetSurfaceBlendMode(SDL_Surface *surface, SDL_BlendMode *blendMode);
+ * @from SDL_surface.h:957 bool SDL_GetSurfaceBlendMode(SDL_Surface *surface, SDL_BlendMode *blendMode);
  */
 export function getSurfaceBlendMode(surface: Deno.PointerValue<"SDL_Surface">): number {
   if(!lib.symbols.SDL_GetSurfaceBlendMode(surface, _p.u32.p0))
@@ -850,13 +1031,14 @@ export function getSurfaceBlendMode(surface: Deno.PointerValue<"SDL_Surface">): 
  * @returns true if the rectangle intersects the surface, otherwise false and
  *          blits will be completely clipped.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_GetSurfaceClipRect
  *
- * @from SDL_surface.h:820 bool SDL_SetSurfaceClipRect(SDL_Surface *surface, const SDL_Rect *rect);
+ * @from SDL_surface.h:981 bool SDL_SetSurfaceClipRect(SDL_Surface *surface, const SDL_Rect *rect);
  */
 export function setSurfaceClipRect(surface: Deno.PointerValue<"SDL_Surface">, rect: { x: number; y: number; w: number; h: number; } | null): boolean {
   if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
@@ -876,13 +1058,14 @@ export function setSurfaceClipRect(surface: Deno.PointerValue<"SDL_Surface">, re
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_SetSurfaceClipRect
  *
- * @from SDL_surface.h:841 bool SDL_GetSurfaceClipRect(SDL_Surface *surface, SDL_Rect *rect);
+ * @from SDL_surface.h:1003 bool SDL_GetSurfaceClipRect(SDL_Surface *surface, SDL_Rect *rect);
  */
 export function getSurfaceClipRect(surface: Deno.PointerValue<"SDL_Surface">): { x: number; y: number; w: number; h: number; } | null {
   if(!lib.symbols.SDL_GetSurfaceClipRect(surface, _p.i32.p0))
@@ -898,14 +1081,48 @@ export function getSurfaceClipRect(surface: Deno.PointerValue<"SDL_Surface">): {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_surface.h:855 bool SDL_FlipSurface(SDL_Surface *surface, SDL_FlipMode flip);
+ * @from SDL_surface.h:1018 bool SDL_FlipSurface(SDL_Surface *surface, SDL_FlipMode flip);
  */
 export function flipSurface(surface: Deno.PointerValue<"SDL_Surface">, flip: number): boolean {
   return lib.symbols.SDL_FlipSurface(surface, flip);
+}
+
+/**
+ * Return a copy of a surface rotated clockwise a number of degrees.
+ *
+ * The angle of rotation can be negative for counter-clockwise rotation.
+ *
+ * When the rotation isn't a multiple of 90 degrees, the resulting surface is
+ * larger than the original, with the background filled in with the colorkey,
+ * if available, or RGBA 255/255/255/0 if not.
+ *
+ * If `surface` has the SDL_PROP_SURFACE_ROTATION_FLOAT property set on it,
+ * the new copy will have the adjusted value set: if the rotation property is
+ * 90 and `angle` was 30, the new surface will have a property value of 60
+ * (that is: to be upright vs gravity, this surface needs to rotate 60 more
+ * degrees). However, note that further rotations on the new surface in this
+ * example will produce unexpected results, since the image will have resized
+ * and padded to accommodate the not-90 degree angle.
+ *
+ * @param surface the surface to rotate.
+ * @param angle the rotation angle, in degrees.
+ * @returns a rotated copy of the surface or NULL on failure; call
+ *          SDL_GetError() for more information.
+ *
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @from SDL_surface.h:1047 SDL_Surface * SDL_RotateSurface(SDL_Surface *surface, float angle);
+ */
+export function rotateSurface(surface: Deno.PointerValue<"SDL_Surface">, angle: number): Deno.PointerValue<"SDL_Surface"> {
+  return lib.symbols.SDL_RotateSurface(surface, angle) as Deno.PointerValue<"SDL_Surface">;
 }
 
 /**
@@ -920,13 +1137,14 @@ export function flipSurface(surface: Deno.PointerValue<"SDL_Surface">, flip: num
  * @returns a copy of the surface or NULL on failure; call SDL_GetError() for
  *          more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_DestroySurface
  *
- * @from SDL_surface.h:875 SDL_Surface * SDL_DuplicateSurface(SDL_Surface *surface);
+ * @from SDL_surface.h:1068 SDL_Surface * SDL_DuplicateSurface(SDL_Surface *surface);
  */
 export function duplicateSurface(surface: Deno.PointerValue<"SDL_Surface">): Deno.PointerValue<"SDL_Surface"> {
   return lib.symbols.SDL_DuplicateSurface(surface) as Deno.PointerValue<"SDL_Surface">;
@@ -945,13 +1163,14 @@ export function duplicateSurface(surface: Deno.PointerValue<"SDL_Surface">): Den
  * @returns a copy of the surface or NULL on failure; call SDL_GetError() for
  *          more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_DestroySurface
  *
- * @from SDL_surface.h:896 SDL_Surface * SDL_ScaleSurface(SDL_Surface *surface, int width, int height, SDL_ScaleMode scaleMode);
+ * @from SDL_surface.h:1090 SDL_Surface * SDL_ScaleSurface(SDL_Surface *surface, int width, int height, SDL_ScaleMode scaleMode);
  */
 export function scaleSurface(
     surface: Deno.PointerValue<"SDL_Surface">,
@@ -981,14 +1200,15 @@ export function scaleSurface(
  * @returns the new SDL_Surface structure that is created or NULL on failure;
  *          call SDL_GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_ConvertSurfaceAndColorspace
  * @sa SDL_DestroySurface
  *
- * @from SDL_surface.h:924 SDL_Surface * SDL_ConvertSurface(SDL_Surface *surface, SDL_PixelFormat format);
+ * @from SDL_surface.h:1119 SDL_Surface * SDL_ConvertSurface(SDL_Surface *surface, SDL_PixelFormat format);
  */
 export function convertSurface(surface: Deno.PointerValue<"SDL_Surface">, format: number): Deno.PointerValue<"SDL_Surface"> {
   return lib.symbols.SDL_ConvertSurface(surface, format) as Deno.PointerValue<"SDL_Surface">;
@@ -1013,14 +1233,15 @@ export function convertSurface(surface: Deno.PointerValue<"SDL_Surface">, format
  * @returns the new SDL_Surface structure that is created or NULL on failure;
  *          call SDL_GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_ConvertSurface
  * @sa SDL_DestroySurface
  *
- * @from SDL_surface.h:952 SDL_Surface * SDL_ConvertSurfaceAndColorspace(SDL_Surface *surface, SDL_PixelFormat format, SDL_Palette *palette, SDL_Colorspace colorspace, SDL_PropertiesID props);
+ * @from SDL_surface.h:1148 SDL_Surface * SDL_ConvertSurfaceAndColorspace(SDL_Surface *surface, SDL_PixelFormat format, SDL_Palette *palette, SDL_Colorspace colorspace, SDL_PropertiesID props);
  */
 export function convertSurfaceAndColorspace(
     surface: Deno.PointerValue<"SDL_Surface">,
@@ -1054,7 +1275,7 @@ export function convertSurfaceAndColorspace(
  *
  * @sa SDL_ConvertPixelsAndColorspace
  *
- * @from SDL_surface.h:976 bool SDL_ConvertPixels(int width, int height, SDL_PixelFormat src_format, const void *src, int src_pitch, SDL_PixelFormat dst_format, void *dst, int dst_pitch);
+ * @from SDL_surface.h:1172 bool SDL_ConvertPixels(int width, int height, SDL_PixelFormat src_format, const void *src, int src_pitch, SDL_PixelFormat dst_format, void *dst, int dst_pitch);
  */
 export function convertPixels(
     width: number,
@@ -1100,7 +1321,7 @@ export function convertPixels(
  *
  * @sa SDL_ConvertPixels
  *
- * @from SDL_surface.h:1009 bool SDL_ConvertPixelsAndColorspace(int width, int height, SDL_PixelFormat src_format, SDL_Colorspace src_colorspace, SDL_PropertiesID src_properties, const void *src, int src_pitch, SDL_PixelFormat dst_format, SDL_Colorspace dst_colorspace, SDL_PropertiesID dst_properties, void *dst, int dst_pitch);
+ * @from SDL_surface.h:1205 bool SDL_ConvertPixelsAndColorspace(int width, int height, SDL_PixelFormat src_format, SDL_Colorspace src_colorspace, SDL_PropertiesID src_properties, const void *src, int src_pitch, SDL_PixelFormat dst_format, SDL_Colorspace dst_colorspace, SDL_PropertiesID dst_properties, void *dst, int dst_pitch);
  */
 export function convertPixelsAndColorspace(
     width: number,
@@ -1143,7 +1364,7 @@ export function convertPixelsAndColorspace(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_surface.h:1035 bool SDL_PremultiplyAlpha(int width, int height, SDL_PixelFormat src_format, const void *src, int src_pitch, SDL_PixelFormat dst_format, void *dst, int dst_pitch, bool linear);
+ * @from SDL_surface.h:1231 bool SDL_PremultiplyAlpha(int width, int height, SDL_PixelFormat src_format, const void *src, int src_pitch, SDL_PixelFormat dst_format, void *dst, int dst_pitch, bool linear);
  */
 export function premultiplyAlpha(
     width: number,
@@ -1170,11 +1391,12 @@ export function premultiplyAlpha(
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_surface.h:1052 bool SDL_PremultiplySurfaceAlpha(SDL_Surface *surface, bool linear);
+ * @from SDL_surface.h:1249 bool SDL_PremultiplySurfaceAlpha(SDL_Surface *surface, bool linear);
  */
 export function premultiplySurfaceAlpha(surface: Deno.PointerValue<"SDL_Surface">, linear: boolean): boolean {
   return lib.symbols.SDL_PremultiplySurfaceAlpha(surface, linear);
@@ -1186,7 +1408,7 @@ export function premultiplySurfaceAlpha(surface: Deno.PointerValue<"SDL_Surface"
  * This function handles all surface formats, and ignores any clip rectangle.
  *
  * If the surface is YUV, the color is assumed to be in the sRGB colorspace,
- * otherwise the color is assumed to be in the colorspace of the suface.
+ * otherwise the color is assumed to be in the colorspace of the surface.
  *
  * @param surface the SDL_Surface to clear.
  * @param r the red component of the pixel, normally in the range 0-1.
@@ -1196,11 +1418,12 @@ export function premultiplySurfaceAlpha(surface: Deno.PointerValue<"SDL_Surface"
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_surface.h:1074 bool SDL_ClearSurface(SDL_Surface *surface, float r, float g, float b, float a);
+ * @from SDL_surface.h:1272 bool SDL_ClearSurface(SDL_Surface *surface, float r, float g, float b, float a);
  */
 export function clearSurface(
     surface: Deno.PointerValue<"SDL_Surface">,
@@ -1231,13 +1454,14 @@ export function clearSurface(
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_FillSurfaceRects
  *
- * @from SDL_surface.h:1101 bool SDL_FillSurfaceRect(SDL_Surface *dst, const SDL_Rect *rect, Uint32 color);
+ * @from SDL_surface.h:1300 bool SDL_FillSurfaceRect(SDL_Surface *dst, const SDL_Rect *rect, Uint32 color);
  */
 export function fillSurfaceRect(dst: Deno.PointerValue<"SDL_Surface">, rect: { x: number; y: number; w: number; h: number; } | null, color: number): boolean {
   if (rect) _p.i32.arr.set([rect.x, rect.y, rect.w, rect.h], 0);
@@ -1263,13 +1487,14 @@ export function fillSurfaceRect(dst: Deno.PointerValue<"SDL_Surface">, rect: { x
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_FillSurfaceRect
  *
- * @from SDL_surface.h:1128 bool SDL_FillSurfaceRects(SDL_Surface *dst, const SDL_Rect *rects, int count, Uint32 color);
+ * @from SDL_surface.h:1328 bool SDL_FillSurfaceRects(SDL_Surface *dst, const SDL_Rect *rects, int count, Uint32 color);
  */
 export function fillSurfaceRects(
     dst: Deno.PointerValue<"SDL_Surface">,
@@ -1352,7 +1577,7 @@ export function fillSurfaceRects(
  *
  * @sa SDL_BlitSurfaceScaled
  *
- * @from SDL_surface.h:1201 bool SDL_BlitSurface(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect);
+ * @from SDL_surface.h:1401 bool SDL_BlitSurface(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect);
  */
 export function blitSurface(
     src: Deno.PointerValue<"SDL_Surface">,
@@ -1387,7 +1612,7 @@ export function blitSurface(
  *
  * @sa SDL_BlitSurface
  *
- * @from SDL_surface.h:1225 bool SDL_BlitSurfaceUnchecked(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect);
+ * @from SDL_surface.h:1425 bool SDL_BlitSurfaceUnchecked(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect);
  */
 export function blitSurfaceUnchecked(
     src: Deno.PointerValue<"SDL_Surface">,
@@ -1422,7 +1647,7 @@ export function blitSurfaceUnchecked(
  *
  * @sa SDL_BlitSurface
  *
- * @from SDL_surface.h:1249 bool SDL_BlitSurfaceScaled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect, SDL_ScaleMode scaleMode);
+ * @from SDL_surface.h:1449 bool SDL_BlitSurfaceScaled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect, SDL_ScaleMode scaleMode);
  */
 export function blitSurfaceScaled(
     src: Deno.PointerValue<"SDL_Surface">,
@@ -1459,7 +1684,7 @@ export function blitSurfaceScaled(
  *
  * @sa SDL_BlitSurfaceScaled
  *
- * @from SDL_surface.h:1274 bool SDL_BlitSurfaceUncheckedScaled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect, SDL_ScaleMode scaleMode);
+ * @from SDL_surface.h:1474 bool SDL_BlitSurfaceUncheckedScaled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect, SDL_ScaleMode scaleMode);
  */
 export function blitSurfaceUncheckedScaled(
     src: Deno.PointerValue<"SDL_Surface">,
@@ -1494,7 +1719,7 @@ export function blitSurfaceUncheckedScaled(
  *
  * @sa SDL_BlitSurfaceScaled
  *
- * @from SDL_surface.h:1297 bool SDL_StretchSurface(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect, SDL_ScaleMode scaleMode);
+ * @from SDL_surface.h:1497 bool SDL_StretchSurface(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect, SDL_ScaleMode scaleMode);
  */
 export function stretchSurface(
     src: Deno.PointerValue<"SDL_Surface">,
@@ -1531,7 +1756,7 @@ export function stretchSurface(
  *
  * @sa SDL_BlitSurface
  *
- * @from SDL_surface.h:1322 bool SDL_BlitSurfaceTiled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect);
+ * @from SDL_surface.h:1522 bool SDL_BlitSurfaceTiled(SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect);
  */
 export function blitSurfaceTiled(
     src: Deno.PointerValue<"SDL_Surface">,
@@ -1571,7 +1796,7 @@ export function blitSurfaceTiled(
  *
  * @sa SDL_BlitSurface
  *
- * @from SDL_surface.h:1351 bool SDL_BlitSurfaceTiledWithScale(SDL_Surface *src, const SDL_Rect *srcrect, float scale, SDL_ScaleMode scaleMode, SDL_Surface *dst, const SDL_Rect *dstrect);
+ * @from SDL_surface.h:1551 bool SDL_BlitSurfaceTiledWithScale(SDL_Surface *src, const SDL_Rect *srcrect, float scale, SDL_ScaleMode scaleMode, SDL_Surface *dst, const SDL_Rect *dstrect);
  */
 export function blitSurfaceTiledWithScale(
     src: Deno.PointerValue<"SDL_Surface">,
@@ -1620,7 +1845,7 @@ export function blitSurfaceTiledWithScale(
  *
  * @sa SDL_BlitSurface
  *
- * @from SDL_surface.h:1387 bool SDL_BlitSurface9Grid(SDL_Surface *src, const SDL_Rect *srcrect, int left_width, int right_width, int top_height, int bottom_height, float scale, SDL_ScaleMode scaleMode, SDL_Surface *dst, const SDL_Rect *dstrect);
+ * @from SDL_surface.h:1587 bool SDL_BlitSurface9Grid(SDL_Surface *src, const SDL_Rect *srcrect, int left_width, int right_width, int top_height, int bottom_height, float scale, SDL_ScaleMode scaleMode, SDL_Surface *dst, const SDL_Rect *dstrect);
  */
 export function blitSurface9Grid(
     src: Deno.PointerValue<"SDL_Surface">,
@@ -1663,13 +1888,14 @@ export function blitSurface9Grid(
  * @param b the blue component of the pixel in the range 0-255.
  * @returns a pixel value.
  *
- * @threadsafety It is safe to call this function from any thread.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_MapSurfaceRGBA
  *
- * @from SDL_surface.h:1419 Uint32 SDL_MapSurfaceRGB(SDL_Surface *surface, Uint8 r, Uint8 g, Uint8 b);
+ * @from SDL_surface.h:1620 Uint32 SDL_MapSurfaceRGB(SDL_Surface *surface, Uint8 r, Uint8 g, Uint8 b);
  */
 export function mapSurfaceRgb(
     surface: Deno.PointerValue<"SDL_Surface">,
@@ -1705,13 +1931,14 @@ export function mapSurfaceRgb(
  * @param a the alpha component of the pixel in the range 0-255.
  * @returns a pixel value.
  *
- * @threadsafety It is safe to call this function from any thread.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_MapSurfaceRGB
  *
- * @from SDL_surface.h:1452 Uint32 SDL_MapSurfaceRGBA(SDL_Surface *surface, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+ * @from SDL_surface.h:1654 Uint32 SDL_MapSurfaceRGBA(SDL_Surface *surface, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
  */
 export function mapSurfaceRgba(
     surface: Deno.PointerValue<"SDL_Surface">,
@@ -1746,11 +1973,12 @@ export function mapSurfaceRgba(
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_surface.h:1481 bool SDL_ReadSurfacePixel(SDL_Surface *surface, int x, int y, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);
+ * @from SDL_surface.h:1684 bool SDL_ReadSurfacePixel(SDL_Surface *surface, int x, int y, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a);
  */
 export function readSurfacePixel(surface: Deno.PointerValue<"SDL_Surface">, x: number, y: number): { r: number; g: number; b: number; a: number } {
   if(!lib.symbols.SDL_ReadSurfacePixel(surface, x, y, _p.u8.p0, _p.u8.p1, _p.u8.p2, _p.u8.p3))
@@ -1778,11 +2006,12 @@ export function readSurfacePixel(surface: Deno.PointerValue<"SDL_Surface">, x: n
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_surface.h:1507 bool SDL_ReadSurfacePixelFloat(SDL_Surface *surface, int x, int y, float *r, float *g, float *b, float *a);
+ * @from SDL_surface.h:1711 bool SDL_ReadSurfacePixelFloat(SDL_Surface *surface, int x, int y, float *r, float *g, float *b, float *a);
  */
 export function readSurfacePixelFloat(surface: Deno.PointerValue<"SDL_Surface">, x: number, y: number): { r: number; g: number; b: number; a: number } {
   if(!lib.symbols.SDL_ReadSurfacePixelFloat(surface, x, y, _p.f32.p0, _p.f32.p1, _p.f32.p2, _p.f32.p3))
@@ -1809,11 +2038,12 @@ export function readSurfacePixelFloat(surface: Deno.PointerValue<"SDL_Surface">,
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_surface.h:1532 bool SDL_WriteSurfacePixel(SDL_Surface *surface, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+ * @from SDL_surface.h:1737 bool SDL_WriteSurfacePixel(SDL_Surface *surface, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
  */
 export function writeSurfacePixel(
     surface: Deno.PointerValue<"SDL_Surface">,
@@ -1843,11 +2073,12 @@ export function writeSurfacePixel(
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_surface.h:1554 bool SDL_WriteSurfacePixelFloat(SDL_Surface *surface, int x, int y, float r, float g, float b, float a);
+ * @from SDL_surface.h:1760 bool SDL_WriteSurfacePixelFloat(SDL_Surface *surface, int x, int y, float r, float g, float b, float a);
  */
 export function writeSurfacePixelFloat(
     surface: Deno.PointerValue<"SDL_Surface">,

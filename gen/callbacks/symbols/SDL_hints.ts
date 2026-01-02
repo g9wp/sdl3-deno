@@ -56,7 +56,7 @@ export const symbols = {
  *
  * @sa SDL_AddHintCallback
  *
- * @from SDL_hints.h:4438 typedef void(*SDL_HintCallback)(void *userdata, const char *name, const char *oldValue, const char *newValue);
+ * @from SDL_hints.h:4783 typedef void(*SDL_HintCallback)(void *userdata, const char *name, const char *oldValue, const char *newValue);
  */
 SDL_HintCallback: {
       parameters: ["pointer", "pointer", "pointer", "pointer"],
@@ -85,7 +85,7 @@ SDL_HintCallback: {
  *
  * @sa SDL_AddHintCallback
  *
- * @from SDL_hints.h:4438 typedef void(*SDL_HintCallback)(void *userdata, const char *name, const char *oldValue, const char *newValue);
+ * @from SDL_hints.h:4783 typedef void(*SDL_HintCallback)(void *userdata, const char *name, const char *oldValue, const char *newValue);
  */
 export function HintCallback(cb: (
     userdata: Deno.PointerValue, 

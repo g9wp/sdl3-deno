@@ -55,7 +55,7 @@ import * as _b from "../_structs/SDL_filesystem.ts";
  * @sa SDL_GetPathInfo
  * @sa SDL_GetStoragePathInfo
  *
- * @from SDL_filesystem.h:252
+ * @from SDL_filesystem.h:267
  */
 export interface PathInfo {
   type: number; /**< SDL_PathType : the path type */

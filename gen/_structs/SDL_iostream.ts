@@ -69,7 +69,7 @@ export const SDL_IOStreamInterface = new _.Struct({
   seek: _.u64, /*     Sint64 (SDLCALL *seek)(void *userdata, Sint64 offset, SDL_IOWhence whence); */
     /**
      *  Read up to `size` bytes from the data stream to the area pointed
-     *  at by `ptr`.
+     *  at by `ptr`. `size` will always be > 0.
      *
      *  On an incomplete read, you should set `*status` to a value from the
      *  SDL_IOStatus enum. You do not have to explicitly set this on
@@ -80,7 +80,7 @@ export const SDL_IOStreamInterface = new _.Struct({
   read: _.u64, /*     size_t (SDLCALL *read)(void *userdata, void *ptr, size_t size, SDL_IOStatus *status); */
     /**
      *  Write exactly `size` bytes from the area pointed at by `ptr`
-     *  to data stream.
+     *  to data stream. `size` will always be > 0.
      *
      *  On an incomplete write, you should set `*status` to a value from the
      *  SDL_IOStatus enum. You do not have to explicitly set this on

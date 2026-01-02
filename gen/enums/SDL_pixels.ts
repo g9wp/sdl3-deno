@@ -600,7 +600,7 @@ export enum SDL_Colorspace {
                                  SDL_MATRIX_COEFFICIENTS_BT2020_NCL,
                                  SDL_CHROMA_LOCATION_LEFT), */
   RGB_DEFAULT = SRGB, /**< The default colorspace for RGB surfaces if no colorspace is specified */
-  YUV_DEFAULT = JPEG  , /**< The default colorspace for YUV surfaces if no colorspace is specified */
+  YUV_DEFAULT = BT601_LIMITED  , /**< The default colorspace for YUV surfaces if no colorspace is specified */
 }
 
 

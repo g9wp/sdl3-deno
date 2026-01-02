@@ -29,17 +29,35 @@
 */
 
 /**
- * @from SDL_version:46
+ * The current major version of SDL headers.
+ *
+ * If this were SDL version 3.2.1, this value would be 3.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_version.h:46
  */
 export const SDL_MAJOR_VERSION = 3;
 
 /**
- * @from SDL_version:55
+ * The current minor version of the SDL headers.
+ *
+ * If this were SDL version 3.2.1, this value would be 2.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_version.h:55
  */
-export const SDL_MINOR_VERSION = 2;
+export const SDL_MINOR_VERSION = 4;
 
 /**
- * @from SDL_version:64
+ * The current micro (or patchlevel) version of the SDL headers.
+ *
+ * If this were SDL version 3.2.1, this value would be 1.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_version.h:64
  */
-export const SDL_MICRO_VERSION = 22;
+export const SDL_MICRO_VERSION = 0;
 

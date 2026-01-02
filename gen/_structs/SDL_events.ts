@@ -9,7 +9,7 @@
  * coming and going, the system changing in some way, etc.
  *
  * An app generally takes a moment, perhaps at the start of a new frame, to
- * examine any events that have occured since the last time and process or
+ * examine any events that have occurred since the last time and process or
  * ignore them. This is generally done by calling SDL_PollEvent() in a loop
  * until it returns false (or, if using the main callbacks, events are
  * provided one at a time in calls to SDL_AppEvent() before the next call to
@@ -59,7 +59,7 @@ import * as _ from "@denosaurs/byte-type";
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:286
+ * @from SDL_events.h:295
  */
 export const SDL_CommonEvent = new _.Struct({
   type: _.u32, /**< Uint32 : Event type, shared with all events, Uint32 to cover user events which are not in the SDL_EventType enumeration */
@@ -74,10 +74,10 @@ export const SDL_CommonEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:298
+ * @from SDL_events.h:307
  */
 export const SDL_DisplayEvent = new _.Struct({
-  type: _.u32, /**< SDL_EventType : SDL_DISPLAYEVENT_* */
+  type: _.u32, /**< SDL_EventType : SDL_EVENT_DISPLAY_* */
   reserved: _.u32, /* Uint32 */
   timestamp: _.u64, /**< Uint64 : In nanoseconds, populated using SDL_GetTicksNS() */
   displayID: _.u32, /**< SDL_DisplayID : The associated display */
@@ -92,7 +92,7 @@ export const SDL_DisplayEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:313
+ * @from SDL_events.h:322
  */
 export const SDL_WindowEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_WINDOW_* */
@@ -110,7 +110,7 @@ export const SDL_WindowEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:328
+ * @from SDL_events.h:337
  */
 export const SDL_KeyboardDeviceEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_KEYBOARD_ADDED or SDL_EVENT_KEYBOARD_REMOVED */
@@ -135,7 +135,7 @@ export const SDL_KeyboardDeviceEvent = new _.Struct({
  * @sa SDL_GetKeyFromScancode
  * @sa SDL_HINT_KEYCODE_OPTIONS
  *
- * @from SDL_events.h:350
+ * @from SDL_events.h:359
  */
 export const SDL_KeyboardEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_KEY_DOWN or SDL_EVENT_KEY_UP */
@@ -162,7 +162,7 @@ export const SDL_KeyboardEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:374
+ * @from SDL_events.h:383
  */
 export const SDL_TextEditingEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_TEXT_EDITING */
@@ -181,7 +181,7 @@ export const SDL_TextEditingEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:390
+ * @from SDL_events.h:399
  */
 export const SDL_TextEditingCandidatesEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_TEXT_EDITING_CANDIDATES */
@@ -210,7 +210,7 @@ export const SDL_TextEditingCandidatesEvent = new _.Struct({
  * @sa SDL_StartTextInput
  * @sa SDL_StopTextInput
  *
- * @from SDL_events.h:416
+ * @from SDL_events.h:425
  */
 export const SDL_TextInputEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_TEXT_INPUT */
@@ -227,7 +227,7 @@ export const SDL_TextInputEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:430
+ * @from SDL_events.h:439
  */
 export const SDL_MouseDeviceEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_MOUSE_ADDED or SDL_EVENT_MOUSE_REMOVED */
@@ -243,7 +243,7 @@ export const SDL_MouseDeviceEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:443
+ * @from SDL_events.h:452
  */
 export const SDL_MouseMotionEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_MOUSE_MOTION */
@@ -265,7 +265,7 @@ export const SDL_MouseMotionEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:462
+ * @from SDL_events.h:471
  */
 export const SDL_MouseButtonEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_MOUSE_BUTTON_DOWN or SDL_EVENT_MOUSE_BUTTON_UP */
@@ -288,7 +288,7 @@ export const SDL_MouseButtonEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:482
+ * @from SDL_events.h:491
  */
 export const SDL_MouseWheelEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_MOUSE_WHEEL */
@@ -312,7 +312,7 @@ export const SDL_MouseWheelEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:503
+ * @from SDL_events.h:512
  */
 export const SDL_JoyAxisEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_JOYSTICK_AXIS_MOTION */
@@ -334,7 +334,7 @@ export const SDL_JoyAxisEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:522
+ * @from SDL_events.h:531
  */
 export const SDL_JoyBallEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_JOYSTICK_BALL_MOTION */
@@ -356,7 +356,7 @@ export const SDL_JoyBallEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:541
+ * @from SDL_events.h:550
  */
 export const SDL_JoyHatEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_JOYSTICK_HAT_MOTION */
@@ -382,7 +382,7 @@ export const SDL_JoyHatEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:564
+ * @from SDL_events.h:573
  */
 export const SDL_JoyButtonEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_JOYSTICK_BUTTON_DOWN or SDL_EVENT_JOYSTICK_BUTTON_UP */
@@ -407,7 +407,7 @@ export const SDL_JoyButtonEvent = new _.Struct({
  *
  * @sa SDL_GamepadDeviceEvent
  *
- * @from SDL_events.h:586
+ * @from SDL_events.h:595
  */
 export const SDL_JoyDeviceEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_JOYSTICK_ADDED or SDL_EVENT_JOYSTICK_REMOVED or SDL_EVENT_JOYSTICK_UPDATE_COMPLETE */
@@ -423,7 +423,7 @@ export const SDL_JoyDeviceEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:599
+ * @from SDL_events.h:608
  */
 export const SDL_JoyBatteryEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_JOYSTICK_BATTERY_UPDATED */
@@ -441,7 +441,7 @@ export const SDL_JoyBatteryEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:614
+ * @from SDL_events.h:623
  */
 export const SDL_GamepadAxisEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_GAMEPAD_AXIS_MOTION */
@@ -463,7 +463,7 @@ export const SDL_GamepadAxisEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:634
+ * @from SDL_events.h:643
  */
 export const SDL_GamepadButtonEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_GAMEPAD_BUTTON_DOWN or SDL_EVENT_GAMEPAD_BUTTON_UP */
@@ -492,7 +492,7 @@ export const SDL_GamepadButtonEvent = new _.Struct({
  *
  * @sa SDL_JoyDeviceEvent
  *
- * @from SDL_events.h:661
+ * @from SDL_events.h:670
  */
 export const SDL_GamepadDeviceEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_GAMEPAD_ADDED, SDL_EVENT_GAMEPAD_REMOVED, or SDL_EVENT_GAMEPAD_REMAPPED, SDL_EVENT_GAMEPAD_UPDATE_COMPLETE or SDL_EVENT_GAMEPAD_STEAM_HANDLE_UPDATED */
@@ -508,7 +508,7 @@ export const SDL_GamepadDeviceEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:674
+ * @from SDL_events.h:683
  */
 export const SDL_GamepadTouchpadEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_GAMEPAD_TOUCHPAD_DOWN or SDL_EVENT_GAMEPAD_TOUCHPAD_MOTION or SDL_EVENT_GAMEPAD_TOUCHPAD_UP */
@@ -529,7 +529,7 @@ export const SDL_GamepadTouchpadEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:692
+ * @from SDL_events.h:701
  */
 export const SDL_GamepadSensorEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_GAMEPAD_SENSOR_UPDATE */
@@ -546,9 +546,13 @@ export const SDL_GamepadSensorEvent = new _.Struct({
 /**
  * Audio device event structure (event.adevice.*)
  *
+ * Note that SDL will send a SDL_EVENT_AUDIO_DEVICE_ADDED event for every
+ * device it discovers during initialization. After that, this event will only
+ * arrive when a device is hotplugged during the program's run.
+ *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:708
+ * @from SDL_events.h:721
  */
 export const SDL_AudioDeviceEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_AUDIO_DEVICE_ADDED, or SDL_EVENT_AUDIO_DEVICE_REMOVED, or SDL_EVENT_AUDIO_DEVICE_FORMAT_CHANGED */
@@ -568,7 +572,7 @@ export const SDL_AudioDeviceEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:725
+ * @from SDL_events.h:738
  */
 export const SDL_CameraDeviceEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_CAMERA_DEVICE_ADDED, SDL_EVENT_CAMERA_DEVICE_REMOVED, SDL_EVENT_CAMERA_DEVICE_APPROVED, SDL_EVENT_CAMERA_DEVICE_DENIED */
@@ -584,7 +588,7 @@ export const SDL_CameraDeviceEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:739
+ * @from SDL_events.h:752
  */
 export const SDL_RenderEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_RENDER_TARGETS_RESET, SDL_EVENT_RENDER_DEVICE_RESET, SDL_EVENT_RENDER_DEVICE_LOST */
@@ -614,7 +618,7 @@ export const SDL_RenderEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:767
+ * @from SDL_events.h:780
  */
 export const SDL_TouchFingerEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_FINGER_DOWN, SDL_EVENT_FINGER_UP, SDL_EVENT_FINGER_MOTION, or SDL_EVENT_FINGER_CANCELED */
@@ -633,7 +637,22 @@ export const SDL_TouchFingerEvent = new _.Struct({
 
 
 /**
- * Pressure-sensitive pen proximity event structure (event.pmotion.*)
+ * Pinch event structure (event.pinch.*)
+ *
+ * @from SDL_events.h:798
+ */
+export const SDL_PinchFingerEvent = new _.Struct({
+  type: _.u32, /**< SDL_EventType : ::SDL_EVENT_PINCH_BEGIN or ::SDL_EVENT_PINCH_UPDATE or ::SDL_EVENT_PINCH_END */
+  reserved: _.u32, /* Uint32 */
+  timestamp: _.u64, /**< Uint64 : In nanoseconds, populated using SDL_GetTicksNS() */
+  scale: _.f32, /**< float : The scale change since the last SDL_EVENT_PINCH_UPDATE. Scale < 1 is "zoom out". Scale > 1 is "zoom in". */
+  windowID: _.u32, /**< SDL_WindowID : The window underneath the finger, if any */
+});
+
+
+
+/**
+ * Pressure-sensitive pen proximity event structure (event.pproximity.*)
  *
  * When a pen becomes visible to the system (it is close enough to a tablet,
  * etc), SDL will send an SDL_EVENT_PEN_PROXIMITY_IN event with the new pen's
@@ -645,9 +664,12 @@ export const SDL_TouchFingerEvent = new _.Struct({
  * is there." The pen touching and lifting off from the tablet while not
  * leaving the area are handled by SDL_EVENT_PEN_DOWN and SDL_EVENT_PEN_UP.
  *
+ * Not all platforms have a window associated with the pen during proximity
+ * events. Some wait until motion/button/etc events to offer this info.
+ *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:797
+ * @from SDL_events.h:825
  */
 export const SDL_PenProximityEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_PEN_PROXIMITY_IN or SDL_EVENT_PEN_PROXIMITY_OUT */
@@ -670,7 +692,7 @@ export const SDL_PenProximityEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:817
+ * @from SDL_events.h:845
  */
 export const SDL_PenMotionEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_PEN_MOTION */
@@ -693,7 +715,7 @@ export const SDL_PenMotionEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:837
+ * @from SDL_events.h:865
  */
 export const SDL_PenTouchEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_PEN_DOWN or SDL_EVENT_PEN_UP */
@@ -718,7 +740,7 @@ export const SDL_PenTouchEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:859
+ * @from SDL_events.h:887
  */
 export const SDL_PenButtonEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_PEN_BUTTON_DOWN or SDL_EVENT_PEN_BUTTON_UP */
@@ -743,7 +765,7 @@ export const SDL_PenButtonEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:881
+ * @from SDL_events.h:909
  */
 export const SDL_PenAxisEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_PEN_AXIS */
@@ -766,7 +788,7 @@ export const SDL_PenAxisEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:901
+ * @from SDL_events.h:929
  */
 export const SDL_DropEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_DROP_BEGIN or SDL_EVENT_DROP_FILE or SDL_EVENT_DROP_TEXT or SDL_EVENT_DROP_COMPLETE or SDL_EVENT_DROP_POSITION */
@@ -787,7 +809,7 @@ export const SDL_DropEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:919
+ * @from SDL_events.h:947
  */
 export const SDL_ClipboardEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_CLIPBOARD_UPDATE */
@@ -805,7 +827,7 @@ export const SDL_ClipboardEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:934
+ * @from SDL_events.h:962
  */
 export const SDL_SensorEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_SENSOR_UPDATE */
@@ -823,7 +845,7 @@ export const SDL_SensorEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:949
+ * @from SDL_events.h:977
  */
 export const SDL_QuitEvent = new _.Struct({
   type: _.u32, /**< SDL_EventType : SDL_EVENT_QUIT */
@@ -844,10 +866,10 @@ export const SDL_QuitEvent = new _.Struct({
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_events.h:967
+ * @from SDL_events.h:995
  */
 export const SDL_UserEvent = new _.Struct({
-  type: _.u32, /**< Uint32 : SDL_EVENT_USER through SDL_EVENT_LAST-1, Uint32 because these are not in the SDL_EventType enumeration */
+  type: _.u32, /**< Uint32 : SDL_EVENT_USER through SDL_EVENT_LAST, Uint32 because these are not in the SDL_EventType enumeration */
   reserved: _.u32, /* Uint32 */
   timestamp: _.u64, /**< Uint64 : In nanoseconds, populated using SDL_GetTicksNS() */
   windowID: _.u32, /**< SDL_WindowID : The associated window if any */

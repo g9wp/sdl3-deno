@@ -159,6 +159,9 @@ export function resetLogPriorities(): void {
  * SDL_LOG_PRIORITY_WARN and higher have a prefix showing their priority, e.g.
  * "WARNING: ".
  *
+ * This function makes a copy of its string argument, **prefix**, so it is not
+ * necessary to keep the value of **prefix** alive after the call returns.
+ *
  * @param priority the SDL_LogPriority to modify.
  * @param prefix the prefix to use for that log priority, or NULL to use no
  *               prefix.
@@ -172,7 +175,7 @@ export function resetLogPriorities(): void {
  * @sa SDL_SetLogPriorities
  * @sa SDL_SetLogPriority
  *
- * @from SDL_log.h:221 bool SDL_SetLogPriorityPrefix(SDL_LogPriority priority, const char *prefix);
+ * @from SDL_log.h:224 bool SDL_SetLogPriorityPrefix(SDL_LogPriority priority, const char *prefix);
  */
 export function setLogPriorityPrefix(priority: number, prefix: string): boolean {
   return lib.symbols.SDL_SetLogPriorityPrefix(priority, _p.toCstr(prefix));
@@ -190,7 +193,7 @@ export function setLogPriorityPrefix(priority: number, prefix: string): boolean 
  * @sa SDL_SetLogOutputFunction
  * @sa SDL_GetLogOutputFunction
  *
- * @from SDL_log.h:496 SDL_LogOutputFunction SDL_GetDefaultLogOutputFunction(void);
+ * @from SDL_log.h:498 SDL_LogOutputFunction SDL_GetDefaultLogOutputFunction(void);
  */
 export function getDefaultLogOutputFunction(): Deno.PointerValue {
   return lib.symbols.SDL_GetDefaultLogOutputFunction();
@@ -211,7 +214,7 @@ export function getDefaultLogOutputFunction(): Deno.PointerValue {
  * @sa SDL_GetDefaultLogOutputFunction
  * @sa SDL_SetLogOutputFunction
  *
- * @from SDL_log.h:513 void SDL_GetLogOutputFunction(SDL_LogOutputFunction *callback, void **userdata);
+ * @from SDL_log.h:515 void SDL_GetLogOutputFunction(SDL_LogOutputFunction *callback, void **userdata);
  */
 export function getLogOutputFunction(userdata: Deno.PointerValue): Deno.PointerValue {
   lib.symbols.SDL_GetLogOutputFunction(_p.ptr.p0, userdata);
@@ -231,7 +234,7 @@ export function getLogOutputFunction(userdata: Deno.PointerValue): Deno.PointerV
  * @sa SDL_GetDefaultLogOutputFunction
  * @sa SDL_GetLogOutputFunction
  *
- * @from SDL_log.h:528 void SDL_SetLogOutputFunction(SDL_LogOutputFunction callback, void *userdata);
+ * @from SDL_log.h:530 void SDL_SetLogOutputFunction(SDL_LogOutputFunction callback, void *userdata);
  */
 export function setLogOutputFunction(callback: Deno.PointerValue, userdata: Deno.PointerValue): void {
   return lib.symbols.SDL_SetLogOutputFunction(callback, userdata);

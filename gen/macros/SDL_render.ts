@@ -18,9 +18,9 @@
  * may also be stretched with linear interpolation.
  *
  * This API is designed to accelerate simple 2D operations. You may want more
- * functionality such as polygons and particle effects and in that case you
- * should use SDL's OpenGL/Direct3D support, the SDL3 GPU API, or one of the
- * many good 3D engines.
+ * functionality such as 3D polygons and particle effects, and in that case
+ * you should use SDL's OpenGL/Direct3D support, the SDL3 GPU API, or one of
+ * the many good 3D engines.
  *
  * These functions must be called from the main thread. See this bug for
  * details: https://github.com/libsdl-org/SDL/issues/986
@@ -50,12 +50,33 @@
 */
 
 /**
- * @from SDL_render:73
+ * The name of the software renderer.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @from SDL_render.h:74
  */
 export const SDL_SOFTWARE_RENDERER = "software";
 
 /**
- * @from SDL_render:2567
+ * The name of the GPU renderer.
+ *
+ * @since This macro is available since SDL 3.4.0.
+ *
+ * @from SDL_render.h:81
+ */
+export const SDL_GPU_RENDERER = "gpu";
+
+/**
+ * The size, in pixels, of a single SDL_RenderDebugText() character.
+ *
+ * The font is monospaced and square, so this applies to all characters.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_RenderDebugText
+ *
+ * @from SDL_render.h:2806
  */
 export const SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE = 8;
 

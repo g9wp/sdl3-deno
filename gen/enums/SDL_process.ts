@@ -43,11 +43,12 @@
 */
 
 /**
- * @from SDL_process:219 SDL_PROP_PROCESS_CREATE_
+ * @from SDL_process:228 SDL_PROP_PROCESS_CREATE_
  */
 export enum PROP_PROCESS_CREATE {
   ARGS_POINTER = "SDL.process.create.args", 
   ENVIRONMENT_POINTER = "SDL.process.create.environment", 
+  WORKING_DIRECTORY_STRING = "SDL.process.create.working_directory", 
   STDIN_NUMBER = "SDL.process.create.stdin_option", 
   STDIN_POINTER = "SDL.process.create.stdin_source", 
   STDOUT_NUMBER = "SDL.process.create.stdout_option", 
@@ -56,12 +57,13 @@ export enum PROP_PROCESS_CREATE {
   STDERR_POINTER = "SDL.process.create.stderr_source", 
   STDERR_TO_STDOUT_BOOLEAN = "SDL.process.create.stderr_to_stdout", 
   BACKGROUND_BOOLEAN = "SDL.process.create.background", 
+  CMDLINE_STRING = "SDL.process.create.cmdline", 
 }
 
 
 
 /**
- * @from SDL_process:261 SDL_PROP_PROCESS_
+ * @from SDL_process:272 SDL_PROP_PROCESS_
  */
 export enum PROP_PROCESS {
   PID_NUMBER = "SDL.process.pid", 

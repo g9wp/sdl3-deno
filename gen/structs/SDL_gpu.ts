@@ -183,14 +183,20 @@
  * underlying graphics API. While it's possible that we have done something
  * inefficiently, it's very unlikely especially if you are relatively
  * inexperienced with GPU rendering. Please see the performance tips above and
- * make sure you are following them. Additionally, tools like RenderDoc can be
- * very helpful for diagnosing incorrect behavior and performance issues.
+ * make sure you are following them. Additionally, tools like
+ * [RenderDoc](https://renderdoc.org/)
+ * can be very helpful for diagnosing incorrect behavior and performance
+ * issues.
  *
  * ## System Requirements
  *
- * **Vulkan:** Supported on Windows, Linux, Nintendo Switch, and certain
- * Android devices. Requires Vulkan 1.0 with the following extensions and
- * device features:
+ * ### Vulkan
+ *
+ * SDL driver name: "vulkan" (for use in SDL_CreateGPUDevice() and
+ * SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING)
+ *
+ * Supported on Windows, Linux, Nintendo Switch, and certain Android devices.
+ * Requires Vulkan 1.0 with the following extensions and device features:
  *
  * - `VK_KHR_swapchain`
  * - `VK_KHR_maintenance1`
@@ -199,19 +205,63 @@
  * - `depthClamp`
  * - `shaderClipDistance`
  * - `drawIndirectFirstInstance`
+ * - `sampleRateShading`
  *
- * **D3D12:** Supported on Windows 10 or newer, Xbox One (GDK), and Xbox
- * Series X|S (GDK). Requires a GPU that supports DirectX 12 Feature Level 11_0 and
+ * You can remove some of these requirements to increase compatibility with
+ * Android devices by using these properties when creating the GPU device with
+ * SDL_CreateGPUDeviceWithProperties():
+ *
+ * - SDL_PROP_GPU_DEVICE_CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN
+ * - SDL_PROP_GPU_DEVICE_CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN
+ * - SDL_PROP_GPU_DEVICE_CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN
+ * - SDL_PROP_GPU_DEVICE_CREATE_FEATURE_ANISOTROPY_BOOLEAN
+ *
+ * ### D3D12
+ *
+ * SDL driver name: "direct3d12"
+ *
+ * Supported on Windows 10 or newer, Xbox One (GDK), and Xbox Series X|S
+ * (GDK). Requires a GPU that supports DirectX 12 Feature Level 11_0 and
  * Resource Binding Tier 2 or above.
  *
- * **Metal:** Supported on macOS 10.14+ and iOS/tvOS 13.0+. Hardware
- * requirements vary by operating system:
+ * You can remove the Tier 2 resource binding requirement to support Intel
+ * Haswell and Broadwell GPUs by using this property when creating the GPU
+ * device with SDL_CreateGPUDeviceWithProperties():
+ *
+ * - SDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN
+ *
+ * ### Metal
+ *
+ * SDL driver name: "metal"
+ *
+ * Supported on macOS 10.14+ and iOS/tvOS 13.0+. Hardware requirements vary by
+ * operating system:
  *
  * - macOS requires an Apple Silicon or
  *   [Intel Mac2 family](https://developer.apple.com/documentation/metal/mtlfeatureset/mtlfeatureset_macos_gpufamily2_v1?language=objc)
  *   GPU
  * - iOS/tvOS requires an A9 GPU or newer
  * - iOS Simulator and tvOS Simulator are unsupported
+ *
+ * ## Coordinate System
+ *
+ * The GPU API uses a left-handed coordinate system, following the convention
+ * of D3D12 and Metal. Specifically:
+ *
+ * - **Normalized Device Coordinates:** The lower-left corner has an x,y
+ *   coordinate of `(-1.0, -1.0)`. The upper-right corner is `(1.0, 1.0)`. Z
+ *   values range from `[0.0, 1.0]` where 0 is the near plane.
+ * - **Viewport Coordinates:** The top-left corner has an x,y coordinate of
+ *   `(0, 0)` and extends to the bottom-right corner at `(viewportWidth,
+ *   viewportHeight)`. +Y is down.
+ * - **Texture Coordinates:** The top-left corner has an x,y coordinate of
+ *   `(0, 0)` and extends to the bottom-right corner at `(1.0, 1.0)`. +Y is
+ *   down.
+ *
+ * If the backend driver differs from this convention (e.g. Vulkan, which has
+ * an NDC that assumes +Y is down), SDL will automatically convert the
+ * coordinate system behind the scenes, so you don't need to perform any
+ * coordinate flipping logic in your shaders.
  *
  * ## Uniform Data
  *
@@ -279,6 +329,39 @@
  * section of data that has already been referenced will produce unexpected
  * results.
  *
+ * ## Debugging
+ *
+ * At some point of your GPU journey, you will probably encounter issues that
+ * are not traceable with regular debugger - for example, your code compiles
+ * but you get an empty screen, or your shader fails in runtime.
+ *
+ * For debugging such cases, there are tools that allow visually inspecting
+ * the whole GPU frame, every drawcall, every bound resource, memory buffers,
+ * etc. They are the following, per platform:
+ *
+ * * For Windows/Linux, use
+ *   [RenderDoc](https://renderdoc.org/)
+ * * For MacOS (Metal), use Xcode built-in debugger (Open XCode, go to Debug >
+ *   Debug Executable..., select your application, set "GPU Frame Capture" to
+ *   "Metal" in scheme "Options" window, run your app, and click the small
+ *   Metal icon on the bottom to capture a frame)
+ *
+ * Aside from that, you may want to enable additional debug layers to receive
+ * more detailed error messages, based on your GPU backend:
+ *
+ * * For D3D12, the debug layer is an optional feature that can be installed
+ *   via "Windows Settings -> System -> Optional features" and adding the
+ *   "Graphics Tools" optional feature.
+ * * For Vulkan, you will need to install Vulkan SDK on Windows, and on Linux,
+ *   you usually have some sort of `vulkan-validation-layers` system package
+ *   that should be installed.
+ * * For Metal, it should be enough just to run the application from XCode to
+ *   receive detailed errors or warnings in the output.
+ *
+ * Don't hesitate to use tools as RenderDoc when encountering runtime issues
+ * or unexpected output on screen, quick GPU frame inspection can usually help
+ * you fix the majority of such problems.
+ *
  * @module
  */
 
@@ -315,7 +398,7 @@ import {FColor} from "./SDL_pixels.ts";
  *
  * @sa SDL_SetGPUViewport
  *
- * @from SDL_gpu.h:1298
+ * @from SDL_gpu.h:1381
  */
 export interface GPUViewport {
   x: number; /**< float : The left offset of the viewport. */
@@ -354,12 +437,23 @@ export function write_GPUViewport(t: GPUViewport, dt: DataView) {
  * A structure specifying parameters related to transferring data to or from a
  * texture.
  *
+ * If either of `pixels_per_row` or `rows_per_layer` is zero, then width and
+ * height of passed SDL_GPUTextureRegion to SDL_UploadToGPUTexture or
+ * SDL_DownloadFromGPUTexture are used as default values respectively and data
+ * is considered to be tightly packed.
+ *
+ * **WARNING**: Direct3D 12 requires texture data row pitch to be 256 byte
+ * aligned, and offsets to be aligned to 512 bytes. If they are not, SDL will
+ * make a temporary copy of the data that is properly aligned, but this adds
+ * overhead to the transfer process. Apps can avoid this by aligning their
+ * data appropriately, or using a different GPU backend than Direct3D 12.
+ *
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa SDL_UploadToGPUTexture
  * @sa SDL_DownloadFromGPUTexture
  *
- * @from SDL_gpu.h:1317
+ * @from SDL_gpu.h:1411
  */
 export interface GPUTextureTransferInfo {
   transfer_buffer: Deno.PointerValue; /**< SDL_GPUTransferBuffer * : The transfer buffer used in the transfer operation. */
@@ -398,7 +492,7 @@ export function write_GPUTextureTransferInfo(t: GPUTextureTransferInfo, dt: Data
  * @sa SDL_UploadToGPUBuffer
  * @sa SDL_DownloadFromGPUBuffer
  *
- * @from SDL_gpu.h:1335
+ * @from SDL_gpu.h:1429
  */
 export interface GPUTransferBufferLocation {
   transfer_buffer: Deno.PointerValue; /**< SDL_GPUTransferBuffer * : The transfer buffer used in the transfer operation. */
@@ -430,7 +524,7 @@ export function write_GPUTransferBufferLocation(t: GPUTransferBufferLocation, dt
  *
  * @sa SDL_CopyGPUTextureToTexture
  *
- * @from SDL_gpu.h:1350
+ * @from SDL_gpu.h:1444
  */
 export interface GPUTextureLocation {
   texture: Deno.PointerValue; /**< SDL_GPUTexture * : The texture used in the copy operation. */
@@ -476,7 +570,7 @@ export function write_GPUTextureLocation(t: GPUTextureLocation, dt: DataView) {
  * @sa SDL_DownloadFromGPUTexture
  * @sa SDL_CreateGPUTexture
  *
- * @from SDL_gpu.h:1371
+ * @from SDL_gpu.h:1465
  */
 export interface GPUTextureRegion {
   texture: Deno.PointerValue; /**< SDL_GPUTexture * : The texture used in the copy operation. */
@@ -527,7 +621,7 @@ export function write_GPUTextureRegion(t: GPUTextureRegion, dt: DataView) {
  *
  * @sa SDL_BlitGPUTexture
  *
- * @from SDL_gpu.h:1391
+ * @from SDL_gpu.h:1485
  */
 export interface GPUBlitRegion {
   texture: Deno.PointerValue; /**< SDL_GPUTexture * : The texture. */
@@ -580,7 +674,7 @@ export function _write_GPUBlitRegion(t: GPUBlitRegion): ReturnType<typeof _b.SDL
  *
  * @sa SDL_CopyGPUBufferToBuffer
  *
- * @from SDL_gpu.h:1411
+ * @from SDL_gpu.h:1505
  */
 export interface GPUBufferLocation {
   buffer: Deno.PointerValue; /**< SDL_GPUBuffer * : The buffer. */
@@ -613,7 +707,7 @@ export function write_GPUBufferLocation(t: GPUBufferLocation, dt: DataView) {
  * @sa SDL_UploadToGPUBuffer
  * @sa SDL_DownloadFromGPUBuffer
  *
- * @from SDL_gpu.h:1427
+ * @from SDL_gpu.h:1521
  */
 export interface GPUBufferRegion {
   buffer: Deno.PointerValue; /**< SDL_GPUBuffer * : The buffer. */
@@ -653,7 +747,7 @@ export function write_GPUBufferRegion(t: GPUBufferRegion, dt: DataView) {
  *
  * @sa SDL_DrawGPUPrimitivesIndirect
  *
- * @from SDL_gpu.h:1448
+ * @from SDL_gpu.h:1542
  */
 export interface GPUIndirectDrawCommand {
   num_vertices: number; /**< Uint32 : The number of vertices to draw. */
@@ -696,7 +790,7 @@ export function write_GPUIndirectDrawCommand(t: GPUIndirectDrawCommand, dt: Data
  *
  * @sa SDL_DrawGPUIndexedPrimitivesIndirect
  *
- * @from SDL_gpu.h:1470
+ * @from SDL_gpu.h:1564
  */
 export interface GPUIndexedIndirectDrawCommand {
   num_indices: number; /**< Uint32 : The number of indices to draw per instance. */
@@ -735,7 +829,7 @@ export function write_GPUIndexedIndirectDrawCommand(t: GPUIndexedIndirectDrawCom
  *
  * @sa SDL_DispatchGPUComputeIndirect
  *
- * @from SDL_gpu.h:1486
+ * @from SDL_gpu.h:1580
  */
 export interface GPUIndirectDispatchCommand {
   groupcount_x: number; /**< Uint32 : The number of local workgroups to dispatch in the X dimension. */
@@ -775,7 +869,7 @@ export function write_GPUIndirectDispatchCommand(t: GPUIndirectDispatchCommand, 
  * @sa SDL_GPUSamplerAddressMode
  * @sa SDL_GPUCompareOp
  *
- * @from SDL_gpu.h:1509
+ * @from SDL_gpu.h:1603
  */
 export interface GPUSamplerCreateInfo {
   min_filter: number; /**< SDL_GPUFilter : The minification filter to apply to lookups. */
@@ -858,7 +952,7 @@ export function write_GPUSamplerCreateInfo(t: GPUSamplerCreateInfo, dt: DataView
  * @sa SDL_GPUVertexAttribute
  * @sa SDL_GPUVertexInputRate
  *
- * @from SDL_gpu.h:1548
+ * @from SDL_gpu.h:1642
  */
 export interface GPUVertexBufferDescription {
   slot: number; /**< Uint32 : The binding slot of the vertex buffer. */
@@ -899,7 +993,7 @@ export function write_GPUVertexBufferDescription(t: GPUVertexBufferDescription, 
  * @sa SDL_GPUVertexInputState
  * @sa SDL_GPUVertexElementFormat
  *
- * @from SDL_gpu.h:1568
+ * @from SDL_gpu.h:1662
  */
 export interface GPUVertexAttribute {
   location: number; /**< Uint32 : The shader input location index. */
@@ -938,7 +1032,7 @@ export function write_GPUVertexAttribute(t: GPUVertexAttribute, dt: DataView) {
  * @sa SDL_GPUVertexBufferDescription
  * @sa SDL_GPUVertexAttribute
  *
- * @from SDL_gpu.h:1586
+ * @from SDL_gpu.h:1680
  */
 export interface GPUVertexInputState {
   vertex_buffer_descriptions: Deno.PointerValue; /**< const SDL_GPUVertexBufferDescription * : A pointer to an array of vertex buffer descriptions. */
@@ -982,7 +1076,7 @@ function _write_GPUVertexInputState(t: GPUVertexInputState): ReturnType<typeof _
  *
  * @sa SDL_GPUDepthStencilState
  *
- * @from SDL_gpu.h:1601
+ * @from SDL_gpu.h:1695
  */
 export interface GPUStencilOpState {
   fail_op: number; /**< SDL_GPUStencilOp : The action performed on samples that fail the stencil test. */
@@ -1017,8 +1111,11 @@ export function write_GPUStencilOpState(t: GPUStencilOpState, dt: DataView) {
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa SDL_GPUColorTargetDescription
+ * @sa SDL_GPUBlendFactor
+ * @sa SDL_GPUBlendOp
+ * @sa SDL_GPUColorComponentFlags
  *
- * @from SDL_gpu.h:1616
+ * @from SDL_gpu.h:1713
  */
 export interface GPUColorTargetBlendState {
   src_color_blendfactor: number; /**< SDL_GPUBlendFactor : The value to be multiplied by the source RGB value. */
@@ -1074,8 +1171,10 @@ export function write_GPUColorTargetBlendState(t: GPUColorTargetBlendState, dt: 
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa SDL_CreateGPUShader
+ * @sa SDL_GPUShaderFormat
+ * @sa SDL_GPUShaderStage
  *
- * @from SDL_gpu.h:1639
+ * @from SDL_gpu.h:1738
  */
 export interface GPUShaderCreateInfo {
   code_size: bigint; /**< size_t : The size in bytes of the code pointed to. */
@@ -1137,7 +1236,7 @@ export function write_GPUShaderCreateInfo(t: GPUShaderCreateInfo, dt: DataView) 
  * @sa SDL_GPUTextureUsageFlags
  * @sa SDL_GPUSampleCount
  *
- * @from SDL_gpu.h:1669
+ * @from SDL_gpu.h:1768
  */
 export interface GPUTextureCreateInfo {
   type: number; /**< SDL_GPUTextureType : The base dimensionality of the texture. */
@@ -1192,7 +1291,7 @@ export function write_GPUTextureCreateInfo(t: GPUTextureCreateInfo, dt: DataView
  * @sa SDL_CreateGPUBuffer
  * @sa SDL_GPUBufferUsageFlags
  *
- * @from SDL_gpu.h:1694
+ * @from SDL_gpu.h:1793
  */
 export interface GPUBufferCreateInfo {
   usage: number; /**< SDL_GPUBufferUsageFlags : How the buffer is intended to be used by the client. */
@@ -1225,7 +1324,7 @@ export function write_GPUBufferCreateInfo(t: GPUBufferCreateInfo, dt: DataView) 
  *
  * @sa SDL_CreateGPUTransferBuffer
  *
- * @from SDL_gpu.h:1709
+ * @from SDL_gpu.h:1808
  */
 export interface GPUTransferBufferCreateInfo {
   usage: number; /**< SDL_GPUTransferBufferUsage : How the transfer buffer is intended to be used by the client. */
@@ -1267,7 +1366,7 @@ export function write_GPUTransferBufferCreateInfo(t: GPUTransferBufferCreateInfo
  *
  * @sa SDL_GPUGraphicsPipelineCreateInfo
  *
- * @from SDL_gpu.h:1735
+ * @from SDL_gpu.h:1834
  */
 export interface GPURasterizerState {
   fill_mode: number; /**< SDL_GPUFillMode : Whether polygons will be filled in or drawn as lines. */
@@ -1322,13 +1421,13 @@ export function write_GPURasterizerState(t: GPURasterizerState, dt: DataView) {
  *
  * @sa SDL_GPUGraphicsPipelineCreateInfo
  *
- * @from SDL_gpu.h:1757
+ * @from SDL_gpu.h:1856
  */
 export interface GPUMultisampleState {
   sample_count: number; /**< SDL_GPUSampleCount : The number of samples to be used in rasterization. */
   sample_mask: number; /**< Uint32 : Reserved for future use. Must be set to 0. */
   enable_mask: boolean; /**< bool : Reserved for future use. Must be set to false. */
-  padding1: number; /* Uint8 */
+  enable_alpha_to_coverage: boolean; /**< bool : true enables the alpha-to-coverage feature. */
   padding2: number; /* Uint8 */
   padding3: number; /* Uint8 */
 }
@@ -1339,7 +1438,7 @@ export function read_GPUMultisampleState(dt: DataView): GPUMultisampleState {
     sample_count: t.sample_count, /** SDL_GPUSampleCount */
     sample_mask: t.sample_mask, /** Uint32 */
     enable_mask: t.enable_mask, /** bool */
-    padding1: t.padding1, /** Uint8 */
+    enable_alpha_to_coverage: t.enable_alpha_to_coverage, /** bool */
     padding2: t.padding2, /** Uint8 */
     padding3: t.padding3, /** Uint8 */
   };
@@ -1350,7 +1449,7 @@ export function write_GPUMultisampleState(t: GPUMultisampleState, dt: DataView) 
     sample_count: t.sample_count, /** SDL_GPUSampleCount */
     sample_mask: t.sample_mask, /** Uint32 */
     enable_mask: t.enable_mask, /** bool */
-    padding1: t.padding1, /** Uint8 */
+    enable_alpha_to_coverage: t.enable_alpha_to_coverage, /** bool */
     padding2: t.padding2, /** Uint8 */
     padding3: t.padding3, /** Uint8 */
   }, dt);
@@ -1365,7 +1464,7 @@ export function write_GPUMultisampleState(t: GPUMultisampleState, dt: DataView) 
  *
  * @sa SDL_GPUGraphicsPipelineCreateInfo
  *
- * @from SDL_gpu.h:1775
+ * @from SDL_gpu.h:1874
  */
 export interface GPUDepthStencilState {
   compare_op: number; /**< SDL_GPUCompareOp : The comparison operator used for depth testing. */
@@ -1423,7 +1522,7 @@ export function write_GPUDepthStencilState(t: GPUDepthStencilState, dt: DataView
  *
  * @sa SDL_GPUGraphicsPipelineTargetInfo
  *
- * @from SDL_gpu.h:1798
+ * @from SDL_gpu.h:1897
  */
 export interface GPUColorTargetDescription {
   format: number; /**< SDL_GPUTextureFormat : The pixel format of the texture to be used as a color target. */
@@ -1456,7 +1555,7 @@ export function write_GPUColorTargetDescription(t: GPUColorTargetDescription, dt
  * @sa SDL_GPUColorTargetDescription
  * @sa SDL_GPUTextureFormat
  *
- * @from SDL_gpu.h:1814
+ * @from SDL_gpu.h:1913
  */
 export interface GPUGraphicsPipelineTargetInfo {
   color_target_descriptions: Deno.PointerValue; /**< const SDL_GPUColorTargetDescription * : A pointer to an array of color target descriptions. */
@@ -1514,7 +1613,7 @@ export function _write_GPUGraphicsPipelineTargetInfo(t: GPUGraphicsPipelineTarge
  * @sa SDL_GPUDepthStencilState
  * @sa SDL_GPUGraphicsPipelineTargetInfo
  *
- * @from SDL_gpu.h:1839
+ * @from SDL_gpu.h:1938
  */
 export interface GPUGraphicsPipelineCreateInfo {
   vertex_shader: Deno.PointerValue; /**< SDL_GPUShader * : The vertex shader used by the graphics pipeline. */
@@ -1566,7 +1665,7 @@ export function write_GPUGraphicsPipelineCreateInfo(t: GPUGraphicsPipelineCreate
  * @sa SDL_CreateGPUComputePipeline
  * @sa SDL_GPUShaderFormat
  *
- * @from SDL_gpu.h:1861
+ * @from SDL_gpu.h:1960
  */
 export interface GPUComputePipelineCreateInfo {
   code_size: bigint; /**< size_t : The size in bytes of the compute shader code pointed to. */
@@ -1659,8 +1758,9 @@ export function write_GPUComputePipelineCreateInfo(t: GPUComputePipelineCreateIn
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa SDL_BeginGPURenderPass
+ * @sa SDL_FColor
  *
- * @from SDL_gpu.h:1915
+ * @from SDL_gpu.h:2015
  */
 export interface GPUColorTargetInfo {
   texture: Deno.PointerValue; /**< SDL_GPUTexture * : The texture that will be used as a color target by a render pass. */
@@ -1756,11 +1856,14 @@ export function write_GPUColorTargetInfo(t: GPUColorTargetInfo, dt: DataView) {
  *
  * Note that depth/stencil targets do not support multisample resolves.
  *
+ * Due to ABI limitations, depth textures with more than 255 layers are not
+ * supported.
+ *
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa SDL_BeginGPURenderPass
  *
- * @from SDL_gpu.h:1976
+ * @from SDL_gpu.h:2079
  */
 export interface GPUDepthStencilTargetInfo {
   texture: Deno.PointerValue; /**< SDL_GPUTexture * : The texture that will be used as the depth stencil target by the render pass. */
@@ -1771,8 +1874,8 @@ export interface GPUDepthStencilTargetInfo {
   stencil_store_op: number; /**< SDL_GPUStoreOp : What is done with the stencil results of the render pass. */
   cycle: boolean; /**< bool : true cycles the texture if the texture is bound and any load ops are not LOAD */
   clear_stencil: number; /**< Uint8 : The value to clear the stencil component to at the beginning of the render pass. Ignored if SDL_GPU_LOADOP_CLEAR is not used. */
-  padding1: number; /* Uint8 */
-  padding2: number; /* Uint8 */
+  mip_level: number; /**< Uint8 : The mip level to use as the depth stencil target. */
+  layer: number; /**< Uint8 : The layer index to use as the depth stencil target. */
 }
 
 export function read_GPUDepthStencilTargetInfo(dt: DataView): GPUDepthStencilTargetInfo {
@@ -1786,8 +1889,8 @@ export function read_GPUDepthStencilTargetInfo(dt: DataView): GPUDepthStencilTar
     stencil_store_op: t.stencil_store_op, /** SDL_GPUStoreOp */
     cycle: t.cycle, /** bool */
     clear_stencil: t.clear_stencil, /** Uint8 */
-    padding1: t.padding1, /** Uint8 */
-    padding2: t.padding2, /** Uint8 */
+    mip_level: t.mip_level, /** Uint8 */
+    layer: t.layer, /** Uint8 */
   };
 }
 
@@ -1801,8 +1904,8 @@ export function write_GPUDepthStencilTargetInfo(t: GPUDepthStencilTargetInfo, dt
     stencil_store_op: t.stencil_store_op, /** SDL_GPUStoreOp */
     cycle: t.cycle, /** bool */
     clear_stencil: t.clear_stencil, /** Uint8 */
-    padding1: t.padding1, /** Uint8 */
-    padding2: t.padding2, /** Uint8 */
+    mip_level: t.mip_level, /** Uint8 */
+    layer: t.layer, /** Uint8 */
   }, dt);
 }
 
@@ -1814,7 +1917,7 @@ export function write_GPUDepthStencilTargetInfo(t: GPUDepthStencilTargetInfo, dt
  *
  * @sa SDL_BlitGPUTexture
  *
- * @from SDL_gpu.h:1997
+ * @from SDL_gpu.h:2100
  */
 export interface GPUBlitInfo {
   source: GPUBlitRegion; /**< SDL_GPUBlitRegion : The source region for the blit. */
@@ -1869,7 +1972,7 @@ export function write_GPUBlitInfo(t: GPUBlitInfo, dt: DataView) {
  * @sa SDL_BindGPUVertexBuffers
  * @sa SDL_BindGPUIndexBuffer
  *
- * @from SDL_gpu.h:2020
+ * @from SDL_gpu.h:2123
  */
 export interface GPUBufferBinding {
   buffer: Deno.PointerValue; /**< SDL_GPUBuffer * : The buffer to bind. Must have been created with SDL_GPU_BUFFERUSAGE_VERTEX for SDL_BindGPUVertexBuffers, or SDL_GPU_BUFFERUSAGE_INDEX for SDL_BindGPUIndexBuffer. */
@@ -1899,8 +2002,10 @@ export function write_GPUBufferBinding(t: GPUBufferBinding, dt: DataView) {
  *
  * @sa SDL_BindGPUVertexSamplers
  * @sa SDL_BindGPUFragmentSamplers
+ * @sa SDL_GPUTexture
+ * @sa SDL_GPUSampler
  *
- * @from SDL_gpu.h:2034
+ * @from SDL_gpu.h:2139
  */
 export interface GPUTextureSamplerBinding {
   texture: Deno.PointerValue; /**< SDL_GPUTexture * : The texture to bind. Must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER. */
@@ -1931,7 +2036,7 @@ export function write_GPUTextureSamplerBinding(t: GPUTextureSamplerBinding, dt: 
  *
  * @sa SDL_BeginGPUComputePass
  *
- * @from SDL_gpu.h:2048
+ * @from SDL_gpu.h:2153
  */
 export interface GPUStorageBufferReadWriteBinding {
   buffer: Deno.PointerValue; /**< SDL_GPUBuffer * : The buffer to bind. Must have been created with SDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE. */
@@ -1971,7 +2076,7 @@ export function write_GPUStorageBufferReadWriteBinding(t: GPUStorageBufferReadWr
  *
  * @sa SDL_BeginGPUComputePass
  *
- * @from SDL_gpu.h:2065
+ * @from SDL_gpu.h:2170
  */
 export interface GPUStorageTextureReadWriteBinding {
   texture: Deno.PointerValue; /**< SDL_GPUTexture * : The texture to bind. Must have been created with SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_WRITE or SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_SIMULTANEOUS_READ_WRITE. */
@@ -2007,3 +2112,59 @@ export function write_GPUStorageTextureReadWriteBinding(t: GPUStorageTextureRead
     padding3: t.padding3, /** Uint8 */
   }, dt);
 }
+
+
+/**
+ * A structure specifying additional options when using Vulkan.
+ *
+ * When no such structure is provided, SDL will use Vulkan API version 1.0 and
+ * a minimal set of features. The requested API version influences how the
+ * feature_list is processed by SDL. When requesting API version 1.0, the
+ * feature_list is ignored. Only the vulkan_10_physical_device_features and
+ * the extension lists are used. When requesting API version 1.1, the
+ * feature_list is scanned for feature structures introduced in Vulkan 1.1.
+ * When requesting Vulkan 1.2 or higher, the feature_list is additionally
+ * scanned for compound feature structs such as
+ * VkPhysicalDeviceVulkan11Features. The device and instance extension lists,
+ * as well as vulkan_10_physical_device_features, are always processed.
+ *
+ * @since This struct is available since SDL 3.4.0.
+ *
+ * @from SDL_gpu.h:2373
+ */
+export interface GPUVulkanOptions {
+  vulkan_api_version: number; /**< Uint32 : The Vulkan API version to request for the instance. Use Vulkan's VK_MAKE_VERSION or VK_MAKE_API_VERSION. */
+  feature_list: Deno.PointerValue; /**< void * : Pointer to the first element of a chain of Vulkan feature structs. (Requires API version 1.1 or higher.)*/
+  vulkan_10_physical_device_features: Deno.PointerValue; /**< void * : Pointer to a VkPhysicalDeviceFeatures struct to enable additional Vulkan 1.0 features. */
+  device_extension_count: number; /**< Uint32 : Number of additional device extensions to require. */
+  device_extension_names: Deno.PointerValue; /**< const char ** : Pointer to a list of additional device extensions to require. */
+  instance_extension_count: number; /**< Uint32 : Number of additional instance extensions to require. */
+  instance_extension_names: Deno.PointerValue; /**< const char ** : Pointer to a list of additional instance extensions to require. */
+}
+
+export function read_GPUVulkanOptions(dt: DataView): GPUVulkanOptions {
+  const t = _b.SDL_GPUVulkanOptions.read(dt);
+  return {
+    vulkan_api_version: t.vulkan_api_version, /** Uint32 */
+    feature_list: Deno.UnsafePointer.create(t.feature_list), /** void * */
+    vulkan_10_physical_device_features: Deno.UnsafePointer.create(t.vulkan_10_physical_device_features), /** void * */
+    device_extension_count: t.device_extension_count, /** Uint32 */
+    device_extension_names: Deno.UnsafePointer.create(t.device_extension_names), /** const char ** */
+    instance_extension_count: t.instance_extension_count, /** Uint32 */
+    instance_extension_names: Deno.UnsafePointer.create(t.instance_extension_names), /** const char ** */
+  };
+}
+
+export function write_GPUVulkanOptions(t: GPUVulkanOptions, dt: DataView) {
+  _b.SDL_GPUVulkanOptions.write({
+    vulkan_api_version: t.vulkan_api_version, /** Uint32 */
+    feature_list: Deno.UnsafePointer.value(t.feature_list), /** void * */
+    vulkan_10_physical_device_features: Deno.UnsafePointer.value(t.vulkan_10_physical_device_features), /** void * */
+    device_extension_count: t.device_extension_count, /** Uint32 */
+    device_extension_names: Deno.UnsafePointer.value(t.device_extension_names), /** const char ** */
+    instance_extension_count: t.instance_extension_count, /** Uint32 */
+    instance_extension_names: Deno.UnsafePointer.value(t.instance_extension_names), /** const char ** */
+  }, dt);
+}
+
+

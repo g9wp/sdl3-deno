@@ -2173,7 +2173,7 @@ export function saveJpgIo(
  *
  * @sa IMG_FreeAnimation
  *
- * @from SDL_image.h:1995 IMG_Animation * IMG_LoadAnimation(const char *file);
+ * @from SDL_image.h:1996 IMG_Animation * IMG_LoadAnimation(const char *file);
  */
 export function loadAnimation(file: string): Deno.PointerValue<"IMG_Animation"> {
   return lib.symbols.IMG_LoadAnimation(_p.toCstr(file)) as Deno.PointerValue<"IMG_Animation">;
@@ -2198,7 +2198,7 @@ export function loadAnimation(file: string): Deno.PointerValue<"IMG_Animation"> 
  *
  * @sa IMG_FreeAnimation
  *
- * @from SDL_image.h:2016 IMG_Animation * IMG_LoadAnimation_IO(SDL_IOStream *src, bool closeio);
+ * @from SDL_image.h:2017 IMG_Animation * IMG_LoadAnimation_IO(SDL_IOStream *src, bool closeio);
  */
 export function loadAnimationIo(src: Deno.PointerValue<"SDL_IOStream">, closeio: boolean): Deno.PointerValue<"IMG_Animation"> {
   return lib.symbols.IMG_LoadAnimation_IO(src, closeio) as Deno.PointerValue<"IMG_Animation">;
@@ -2232,7 +2232,7 @@ export function loadAnimationIo(src: Deno.PointerValue<"SDL_IOStream">, closeio:
  * @sa IMG_LoadAnimation_IO
  * @sa IMG_FreeAnimation
  *
- * @from SDL_image.h:2046 IMG_Animation * IMG_LoadAnimationTyped_IO(SDL_IOStream *src, bool closeio, const char *type);
+ * @from SDL_image.h:2047 IMG_Animation * IMG_LoadAnimationTyped_IO(SDL_IOStream *src, bool closeio, const char *type);
  */
 export function loadAnimationTypedIo(src: Deno.PointerValue<"SDL_IOStream">, closeio: boolean, type: string): Deno.PointerValue<"IMG_Animation"> {
   return lib.symbols.IMG_LoadAnimationTyped_IO(src, closeio, _p.toCstr(type)) as Deno.PointerValue<"IMG_Animation">;
@@ -2251,7 +2251,7 @@ export function loadAnimationTypedIo(src: Deno.PointerValue<"SDL_IOStream">, clo
  * @sa IMG_LoadAnimation_IO
  * @sa IMG_LoadAnimationTyped_IO
  *
- * @from SDL_image.h:2061 void IMG_FreeAnimation(IMG_Animation *anim);
+ * @from SDL_image.h:2062 void IMG_FreeAnimation(IMG_Animation *anim);
  */
 export function freeAnimation(anim: Deno.PointerValue<"IMG_Animation">): void {
   return lib.symbols.IMG_FreeAnimation(anim);
@@ -2275,7 +2275,7 @@ export function freeAnimation(anim: Deno.PointerValue<"IMG_Animation">): void {
  * @sa IMG_LoadAnimationTyped_IO
  * @sa IMG_FreeAnimation
  *
- * @from SDL_image.h:2081 IMG_Animation * IMG_LoadGIFAnimation_IO(SDL_IOStream *src);
+ * @from SDL_image.h:2082 IMG_Animation * IMG_LoadGIFAnimation_IO(SDL_IOStream *src);
  */
 export function loadGifAnimationIo(src: Deno.PointerValue<"SDL_IOStream">): Deno.PointerValue<"IMG_Animation"> {
   return lib.symbols.IMG_LoadGIFAnimation_IO(src) as Deno.PointerValue<"IMG_Animation">;
@@ -2299,7 +2299,7 @@ export function loadGifAnimationIo(src: Deno.PointerValue<"SDL_IOStream">): Deno
  * @sa IMG_LoadAnimationTyped_IO
  * @sa IMG_FreeAnimation
  *
- * @from SDL_image.h:2101 IMG_Animation * IMG_LoadWEBPAnimation_IO(SDL_IOStream *src);
+ * @from SDL_image.h:2102 IMG_Animation * IMG_LoadWEBPAnimation_IO(SDL_IOStream *src);
  */
 export function loadWebpAnimationIo(src: Deno.PointerValue<"SDL_IOStream">): Deno.PointerValue<"IMG_Animation"> {
   return lib.symbols.IMG_LoadWEBPAnimation_IO(src) as Deno.PointerValue<"IMG_Animation">;

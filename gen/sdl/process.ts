@@ -109,6 +109,9 @@ export function createProcess(args: Deno.PointerValue, pipe_stdio: boolean): Den
  * - `SDL_PROP_PROCESS_CREATE_ENVIRONMENT_POINTER`: an SDL_Environment
  *   pointer. If this property is set, it will be the entire environment for
  *   the process, otherwise the current environment is used.
+ * - `SDL_PROP_PROCESS_CREATE_WORKING_DIRECTORY_STRING`: a UTF-8 encoded
+ *   string representing the working directory for the process, defaults to
+ *   the current working directory.
  * - `SDL_PROP_PROCESS_CREATE_STDIN_NUMBER`: an SDL_ProcessIO value describing
  *   where standard input for the process comes from, defaults to
  *   `SDL_PROCESS_STDIO_NULL`.
@@ -135,6 +138,12 @@ export function createProcess(args: Deno.PointerValue, pipe_stdio: boolean): Den
  *   run in the background. In this case the default input and output is
  *   `SDL_PROCESS_STDIO_NULL` and the exitcode of the process is not
  *   available, and will always be 0.
+ * - `SDL_PROP_PROCESS_CREATE_CMDLINE_STRING`: a string containing the program
+ *   to run and any parameters. This string is passed directly to
+ *   `CreateProcess` on Windows, and does nothing on other platforms. This
+ *   property is only important if you want to start programs that does
+ *   non-standard command-line processing, and in most cases using
+ *   `SDL_PROP_PROCESS_CREATE_ARGS_POINTER` is sufficient.
  *
  * On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
  * SIGCHLD should not be ignored or handled because those would prevent SDL
@@ -158,7 +167,7 @@ export function createProcess(args: Deno.PointerValue, pipe_stdio: boolean): Den
  * @sa SDL_WaitProcess
  * @sa SDL_DestroyProcess
  *
- * @from SDL_process.h:217 SDL_Process * SDL_CreateProcessWithProperties(SDL_PropertiesID props);
+ * @from SDL_process.h:226 SDL_Process * SDL_CreateProcessWithProperties(SDL_PropertiesID props);
  */
 export function createProcessWithProperties(props: number): Deno.PointerValue<"SDL_Process"> {
   return lib.symbols.SDL_CreateProcessWithProperties(props) as Deno.PointerValue<"SDL_Process">;
@@ -193,7 +202,7 @@ export function createProcessWithProperties(props: number): Deno.PointerValue<"S
  * @sa SDL_CreateProcess
  * @sa SDL_CreateProcessWithProperties
  *
- * @from SDL_process.h:259 SDL_PropertiesID SDL_GetProcessProperties(SDL_Process *process);
+ * @from SDL_process.h:270 SDL_PropertiesID SDL_GetProcessProperties(SDL_Process *process);
  */
 export function getProcessProperties(process: Deno.PointerValue<"SDL_Process">): number {
   return lib.symbols.SDL_GetProcessProperties(process);
@@ -228,7 +237,7 @@ export function getProcessProperties(process: Deno.PointerValue<"SDL_Process">):
  * @sa SDL_CreateProcessWithProperties
  * @sa SDL_DestroyProcess
  *
- * @from SDL_process.h:296 void * SDL_ReadProcess(SDL_Process *process, size_t *datasize, int *exitcode);
+ * @from SDL_process.h:307 void * SDL_ReadProcess(SDL_Process *process, size_t *datasize, int *exitcode);
  */
 export function readProcess(process: Deno.PointerValue<"SDL_Process">): { datasize: bigint; exitcode: number; ret: Deno.PointerValue } {
   const ret = lib.symbols.SDL_ReadProcess(process, _p.u64.p0, _p.i32.p0) as Deno.PointerValue;
@@ -260,7 +269,7 @@ export function readProcess(process: Deno.PointerValue<"SDL_Process">): { datasi
  * @sa SDL_CreateProcessWithProperties
  * @sa SDL_GetProcessOutput
  *
- * @from SDL_process.h:322 SDL_IOStream * SDL_GetProcessInput(SDL_Process *process);
+ * @from SDL_process.h:333 SDL_IOStream * SDL_GetProcessInput(SDL_Process *process);
  */
 export function getProcessInput(process: Deno.PointerValue<"SDL_Process">): Deno.PointerValue<"SDL_IOStream"> {
   return lib.symbols.SDL_GetProcessInput(process) as Deno.PointerValue<"SDL_IOStream">;
@@ -288,7 +297,7 @@ export function getProcessInput(process: Deno.PointerValue<"SDL_Process">): Deno
  * @sa SDL_CreateProcessWithProperties
  * @sa SDL_GetProcessInput
  *
- * @from SDL_process.h:346 SDL_IOStream * SDL_GetProcessOutput(SDL_Process *process);
+ * @from SDL_process.h:357 SDL_IOStream * SDL_GetProcessOutput(SDL_Process *process);
  */
 export function getProcessOutput(process: Deno.PointerValue<"SDL_Process">): Deno.PointerValue<"SDL_IOStream"> {
   return lib.symbols.SDL_GetProcessOutput(process) as Deno.PointerValue<"SDL_IOStream">;
@@ -315,7 +324,7 @@ export function getProcessOutput(process: Deno.PointerValue<"SDL_Process">): Den
  * @sa SDL_WaitProcess
  * @sa SDL_DestroyProcess
  *
- * @from SDL_process.h:369 bool SDL_KillProcess(SDL_Process *process, bool force);
+ * @from SDL_process.h:380 bool SDL_KillProcess(SDL_Process *process, bool force);
  */
 export function killProcess(process: Deno.PointerValue<"SDL_Process">, force: boolean): boolean {
   return lib.symbols.SDL_KillProcess(process, force);
@@ -352,7 +361,7 @@ export function killProcess(process: Deno.PointerValue<"SDL_Process">, force: bo
  * @sa SDL_KillProcess
  * @sa SDL_DestroyProcess
  *
- * @from SDL_process.h:402 bool SDL_WaitProcess(SDL_Process *process, bool block, int *exitcode);
+ * @from SDL_process.h:413 bool SDL_WaitProcess(SDL_Process *process, bool block, int *exitcode);
  */
 export function waitProcess(process: Deno.PointerValue<"SDL_Process">, block: boolean): number {
   if(!lib.symbols.SDL_WaitProcess(process, block, _p.i32.p0))
@@ -377,7 +386,7 @@ export function waitProcess(process: Deno.PointerValue<"SDL_Process">, block: bo
  * @sa SDL_CreateProcessWithProperties
  * @sa SDL_KillProcess
  *
- * @from SDL_process.h:421 void SDL_DestroyProcess(SDL_Process *process);
+ * @from SDL_process.h:432 void SDL_DestroyProcess(SDL_Process *process);
  */
 export function destroyProcess(process: Deno.PointerValue<"SDL_Process">): void {
   return lib.symbols.SDL_DestroyProcess(process);
