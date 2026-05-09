@@ -21,7 +21,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -102,12 +102,14 @@ export const symbols = {
  *          new thread could not be created; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_CreateThread
  * @sa SDL_WaitThread
  *
- * @from SDL_thread.h:281 SDL_Thread * SDL_CreateThreadWithProperties(SDL_PropertiesID props);
+ * @from SDL_thread.h:285 SDL_Thread * SDL_CreateThreadWithProperties(SDL_PropertiesID props);
  */
 /*SDL_CreateThreadWithProperties: {
       parameters: ["u32"],
@@ -125,9 +127,11 @@ export const symbols = {
  *          new thread could not be created; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_thread.h:347 SDL_Thread * SDL_CreateThreadWithPropertiesRuntime(SDL_PropertiesID props, SDL_FunctionPointer pfnBeginThread, SDL_FunctionPointer pfnEndThread);
+ * @from SDL_thread.h:355 SDL_Thread * SDL_CreateThreadWithPropertiesRuntime(SDL_PropertiesID props, SDL_FunctionPointer pfnBeginThread, SDL_FunctionPointer pfnEndThread);
  */
 SDL_CreateThreadWithPropertiesRuntime: {
       parameters: ["u32", "function", "function"],
@@ -142,9 +146,11 @@ SDL_CreateThreadWithPropertiesRuntime: {
  * @returns a pointer to a UTF-8 string that names the specified thread, or
  *          NULL if it doesn't have a name.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_thread.h:367 const char * SDL_GetThreadName(SDL_Thread *thread);
+ * @from SDL_thread.h:377 const char * SDL_GetThreadName(SDL_Thread *thread);
  */
 SDL_GetThreadName: {
       parameters: ["pointer"],
@@ -164,11 +170,13 @@ SDL_GetThreadName: {
  *
  * @returns the ID of the current thread.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_GetThreadID
  *
- * @from SDL_thread.h:385 SDL_ThreadID SDL_GetCurrentThreadID(void);
+ * @from SDL_thread.h:397 SDL_ThreadID SDL_GetCurrentThreadID(void);
  */
 SDL_GetCurrentThreadID: {
       parameters: [],
@@ -187,11 +195,13 @@ SDL_GetCurrentThreadID: {
  * @returns the ID of the specified thread, or the ID of the current thread if
  *          `thread` is NULL.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_GetCurrentThreadID
  *
- * @from SDL_thread.h:402 SDL_ThreadID SDL_GetThreadID(SDL_Thread *thread);
+ * @from SDL_thread.h:416 SDL_ThreadID SDL_GetThreadID(SDL_Thread *thread);
  */
 SDL_GetThreadID: {
       parameters: ["pointer"],
@@ -210,9 +220,11 @@ SDL_GetThreadID: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_thread.h:417 bool SDL_SetCurrentThreadPriority(SDL_ThreadPriority priority);
+ * @from SDL_thread.h:433 bool SDL_SetCurrentThreadPriority(SDL_ThreadPriority priority);
  */
 SDL_SetCurrentThreadPriority: {
       parameters: ["u32"],
@@ -248,12 +260,15 @@ SDL_SetCurrentThreadPriority: {
  *               function by its 'return', or -1 if the thread has been
  *               detached or isn't valid, may be NULL.
  *
+ * @threadsafety It is safe to call this function from any thread, but only a
+ *               single thread can wait any specific thread to finish.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_CreateThread
  * @sa SDL_DetachThread
  *
- * @from SDL_thread.h:452 void SDL_WaitThread(SDL_Thread *thread, int *status);
+ * @from SDL_thread.h:471 void SDL_WaitThread(SDL_Thread *thread, int *status);
  */
 SDL_WaitThread: {
       parameters: ["pointer", "pointer"],
@@ -268,11 +283,13 @@ SDL_WaitThread: {
  * @returns the current state of a thread, or SDL_THREAD_UNKNOWN if the thread
  *          isn't valid.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_ThreadState
  *
- * @from SDL_thread.h:465 SDL_ThreadState SDL_GetThreadState(SDL_Thread *thread);
+ * @from SDL_thread.h:486 SDL_ThreadState SDL_GetThreadState(SDL_Thread *thread);
  */
 SDL_GetThreadState: {
       parameters: ["pointer"],
@@ -309,12 +326,14 @@ SDL_GetThreadState: {
  * @param thread the SDL_Thread pointer that was returned from the
  *               SDL_CreateThread() call that started this thread.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_CreateThread
  * @sa SDL_WaitThread
  *
- * @from SDL_thread.h:501 void SDL_DetachThread(SDL_Thread *thread);
+ * @from SDL_thread.h:524 void SDL_DetachThread(SDL_Thread *thread);
  */
 SDL_DetachThread: {
       parameters: ["pointer"],
@@ -335,7 +354,7 @@ SDL_DetachThread: {
  *
  * @sa SDL_SetTLS
  *
- * @from SDL_thread.h:516 void * SDL_GetTLS(SDL_TLSID *id);
+ * @from SDL_thread.h:539 void * SDL_GetTLS(SDL_TLSID *id);
  */
 SDL_GetTLS: {
       parameters: ["pointer"],
@@ -369,7 +388,7 @@ SDL_GetTLS: {
  *
  * @sa SDL_GetTLS
  *
- * @from SDL_thread.h:557 bool SDL_SetTLS(SDL_TLSID *id, const void *value, SDL_TLSDestructorCallback destructor);
+ * @from SDL_thread.h:580 bool SDL_SetTLS(SDL_TLSID *id, const void *value, SDL_TLSDestructorCallback destructor);
  */
 SDL_SetTLS: {
       parameters: ["pointer", "pointer", "function"],
@@ -388,7 +407,7 @@ SDL_SetTLS: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_thread.h:570 void SDL_CleanupTLS(void);
+ * @from SDL_thread.h:593 void SDL_CleanupTLS(void);
  */
 SDL_CleanupTLS: {
       parameters: [],

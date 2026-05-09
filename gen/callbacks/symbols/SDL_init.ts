@@ -29,7 +29,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -142,7 +142,7 @@ SDL_AppQuit_func: {
  *
  * @sa SDL_RunOnMainThread
  *
- * @from SDL_init.h:330 typedef void (*SDL_MainThreadCallback)(void *userdata);
+ * @from SDL_init.h:340 typedef void (*SDL_MainThreadCallback)(void *userdata);
  */
 SDL_MainThreadCallback: {
       parameters: ["pointer"],
@@ -253,7 +253,7 @@ export function AppQuit_func(cb: (
  *
  * @sa SDL_RunOnMainThread
  *
- * @from SDL_init.h:330 typedef void (*SDL_MainThreadCallback)(void *userdata);
+ * @from SDL_init.h:340 typedef void (*SDL_MainThreadCallback)(void *userdata);
  */
 export function MainThreadCallback(cb: (
     userdata: Deno.PointerValue, 

@@ -24,7 +24,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -94,15 +94,14 @@ export enum SDL_Folder {
 /**
  * Types of filesystem entries.
  *
- * Note that there may be other sorts of items on a filesystem: devices,
- * symlinks, named pipes, etc. They are currently reported as
- * SDL_PATHTYPE_OTHER.
+ * Note that there may be other sorts of items on a filesystem: devices, named
+ * pipes, etc. They are currently reported as SDL_PATHTYPE_OTHER.
  *
  * @since This enum is available since SDL 3.2.0.
  *
  * @sa SDL_PathInfo
  *
- * @from SDL_filesystem.h:251 SDL_PATHTYPE_
+ * @from SDL_filesystem.h:250 SDL_PATHTYPE_
  */
 export enum SDL_PathType {
   NONE, /**< path does not exist */
@@ -120,7 +119,7 @@ export enum SDL_PathType {
  *
  * @sa SDL_EnumerateDirectoryCallback
  *
- * @from SDL_filesystem.h:313 SDL_ENUM_
+ * @from SDL_filesystem.h:312 SDL_ENUM_
  */
 export enum SDL_EnumerationResult {
   CONTINUE, /**< Value that requests that enumeration continue. */

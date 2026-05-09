@@ -367,7 +367,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -443,7 +443,7 @@ export enum GPU_COLORCOMPONENT {
 
 
 /**
- * @from SDL_gpu:2337 SDL_PROP_GPU_DEVICE_CREATE_
+ * @from SDL_gpu:2362 SDL_PROP_GPU_DEVICE_CREATE_
  */
 export enum PROP_GPU_DEVICE_CREATE {
   DEBUGMODE_BOOLEAN = "SDL.gpu.device.create.debugmode", 
@@ -462,14 +462,17 @@ export enum PROP_GPU_DEVICE_CREATE {
   SHADERS_METALLIB_BOOLEAN = "SDL.gpu.device.create.shaders.metallib", 
   D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN = "SDL.gpu.device.create.d3d12.allowtier1resourcebinding", 
   D3D12_SEMANTIC_NAME_STRING = "SDL.gpu.device.create.d3d12.semantic", 
+  D3D12_AGILITY_SDK_VERSION_NUMBER = "SDL.gpu.device.create.d3d12.agility_sdk_version", 
+  D3D12_AGILITY_SDK_PATH_STRING = "SDL.gpu.device.create.d3d12.agility_sdk_path", 
   VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN = "SDL.gpu.device.create.vulkan.requirehardwareacceleration", 
   VULKAN_OPTIONS_POINTER = "SDL.gpu.device.create.vulkan.options", 
+  METAL_ALLOW_MACFAMILY1_BOOLEAN = "SDL.gpu.device.create.metal.allowmacfamily1", 
 }
 
 
 
 /**
- * @from SDL_gpu:2550 SDL_PROP_GPU_DEVICE_
+ * @from SDL_gpu:2578 SDL_PROP_GPU_DEVICE_
  */
 export enum PROP_GPU_DEVICE {
   NAME_STRING = "SDL.gpu.device.name", 
@@ -481,7 +484,7 @@ export enum PROP_GPU_DEVICE {
 
 
 /**
- * @from SDL_gpu:2804 SDL_PROP_GPU_TEXTURE_CREATE_
+ * @from SDL_gpu:2832 SDL_PROP_GPU_TEXTURE_CREATE_
  */
 export enum PROP_GPU_TEXTURE_CREATE {
   D3D12_CLEAR_R_FLOAT = "SDL.gpu.texture.create.d3d12.clear.r", 

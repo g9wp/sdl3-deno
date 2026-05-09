@@ -24,7 +24,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -216,7 +216,7 @@ SDL_GetUserFolder: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_filesystem.h:304 bool SDL_CreateDirectory(const char *path);
+ * @from SDL_filesystem.h:303 bool SDL_CreateDirectory(const char *path);
  */
 SDL_CreateDirectory: {
       parameters: ["pointer"],
@@ -247,7 +247,7 @@ SDL_CreateDirectory: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_filesystem.h:369 bool SDL_EnumerateDirectory(const char *path, SDL_EnumerateDirectoryCallback callback, void *userdata);
+ * @from SDL_filesystem.h:368 bool SDL_EnumerateDirectory(const char *path, SDL_EnumerateDirectoryCallback callback, void *userdata);
  */
 SDL_EnumerateDirectory: {
       parameters: ["pointer", "function", "pointer"],
@@ -269,7 +269,7 @@ SDL_EnumerateDirectory: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_filesystem.h:385 bool SDL_RemovePath(const char *path);
+ * @from SDL_filesystem.h:384 bool SDL_RemovePath(const char *path);
  */
 SDL_RemovePath: {
       parameters: ["pointer"],
@@ -300,7 +300,7 @@ SDL_RemovePath: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_filesystem.h:410 bool SDL_RenamePath(const char *oldpath, const char *newpath);
+ * @from SDL_filesystem.h:409 bool SDL_RenamePath(const char *oldpath, const char *newpath);
  */
 SDL_RenamePath: {
       parameters: ["pointer", "pointer"],
@@ -350,7 +350,7 @@ SDL_RenamePath: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_filesystem.h:454 bool SDL_CopyFile(const char *oldpath, const char *newpath);
+ * @from SDL_filesystem.h:453 bool SDL_CopyFile(const char *oldpath, const char *newpath);
  */
 SDL_CopyFile: {
       parameters: ["pointer", "pointer"],
@@ -360,6 +360,10 @@ SDL_CopyFile: {
 
 /**
  * Get information about a filesystem path.
+ *
+ * Symlinks, on filesystems that support them, are always followed, so you
+ * will always get information on what the symlink eventually points to, and
+ * not the symlink itself.
  *
  * @param path the path to query.
  * @param info a pointer filled in with information about the path, or NULL to
@@ -371,7 +375,7 @@ SDL_CopyFile: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_filesystem.h:469 bool SDL_GetPathInfo(const char *path, SDL_PathInfo *info);
+ * @from SDL_filesystem.h:472 bool SDL_GetPathInfo(const char *path, SDL_PathInfo *info);
  */
 SDL_GetPathInfo: {
       parameters: ["pointer", "pointer"],
@@ -410,7 +414,7 @@ SDL_GetPathInfo: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_filesystem.h:502 char ** SDL_GlobDirectory(const char *path, const char *pattern, SDL_GlobFlags flags, int *count);
+ * @from SDL_filesystem.h:505 char ** SDL_GlobDirectory(const char *path, const char *pattern, SDL_GlobFlags flags, int *count);
  */
 SDL_GlobDirectory: {
       parameters: ["pointer", "pointer", "u32", "pointer"],
@@ -439,7 +443,7 @@ SDL_GlobDirectory: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_filesystem.h:525 char * SDL_GetCurrentDirectory(void);
+ * @from SDL_filesystem.h:528 char * SDL_GetCurrentDirectory(void);
  */
 SDL_GetCurrentDirectory: {
       parameters: [],

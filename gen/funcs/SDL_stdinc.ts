@@ -26,7 +26,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -74,7 +74,7 @@ export const symbols = {
  * @sa SDL_realloc
  * @sa SDL_aligned_alloc
  *
- * @from SDL_stdinc.h:1346 SDL_MALLOC void * SDL_malloc(size_t size);
+ * @from SDL_stdinc.h:1340 SDL_MALLOC void * SDL_malloc(size_t size);
  */
 SDL_malloc: {
       parameters: ["usize"],
@@ -105,7 +105,7 @@ SDL_malloc: {
  * @sa SDL_malloc
  * @sa SDL_realloc
  *
- * @from SDL_stdinc.h:1371 SDL_MALLOC SDL_ALLOC_SIZE2(1, 2) void * SDL_calloc(size_t nmemb, size_t size);
+ * @from SDL_stdinc.h:1365 SDL_MALLOC SDL_ALLOC_SIZE2(1, 2) void * SDL_calloc(size_t nmemb, size_t size);
  */
 SDL_calloc: {
       parameters: ["usize", "usize"],
@@ -151,7 +151,7 @@ SDL_calloc: {
  * @sa SDL_malloc
  * @sa SDL_calloc
  *
- * @from SDL_stdinc.h:1411 SDL_ALLOC_SIZE(2) void * SDL_realloc(void *mem, size_t size);
+ * @from SDL_stdinc.h:1405 SDL_ALLOC_SIZE(2) void * SDL_realloc(void *mem, size_t size);
  */
 SDL_realloc: {
       parameters: ["pointer", "usize"],
@@ -177,7 +177,7 @@ SDL_realloc: {
  * @sa SDL_calloc
  * @sa SDL_realloc
  *
- * @from SDL_stdinc.h:1431 void SDL_free(void *mem);
+ * @from SDL_stdinc.h:1425 void SDL_free(void *mem);
  */
 SDL_free: {
       parameters: ["pointer"],
@@ -202,7 +202,7 @@ SDL_free: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:1529 void SDL_GetOriginalMemoryFunctions(SDL_malloc_func *malloc_func, SDL_calloc_func *calloc_func, SDL_realloc_func *realloc_func, SDL_free_func *free_func);
+ * @from SDL_stdinc.h:1523 void SDL_GetOriginalMemoryFunctions(SDL_malloc_func *malloc_func, SDL_calloc_func *calloc_func, SDL_realloc_func *realloc_func, SDL_free_func *free_func);
  */
 SDL_GetOriginalMemoryFunctions: {
       parameters: ["pointer", "pointer", "pointer", "pointer"],
@@ -227,7 +227,7 @@ SDL_GetOriginalMemoryFunctions: {
  * @sa SDL_SetMemoryFunctions
  * @sa SDL_GetOriginalMemoryFunctions
  *
- * @from SDL_stdinc.h:1551 void SDL_GetMemoryFunctions(SDL_malloc_func *malloc_func, SDL_calloc_func *calloc_func, SDL_realloc_func *realloc_func, SDL_free_func *free_func);
+ * @from SDL_stdinc.h:1545 void SDL_GetMemoryFunctions(SDL_malloc_func *malloc_func, SDL_calloc_func *calloc_func, SDL_realloc_func *realloc_func, SDL_free_func *free_func);
  */
 SDL_GetMemoryFunctions: {
       parameters: ["pointer", "pointer", "pointer", "pointer"],
@@ -261,7 +261,7 @@ SDL_GetMemoryFunctions: {
  * @sa SDL_GetMemoryFunctions
  * @sa SDL_GetOriginalMemoryFunctions
  *
- * @from SDL_stdinc.h:1582 bool SDL_SetMemoryFunctions(SDL_malloc_func malloc_func, SDL_calloc_func calloc_func, SDL_realloc_func realloc_func, SDL_free_func free_func);
+ * @from SDL_stdinc.h:1576 bool SDL_SetMemoryFunctions(SDL_malloc_func malloc_func, SDL_calloc_func calloc_func, SDL_realloc_func realloc_func, SDL_free_func free_func);
  */
 SDL_SetMemoryFunctions: {
       parameters: ["function", "function", "function", "function"],
@@ -291,7 +291,7 @@ SDL_SetMemoryFunctions: {
  *
  * @sa SDL_aligned_free
  *
- * @from SDL_stdinc.h:1609 SDL_MALLOC void * SDL_aligned_alloc(size_t alignment, size_t size);
+ * @from SDL_stdinc.h:1603 SDL_MALLOC void * SDL_aligned_alloc(size_t alignment, size_t size);
  */
 SDL_aligned_alloc: {
       parameters: ["usize", "usize"],
@@ -315,7 +315,7 @@ SDL_aligned_alloc: {
  *
  * @sa SDL_aligned_alloc
  *
- * @from SDL_stdinc.h:1627 void SDL_aligned_free(void *mem);
+ * @from SDL_stdinc.h:1621 void SDL_aligned_free(void *mem);
  */
 SDL_aligned_free: {
       parameters: ["pointer"],
@@ -333,7 +333,7 @@ SDL_aligned_free: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:1639 int SDL_GetNumAllocations(void);
+ * @from SDL_stdinc.h:1633 int SDL_GetNumAllocations(void);
  */
 SDL_GetNumAllocations: {
       parameters: [],
@@ -362,7 +362,7 @@ SDL_GetNumAllocations: {
  * @sa SDL_SetEnvironmentVariable
  * @sa SDL_UnsetEnvironmentVariable
  *
- * @from SDL_stdinc.h:1677 SDL_Environment * SDL_GetEnvironment(void);
+ * @from SDL_stdinc.h:1671 SDL_Environment * SDL_GetEnvironment(void);
  */
 SDL_GetEnvironment: {
       parameters: [],
@@ -390,7 +390,7 @@ SDL_GetEnvironment: {
  * @sa SDL_UnsetEnvironmentVariable
  * @sa SDL_DestroyEnvironment
  *
- * @from SDL_stdinc.h:1699 SDL_Environment * SDL_CreateEnvironment(bool populated);
+ * @from SDL_stdinc.h:1693 SDL_Environment * SDL_CreateEnvironment(bool populated);
  */
 SDL_CreateEnvironment: {
       parameters: ["bool"],
@@ -416,7 +416,7 @@ SDL_CreateEnvironment: {
  * @sa SDL_SetEnvironmentVariable
  * @sa SDL_UnsetEnvironmentVariable
  *
- * @from SDL_stdinc.h:1719 const char * SDL_GetEnvironmentVariable(SDL_Environment *env, const char *name);
+ * @from SDL_stdinc.h:1713 const char * SDL_GetEnvironmentVariable(SDL_Environment *env, const char *name);
  */
 SDL_GetEnvironmentVariable: {
       parameters: ["pointer", "pointer"],
@@ -443,7 +443,7 @@ SDL_GetEnvironmentVariable: {
  * @sa SDL_SetEnvironmentVariable
  * @sa SDL_UnsetEnvironmentVariable
  *
- * @from SDL_stdinc.h:1740 char ** SDL_GetEnvironmentVariables(SDL_Environment *env);
+ * @from SDL_stdinc.h:1734 char ** SDL_GetEnvironmentVariables(SDL_Environment *env);
  */
 SDL_GetEnvironmentVariables: {
       parameters: ["pointer"],
@@ -473,7 +473,7 @@ SDL_GetEnvironmentVariables: {
  * @sa SDL_GetEnvironmentVariables
  * @sa SDL_UnsetEnvironmentVariable
  *
- * @from SDL_stdinc.h:1764 bool SDL_SetEnvironmentVariable(SDL_Environment *env, const char *name, const char *value, bool overwrite);
+ * @from SDL_stdinc.h:1758 bool SDL_SetEnvironmentVariable(SDL_Environment *env, const char *name, const char *value, bool overwrite);
  */
 SDL_SetEnvironmentVariable: {
       parameters: ["pointer", "pointer", "pointer", "bool"],
@@ -500,7 +500,7 @@ SDL_SetEnvironmentVariable: {
  * @sa SDL_SetEnvironmentVariable
  * @sa SDL_UnsetEnvironmentVariable
  *
- * @from SDL_stdinc.h:1785 bool SDL_UnsetEnvironmentVariable(SDL_Environment *env, const char *name);
+ * @from SDL_stdinc.h:1779 bool SDL_UnsetEnvironmentVariable(SDL_Environment *env, const char *name);
  */
 SDL_UnsetEnvironmentVariable: {
       parameters: ["pointer", "pointer"],
@@ -520,7 +520,7 @@ SDL_UnsetEnvironmentVariable: {
  *
  * @sa SDL_CreateEnvironment
  *
- * @from SDL_stdinc.h:1799 void SDL_DestroyEnvironment(SDL_Environment *env);
+ * @from SDL_stdinc.h:1793 void SDL_DestroyEnvironment(SDL_Environment *env);
  */
 SDL_DestroyEnvironment: {
       parameters: ["pointer"],
@@ -530,6 +530,8 @@ SDL_DestroyEnvironment: {
 
 /**
  * Get the value of a variable in the environment.
+ *
+ * The name of the variable is case sensitive on all platforms.
  *
  * This function uses SDL's cached copy of the environment and is thread-safe.
  *
@@ -541,7 +543,7 @@ SDL_DestroyEnvironment: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:1814 const char * SDL_getenv(const char *name);
+ * @from SDL_stdinc.h:1810 const char * SDL_getenv(const char *name);
  */
 SDL_getenv: {
       parameters: ["pointer"],
@@ -555,6 +557,11 @@ SDL_getenv: {
  * This function bypasses SDL's cached copy of the environment and is not
  * thread-safe.
  *
+ * On some platforms, this may make case-insensitive matches, while other
+ * platforms are case-sensitive. It is best to be precise with strings used
+ * for queries through this interface. SDL_getenv is always case-sensitive,
+ * however.
+ *
  * @param name the name of the variable to get.
  * @returns a pointer to the value of the variable or NULL if it can't be
  *          found.
@@ -566,7 +573,7 @@ SDL_getenv: {
  *
  * @sa SDL_getenv
  *
- * @from SDL_stdinc.h:1833 const char * SDL_getenv_unsafe(const char *name);
+ * @from SDL_stdinc.h:1834 const char * SDL_getenv_unsafe(const char *name);
  */
 SDL_getenv_unsafe: {
       parameters: ["pointer"],
@@ -590,7 +597,7 @@ SDL_getenv_unsafe: {
  *
  * @sa SDL_SetEnvironmentVariable
  *
- * @from SDL_stdinc.h:1851 int SDL_setenv_unsafe(const char *name, const char *value, int overwrite);
+ * @from SDL_stdinc.h:1852 int SDL_setenv_unsafe(const char *name, const char *value, int overwrite);
  */
 SDL_setenv_unsafe: {
       parameters: ["pointer", "pointer", "i32"],
@@ -611,7 +618,7 @@ SDL_setenv_unsafe: {
  *
  * @sa SDL_UnsetEnvironmentVariable
  *
- * @from SDL_stdinc.h:1866 int SDL_unsetenv_unsafe(const char *name);
+ * @from SDL_stdinc.h:1867 int SDL_unsetenv_unsafe(const char *name);
  */
 SDL_unsetenv_unsafe: {
       parameters: ["pointer"],
@@ -663,7 +670,7 @@ SDL_unsetenv_unsafe: {
  * @sa SDL_bsearch
  * @sa SDL_qsort_r
  *
- * @from SDL_stdinc.h:1928 void SDL_qsort(void *base, size_t nmemb, size_t size, SDL_CompareCallback compare);
+ * @from SDL_stdinc.h:1929 void SDL_qsort(void *base, size_t nmemb, size_t size, SDL_CompareCallback compare);
  */
 SDL_qsort: {
       parameters: ["pointer", "usize", "usize", "function"],
@@ -719,7 +726,7 @@ SDL_qsort: {
  * @sa SDL_bsearch_r
  * @sa SDL_qsort
  *
- * @from SDL_stdinc.h:1978 void * SDL_bsearch(const void *key, const void *base, size_t nmemb, size_t size, SDL_CompareCallback compare);
+ * @from SDL_stdinc.h:1979 void * SDL_bsearch(const void *key, const void *base, size_t nmemb, size_t size, SDL_CompareCallback compare);
  */
 SDL_bsearch: {
       parameters: ["pointer", "pointer", "usize", "usize", "function"],
@@ -778,7 +785,7 @@ SDL_bsearch: {
  * @sa SDL_bsearch_r
  * @sa SDL_qsort
  *
- * @from SDL_stdinc.h:2048 void SDL_qsort_r(void *base, size_t nmemb, size_t size, SDL_CompareCallback_r compare, void *userdata);
+ * @from SDL_stdinc.h:2049 void SDL_qsort_r(void *base, size_t nmemb, size_t size, SDL_CompareCallback_r compare, void *userdata);
  */
 SDL_qsort_r: {
       parameters: ["pointer", "usize", "usize", "function", "pointer"],
@@ -842,7 +849,7 @@ SDL_qsort_r: {
  * @sa SDL_bsearch
  * @sa SDL_qsort_r
  *
- * @from SDL_stdinc.h:2106 void * SDL_bsearch_r(const void *key, const void *base, size_t nmemb, size_t size, SDL_CompareCallback_r compare, void *userdata);
+ * @from SDL_stdinc.h:2107 void * SDL_bsearch_r(const void *key, const void *base, size_t nmemb, size_t size, SDL_CompareCallback_r compare, void *userdata);
  */
 SDL_bsearch_r: {
       parameters: ["pointer", "pointer", "usize", "usize", "function", "pointer"],
@@ -860,7 +867,7 @@ SDL_bsearch_r: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2118 int SDL_abs(int x);
+ * @from SDL_stdinc.h:2119 int SDL_abs(int x);
  */
 SDL_abs: {
       parameters: ["i32"],
@@ -881,7 +888,7 @@ SDL_abs: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2193 int SDL_isalpha(int x);
+ * @from SDL_stdinc.h:2194 int SDL_isalpha(int x);
  */
 SDL_isalpha: {
       parameters: ["i32"],
@@ -902,7 +909,7 @@ SDL_isalpha: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2208 int SDL_isalnum(int x);
+ * @from SDL_stdinc.h:2209 int SDL_isalnum(int x);
  */
 SDL_isalnum: {
       parameters: ["i32"],
@@ -923,7 +930,7 @@ SDL_isalnum: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2223 int SDL_isblank(int x);
+ * @from SDL_stdinc.h:2224 int SDL_isblank(int x);
  */
 SDL_isblank: {
       parameters: ["i32"],
@@ -944,7 +951,7 @@ SDL_isblank: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2238 int SDL_iscntrl(int x);
+ * @from SDL_stdinc.h:2239 int SDL_iscntrl(int x);
  */
 SDL_iscntrl: {
       parameters: ["i32"],
@@ -965,7 +972,7 @@ SDL_iscntrl: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2253 int SDL_isdigit(int x);
+ * @from SDL_stdinc.h:2254 int SDL_isdigit(int x);
  */
 SDL_isdigit: {
       parameters: ["i32"],
@@ -986,7 +993,7 @@ SDL_isdigit: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2268 int SDL_isxdigit(int x);
+ * @from SDL_stdinc.h:2269 int SDL_isxdigit(int x);
  */
 SDL_isxdigit: {
       parameters: ["i32"],
@@ -1010,7 +1017,7 @@ SDL_isxdigit: {
  * @sa SDL_isgraph
  * @sa SDL_isalnum
  *
- * @from SDL_stdinc.h:2286 int SDL_ispunct(int x);
+ * @from SDL_stdinc.h:2287 int SDL_ispunct(int x);
  */
 SDL_ispunct: {
       parameters: ["i32"],
@@ -1038,7 +1045,7 @@ SDL_ispunct: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2308 int SDL_isspace(int x);
+ * @from SDL_stdinc.h:2309 int SDL_isspace(int x);
  */
 SDL_isspace: {
       parameters: ["i32"],
@@ -1059,7 +1066,7 @@ SDL_isspace: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2323 int SDL_isupper(int x);
+ * @from SDL_stdinc.h:2324 int SDL_isupper(int x);
  */
 SDL_isupper: {
       parameters: ["i32"],
@@ -1080,7 +1087,7 @@ SDL_isupper: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2338 int SDL_islower(int x);
+ * @from SDL_stdinc.h:2339 int SDL_islower(int x);
  */
 SDL_islower: {
       parameters: ["i32"],
@@ -1105,7 +1112,7 @@ SDL_islower: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2357 int SDL_isprint(int x);
+ * @from SDL_stdinc.h:2358 int SDL_isprint(int x);
  */
 SDL_isprint: {
       parameters: ["i32"],
@@ -1132,7 +1139,7 @@ SDL_isprint: {
  *
  * @sa SDL_isprint
  *
- * @from SDL_stdinc.h:2378 int SDL_isgraph(int x);
+ * @from SDL_stdinc.h:2379 int SDL_isgraph(int x);
  */
 SDL_isgraph: {
       parameters: ["i32"],
@@ -1156,7 +1163,7 @@ SDL_isgraph: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2396 int SDL_toupper(int x);
+ * @from SDL_stdinc.h:2397 int SDL_toupper(int x);
  */
 SDL_toupper: {
       parameters: ["i32"],
@@ -1180,7 +1187,7 @@ SDL_toupper: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2414 int SDL_tolower(int x);
+ * @from SDL_stdinc.h:2415 int SDL_tolower(int x);
  */
 SDL_tolower: {
       parameters: ["i32"],
@@ -1207,7 +1214,7 @@ SDL_tolower: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2435 Uint16 SDL_crc16(Uint16 crc, const void *data, size_t len);
+ * @from SDL_stdinc.h:2436 Uint16 SDL_crc16(Uint16 crc, const void *data, size_t len);
  */
 SDL_crc16: {
       parameters: ["u16", "pointer", "usize"],
@@ -1234,7 +1241,7 @@ SDL_crc16: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2456 Uint32 SDL_crc32(Uint32 crc, const void *data, size_t len);
+ * @from SDL_stdinc.h:2457 Uint32 SDL_crc32(Uint32 crc, const void *data, size_t len);
  */
 SDL_crc32: {
       parameters: ["u32", "pointer", "usize"],
@@ -1266,7 +1273,7 @@ SDL_crc32: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2482 Uint32 SDL_murmur3_32(const void *data, size_t len, Uint32 seed);
+ * @from SDL_stdinc.h:2483 Uint32 SDL_murmur3_32(const void *data, size_t len, Uint32 seed);
  */
 SDL_murmur3_32: {
       parameters: ["pointer", "usize", "u32"],
@@ -1292,7 +1299,7 @@ SDL_murmur3_32: {
  *
  * @sa SDL_memmove
  *
- * @from SDL_stdinc.h:2502 void * SDL_memcpy(SDL_OUT_BYTECAP(len) void *dst, SDL_IN_BYTECAP(len) const void *src, size_t len);
+ * @from SDL_stdinc.h:2503 void * SDL_memcpy(SDL_OUT_BYTECAP(len) void *dst, SDL_IN_BYTECAP(len) const void *src, size_t len);
  */
 SDL_memcpy: {
       parameters: ["pointer", "pointer", "usize"],
@@ -1317,7 +1324,7 @@ SDL_memcpy: {
  *
  * @sa SDL_memcpy
  *
- * @from SDL_stdinc.h:2558 void * SDL_memmove(SDL_OUT_BYTECAP(len) void *dst, SDL_IN_BYTECAP(len) const void *src, size_t len);
+ * @from SDL_stdinc.h:2559 void * SDL_memmove(SDL_OUT_BYTECAP(len) void *dst, SDL_IN_BYTECAP(len) const void *src, size_t len);
  */
 SDL_memmove: {
       parameters: ["pointer", "pointer", "usize"],
@@ -1343,7 +1350,7 @@ SDL_memmove: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2586 void * SDL_memset(SDL_OUT_BYTECAP(len) void *dst, int c, size_t len);
+ * @from SDL_stdinc.h:2587 void * SDL_memset(SDL_OUT_BYTECAP(len) void *dst, int c, size_t len);
  */
 SDL_memset: {
       parameters: ["pointer", "i32", "usize"],
@@ -1369,7 +1376,7 @@ SDL_memset: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2606 void * SDL_memset4(void *dst, Uint32 val, size_t dwords);
+ * @from SDL_stdinc.h:2607 void * SDL_memset4(void *dst, Uint32 val, size_t dwords);
  */
 SDL_memset4: {
       parameters: ["pointer", "u32", "usize"],
@@ -1391,7 +1398,7 @@ SDL_memset4: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2688 int SDL_memcmp(const void *s1, const void *s2, size_t len);
+ * @from SDL_stdinc.h:2689 int SDL_memcmp(const void *s1, const void *s2, size_t len);
  */
 SDL_memcmp: {
       parameters: ["pointer", "pointer", "usize"],
@@ -1424,7 +1431,7 @@ SDL_memcmp: {
  * @sa SDL_utf8strlen
  * @sa SDL_utf8strnlen
  *
- * @from SDL_stdinc.h:2715 size_t SDL_wcslen(const wchar_t *wstr);
+ * @from SDL_stdinc.h:2716 size_t SDL_wcslen(const wchar_t *wstr);
  */
 SDL_wcslen: {
       parameters: ["pointer"],
@@ -1461,7 +1468,7 @@ SDL_wcslen: {
  * @sa SDL_utf8strlen
  * @sa SDL_utf8strnlen
  *
- * @from SDL_stdinc.h:2746 size_t SDL_wcsnlen(const wchar_t *wstr, size_t maxlen);
+ * @from SDL_stdinc.h:2747 size_t SDL_wcsnlen(const wchar_t *wstr, size_t maxlen);
  */
 SDL_wcsnlen: {
       parameters: ["pointer", "usize"],
@@ -1494,7 +1501,7 @@ SDL_wcsnlen: {
  *
  * @sa SDL_wcslcat
  *
- * @from SDL_stdinc.h:2773 size_t SDL_wcslcpy(SDL_OUT_Z_CAP(maxlen) wchar_t *dst, const wchar_t *src, size_t maxlen);
+ * @from SDL_stdinc.h:2774 size_t SDL_wcslcpy(SDL_OUT_Z_CAP(maxlen) wchar_t *dst, const wchar_t *src, size_t maxlen);
  */
 SDL_wcslcpy: {
       parameters: ["pointer", "pointer", "usize"],
@@ -1529,7 +1536,7 @@ SDL_wcslcpy: {
  *
  * @sa SDL_wcslcpy
  *
- * @from SDL_stdinc.h:2802 size_t SDL_wcslcat(SDL_INOUT_Z_CAP(maxlen) wchar_t *dst, const wchar_t *src, size_t maxlen);
+ * @from SDL_stdinc.h:2803 size_t SDL_wcslcat(SDL_INOUT_Z_CAP(maxlen) wchar_t *dst, const wchar_t *src, size_t maxlen);
  */
 SDL_wcslcat: {
       parameters: ["pointer", "pointer", "usize"],
@@ -1553,7 +1560,7 @@ SDL_wcslcat: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2820 wchar_t * SDL_wcsdup(const wchar_t *wstr);
+ * @from SDL_stdinc.h:2821 wchar_t * SDL_wcsdup(const wchar_t *wstr);
  */
 SDL_wcsdup: {
       parameters: ["pointer"],
@@ -1579,7 +1586,7 @@ SDL_wcsdup: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2840 wchar_t * SDL_wcsstr(const wchar_t *haystack, const wchar_t *needle);
+ * @from SDL_stdinc.h:2841 wchar_t * SDL_wcsstr(const wchar_t *haystack, const wchar_t *needle);
  */
 SDL_wcsstr: {
       parameters: ["pointer", "pointer"],
@@ -1610,7 +1617,7 @@ SDL_wcsstr: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2865 wchar_t * SDL_wcsnstr(const wchar_t *haystack, const wchar_t *needle, size_t maxlen);
+ * @from SDL_stdinc.h:2866 wchar_t * SDL_wcsnstr(const wchar_t *haystack, const wchar_t *needle, size_t maxlen);
  */
 SDL_wcsnstr: {
       parameters: ["pointer", "pointer", "usize"],
@@ -1635,7 +1642,7 @@ SDL_wcsnstr: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2884 int SDL_wcscmp(const wchar_t *str1, const wchar_t *str2);
+ * @from SDL_stdinc.h:2885 int SDL_wcscmp(const wchar_t *str1, const wchar_t *str2);
  */
 SDL_wcscmp: {
       parameters: ["pointer", "pointer"],
@@ -1672,7 +1679,7 @@ SDL_wcscmp: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2915 int SDL_wcsncmp(const wchar_t *str1, const wchar_t *str2, size_t maxlen);
+ * @from SDL_stdinc.h:2916 int SDL_wcsncmp(const wchar_t *str1, const wchar_t *str2, size_t maxlen);
  */
 SDL_wcsncmp: {
       parameters: ["pointer", "pointer", "usize"],
@@ -1708,7 +1715,7 @@ SDL_wcsncmp: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2945 int SDL_wcscasecmp(const wchar_t *str1, const wchar_t *str2);
+ * @from SDL_stdinc.h:2946 int SDL_wcscasecmp(const wchar_t *str1, const wchar_t *str2);
  */
 SDL_wcscasecmp: {
       parameters: ["pointer", "pointer"],
@@ -1756,7 +1763,7 @@ SDL_wcscasecmp: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2987 int SDL_wcsncasecmp(const wchar_t *str1, const wchar_t *str2, size_t maxlen);
+ * @from SDL_stdinc.h:2988 int SDL_wcsncasecmp(const wchar_t *str1, const wchar_t *str2, size_t maxlen);
  */
 SDL_wcsncasecmp: {
       parameters: ["pointer", "pointer", "usize"],
@@ -1789,7 +1796,7 @@ SDL_wcsncasecmp: {
  *
  * @sa SDL_strtol
  *
- * @from SDL_stdinc.h:3014 long SDL_wcstol(const wchar_t *str, wchar_t **endp, int base);
+ * @from SDL_stdinc.h:3015 long SDL_wcstol(const wchar_t *str, wchar_t **endp, int base);
  */
 SDL_wcstol: {
       parameters: ["pointer", "pointer", "i32"],
@@ -1815,7 +1822,7 @@ SDL_wcstol: {
  * @sa SDL_utf8strlen
  * @sa SDL_utf8strnlen
  *
- * @from SDL_stdinc.h:3034 size_t SDL_strlen(const char *str);
+ * @from SDL_stdinc.h:3035 size_t SDL_strlen(const char *str);
  */
 SDL_strlen: {
       parameters: ["pointer"],
@@ -1845,7 +1852,7 @@ SDL_strlen: {
  * @sa SDL_utf8strlen
  * @sa SDL_utf8strnlen
  *
- * @from SDL_stdinc.h:3058 size_t SDL_strnlen(const char *str, size_t maxlen);
+ * @from SDL_stdinc.h:3059 size_t SDL_strnlen(const char *str, size_t maxlen);
  */
 SDL_strnlen: {
       parameters: ["pointer", "usize"],
@@ -1880,7 +1887,7 @@ SDL_strnlen: {
  * @sa SDL_strlcat
  * @sa SDL_utf8strlcpy
  *
- * @from SDL_stdinc.h:3087 size_t SDL_strlcpy(SDL_OUT_Z_CAP(maxlen) char *dst, const char *src, size_t maxlen);
+ * @from SDL_stdinc.h:3088 size_t SDL_strlcpy(SDL_OUT_Z_CAP(maxlen) char *dst, const char *src, size_t maxlen);
  */
 SDL_strlcpy: {
       parameters: ["pointer", "pointer", "usize"],
@@ -1914,7 +1921,7 @@ SDL_strlcpy: {
  *
  * @sa SDL_strlcpy
  *
- * @from SDL_stdinc.h:3115 size_t SDL_utf8strlcpy(SDL_OUT_Z_CAP(dst_bytes) char *dst, const char *src, size_t dst_bytes);
+ * @from SDL_stdinc.h:3116 size_t SDL_utf8strlcpy(SDL_OUT_Z_CAP(dst_bytes) char *dst, const char *src, size_t dst_bytes);
  */
 SDL_utf8strlcpy: {
       parameters: ["pointer", "pointer", "usize"],
@@ -1948,7 +1955,7 @@ SDL_utf8strlcpy: {
  *
  * @sa SDL_strlcpy
  *
- * @from SDL_stdinc.h:3143 size_t SDL_strlcat(SDL_INOUT_Z_CAP(maxlen) char *dst, const char *src, size_t maxlen);
+ * @from SDL_stdinc.h:3144 size_t SDL_strlcat(SDL_INOUT_Z_CAP(maxlen) char *dst, const char *src, size_t maxlen);
  */
 SDL_strlcat: {
       parameters: ["pointer", "pointer", "usize"],
@@ -1972,7 +1979,7 @@ SDL_strlcat: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3161 SDL_MALLOC char * SDL_strdup(const char *str);
+ * @from SDL_stdinc.h:3162 SDL_MALLOC char * SDL_strdup(const char *str);
  */
 SDL_strdup: {
       parameters: ["pointer"],
@@ -2003,7 +2010,7 @@ SDL_strdup: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3186 SDL_MALLOC char * SDL_strndup(const char *str, size_t maxlen);
+ * @from SDL_stdinc.h:3187 SDL_MALLOC char * SDL_strndup(const char *str, size_t maxlen);
  */
 SDL_strndup: {
       parameters: ["pointer", "usize"],
@@ -2030,7 +2037,7 @@ SDL_strndup: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3207 char * SDL_strrev(char *str);
+ * @from SDL_stdinc.h:3208 char * SDL_strrev(char *str);
  */
 SDL_strrev: {
       parameters: ["pointer"],
@@ -2057,7 +2064,7 @@ SDL_strrev: {
  *
  * @sa SDL_strlwr
  *
- * @from SDL_stdinc.h:3228 char * SDL_strupr(char *str);
+ * @from SDL_stdinc.h:3229 char * SDL_strupr(char *str);
  */
 SDL_strupr: {
       parameters: ["pointer"],
@@ -2084,7 +2091,7 @@ SDL_strupr: {
  *
  * @sa SDL_strupr
  *
- * @from SDL_stdinc.h:3249 char * SDL_strlwr(char *str);
+ * @from SDL_stdinc.h:3250 char * SDL_strlwr(char *str);
  */
 SDL_strlwr: {
       parameters: ["pointer"],
@@ -2110,7 +2117,7 @@ SDL_strlwr: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3269 char * SDL_strchr(const char *str, int c);
+ * @from SDL_stdinc.h:3270 char * SDL_strchr(const char *str, int c);
  */
 SDL_strchr: {
       parameters: ["pointer", "i32"],
@@ -2135,7 +2142,7 @@ SDL_strchr: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3288 char * SDL_strrchr(const char *str, int c);
+ * @from SDL_stdinc.h:3289 char * SDL_strrchr(const char *str, int c);
  */
 SDL_strrchr: {
       parameters: ["pointer", "i32"],
@@ -2161,7 +2168,7 @@ SDL_strrchr: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3308 char * SDL_strstr(const char *haystack, const char *needle);
+ * @from SDL_stdinc.h:3309 char * SDL_strstr(const char *haystack, const char *needle);
  */
 SDL_strstr: {
       parameters: ["pointer", "pointer"],
@@ -2190,7 +2197,7 @@ SDL_strstr: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3331 char * SDL_strnstr(const char *haystack, const char *needle, size_t maxlen);
+ * @from SDL_stdinc.h:3332 char * SDL_strnstr(const char *haystack, const char *needle, size_t maxlen);
  */
 SDL_strnstr: {
       parameters: ["pointer", "pointer", "usize"],
@@ -2224,7 +2231,7 @@ SDL_strnstr: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3359 char * SDL_strcasestr(const char *haystack, const char *needle);
+ * @from SDL_stdinc.h:3360 char * SDL_strcasestr(const char *haystack, const char *needle);
  */
 SDL_strcasestr: {
       parameters: ["pointer", "pointer"],
@@ -2259,7 +2266,7 @@ SDL_strcasestr: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3388 char * SDL_strtok_r(char *str, const char *delim, char **saveptr);
+ * @from SDL_stdinc.h:3389 char * SDL_strtok_r(char *str, const char *delim, char **saveptr);
  */
 SDL_strtok_r: {
       parameters: ["pointer", "pointer", "pointer"],
@@ -2293,7 +2300,7 @@ SDL_strtok_r: {
  * @sa SDL_utf8strnlen
  * @sa SDL_strlen
  *
- * @from SDL_stdinc.h:3416 size_t SDL_utf8strlen(const char *str);
+ * @from SDL_stdinc.h:3417 size_t SDL_utf8strlen(const char *str);
  */
 SDL_utf8strlen: {
       parameters: ["pointer"],
@@ -2332,7 +2339,7 @@ SDL_utf8strlen: {
  * @sa SDL_utf8strlen
  * @sa SDL_strnlen
  *
- * @from SDL_stdinc.h:3449 size_t SDL_utf8strnlen(const char *str, size_t bytes);
+ * @from SDL_stdinc.h:3450 size_t SDL_utf8strnlen(const char *str, size_t bytes);
  */
 SDL_utf8strnlen: {
       parameters: ["pointer", "usize"],
@@ -2366,7 +2373,7 @@ SDL_utf8strnlen: {
  * @sa SDL_ltoa
  * @sa SDL_lltoa
  *
- * @from SDL_stdinc.h:3477 char * SDL_itoa(int value, char *str, int radix);
+ * @from SDL_stdinc.h:3478 char * SDL_itoa(int value, char *str, int radix);
  */
 SDL_itoa: {
       parameters: ["i32", "pointer", "i32"],
@@ -2400,7 +2407,7 @@ SDL_itoa: {
  * @sa SDL_ultoa
  * @sa SDL_ulltoa
  *
- * @from SDL_stdinc.h:3505 char * SDL_uitoa(unsigned int value, char *str, int radix);
+ * @from SDL_stdinc.h:3506 char * SDL_uitoa(unsigned int value, char *str, int radix);
  */
 SDL_uitoa: {
       parameters: ["i32", "pointer", "i32"],
@@ -2434,7 +2441,7 @@ SDL_uitoa: {
  * @sa SDL_itoa
  * @sa SDL_lltoa
  *
- * @from SDL_stdinc.h:3533 char * SDL_ltoa(long value, char *str, int radix);
+ * @from SDL_stdinc.h:3534 char * SDL_ltoa(long value, char *str, int radix);
  */
 SDL_ltoa: {
       parameters: ["i64", "pointer", "i32"],
@@ -2468,7 +2475,7 @@ SDL_ltoa: {
  * @sa SDL_uitoa
  * @sa SDL_ulltoa
  *
- * @from SDL_stdinc.h:3561 char * SDL_ultoa(unsigned long value, char *str, int radix);
+ * @from SDL_stdinc.h:3562 char * SDL_ultoa(unsigned long value, char *str, int radix);
  */
 SDL_ultoa: {
       parameters: ["i64", "pointer", "i32"],
@@ -2502,7 +2509,7 @@ SDL_ultoa: {
  * @sa SDL_itoa
  * @sa SDL_ltoa
  *
- * @from SDL_stdinc.h:3591 char * SDL_lltoa(long long value, char *str, int radix);
+ * @from SDL_stdinc.h:3592 char * SDL_lltoa(long long value, char *str, int radix);
  */
 SDL_lltoa: {
       parameters: ["i64", "pointer", "i32"],
@@ -2536,7 +2543,7 @@ SDL_lltoa: {
  * @sa SDL_uitoa
  * @sa SDL_ultoa
  *
- * @from SDL_stdinc.h:3619 char * SDL_ulltoa(unsigned long long value, char *str, int radix);
+ * @from SDL_stdinc.h:3620 char * SDL_ulltoa(unsigned long long value, char *str, int radix);
  */
 SDL_ulltoa: {
       parameters: ["i64", "pointer", "i32"],
@@ -2565,7 +2572,7 @@ SDL_ulltoa: {
  * @sa SDL_strtod
  * @sa SDL_itoa
  *
- * @from SDL_stdinc.h:3643 int SDL_atoi(const char *str);
+ * @from SDL_stdinc.h:3644 int SDL_atoi(const char *str);
  */
 SDL_atoi: {
       parameters: ["pointer"],
@@ -2593,7 +2600,7 @@ SDL_atoi: {
  * @sa SDL_strtoull
  * @sa SDL_strtod
  *
- * @from SDL_stdinc.h:3665 double SDL_atof(const char *str);
+ * @from SDL_stdinc.h:3666 double SDL_atof(const char *str);
  */
 SDL_atof: {
       parameters: ["pointer"],
@@ -2633,7 +2640,7 @@ SDL_atof: {
  * @sa SDL_ltoa
  * @sa SDL_wcstol
  *
- * @from SDL_stdinc.h:3699 long SDL_strtol(const char *str, char **endp, int base);
+ * @from SDL_stdinc.h:3700 long SDL_strtol(const char *str, char **endp, int base);
  */
 SDL_strtol: {
       parameters: ["pointer", "pointer", "i32"],
@@ -2672,7 +2679,7 @@ SDL_strtol: {
  * @sa SDL_strtod
  * @sa SDL_ultoa
  *
- * @from SDL_stdinc.h:3732 unsigned long SDL_strtoul(const char *str, char **endp, int base);
+ * @from SDL_stdinc.h:3733 unsigned long SDL_strtoul(const char *str, char **endp, int base);
  */
 SDL_strtoul: {
       parameters: ["pointer", "pointer", "i32"],
@@ -2711,7 +2718,7 @@ SDL_strtoul: {
  * @sa SDL_strtod
  * @sa SDL_lltoa
  *
- * @from SDL_stdinc.h:3767 long long SDL_strtoll(const char *str, char **endp, int base);
+ * @from SDL_stdinc.h:3768 long long SDL_strtoll(const char *str, char **endp, int base);
  */
 SDL_strtoll: {
       parameters: ["pointer", "pointer", "i32"],
@@ -2751,7 +2758,7 @@ SDL_strtoll: {
  * @sa SDL_strtod
  * @sa SDL_ulltoa
  *
- * @from SDL_stdinc.h:3801 unsigned long long SDL_strtoull(const char *str, char **endp, int base);
+ * @from SDL_stdinc.h:3802 unsigned long long SDL_strtoull(const char *str, char **endp, int base);
  */
 SDL_strtoull: {
       parameters: ["pointer", "pointer", "i32"],
@@ -2786,7 +2793,7 @@ SDL_strtoull: {
  * @sa SDL_strtoul
  * @sa SDL_strtoull
  *
- * @from SDL_stdinc.h:3831 double SDL_strtod(const char *str, char **endp);
+ * @from SDL_stdinc.h:3832 double SDL_strtod(const char *str, char **endp);
  */
 SDL_strtod: {
       parameters: ["pointer", "pointer"],
@@ -2812,7 +2819,7 @@ SDL_strtod: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3851 int SDL_strcmp(const char *str1, const char *str2);
+ * @from SDL_stdinc.h:3852 int SDL_strcmp(const char *str1, const char *str2);
  */
 SDL_strcmp: {
       parameters: ["pointer", "pointer"],
@@ -2848,7 +2855,7 @@ SDL_strcmp: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3881 int SDL_strncmp(const char *str1, const char *str2, size_t maxlen);
+ * @from SDL_stdinc.h:3882 int SDL_strncmp(const char *str1, const char *str2, size_t maxlen);
  */
 SDL_strncmp: {
       parameters: ["pointer", "pointer", "usize"],
@@ -2882,7 +2889,7 @@ SDL_strncmp: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3909 int SDL_strcasecmp(const char *str1, const char *str2);
+ * @from SDL_stdinc.h:3910 int SDL_strcasecmp(const char *str1, const char *str2);
  */
 SDL_strcasecmp: {
       parameters: ["pointer", "pointer"],
@@ -2927,7 +2934,7 @@ SDL_strcasecmp: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3949 int SDL_strncasecmp(const char *str1, const char *str2, size_t maxlen);
+ * @from SDL_stdinc.h:3950 int SDL_strncasecmp(const char *str1, const char *str2, size_t maxlen);
  */
 SDL_strncasecmp: {
       parameters: ["pointer", "pointer", "usize"],
@@ -2951,7 +2958,7 @@ SDL_strncasecmp: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3967 char * SDL_strpbrk(const char *str, const char *breakset);
+ * @from SDL_stdinc.h:3968 char * SDL_strpbrk(const char *str, const char *breakset);
  */
 SDL_strpbrk: {
       parameters: ["pointer", "pointer"],
@@ -3002,7 +3009,7 @@ SDL_strpbrk: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:4027 Uint32 SDL_StepUTF8(const char **pstr, size_t *pslen);
+ * @from SDL_stdinc.h:4028 Uint32 SDL_StepUTF8(const char **pstr, size_t *pslen);
  */
 SDL_StepUTF8: {
       parameters: ["pointer", "pointer"],
@@ -3039,7 +3046,7 @@ SDL_StepUTF8: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:4058 Uint32 SDL_StepBackUTF8(const char *start, const char **pstr);
+ * @from SDL_stdinc.h:4059 Uint32 SDL_StepBackUTF8(const char *start, const char **pstr);
  */
 SDL_StepBackUTF8: {
       parameters: ["pointer", "pointer"],
@@ -3074,7 +3081,7 @@ SDL_StepBackUTF8: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:4087 char * SDL_UCS4ToUTF8(Uint32 codepoint, char *dst);
+ * @from SDL_stdinc.h:4088 char * SDL_UCS4ToUTF8(Uint32 codepoint, char *dst);
  */
 SDL_UCS4ToUTF8: {
       parameters: ["u32", "pointer"],
@@ -3100,7 +3107,7 @@ SDL_UCS4ToUTF8: {
  * @sa SDL_rand_bits
  * @sa SDL_randf
  *
- * @from SDL_stdinc.h:4299 void SDL_srand(Uint64 seed);
+ * @from SDL_stdinc.h:4300 void SDL_srand(Uint64 seed);
  */
 SDL_srand: {
       parameters: ["u64"],
@@ -3140,7 +3147,7 @@ SDL_srand: {
  * @sa SDL_srand
  * @sa SDL_randf
  *
- * @from SDL_stdinc.h:4333 Sint32 SDL_rand(Sint32 n);
+ * @from SDL_stdinc.h:4334 Sint32 SDL_rand(Sint32 n);
  */
 SDL_rand: {
       parameters: ["i32"],
@@ -3169,7 +3176,7 @@ SDL_rand: {
  * @sa SDL_srand
  * @sa SDL_rand
  *
- * @from SDL_stdinc.h:4356 float SDL_randf(void);
+ * @from SDL_stdinc.h:4357 float SDL_randf(void);
  */
 SDL_randf: {
       parameters: [],
@@ -3198,7 +3205,7 @@ SDL_randf: {
  * @sa SDL_randf
  * @sa SDL_srand
  *
- * @from SDL_stdinc.h:4379 Uint32 SDL_rand_bits(void);
+ * @from SDL_stdinc.h:4380 Uint32 SDL_rand_bits(void);
  */
 SDL_rand_bits: {
       parameters: [],
@@ -3239,7 +3246,7 @@ SDL_rand_bits: {
  * @sa SDL_rand_bits_r
  * @sa SDL_randf_r
  *
- * @from SDL_stdinc.h:4414 Sint32 SDL_rand_r(Uint64 *state, Sint32 n);
+ * @from SDL_stdinc.h:4415 Sint32 SDL_rand_r(Uint64 *state, Sint32 n);
  */
 SDL_rand_r: {
       parameters: ["pointer", "i32"],
@@ -3272,7 +3279,7 @@ SDL_rand_r: {
  * @sa SDL_rand_r
  * @sa SDL_randf
  *
- * @from SDL_stdinc.h:4441 float SDL_randf_r(Uint64 *state);
+ * @from SDL_stdinc.h:4442 float SDL_randf_r(Uint64 *state);
  */
 SDL_randf_r: {
       parameters: ["pointer"],
@@ -3303,7 +3310,7 @@ SDL_randf_r: {
  * @sa SDL_rand_r
  * @sa SDL_randf_r
  *
- * @from SDL_stdinc.h:4466 Uint32 SDL_rand_bits_r(Uint64 *state);
+ * @from SDL_stdinc.h:4467 Uint32 SDL_rand_bits_r(Uint64 *state);
  */
 SDL_rand_bits_r: {
       parameters: ["pointer"],
@@ -3339,7 +3346,7 @@ SDL_rand_bits_r: {
  * @sa SDL_asin
  * @sa SDL_cos
  *
- * @from SDL_stdinc.h:4520 double SDL_acos(double x);
+ * @from SDL_stdinc.h:4521 double SDL_acos(double x);
  */
 SDL_acos: {
       parameters: ["f64"],
@@ -3375,7 +3382,7 @@ SDL_acos: {
  * @sa SDL_asinf
  * @sa SDL_cosf
  *
- * @from SDL_stdinc.h:4550 float SDL_acosf(float x);
+ * @from SDL_stdinc.h:4551 float SDL_acosf(float x);
  */
 SDL_acosf: {
       parameters: ["f32"],
@@ -3411,7 +3418,7 @@ SDL_acosf: {
  * @sa SDL_acos
  * @sa SDL_sin
  *
- * @from SDL_stdinc.h:4580 double SDL_asin(double x);
+ * @from SDL_stdinc.h:4581 double SDL_asin(double x);
  */
 SDL_asin: {
       parameters: ["f64"],
@@ -3447,7 +3454,7 @@ SDL_asin: {
  * @sa SDL_acosf
  * @sa SDL_sinf
  *
- * @from SDL_stdinc.h:4610 float SDL_asinf(float x);
+ * @from SDL_stdinc.h:4611 float SDL_asinf(float x);
  */
 SDL_asinf: {
       parameters: ["f32"],
@@ -3485,7 +3492,7 @@ SDL_asinf: {
  * @sa SDL_atan2
  * @sa SDL_tan
  *
- * @from SDL_stdinc.h:4642 double SDL_atan(double x);
+ * @from SDL_stdinc.h:4643 double SDL_atan(double x);
  */
 SDL_atan: {
       parameters: ["f64"],
@@ -3523,7 +3530,7 @@ SDL_atan: {
  * @sa SDL_atan2f
  * @sa SDL_tanf
  *
- * @from SDL_stdinc.h:4674 float SDL_atanf(float x);
+ * @from SDL_stdinc.h:4675 float SDL_atanf(float x);
  */
 SDL_atanf: {
       parameters: ["f32"],
@@ -3565,7 +3572,7 @@ SDL_atanf: {
  * @sa SDL_atan
  * @sa SDL_tan
  *
- * @from SDL_stdinc.h:4710 double SDL_atan2(double y, double x);
+ * @from SDL_stdinc.h:4711 double SDL_atan2(double y, double x);
  */
 SDL_atan2: {
       parameters: ["f64", "f64"],
@@ -3607,7 +3614,7 @@ SDL_atan2: {
  * @sa SDL_atan
  * @sa SDL_tan
  *
- * @from SDL_stdinc.h:4746 float SDL_atan2f(float y, float x);
+ * @from SDL_stdinc.h:4747 float SDL_atan2f(float y, float x);
  */
 SDL_atan2f: {
       parameters: ["f32", "f32"],
@@ -3641,7 +3648,7 @@ SDL_atan2f: {
  * @sa SDL_round
  * @sa SDL_lround
  *
- * @from SDL_stdinc.h:4774 double SDL_ceil(double x);
+ * @from SDL_stdinc.h:4775 double SDL_ceil(double x);
  */
 SDL_ceil: {
       parameters: ["f64"],
@@ -3675,7 +3682,7 @@ SDL_ceil: {
  * @sa SDL_roundf
  * @sa SDL_lroundf
  *
- * @from SDL_stdinc.h:4802 float SDL_ceilf(float x);
+ * @from SDL_stdinc.h:4803 float SDL_ceilf(float x);
  */
 SDL_ceilf: {
       parameters: ["f32"],
@@ -3707,7 +3714,7 @@ SDL_ceilf: {
  * @sa SDL_copysignf
  * @sa SDL_fabs
  *
- * @from SDL_stdinc.h:4828 double SDL_copysign(double x, double y);
+ * @from SDL_stdinc.h:4829 double SDL_copysign(double x, double y);
  */
 SDL_copysign: {
       parameters: ["f64", "f64"],
@@ -3739,7 +3746,7 @@ SDL_copysign: {
  * @sa SDL_copysign
  * @sa SDL_fabsf
  *
- * @from SDL_stdinc.h:4854 float SDL_copysignf(float x, float y);
+ * @from SDL_stdinc.h:4855 float SDL_copysignf(float x, float y);
  */
 SDL_copysignf: {
       parameters: ["f32", "f32"],
@@ -3773,7 +3780,7 @@ SDL_copysignf: {
  * @sa SDL_acos
  * @sa SDL_sin
  *
- * @from SDL_stdinc.h:4882 double SDL_cos(double x);
+ * @from SDL_stdinc.h:4883 double SDL_cos(double x);
  */
 SDL_cos: {
       parameters: ["f64"],
@@ -3807,7 +3814,7 @@ SDL_cos: {
  * @sa SDL_acosf
  * @sa SDL_sinf
  *
- * @from SDL_stdinc.h:4910 float SDL_cosf(float x);
+ * @from SDL_stdinc.h:4911 float SDL_cosf(float x);
  */
 SDL_cosf: {
       parameters: ["f32"],
@@ -3845,7 +3852,7 @@ SDL_cosf: {
  * @sa SDL_expf
  * @sa SDL_log
  *
- * @from SDL_stdinc.h:4942 double SDL_exp(double x);
+ * @from SDL_stdinc.h:4943 double SDL_exp(double x);
  */
 SDL_exp: {
       parameters: ["f64"],
@@ -3883,7 +3890,7 @@ SDL_exp: {
  * @sa SDL_exp
  * @sa SDL_logf
  *
- * @from SDL_stdinc.h:4974 float SDL_expf(float x);
+ * @from SDL_stdinc.h:4975 float SDL_expf(float x);
  */
 SDL_expf: {
       parameters: ["f32"],
@@ -3910,7 +3917,7 @@ SDL_expf: {
  *
  * @sa SDL_fabsf
  *
- * @from SDL_stdinc.h:4995 double SDL_fabs(double x);
+ * @from SDL_stdinc.h:4996 double SDL_fabs(double x);
  */
 SDL_fabs: {
       parameters: ["f64"],
@@ -3937,7 +3944,7 @@ SDL_fabs: {
  *
  * @sa SDL_fabs
  *
- * @from SDL_stdinc.h:5016 float SDL_fabsf(float x);
+ * @from SDL_stdinc.h:5017 float SDL_fabsf(float x);
  */
 SDL_fabsf: {
       parameters: ["f32"],
@@ -3971,7 +3978,7 @@ SDL_fabsf: {
  * @sa SDL_round
  * @sa SDL_lround
  *
- * @from SDL_stdinc.h:5044 double SDL_floor(double x);
+ * @from SDL_stdinc.h:5045 double SDL_floor(double x);
  */
 SDL_floor: {
       parameters: ["f64"],
@@ -4005,7 +4012,7 @@ SDL_floor: {
  * @sa SDL_roundf
  * @sa SDL_lroundf
  *
- * @from SDL_stdinc.h:5072 float SDL_floorf(float x);
+ * @from SDL_stdinc.h:5073 float SDL_floorf(float x);
  */
 SDL_floorf: {
       parameters: ["f32"],
@@ -4040,7 +4047,7 @@ SDL_floorf: {
  * @sa SDL_round
  * @sa SDL_lround
  *
- * @from SDL_stdinc.h:5101 double SDL_trunc(double x);
+ * @from SDL_stdinc.h:5102 double SDL_trunc(double x);
  */
 SDL_trunc: {
       parameters: ["f64"],
@@ -4075,7 +4082,7 @@ SDL_trunc: {
  * @sa SDL_roundf
  * @sa SDL_lroundf
  *
- * @from SDL_stdinc.h:5130 float SDL_truncf(float x);
+ * @from SDL_stdinc.h:5131 float SDL_truncf(float x);
  */
 SDL_truncf: {
       parameters: ["f32"],
@@ -4111,7 +4118,7 @@ SDL_truncf: {
  * @sa SDL_round
  * @sa SDL_lround
  *
- * @from SDL_stdinc.h:5160 double SDL_fmod(double x, double y);
+ * @from SDL_stdinc.h:5161 double SDL_fmod(double x, double y);
  */
 SDL_fmod: {
       parameters: ["f64", "f64"],
@@ -4147,7 +4154,7 @@ SDL_fmod: {
  * @sa SDL_roundf
  * @sa SDL_lroundf
  *
- * @from SDL_stdinc.h:5190 float SDL_fmodf(float x, float y);
+ * @from SDL_stdinc.h:5191 float SDL_fmodf(float x, float y);
  */
 SDL_fmodf: {
       parameters: ["f32", "f32"],
@@ -4167,7 +4174,7 @@ SDL_fmodf: {
  *
  * @sa SDL_isinff
  *
- * @from SDL_stdinc.h:5204 int SDL_isinf(double x);
+ * @from SDL_stdinc.h:5205 int SDL_isinf(double x);
  */
 SDL_isinf: {
       parameters: ["f64"],
@@ -4187,7 +4194,7 @@ SDL_isinf: {
  *
  * @sa SDL_isinf
  *
- * @from SDL_stdinc.h:5218 int SDL_isinff(float x);
+ * @from SDL_stdinc.h:5219 int SDL_isinff(float x);
  */
 SDL_isinff: {
       parameters: ["f32"],
@@ -4207,7 +4214,7 @@ SDL_isinff: {
  *
  * @sa SDL_isnanf
  *
- * @from SDL_stdinc.h:5232 int SDL_isnan(double x);
+ * @from SDL_stdinc.h:5233 int SDL_isnan(double x);
  */
 SDL_isnan: {
       parameters: ["f64"],
@@ -4227,7 +4234,7 @@ SDL_isnan: {
  *
  * @sa SDL_isnan
  *
- * @from SDL_stdinc.h:5246 int SDL_isnanf(float x);
+ * @from SDL_stdinc.h:5247 int SDL_isnanf(float x);
  */
 SDL_isnanf: {
       parameters: ["f32"],
@@ -4263,7 +4270,7 @@ SDL_isnanf: {
  * @sa SDL_log10
  * @sa SDL_exp
  *
- * @from SDL_stdinc.h:5276 double SDL_log(double x);
+ * @from SDL_stdinc.h:5277 double SDL_log(double x);
  */
 SDL_log: {
       parameters: ["f64"],
@@ -4298,7 +4305,7 @@ SDL_log: {
  * @sa SDL_log
  * @sa SDL_expf
  *
- * @from SDL_stdinc.h:5305 float SDL_logf(float x);
+ * @from SDL_stdinc.h:5306 float SDL_logf(float x);
  */
 SDL_logf: {
       parameters: ["f32"],
@@ -4334,7 +4341,7 @@ SDL_logf: {
  * @sa SDL_log
  * @sa SDL_pow
  *
- * @from SDL_stdinc.h:5335 double SDL_log10(double x);
+ * @from SDL_stdinc.h:5336 double SDL_log10(double x);
  */
 SDL_log10: {
       parameters: ["f64"],
@@ -4370,7 +4377,7 @@ SDL_log10: {
  * @sa SDL_logf
  * @sa SDL_powf
  *
- * @from SDL_stdinc.h:5365 float SDL_log10f(float x);
+ * @from SDL_stdinc.h:5366 float SDL_log10f(float x);
  */
 SDL_log10f: {
       parameters: ["f32"],
@@ -4396,7 +4403,7 @@ SDL_log10f: {
  * @sa SDL_trunc
  * @sa SDL_fmod
  *
- * @from SDL_stdinc.h:5385 double SDL_modf(double x, double *y);
+ * @from SDL_stdinc.h:5386 double SDL_modf(double x, double *y);
  */
 SDL_modf: {
       parameters: ["f64", "pointer"],
@@ -4422,7 +4429,7 @@ SDL_modf: {
  * @sa SDL_truncf
  * @sa SDL_fmodf
  *
- * @from SDL_stdinc.h:5405 float SDL_modff(float x, float *y);
+ * @from SDL_stdinc.h:5406 float SDL_modff(float x, float *y);
  */
 SDL_modff: {
       parameters: ["f32", "pointer"],
@@ -4460,7 +4467,7 @@ SDL_modff: {
  * @sa SDL_exp
  * @sa SDL_log
  *
- * @from SDL_stdinc.h:5437 double SDL_pow(double x, double y);
+ * @from SDL_stdinc.h:5438 double SDL_pow(double x, double y);
  */
 SDL_pow: {
       parameters: ["f64", "f64"],
@@ -4498,7 +4505,7 @@ SDL_pow: {
  * @sa SDL_expf
  * @sa SDL_logf
  *
- * @from SDL_stdinc.h:5469 float SDL_powf(float x, float y);
+ * @from SDL_stdinc.h:5470 float SDL_powf(float x, float y);
  */
 SDL_powf: {
       parameters: ["f32", "f32"],
@@ -4533,7 +4540,7 @@ SDL_powf: {
  * @sa SDL_ceil
  * @sa SDL_trunc
  *
- * @from SDL_stdinc.h:5498 double SDL_round(double x);
+ * @from SDL_stdinc.h:5499 double SDL_round(double x);
  */
 SDL_round: {
       parameters: ["f64"],
@@ -4568,7 +4575,7 @@ SDL_round: {
  * @sa SDL_ceilf
  * @sa SDL_truncf
  *
- * @from SDL_stdinc.h:5527 float SDL_roundf(float x);
+ * @from SDL_stdinc.h:5528 float SDL_roundf(float x);
  */
 SDL_roundf: {
       parameters: ["f32"],
@@ -4603,7 +4610,7 @@ SDL_roundf: {
  * @sa SDL_ceil
  * @sa SDL_trunc
  *
- * @from SDL_stdinc.h:5556 long SDL_lround(double x);
+ * @from SDL_stdinc.h:5557 long SDL_lround(double x);
  */
 SDL_lround: {
       parameters: ["f64"],
@@ -4638,7 +4645,7 @@ SDL_lround: {
  * @sa SDL_ceilf
  * @sa SDL_truncf
  *
- * @from SDL_stdinc.h:5585 long SDL_lroundf(float x);
+ * @from SDL_stdinc.h:5586 long SDL_lroundf(float x);
  */
 SDL_lroundf: {
       parameters: ["f32"],
@@ -4669,7 +4676,7 @@ SDL_lroundf: {
  * @sa SDL_scalbnf
  * @sa SDL_pow
  *
- * @from SDL_stdinc.h:5610 double SDL_scalbn(double x, int n);
+ * @from SDL_stdinc.h:5611 double SDL_scalbn(double x, int n);
  */
 SDL_scalbn: {
       parameters: ["f64", "i32"],
@@ -4700,7 +4707,7 @@ SDL_scalbn: {
  * @sa SDL_scalbn
  * @sa SDL_powf
  *
- * @from SDL_stdinc.h:5635 float SDL_scalbnf(float x, int n);
+ * @from SDL_stdinc.h:5636 float SDL_scalbnf(float x, int n);
  */
 SDL_scalbnf: {
       parameters: ["f32", "i32"],
@@ -4734,7 +4741,7 @@ SDL_scalbnf: {
  * @sa SDL_asin
  * @sa SDL_cos
  *
- * @from SDL_stdinc.h:5663 double SDL_sin(double x);
+ * @from SDL_stdinc.h:5664 double SDL_sin(double x);
  */
 SDL_sin: {
       parameters: ["f64"],
@@ -4768,7 +4775,7 @@ SDL_sin: {
  * @sa SDL_asinf
  * @sa SDL_cosf
  *
- * @from SDL_stdinc.h:5691 float SDL_sinf(float x);
+ * @from SDL_stdinc.h:5692 float SDL_sinf(float x);
  */
 SDL_sinf: {
       parameters: ["f32"],
@@ -4800,7 +4807,7 @@ SDL_sinf: {
  *
  * @sa SDL_sqrtf
  *
- * @from SDL_stdinc.h:5717 double SDL_sqrt(double x);
+ * @from SDL_stdinc.h:5718 double SDL_sqrt(double x);
  */
 SDL_sqrt: {
       parameters: ["f64"],
@@ -4832,7 +4839,7 @@ SDL_sqrt: {
  *
  * @sa SDL_sqrt
  *
- * @from SDL_stdinc.h:5743 float SDL_sqrtf(float x);
+ * @from SDL_stdinc.h:5744 float SDL_sqrtf(float x);
  */
 SDL_sqrtf: {
       parameters: ["f32"],
@@ -4868,7 +4875,7 @@ SDL_sqrtf: {
  * @sa SDL_atan
  * @sa SDL_atan2
  *
- * @from SDL_stdinc.h:5773 double SDL_tan(double x);
+ * @from SDL_stdinc.h:5774 double SDL_tan(double x);
  */
 SDL_tan: {
       parameters: ["f64"],
@@ -4904,7 +4911,7 @@ SDL_tan: {
  * @sa SDL_atanf
  * @sa SDL_atan2f
  *
- * @from SDL_stdinc.h:5803 float SDL_tanf(float x);
+ * @from SDL_stdinc.h:5804 float SDL_tanf(float x);
  */
 SDL_tanf: {
       parameters: ["f32"],
@@ -4931,13 +4938,15 @@ SDL_tanf: {
  * @param inbytesleft the size of the input string _in bytes_.
  * @returns a new string, converted to the new encoding, or NULL on error.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_iconv_open
  * @sa SDL_iconv_close
  * @sa SDL_iconv
  *
- * @from SDL_stdinc.h:5917 char * SDL_iconv_string(const char *tocode, const char *fromcode, const char *inbuf, size_t inbytesleft);
+ * @from SDL_stdinc.h:5926 char * SDL_iconv_string(const char *tocode, const char *fromcode, const char *inbuf, size_t inbytesleft);
  */
 SDL_iconv_string: {
       parameters: ["pointer", "pointer", "pointer", "usize"],

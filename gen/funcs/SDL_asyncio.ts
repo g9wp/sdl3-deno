@@ -81,7 +81,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -134,13 +134,15 @@ export const symbols = {
  * @returns a pointer to the SDL_AsyncIO structure that is created or NULL on
  *          failure; call SDL_GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_CloseAsyncIO
  * @sa SDL_ReadAsyncIO
  * @sa SDL_WriteAsyncIO
  *
- * @from SDL_asyncio.h:221 SDL_AsyncIO * SDL_AsyncIOFromFile(const char *file, const char *mode);
+ * @from SDL_asyncio.h:223 SDL_AsyncIO * SDL_AsyncIOFromFile(const char *file, const char *mode);
  */
 SDL_AsyncIOFromFile: {
       parameters: ["pointer", "pointer"],
@@ -163,7 +165,7 @@ SDL_AsyncIOFromFile: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_asyncio.h:238 Sint64 SDL_GetAsyncIOSize(SDL_AsyncIO *asyncio);
+ * @from SDL_asyncio.h:240 Sint64 SDL_GetAsyncIOSize(SDL_AsyncIO *asyncio);
  */
 SDL_GetAsyncIOSize: {
       parameters: ["pointer"],
@@ -207,7 +209,7 @@ SDL_GetAsyncIOSize: {
  * @sa SDL_WriteAsyncIO
  * @sa SDL_CreateAsyncIOQueue
  *
- * @from SDL_asyncio.h:276 bool SDL_ReadAsyncIO(SDL_AsyncIO *asyncio, void *ptr, Uint64 offset, Uint64 size, SDL_AsyncIOQueue *queue, void *userdata);
+ * @from SDL_asyncio.h:278 bool SDL_ReadAsyncIO(SDL_AsyncIO *asyncio, void *ptr, Uint64 offset, Uint64 size, SDL_AsyncIOQueue *queue, void *userdata);
  */
 SDL_ReadAsyncIO: {
       parameters: ["pointer", "pointer", "u64", "u64", "pointer", "pointer"],
@@ -250,7 +252,7 @@ SDL_ReadAsyncIO: {
  * @sa SDL_ReadAsyncIO
  * @sa SDL_CreateAsyncIOQueue
  *
- * @from SDL_asyncio.h:313 bool SDL_WriteAsyncIO(SDL_AsyncIO *asyncio, void *ptr, Uint64 offset, Uint64 size, SDL_AsyncIOQueue *queue, void *userdata);
+ * @from SDL_asyncio.h:315 bool SDL_WriteAsyncIO(SDL_AsyncIO *asyncio, void *ptr, Uint64 offset, Uint64 size, SDL_AsyncIOQueue *queue, void *userdata);
  */
 SDL_WriteAsyncIO: {
       parameters: ["pointer", "pointer", "u64", "u64", "pointer", "pointer"],
@@ -305,7 +307,7 @@ SDL_WriteAsyncIO: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_asyncio.h:362 bool SDL_CloseAsyncIO(SDL_AsyncIO *asyncio, bool flush, SDL_AsyncIOQueue *queue, void *userdata);
+ * @from SDL_asyncio.h:364 bool SDL_CloseAsyncIO(SDL_AsyncIO *asyncio, bool flush, SDL_AsyncIOQueue *queue, void *userdata);
  */
 SDL_CloseAsyncIO: {
       parameters: ["pointer", "bool", "pointer", "pointer"],
@@ -330,7 +332,7 @@ SDL_CloseAsyncIO: {
  * @sa SDL_GetAsyncIOResult
  * @sa SDL_WaitAsyncIOResult
  *
- * @from SDL_asyncio.h:381 SDL_AsyncIOQueue * SDL_CreateAsyncIOQueue(void);
+ * @from SDL_asyncio.h:383 SDL_AsyncIOQueue * SDL_CreateAsyncIOQueue(void);
  */
 SDL_CreateAsyncIOQueue: {
       parameters: [],
@@ -366,7 +368,7 @@ SDL_CreateAsyncIOQueue: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_asyncio.h:411 void SDL_DestroyAsyncIOQueue(SDL_AsyncIOQueue *queue);
+ * @from SDL_asyncio.h:413 void SDL_DestroyAsyncIOQueue(SDL_AsyncIOQueue *queue);
  */
 SDL_DestroyAsyncIOQueue: {
       parameters: ["pointer"],
@@ -398,7 +400,7 @@ SDL_DestroyAsyncIOQueue: {
  *
  * @sa SDL_WaitAsyncIOResult
  *
- * @from SDL_asyncio.h:437 bool SDL_GetAsyncIOResult(SDL_AsyncIOQueue *queue, SDL_AsyncIOOutcome *outcome);
+ * @from SDL_asyncio.h:439 bool SDL_GetAsyncIOResult(SDL_AsyncIOQueue *queue, SDL_AsyncIOOutcome *outcome);
  */
 SDL_GetAsyncIOResult: {
       parameters: ["pointer", "pointer"],
@@ -448,7 +450,7 @@ SDL_GetAsyncIOResult: {
  *
  * @sa SDL_SignalAsyncIOQueue
  *
- * @from SDL_asyncio.h:481 bool SDL_WaitAsyncIOResult(SDL_AsyncIOQueue *queue, SDL_AsyncIOOutcome *outcome, Sint32 timeoutMS);
+ * @from SDL_asyncio.h:483 bool SDL_WaitAsyncIOResult(SDL_AsyncIOQueue *queue, SDL_AsyncIOOutcome *outcome, Sint32 timeoutMS);
  */
 SDL_WaitAsyncIOResult: {
       parameters: ["pointer", "pointer", "i32"],
@@ -478,7 +480,7 @@ SDL_WaitAsyncIOResult: {
  *
  * @sa SDL_WaitAsyncIOResult
  *
- * @from SDL_asyncio.h:505 void SDL_SignalAsyncIOQueue(SDL_AsyncIOQueue *queue);
+ * @from SDL_asyncio.h:507 void SDL_SignalAsyncIOQueue(SDL_AsyncIOQueue *queue);
  */
 SDL_SignalAsyncIOQueue: {
       parameters: ["pointer"],
@@ -512,11 +514,13 @@ SDL_SignalAsyncIOQueue: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_LoadFile_IO
  *
- * @from SDL_asyncio.h:537 bool SDL_LoadFileAsync(const char *file, SDL_AsyncIOQueue *queue, void *userdata);
+ * @from SDL_asyncio.h:541 bool SDL_LoadFileAsync(const char *file, SDL_AsyncIOQueue *queue, void *userdata);
  */
 SDL_LoadFileAsync: {
       parameters: ["pointer", "pointer", "pointer"],

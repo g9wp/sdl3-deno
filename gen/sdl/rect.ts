@@ -9,7 +9,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -66,11 +66,13 @@ export function hasRectIntersection(A: { x: number; y: number; w: number; h: num
  *               rectangles `A` and `B`.
  * @returns true if there is an intersection, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_HasRectIntersection
  *
- * @from SDL_rect.h:243 bool SDL_GetRectIntersection(const SDL_Rect *A, const SDL_Rect *B, SDL_Rect *result);
+ * @from SDL_rect.h:245 bool SDL_GetRectIntersection(const SDL_Rect *A, const SDL_Rect *B, SDL_Rect *result);
  */
 export function getRectIntersection(A: { x: number; y: number; w: number; h: number; } | null, B: { x: number; y: number; w: number; h: number; } | null): { x: number; y: number; w: number; h: number; } | null {
   if (A) _p.i32.arr.set([A.x, A.y, A.w, A.h], 0);
@@ -90,9 +92,11 @@ export function getRectIntersection(A: { x: number; y: number; w: number; h: num
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_rect.h:257 bool SDL_GetRectUnion(const SDL_Rect *A, const SDL_Rect *B, SDL_Rect *result);
+ * @from SDL_rect.h:261 bool SDL_GetRectUnion(const SDL_Rect *A, const SDL_Rect *B, SDL_Rect *result);
  */
 export function getRectUnion(A: { x: number; y: number; w: number; h: number; } | null, B: { x: number; y: number; w: number; h: number; } | null): { x: number; y: number; w: number; h: number; } | null {
   if (A) _p.i32.arr.set([A.x, A.y, A.w, A.h], 0);
@@ -117,9 +121,11 @@ export function getRectUnion(A: { x: number; y: number; w: number; h: number; } 
  * @returns true if any points were enclosed or false if all the points were
  *          outside of the clipping rectangle.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_rect.h:276 bool SDL_GetRectEnclosingPoints(const SDL_Point *points, int count, const SDL_Rect *clip, SDL_Rect *result);
+ * @from SDL_rect.h:282 bool SDL_GetRectEnclosingPoints(const SDL_Point *points, int count, const SDL_Rect *clip, SDL_Rect *result);
  */
 export function getRectEnclosingPoints(points: { x: number; y: number; } | null, count: number, clip: { x: number; y: number; w: number; h: number; } | null): { x: number; y: number; w: number; h: number; } | null {
   if (points) _p.i32.arr.set([points.x, points.y], 0);
@@ -145,9 +151,11 @@ export function getRectEnclosingPoints(points: { x: number; y: number; } | null,
  * @param Y2 a pointer to the ending Y-coordinate of the line.
  * @returns true if there is an intersection, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_rect.h:296 bool SDL_GetRectAndLineIntersection(const SDL_Rect *rect, int *X1, int *Y1, int *X2, int *Y2);
+ * @from SDL_rect.h:304 bool SDL_GetRectAndLineIntersection(const SDL_Rect *rect, int *X1, int *Y1, int *X2, int *Y2);
  */
 export function getRectAndLineIntersection(
     rect: { x: number; y: number; w: number; h: number; } | null,
@@ -175,11 +183,13 @@ export function getRectAndLineIntersection(
  * @param B an SDL_FRect structure representing the second rectangle.
  * @returns true if there is an intersection, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GetRectIntersection
+ * @sa SDL_GetRectIntersectionFloat
  *
- * @from SDL_rect.h:429 bool SDL_HasRectIntersectionFloat(const SDL_FRect *A, const SDL_FRect *B);
+ * @from SDL_rect.h:439 bool SDL_HasRectIntersectionFloat(const SDL_FRect *A, const SDL_FRect *B);
  */
 export function hasRectIntersectionFloat(A: { x: number; y: number; w: number; h: number; } | null, B: { x: number; y: number; w: number; h: number; } | null): boolean {
   if (A) _p.f32.arr.set([A.x, A.y, A.w, A.h], 0);
@@ -198,11 +208,13 @@ export function hasRectIntersectionFloat(A: { x: number; y: number; w: number; h
  *               rectangles `A` and `B`.
  * @returns true if there is an intersection, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_HasRectIntersectionFloat
  *
- * @from SDL_rect.h:446 bool SDL_GetRectIntersectionFloat(const SDL_FRect *A, const SDL_FRect *B, SDL_FRect *result);
+ * @from SDL_rect.h:458 bool SDL_GetRectIntersectionFloat(const SDL_FRect *A, const SDL_FRect *B, SDL_FRect *result);
  */
 export function getRectIntersectionFloat(A: { x: number; y: number; w: number; h: number; } | null, B: { x: number; y: number; w: number; h: number; } | null): { x: number; y: number; w: number; h: number; } | null {
   if (A) _p.f32.arr.set([A.x, A.y, A.w, A.h], 0);
@@ -222,9 +234,11 @@ export function getRectIntersectionFloat(A: { x: number; y: number; w: number; h
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_rect.h:460 bool SDL_GetRectUnionFloat(const SDL_FRect *A, const SDL_FRect *B, SDL_FRect *result);
+ * @from SDL_rect.h:474 bool SDL_GetRectUnionFloat(const SDL_FRect *A, const SDL_FRect *B, SDL_FRect *result);
  */
 export function getRectUnionFloat(A: { x: number; y: number; w: number; h: number; } | null, B: { x: number; y: number; w: number; h: number; } | null): { x: number; y: number; w: number; h: number; } | null {
   if (A) _p.f32.arr.set([A.x, A.y, A.w, A.h], 0);
@@ -250,9 +264,11 @@ export function getRectUnionFloat(A: { x: number; y: number; w: number; h: numbe
  * @returns true if any points were enclosed or false if all the points were
  *          outside of the clipping rectangle.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_rect.h:480 bool SDL_GetRectEnclosingPointsFloat(const SDL_FPoint *points, int count, const SDL_FRect *clip, SDL_FRect *result);
+ * @from SDL_rect.h:496 bool SDL_GetRectEnclosingPointsFloat(const SDL_FPoint *points, int count, const SDL_FRect *clip, SDL_FRect *result);
  */
 export function getRectEnclosingPointsFloat(points: { x: number; y: number; } | null, count: number, clip: { x: number; y: number; w: number; h: number; } | null): { x: number; y: number; w: number; h: number; } | null {
   if (points) _p.f32.arr.set([points.x, points.y], 0);
@@ -279,9 +295,11 @@ export function getRectEnclosingPointsFloat(points: { x: number; y: number; } | 
  * @param Y2 a pointer to the ending Y-coordinate of the line.
  * @returns true if there is an intersection, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_rect.h:501 bool SDL_GetRectAndLineIntersectionFloat(const SDL_FRect *rect, float *X1, float *Y1, float *X2, float *Y2);
+ * @from SDL_rect.h:519 bool SDL_GetRectAndLineIntersectionFloat(const SDL_FRect *rect, float *X1, float *Y1, float *X2, float *Y2);
  */
 export function getRectAndLineIntersectionFloat(
     rect: { x: number; y: number; w: number; h: number; } | null,

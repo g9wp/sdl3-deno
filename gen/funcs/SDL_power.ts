@@ -17,7 +17,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -69,9 +69,11 @@ export const symbols = {
  * @returns the current battery state or `SDL_POWERSTATE_ERROR` on failure;
  *          call SDL_GetError() for more information.
  *
+ * @threadsafety This function is not thread safe.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_power.h:97 SDL_PowerState SDL_GetPowerInfo(int *seconds, int *percent);
+ * @from SDL_power.h:99 SDL_PowerState SDL_GetPowerInfo(int *seconds, int *percent);
  */
 SDL_GetPowerInfo: {
       parameters: ["pointer", "pointer"],

@@ -10,7 +10,7 @@
 
 /*
   SDL_image:  An example image loading library for use with SDL
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -35,9 +35,7 @@ import * as _ from "@denosaurs/byte-type";
 /**
  * Animated image support
  *
- * Currently only animated GIFs and WEBP images are supported.
- *
- * @from SDL_image.h:1974
+ * @from SDL_image.h:2463
  */
 export const IMG_Animation = new _.Struct({
   w: _.i32, /**< int : The width of the frames */

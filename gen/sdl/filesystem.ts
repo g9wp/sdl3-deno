@@ -24,7 +24,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -217,7 +217,7 @@ export function getUserFolder(folder: number): string {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_filesystem.h:304 bool SDL_CreateDirectory(const char *path);
+ * @from SDL_filesystem.h:303 bool SDL_CreateDirectory(const char *path);
  */
 export function createDirectory(path: string): boolean {
   return lib.symbols.SDL_CreateDirectory(_p.toCstr(path));
@@ -246,7 +246,7 @@ export function createDirectory(path: string): boolean {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_filesystem.h:369 bool SDL_EnumerateDirectory(const char *path, SDL_EnumerateDirectoryCallback callback, void *userdata);
+ * @from SDL_filesystem.h:368 bool SDL_EnumerateDirectory(const char *path, SDL_EnumerateDirectoryCallback callback, void *userdata);
  */
 export function enumerateDirectory(path: string, callback: Deno.PointerValue, userdata: Deno.PointerValue): boolean {
   return lib.symbols.SDL_EnumerateDirectory(_p.toCstr(path), callback, userdata);
@@ -266,7 +266,7 @@ export function enumerateDirectory(path: string, callback: Deno.PointerValue, us
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_filesystem.h:385 bool SDL_RemovePath(const char *path);
+ * @from SDL_filesystem.h:384 bool SDL_RemovePath(const char *path);
  */
 export function removePath(path: string): boolean {
   return lib.symbols.SDL_RemovePath(_p.toCstr(path));
@@ -295,7 +295,7 @@ export function removePath(path: string): boolean {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_filesystem.h:410 bool SDL_RenamePath(const char *oldpath, const char *newpath);
+ * @from SDL_filesystem.h:409 bool SDL_RenamePath(const char *oldpath, const char *newpath);
  */
 export function renamePath(oldpath: string, newpath: string): boolean {
   return lib.symbols.SDL_RenamePath(_p.toCstr(oldpath), _p.toCstr(newpath));
@@ -343,7 +343,7 @@ export function renamePath(oldpath: string, newpath: string): boolean {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_filesystem.h:454 bool SDL_CopyFile(const char *oldpath, const char *newpath);
+ * @from SDL_filesystem.h:453 bool SDL_CopyFile(const char *oldpath, const char *newpath);
  */
 export function copyFile(oldpath: string, newpath: string): boolean {
   return lib.symbols.SDL_CopyFile(_p.toCstr(oldpath), _p.toCstr(newpath));
@@ -351,6 +351,10 @@ export function copyFile(oldpath: string, newpath: string): boolean {
 
 /**
  * Get information about a filesystem path.
+ *
+ * Symlinks, on filesystems that support them, are always followed, so you
+ * will always get information on what the symlink eventually points to, and
+ * not the symlink itself.
  *
  * @param path the path to query.
  * @param info a pointer filled in with information about the path, or NULL to
@@ -362,7 +366,7 @@ export function copyFile(oldpath: string, newpath: string): boolean {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_filesystem.h:469 bool SDL_GetPathInfo(const char *path, SDL_PathInfo *info);
+ * @from SDL_filesystem.h:472 bool SDL_GetPathInfo(const char *path, SDL_PathInfo *info);
  */
 export function getPathInfo(path: string, info: Deno.PointerValue<"SDL_PathInfo">): boolean {
   return lib.symbols.SDL_GetPathInfo(_p.toCstr(path), info);
@@ -399,7 +403,7 @@ export function getPathInfo(path: string, info: Deno.PointerValue<"SDL_PathInfo"
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_filesystem.h:502 char ** SDL_GlobDirectory(const char *path, const char *pattern, SDL_GlobFlags flags, int *count);
+ * @from SDL_filesystem.h:505 char ** SDL_GlobDirectory(const char *path, const char *pattern, SDL_GlobFlags flags, int *count);
  */
 export function globDirectory(path: string, pattern: string, flags: number): { count: number; ret: Deno.PointerValue } {
   const ret = lib.symbols.SDL_GlobDirectory(_p.toCstr(path), _p.toCstr(pattern), flags, _p.i32.p0) as Deno.PointerValue;
@@ -428,7 +432,7 @@ export function globDirectory(path: string, pattern: string, flags: number): { c
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_filesystem.h:525 char * SDL_GetCurrentDirectory(void);
+ * @from SDL_filesystem.h:528 char * SDL_GetCurrentDirectory(void);
  */
 export function getCurrentDirectory(): string {
   return _p.getCstr2(lib.symbols.SDL_GetCurrentDirectory());

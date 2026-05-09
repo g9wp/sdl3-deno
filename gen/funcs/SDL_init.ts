@@ -29,7 +29,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -97,6 +97,8 @@ export const symbols = {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_SetAppMetadata
@@ -106,7 +108,7 @@ export const symbols = {
  * @sa SDL_SetMainReady
  * @sa SDL_WasInit
  *
- * @from SDL_init.h:235 bool SDL_Init(SDL_InitFlags flags);
+ * @from SDL_init.h:237 bool SDL_Init(SDL_InitFlags flags);
  */
 SDL_Init: {
       parameters: ["u32"],
@@ -123,13 +125,15 @@ SDL_Init: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_Init
  * @sa SDL_Quit
  * @sa SDL_QuitSubSystem
  *
- * @from SDL_init.h:252 bool SDL_InitSubSystem(SDL_InitFlags flags);
+ * @from SDL_init.h:256 bool SDL_InitSubSystem(SDL_InitFlags flags);
  */
 SDL_InitSubSystem: {
       parameters: ["u32"],
@@ -145,12 +149,14 @@ SDL_InitSubSystem: {
  *
  * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
  *
+ * @threadsafety This function is not thread safe.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_InitSubSystem
  * @sa SDL_Quit
  *
- * @from SDL_init.h:267 void SDL_QuitSubSystem(SDL_InitFlags flags);
+ * @from SDL_init.h:273 void SDL_QuitSubSystem(SDL_InitFlags flags);
  */
 SDL_QuitSubSystem: {
       parameters: ["u32"],
@@ -165,12 +171,14 @@ SDL_QuitSubSystem: {
  * @returns a mask of all initialized subsystems if `flags` is 0, otherwise it
  *          returns the initialization status of the specified subsystems.
  *
+ * @threadsafety This function is not thread safe.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_Init
  * @sa SDL_InitSubSystem
  *
- * @from SDL_init.h:281 SDL_InitFlags SDL_WasInit(SDL_InitFlags flags);
+ * @from SDL_init.h:289 SDL_InitFlags SDL_WasInit(SDL_InitFlags flags);
  */
 SDL_WasInit: {
       parameters: ["u32"],
@@ -189,12 +197,14 @@ SDL_WasInit: {
  * application is shutdown, but it is not wise to do this from a library or
  * other dynamically loaded code.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_Init
  * @sa SDL_QuitSubSystem
  *
- * @from SDL_init.h:299 void SDL_Quit(void);
+ * @from SDL_init.h:309 void SDL_Quit(void);
  */
 SDL_Quit: {
       parameters: [],
@@ -220,7 +230,7 @@ SDL_Quit: {
  *
  * @sa SDL_RunOnMainThread
  *
- * @from SDL_init.h:319 bool SDL_IsMainThread(void);
+ * @from SDL_init.h:329 bool SDL_IsMainThread(void);
  */
 SDL_IsMainThread: {
       parameters: [],
@@ -252,7 +262,7 @@ SDL_IsMainThread: {
  *
  * @sa SDL_IsMainThread
  *
- * @from SDL_init.h:356 bool SDL_RunOnMainThread(SDL_MainThreadCallback callback, void *userdata, bool wait_complete);
+ * @from SDL_init.h:366 bool SDL_RunOnMainThread(SDL_MainThreadCallback callback, void *userdata, bool wait_complete);
  */
 SDL_RunOnMainThread: {
       parameters: ["function", "pointer", "bool"],
@@ -296,7 +306,7 @@ SDL_RunOnMainThread: {
  *
  * @sa SDL_SetAppMetadataProperty
  *
- * @from SDL_init.h:394 bool SDL_SetAppMetadata(const char *appname, const char *appversion, const char *appidentifier);
+ * @from SDL_init.h:404 bool SDL_SetAppMetadata(const char *appname, const char *appversion, const char *appidentifier);
  */
 SDL_SetAppMetadata: {
       parameters: ["pointer", "pointer", "pointer"],
@@ -365,7 +375,7 @@ SDL_SetAppMetadata: {
  * @sa SDL_GetAppMetadataProperty
  * @sa SDL_SetAppMetadata
  *
- * @from SDL_init.h:457 bool SDL_SetAppMetadataProperty(const char *name, const char *value);
+ * @from SDL_init.h:467 bool SDL_SetAppMetadataProperty(const char *name, const char *value);
  */
 SDL_SetAppMetadataProperty: {
       parameters: ["pointer", "pointer"],
@@ -394,7 +404,7 @@ SDL_SetAppMetadataProperty: {
  * @sa SDL_SetAppMetadata
  * @sa SDL_SetAppMetadataProperty
  *
- * @from SDL_init.h:488 const char * SDL_GetAppMetadataProperty(const char *name);
+ * @from SDL_init.h:498 const char * SDL_GetAppMetadataProperty(const char *name);
  */
 SDL_GetAppMetadataProperty: {
       parameters: ["pointer"],

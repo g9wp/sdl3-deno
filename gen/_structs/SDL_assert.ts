@@ -44,7 +44,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -75,7 +75,7 @@ import * as _ from "@denosaurs/byte-type";
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @from SDL_assert.h:321
+ * @from SDL_assert.h:323
  */
 export const SDL_AssertData = new _.Struct({
   always_ignore: _.bool, /**< bool : true if app should always continue when assertion is triggered. */

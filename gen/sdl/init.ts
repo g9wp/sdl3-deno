@@ -29,7 +29,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -104,6 +104,8 @@ export {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_SetAppMetadata
@@ -113,7 +115,7 @@ export {
  * @sa SDL_SetMainReady
  * @sa SDL_WasInit
  *
- * @from SDL_init.h:235 bool SDL_Init(SDL_InitFlags flags);
+ * @from SDL_init.h:237 bool SDL_Init(SDL_InitFlags flags);
  */
 export function init(flags: number): boolean {
   return lib.symbols.SDL_Init(flags);
@@ -128,13 +130,15 @@ export function init(flags: number): boolean {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_Init
  * @sa SDL_Quit
  * @sa SDL_QuitSubSystem
  *
- * @from SDL_init.h:252 bool SDL_InitSubSystem(SDL_InitFlags flags);
+ * @from SDL_init.h:256 bool SDL_InitSubSystem(SDL_InitFlags flags);
  */
 export function initSubSystem(flags: number): boolean {
   return lib.symbols.SDL_InitSubSystem(flags);
@@ -148,12 +152,14 @@ export function initSubSystem(flags: number): boolean {
  *
  * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
  *
+ * @threadsafety This function is not thread safe.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_InitSubSystem
  * @sa SDL_Quit
  *
- * @from SDL_init.h:267 void SDL_QuitSubSystem(SDL_InitFlags flags);
+ * @from SDL_init.h:273 void SDL_QuitSubSystem(SDL_InitFlags flags);
  */
 export function quitSubSystem(flags: number): void {
   return lib.symbols.SDL_QuitSubSystem(flags);
@@ -166,12 +172,14 @@ export function quitSubSystem(flags: number): void {
  * @returns a mask of all initialized subsystems if `flags` is 0, otherwise it
  *          returns the initialization status of the specified subsystems.
  *
+ * @threadsafety This function is not thread safe.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_Init
  * @sa SDL_InitSubSystem
  *
- * @from SDL_init.h:281 SDL_InitFlags SDL_WasInit(SDL_InitFlags flags);
+ * @from SDL_init.h:289 SDL_InitFlags SDL_WasInit(SDL_InitFlags flags);
  */
 export function wasInit(flags: number): number {
   return lib.symbols.SDL_WasInit(flags);
@@ -188,12 +196,14 @@ export function wasInit(flags: number): number {
  * application is shutdown, but it is not wise to do this from a library or
  * other dynamically loaded code.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_Init
  * @sa SDL_QuitSubSystem
  *
- * @from SDL_init.h:299 void SDL_Quit(void);
+ * @from SDL_init.h:309 void SDL_Quit(void);
  */
 export function quit(): void {
   return lib.symbols.SDL_Quit();
@@ -217,7 +227,7 @@ export function quit(): void {
  *
  * @sa SDL_RunOnMainThread
  *
- * @from SDL_init.h:319 bool SDL_IsMainThread(void);
+ * @from SDL_init.h:329 bool SDL_IsMainThread(void);
  */
 export function isMainThread(): boolean {
   return lib.symbols.SDL_IsMainThread();
@@ -247,7 +257,7 @@ export function isMainThread(): boolean {
  *
  * @sa SDL_IsMainThread
  *
- * @from SDL_init.h:356 bool SDL_RunOnMainThread(SDL_MainThreadCallback callback, void *userdata, bool wait_complete);
+ * @from SDL_init.h:366 bool SDL_RunOnMainThread(SDL_MainThreadCallback callback, void *userdata, bool wait_complete);
  */
 export function runOnMainThread(callback: Deno.PointerValue, userdata: Deno.PointerValue, wait_complete: boolean): boolean {
   return lib.symbols.SDL_RunOnMainThread(callback, userdata, wait_complete);
@@ -289,7 +299,7 @@ export function runOnMainThread(callback: Deno.PointerValue, userdata: Deno.Poin
  *
  * @sa SDL_SetAppMetadataProperty
  *
- * @from SDL_init.h:394 bool SDL_SetAppMetadata(const char *appname, const char *appversion, const char *appidentifier);
+ * @from SDL_init.h:404 bool SDL_SetAppMetadata(const char *appname, const char *appversion, const char *appidentifier);
  */
 export function setAppMetadata(appname: string, appversion: string, appidentifier: string): boolean {
   return lib.symbols.SDL_SetAppMetadata(_p.toCstr(appname), _p.toCstr(appversion), _p.toCstr(appidentifier));
@@ -356,7 +366,7 @@ export function setAppMetadata(appname: string, appversion: string, appidentifie
  * @sa SDL_GetAppMetadataProperty
  * @sa SDL_SetAppMetadata
  *
- * @from SDL_init.h:457 bool SDL_SetAppMetadataProperty(const char *name, const char *value);
+ * @from SDL_init.h:467 bool SDL_SetAppMetadataProperty(const char *name, const char *value);
  */
 export function setAppMetadataProperty(name: string, value: string): boolean {
   return lib.symbols.SDL_SetAppMetadataProperty(_p.toCstr(name), _p.toCstr(value));
@@ -383,7 +393,7 @@ export function setAppMetadataProperty(name: string, value: string): boolean {
  * @sa SDL_SetAppMetadata
  * @sa SDL_SetAppMetadataProperty
  *
- * @from SDL_init.h:488 const char * SDL_GetAppMetadataProperty(const char *name);
+ * @from SDL_init.h:498 const char * SDL_GetAppMetadataProperty(const char *name);
  */
 export function getAppMetadataProperty(name: string): string {
   return _p.getCstr2(lib.symbols.SDL_GetAppMetadataProperty(_p.toCstr(name)));

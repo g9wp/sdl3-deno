@@ -81,7 +81,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -140,13 +140,15 @@ export {
  * @returns a pointer to the SDL_AsyncIO structure that is created or NULL on
  *          failure; call SDL_GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_CloseAsyncIO
  * @sa SDL_ReadAsyncIO
  * @sa SDL_WriteAsyncIO
  *
- * @from SDL_asyncio.h:221 SDL_AsyncIO * SDL_AsyncIOFromFile(const char *file, const char *mode);
+ * @from SDL_asyncio.h:223 SDL_AsyncIO * SDL_AsyncIOFromFile(const char *file, const char *mode);
  */
 export function asyncIoFromFile(file: string, mode: string): Deno.PointerValue<"SDL_AsyncIO"> {
   return lib.symbols.SDL_AsyncIOFromFile(_p.toCstr(file), _p.toCstr(mode)) as Deno.PointerValue<"SDL_AsyncIO">;
@@ -167,7 +169,7 @@ export function asyncIoFromFile(file: string, mode: string): Deno.PointerValue<"
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_asyncio.h:238 Sint64 SDL_GetAsyncIOSize(SDL_AsyncIO *asyncio);
+ * @from SDL_asyncio.h:240 Sint64 SDL_GetAsyncIOSize(SDL_AsyncIO *asyncio);
  */
 export function getAsyncIoSize(asyncio: Deno.PointerValue<"SDL_AsyncIO">): bigint {
   return lib.symbols.SDL_GetAsyncIOSize(asyncio);
@@ -209,7 +211,7 @@ export function getAsyncIoSize(asyncio: Deno.PointerValue<"SDL_AsyncIO">): bigin
  * @sa SDL_WriteAsyncIO
  * @sa SDL_CreateAsyncIOQueue
  *
- * @from SDL_asyncio.h:276 bool SDL_ReadAsyncIO(SDL_AsyncIO *asyncio, void *ptr, Uint64 offset, Uint64 size, SDL_AsyncIOQueue *queue, void *userdata);
+ * @from SDL_asyncio.h:278 bool SDL_ReadAsyncIO(SDL_AsyncIO *asyncio, void *ptr, Uint64 offset, Uint64 size, SDL_AsyncIOQueue *queue, void *userdata);
  */
 export function readAsyncIo(
     asyncio: Deno.PointerValue<"SDL_AsyncIO">,
@@ -257,7 +259,7 @@ export function readAsyncIo(
  * @sa SDL_ReadAsyncIO
  * @sa SDL_CreateAsyncIOQueue
  *
- * @from SDL_asyncio.h:313 bool SDL_WriteAsyncIO(SDL_AsyncIO *asyncio, void *ptr, Uint64 offset, Uint64 size, SDL_AsyncIOQueue *queue, void *userdata);
+ * @from SDL_asyncio.h:315 bool SDL_WriteAsyncIO(SDL_AsyncIO *asyncio, void *ptr, Uint64 offset, Uint64 size, SDL_AsyncIOQueue *queue, void *userdata);
  */
 export function writeAsyncIo(
     asyncio: Deno.PointerValue<"SDL_AsyncIO">,
@@ -317,7 +319,7 @@ export function writeAsyncIo(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_asyncio.h:362 bool SDL_CloseAsyncIO(SDL_AsyncIO *asyncio, bool flush, SDL_AsyncIOQueue *queue, void *userdata);
+ * @from SDL_asyncio.h:364 bool SDL_CloseAsyncIO(SDL_AsyncIO *asyncio, bool flush, SDL_AsyncIOQueue *queue, void *userdata);
  */
 export function closeAsyncIo(
     asyncio: Deno.PointerValue<"SDL_AsyncIO">,
@@ -345,7 +347,7 @@ export function closeAsyncIo(
  * @sa SDL_GetAsyncIOResult
  * @sa SDL_WaitAsyncIOResult
  *
- * @from SDL_asyncio.h:381 SDL_AsyncIOQueue * SDL_CreateAsyncIOQueue(void);
+ * @from SDL_asyncio.h:383 SDL_AsyncIOQueue * SDL_CreateAsyncIOQueue(void);
  */
 export function createAsyncIoQueue(): Deno.PointerValue<"SDL_AsyncIOQueue"> {
   return lib.symbols.SDL_CreateAsyncIOQueue() as Deno.PointerValue<"SDL_AsyncIOQueue">;
@@ -379,7 +381,7 @@ export function createAsyncIoQueue(): Deno.PointerValue<"SDL_AsyncIOQueue"> {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_asyncio.h:411 void SDL_DestroyAsyncIOQueue(SDL_AsyncIOQueue *queue);
+ * @from SDL_asyncio.h:413 void SDL_DestroyAsyncIOQueue(SDL_AsyncIOQueue *queue);
  */
 export function destroyAsyncIoQueue(queue: Deno.PointerValue<"SDL_AsyncIOQueue">): void {
   return lib.symbols.SDL_DestroyAsyncIOQueue(queue);
@@ -409,7 +411,7 @@ export function destroyAsyncIoQueue(queue: Deno.PointerValue<"SDL_AsyncIOQueue">
  *
  * @sa SDL_WaitAsyncIOResult
  *
- * @from SDL_asyncio.h:437 bool SDL_GetAsyncIOResult(SDL_AsyncIOQueue *queue, SDL_AsyncIOOutcome *outcome);
+ * @from SDL_asyncio.h:439 bool SDL_GetAsyncIOResult(SDL_AsyncIOQueue *queue, SDL_AsyncIOOutcome *outcome);
  */
 export function getAsyncIoResult(queue: Deno.PointerValue<"SDL_AsyncIOQueue">, outcome: Deno.PointerValue<"SDL_AsyncIOOutcome">): boolean {
   return lib.symbols.SDL_GetAsyncIOResult(queue, outcome);
@@ -457,7 +459,7 @@ export function getAsyncIoResult(queue: Deno.PointerValue<"SDL_AsyncIOQueue">, o
  *
  * @sa SDL_SignalAsyncIOQueue
  *
- * @from SDL_asyncio.h:481 bool SDL_WaitAsyncIOResult(SDL_AsyncIOQueue *queue, SDL_AsyncIOOutcome *outcome, Sint32 timeoutMS);
+ * @from SDL_asyncio.h:483 bool SDL_WaitAsyncIOResult(SDL_AsyncIOQueue *queue, SDL_AsyncIOOutcome *outcome, Sint32 timeoutMS);
  */
 export function waitAsyncIoResult(queue: Deno.PointerValue<"SDL_AsyncIOQueue">, outcome: Deno.PointerValue<"SDL_AsyncIOOutcome">, timeoutMS: number): boolean {
   return lib.symbols.SDL_WaitAsyncIOResult(queue, outcome, timeoutMS);
@@ -485,7 +487,7 @@ export function waitAsyncIoResult(queue: Deno.PointerValue<"SDL_AsyncIOQueue">, 
  *
  * @sa SDL_WaitAsyncIOResult
  *
- * @from SDL_asyncio.h:505 void SDL_SignalAsyncIOQueue(SDL_AsyncIOQueue *queue);
+ * @from SDL_asyncio.h:507 void SDL_SignalAsyncIOQueue(SDL_AsyncIOQueue *queue);
  */
 export function signalAsyncIoQueue(queue: Deno.PointerValue<"SDL_AsyncIOQueue">): void {
   return lib.symbols.SDL_SignalAsyncIOQueue(queue);
@@ -517,11 +519,13 @@ export function signalAsyncIoQueue(queue: Deno.PointerValue<"SDL_AsyncIOQueue">)
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_LoadFile_IO
  *
- * @from SDL_asyncio.h:537 bool SDL_LoadFileAsync(const char *file, SDL_AsyncIOQueue *queue, void *userdata);
+ * @from SDL_asyncio.h:541 bool SDL_LoadFileAsync(const char *file, SDL_AsyncIOQueue *queue, void *userdata);
  */
 export function loadFileAsync(file: string, queue: Deno.PointerValue<"SDL_AsyncIOQueue">, userdata: Deno.PointerValue): boolean {
   return lib.symbols.SDL_LoadFileAsync(_p.toCstr(file), queue, userdata);

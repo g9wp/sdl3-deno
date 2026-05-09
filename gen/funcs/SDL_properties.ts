@@ -28,7 +28,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -56,9 +56,11 @@ export const symbols = {
  * @returns a valid property ID on success or 0 on failure; call
  *          SDL_GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_properties.h:115 SDL_PropertiesID SDL_GetGlobalProperties(void);
+ * @from SDL_properties.h:117 SDL_PropertiesID SDL_GetGlobalProperties(void);
  */
 SDL_GetGlobalProperties: {
       parameters: [],
@@ -80,7 +82,7 @@ SDL_GetGlobalProperties: {
  *
  * @sa SDL_DestroyProperties
  *
- * @from SDL_properties.h:131 SDL_PropertiesID SDL_CreateProperties(void);
+ * @from SDL_properties.h:133 SDL_PropertiesID SDL_CreateProperties(void);
  */
 SDL_CreateProperties: {
       parameters: [],
@@ -107,7 +109,7 @@ SDL_CreateProperties: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_properties.h:152 bool SDL_CopyProperties(SDL_PropertiesID src, SDL_PropertiesID dst);
+ * @from SDL_properties.h:154 bool SDL_CopyProperties(SDL_PropertiesID src, SDL_PropertiesID dst);
  */
 SDL_CopyProperties: {
       parameters: ["u32", "u32"],
@@ -137,7 +139,7 @@ SDL_CopyProperties: {
  *
  * @sa SDL_UnlockProperties
  *
- * @from SDL_properties.h:176 bool SDL_LockProperties(SDL_PropertiesID props);
+ * @from SDL_properties.h:178 bool SDL_LockProperties(SDL_PropertiesID props);
  */
 SDL_LockProperties: {
       parameters: ["u32"],
@@ -156,7 +158,7 @@ SDL_LockProperties: {
  *
  * @sa SDL_LockProperties
  *
- * @from SDL_properties.h:189 void SDL_UnlockProperties(SDL_PropertiesID props);
+ * @from SDL_properties.h:191 void SDL_UnlockProperties(SDL_PropertiesID props);
  */
 SDL_UnlockProperties: {
       parameters: ["u32"],
@@ -193,7 +195,7 @@ SDL_UnlockProperties: {
  * @sa SDL_SetPointerProperty
  * @sa SDL_CleanupPropertyCallback
  *
- * @from SDL_properties.h:244 bool SDL_SetPointerPropertyWithCleanup(SDL_PropertiesID props, const char *name, void *value, SDL_CleanupPropertyCallback cleanup, void *userdata);
+ * @from SDL_properties.h:246 bool SDL_SetPointerPropertyWithCleanup(SDL_PropertiesID props, const char *name, void *value, SDL_CleanupPropertyCallback cleanup, void *userdata);
  */
 SDL_SetPointerPropertyWithCleanup: {
       parameters: ["u32", "pointer", "pointer", "function", "pointer"],
@@ -222,7 +224,7 @@ SDL_SetPointerPropertyWithCleanup: {
  * @sa SDL_SetPointerPropertyWithCleanup
  * @sa SDL_SetStringProperty
  *
- * @from SDL_properties.h:267 bool SDL_SetPointerProperty(SDL_PropertiesID props, const char *name, void *value);
+ * @from SDL_properties.h:269 bool SDL_SetPointerProperty(SDL_PropertiesID props, const char *name, void *value);
  */
 SDL_SetPointerProperty: {
       parameters: ["u32", "pointer", "pointer"],
@@ -248,7 +250,7 @@ SDL_SetPointerProperty: {
  *
  * @sa SDL_GetStringProperty
  *
- * @from SDL_properties.h:287 bool SDL_SetStringProperty(SDL_PropertiesID props, const char *name, const char *value);
+ * @from SDL_properties.h:289 bool SDL_SetStringProperty(SDL_PropertiesID props, const char *name, const char *value);
  */
 SDL_SetStringProperty: {
       parameters: ["u32", "pointer", "pointer"],
@@ -271,7 +273,7 @@ SDL_SetStringProperty: {
  *
  * @sa SDL_GetNumberProperty
  *
- * @from SDL_properties.h:304 bool SDL_SetNumberProperty(SDL_PropertiesID props, const char *name, Sint64 value);
+ * @from SDL_properties.h:306 bool SDL_SetNumberProperty(SDL_PropertiesID props, const char *name, Sint64 value);
  */
 SDL_SetNumberProperty: {
       parameters: ["u32", "pointer", "i64"],
@@ -294,7 +296,7 @@ SDL_SetNumberProperty: {
  *
  * @sa SDL_GetFloatProperty
  *
- * @from SDL_properties.h:321 bool SDL_SetFloatProperty(SDL_PropertiesID props, const char *name, float value);
+ * @from SDL_properties.h:323 bool SDL_SetFloatProperty(SDL_PropertiesID props, const char *name, float value);
  */
 SDL_SetFloatProperty: {
       parameters: ["u32", "pointer", "f32"],
@@ -317,7 +319,7 @@ SDL_SetFloatProperty: {
  *
  * @sa SDL_GetBooleanProperty
  *
- * @from SDL_properties.h:338 bool SDL_SetBooleanProperty(SDL_PropertiesID props, const char *name, bool value);
+ * @from SDL_properties.h:340 bool SDL_SetBooleanProperty(SDL_PropertiesID props, const char *name, bool value);
  */
 SDL_SetBooleanProperty: {
       parameters: ["u32", "pointer", "bool"],
@@ -338,7 +340,7 @@ SDL_SetBooleanProperty: {
  *
  * @sa SDL_GetPropertyType
  *
- * @from SDL_properties.h:353 bool SDL_HasProperty(SDL_PropertiesID props, const char *name);
+ * @from SDL_properties.h:355 bool SDL_HasProperty(SDL_PropertiesID props, const char *name);
  */
 SDL_HasProperty: {
       parameters: ["u32", "pointer"],
@@ -360,7 +362,7 @@ SDL_HasProperty: {
  *
  * @sa SDL_HasProperty
  *
- * @from SDL_properties.h:369 SDL_PropertyType SDL_GetPropertyType(SDL_PropertiesID props, const char *name);
+ * @from SDL_properties.h:371 SDL_PropertyType SDL_GetPropertyType(SDL_PropertiesID props, const char *name);
  */
 SDL_GetPropertyType: {
       parameters: ["u32", "pointer"],
@@ -399,7 +401,7 @@ SDL_GetPropertyType: {
  * @sa SDL_HasProperty
  * @sa SDL_SetPointerProperty
  *
- * @from SDL_properties.h:402 void * SDL_GetPointerProperty(SDL_PropertiesID props, const char *name, void *default_value);
+ * @from SDL_properties.h:404 void * SDL_GetPointerProperty(SDL_PropertiesID props, const char *name, void *default_value);
  */
 SDL_GetPointerProperty: {
       parameters: ["u32", "pointer", "pointer"],
@@ -429,7 +431,7 @@ SDL_GetPointerProperty: {
  * @sa SDL_HasProperty
  * @sa SDL_SetStringProperty
  *
- * @from SDL_properties.h:426 const char * SDL_GetStringProperty(SDL_PropertiesID props, const char *name, const char *default_value);
+ * @from SDL_properties.h:428 const char * SDL_GetStringProperty(SDL_PropertiesID props, const char *name, const char *default_value);
  */
 SDL_GetStringProperty: {
       parameters: ["u32", "pointer", "pointer"],
@@ -457,7 +459,7 @@ SDL_GetStringProperty: {
  * @sa SDL_HasProperty
  * @sa SDL_SetNumberProperty
  *
- * @from SDL_properties.h:448 Sint64 SDL_GetNumberProperty(SDL_PropertiesID props, const char *name, Sint64 default_value);
+ * @from SDL_properties.h:450 Sint64 SDL_GetNumberProperty(SDL_PropertiesID props, const char *name, Sint64 default_value);
  */
 SDL_GetNumberProperty: {
       parameters: ["u32", "pointer", "i64"],
@@ -485,7 +487,7 @@ SDL_GetNumberProperty: {
  * @sa SDL_HasProperty
  * @sa SDL_SetFloatProperty
  *
- * @from SDL_properties.h:470 float SDL_GetFloatProperty(SDL_PropertiesID props, const char *name, float default_value);
+ * @from SDL_properties.h:472 float SDL_GetFloatProperty(SDL_PropertiesID props, const char *name, float default_value);
  */
 SDL_GetFloatProperty: {
       parameters: ["u32", "pointer", "f32"],
@@ -513,7 +515,7 @@ SDL_GetFloatProperty: {
  * @sa SDL_HasProperty
  * @sa SDL_SetBooleanProperty
  *
- * @from SDL_properties.h:492 bool SDL_GetBooleanProperty(SDL_PropertiesID props, const char *name, bool default_value);
+ * @from SDL_properties.h:494 bool SDL_GetBooleanProperty(SDL_PropertiesID props, const char *name, bool default_value);
  */
 SDL_GetBooleanProperty: {
       parameters: ["u32", "pointer", "bool"],
@@ -533,7 +535,7 @@ SDL_GetBooleanProperty: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_properties.h:506 bool SDL_ClearProperty(SDL_PropertiesID props, const char *name);
+ * @from SDL_properties.h:508 bool SDL_ClearProperty(SDL_PropertiesID props, const char *name);
  */
 SDL_ClearProperty: {
       parameters: ["u32", "pointer"],
@@ -557,7 +559,7 @@ SDL_ClearProperty: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_properties.h:543 bool SDL_EnumerateProperties(SDL_PropertiesID props, SDL_EnumeratePropertiesCallback callback, void *userdata);
+ * @from SDL_properties.h:545 bool SDL_EnumerateProperties(SDL_PropertiesID props, SDL_EnumeratePropertiesCallback callback, void *userdata);
  */
 SDL_EnumerateProperties: {
       parameters: ["u32", "function", "pointer"],
@@ -581,7 +583,7 @@ SDL_EnumerateProperties: {
  *
  * @sa SDL_CreateProperties
  *
- * @from SDL_properties.h:561 void SDL_DestroyProperties(SDL_PropertiesID props);
+ * @from SDL_properties.h:563 void SDL_DestroyProperties(SDL_PropertiesID props);
  */
 SDL_DestroyProperties: {
       parameters: ["u32"],

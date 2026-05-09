@@ -19,7 +19,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -71,11 +71,13 @@ export const symbols = {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_ShowSimpleMessageBox
  *
- * @from SDL_messagebox.h:174 bool SDL_ShowMessageBox(const SDL_MessageBoxData *messageboxdata, int *buttonid);
+ * @from SDL_messagebox.h:176 bool SDL_ShowMessageBox(const SDL_MessageBoxData *messageboxdata, int *buttonid);
  */
 SDL_ShowMessageBox: {
       parameters: ["pointer", "pointer"],
@@ -119,11 +121,13 @@ SDL_ShowMessageBox: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_ShowMessageBox
  *
- * @from SDL_messagebox.h:216 bool SDL_ShowSimpleMessageBox(SDL_MessageBoxFlags flags, const char *title, const char *message, SDL_Window *window);
+ * @from SDL_messagebox.h:220 bool SDL_ShowSimpleMessageBox(SDL_MessageBoxFlags flags, const char *title, const char *message, SDL_Window *window);
  */
 SDL_ShowSimpleMessageBox: {
       parameters: ["u32", "pointer", "pointer", "pointer"],

@@ -17,7 +17,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -426,6 +426,11 @@ export const SDL_HINT_AUDIO_DEVICE_STREAM_NAME = "SDL_AUDIO_DEVICE_STREAM_NAME";
  * - "Movie" - Music or sound with dialog
  * - "Media" - Music or sound without dialog
  *
+ * Android's AAudio target supports this hint as of SDL 3.4.4. Android does
+ * not support the exact same options as WASAPI, but for portability, will
+ * attempt to map these same strings to the `aaudio_usage_t` constants. For
+ * example, "Movie" and "Media" will both map to `AAUDIO_USAGE_MEDIA`, etc.
+ *
  * If your application applies its own echo cancellation, gain control, and
  * noise reduction it should also set SDL_HINT_AUDIO_DEVICE_RAW_STREAM.
  *
@@ -433,7 +438,7 @@ export const SDL_HINT_AUDIO_DEVICE_STREAM_NAME = "SDL_AUDIO_DEVICE_STREAM_NAME";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:411
+ * @from SDL_hints.h:416
  */
 export const SDL_HINT_AUDIO_DEVICE_STREAM_ROLE = "SDL_AUDIO_DEVICE_STREAM_ROLE";
 
@@ -455,7 +460,7 @@ export const SDL_HINT_AUDIO_DEVICE_STREAM_ROLE = "SDL_AUDIO_DEVICE_STREAM_ROLE";
  *
  * @since This hint is available since SDL 3.4.0.
  *
- * @from SDL_hints.h:431
+ * @from SDL_hints.h:436
  */
 export const SDL_HINT_AUDIO_DEVICE_RAW_STREAM = "SDL_AUDIO_DEVICE_RAW_STREAM";
 
@@ -468,7 +473,7 @@ export const SDL_HINT_AUDIO_DEVICE_RAW_STREAM = "SDL_AUDIO_DEVICE_RAW_STREAM";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:442
+ * @from SDL_hints.h:447
  */
 export const SDL_HINT_AUDIO_DISK_INPUT_FILE = "SDL_AUDIO_DISK_INPUT_FILE";
 
@@ -481,7 +486,7 @@ export const SDL_HINT_AUDIO_DISK_INPUT_FILE = "SDL_AUDIO_DISK_INPUT_FILE";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:453
+ * @from SDL_hints.h:458
  */
 export const SDL_HINT_AUDIO_DISK_OUTPUT_FILE = "SDL_AUDIO_DISK_OUTPUT_FILE";
 
@@ -496,7 +501,7 @@ export const SDL_HINT_AUDIO_DISK_OUTPUT_FILE = "SDL_AUDIO_DISK_OUTPUT_FILE";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:466
+ * @from SDL_hints.h:471
  */
 export const SDL_HINT_AUDIO_DISK_TIMESCALE = "SDL_AUDIO_DISK_TIMESCALE";
 
@@ -512,7 +517,7 @@ export const SDL_HINT_AUDIO_DISK_TIMESCALE = "SDL_AUDIO_DISK_TIMESCALE";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:480
+ * @from SDL_hints.h:485
  */
 export const SDL_HINT_AUDIO_DRIVER = "SDL_AUDIO_DRIVER";
 
@@ -527,7 +532,7 @@ export const SDL_HINT_AUDIO_DRIVER = "SDL_AUDIO_DRIVER";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:493
+ * @from SDL_hints.h:498
  */
 export const SDL_HINT_AUDIO_DUMMY_TIMESCALE = "SDL_AUDIO_DUMMY_TIMESCALE";
 
@@ -556,7 +561,7 @@ export const SDL_HINT_AUDIO_DUMMY_TIMESCALE = "SDL_AUDIO_DUMMY_TIMESCALE";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:520
+ * @from SDL_hints.h:525
  */
 export const SDL_HINT_AUDIO_FORMAT = "SDL_AUDIO_FORMAT";
 
@@ -571,7 +576,7 @@ export const SDL_HINT_AUDIO_FORMAT = "SDL_AUDIO_FORMAT";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:533
+ * @from SDL_hints.h:538
  */
 export const SDL_HINT_AUDIO_FREQUENCY = "SDL_AUDIO_FREQUENCY";
 
@@ -596,7 +601,7 @@ export const SDL_HINT_AUDIO_FREQUENCY = "SDL_AUDIO_FREQUENCY";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:556
+ * @from SDL_hints.h:561
  */
 export const SDL_HINT_AUDIO_INCLUDE_MONITORS = "SDL_AUDIO_INCLUDE_MONITORS";
 
@@ -613,7 +618,7 @@ export const SDL_HINT_AUDIO_INCLUDE_MONITORS = "SDL_AUDIO_INCLUDE_MONITORS";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:571
+ * @from SDL_hints.h:576
  */
 export const SDL_HINT_AUTO_UPDATE_JOYSTICKS = "SDL_AUTO_UPDATE_JOYSTICKS";
 
@@ -630,7 +635,7 @@ export const SDL_HINT_AUTO_UPDATE_JOYSTICKS = "SDL_AUTO_UPDATE_JOYSTICKS";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:586
+ * @from SDL_hints.h:591
  */
 export const SDL_HINT_AUTO_UPDATE_SENSORS = "SDL_AUTO_UPDATE_SENSORS";
 
@@ -655,7 +660,7 @@ export const SDL_HINT_AUTO_UPDATE_SENSORS = "SDL_AUTO_UPDATE_SENSORS";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:609
+ * @from SDL_hints.h:614
  */
 export const SDL_HINT_BMP_SAVE_LEGACY_FORMAT = "SDL_BMP_SAVE_LEGACY_FORMAT";
 
@@ -673,7 +678,7 @@ export const SDL_HINT_BMP_SAVE_LEGACY_FORMAT = "SDL_BMP_SAVE_LEGACY_FORMAT";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:625
+ * @from SDL_hints.h:630
  */
 export const SDL_HINT_CAMERA_DRIVER = "SDL_CAMERA_DRIVER";
 
@@ -708,7 +713,7 @@ export const SDL_HINT_CAMERA_DRIVER = "SDL_CAMERA_DRIVER";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:658
+ * @from SDL_hints.h:663
  */
 export const SDL_HINT_CPU_FEATURE_MASK = "SDL_CPU_FEATURE_MASK";
 
@@ -724,7 +729,7 @@ export const SDL_HINT_CPU_FEATURE_MASK = "SDL_CPU_FEATURE_MASK";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:672
+ * @from SDL_hints.h:677
  */
 export const SDL_HINT_JOYSTICK_DIRECTINPUT = "SDL_JOYSTICK_DIRECTINPUT";
 
@@ -755,7 +760,7 @@ export const SDL_HINT_JOYSTICK_DIRECTINPUT = "SDL_JOYSTICK_DIRECTINPUT";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:701
+ * @from SDL_hints.h:706
  */
 export const SDL_HINT_FILE_DIALOG_DRIVER = "SDL_FILE_DIALOG_DRIVER";
 
@@ -775,7 +780,7 @@ export const SDL_HINT_FILE_DIALOG_DRIVER = "SDL_FILE_DIALOG_DRIVER";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:719
+ * @from SDL_hints.h:724
  */
 export const SDL_HINT_DISPLAY_USABLE_BOUNDS = "SDL_DISPLAY_USABLE_BOUNDS";
 
@@ -792,7 +797,7 @@ export const SDL_HINT_DISPLAY_USABLE_BOUNDS = "SDL_DISPLAY_USABLE_BOUNDS";
  *
  * @since This hint is available since SDL 3.4.0.
  *
- * @from SDL_hints.h:734
+ * @from SDL_hints.h:739
  */
 export const SDL_HINT_INVALID_PARAM_CHECKS = "SDL_INVALID_PARAM_CHECKS";
 
@@ -815,7 +820,7 @@ export const SDL_HINT_INVALID_PARAM_CHECKS = "SDL_INVALID_PARAM_CHECKS";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:755
+ * @from SDL_hints.h:760
  */
 export const SDL_HINT_EMSCRIPTEN_ASYNCIFY = "SDL_EMSCRIPTEN_ASYNCIFY";
 
@@ -828,7 +833,7 @@ export const SDL_HINT_EMSCRIPTEN_ASYNCIFY = "SDL_EMSCRIPTEN_ASYNCIFY";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:766
+ * @from SDL_hints.h:771
  */
 export const SDL_HINT_EMSCRIPTEN_CANVAS_SELECTOR = "SDL_EMSCRIPTEN_CANVAS_SELECTOR";
 
@@ -851,7 +856,7 @@ export const SDL_HINT_EMSCRIPTEN_CANVAS_SELECTOR = "SDL_EMSCRIPTEN_CANVAS_SELECT
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:787
+ * @from SDL_hints.h:792
  */
 export const SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT = "SDL_EMSCRIPTEN_KEYBOARD_ELEMENT";
 
@@ -870,7 +875,7 @@ export const SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT = "SDL_EMSCRIPTEN_KEYBOARD_ELE
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:804
+ * @from SDL_hints.h:809
  */
 export const SDL_HINT_ENABLE_SCREEN_KEYBOARD = "SDL_ENABLE_SCREEN_KEYBOARD";
 
@@ -889,7 +894,7 @@ export const SDL_HINT_ENABLE_SCREEN_KEYBOARD = "SDL_ENABLE_SCREEN_KEYBOARD";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:821
+ * @from SDL_hints.h:826
  */
 export const SDL_HINT_EVDEV_DEVICES = "SDL_EVDEV_DEVICES";
 
@@ -915,7 +920,7 @@ export const SDL_HINT_EVDEV_DEVICES = "SDL_EVDEV_DEVICES";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:845
+ * @from SDL_hints.h:850
  */
 export const SDL_HINT_EVENT_LOGGING = "SDL_EVENT_LOGGING";
 
@@ -937,7 +942,7 @@ export const SDL_HINT_EVENT_LOGGING = "SDL_EVENT_LOGGING";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:865
+ * @from SDL_hints.h:870
  */
 export const SDL_HINT_FORCE_RAISEWINDOW = "SDL_FORCE_RAISEWINDOW";
 
@@ -960,7 +965,7 @@ export const SDL_HINT_FORCE_RAISEWINDOW = "SDL_FORCE_RAISEWINDOW";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:886
+ * @from SDL_hints.h:891
  */
 export const SDL_HINT_FRAMEBUFFER_ACCELERATION = "SDL_FRAMEBUFFER_ACCELERATION";
 
@@ -977,7 +982,7 @@ export const SDL_HINT_FRAMEBUFFER_ACCELERATION = "SDL_FRAMEBUFFER_ACCELERATION";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:901
+ * @from SDL_hints.h:906
  */
 export const SDL_HINT_GAMECONTROLLERCONFIG = "SDL_GAMECONTROLLERCONFIG";
 
@@ -995,7 +1000,7 @@ export const SDL_HINT_GAMECONTROLLERCONFIG = "SDL_GAMECONTROLLERCONFIG";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:917
+ * @from SDL_hints.h:922
  */
 export const SDL_HINT_GAMECONTROLLERCONFIG_FILE = "SDL_GAMECONTROLLERCONFIG_FILE";
 
@@ -1021,7 +1026,7 @@ export const SDL_HINT_GAMECONTROLLERCONFIG_FILE = "SDL_GAMECONTROLLERCONFIG_FILE
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:941
+ * @from SDL_hints.h:946
  */
 export const SDL_HINT_GAMECONTROLLERTYPE = "SDL_GAMECONTROLLERTYPE";
 
@@ -1041,7 +1046,7 @@ export const SDL_HINT_GAMECONTROLLERTYPE = "SDL_GAMECONTROLLERTYPE";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:959
+ * @from SDL_hints.h:964
  */
 export const SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES = "SDL_GAMECONTROLLER_IGNORE_DEVICES";
 
@@ -1061,7 +1066,7 @@ export const SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES = "SDL_GAMECONTROLLER_IGNORE
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:977
+ * @from SDL_hints.h:982
  */
 export const SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT = "SDL_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT";
 
@@ -1086,7 +1091,7 @@ export const SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT = "SDL_GAMECONTROLLER
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1000
+ * @from SDL_hints.h:1005
  */
 export const SDL_HINT_GAMECONTROLLER_SENSOR_FUSION = "SDL_GAMECONTROLLER_SENSOR_FUSION";
 
@@ -1100,7 +1105,7 @@ export const SDL_HINT_GAMECONTROLLER_SENSOR_FUSION = "SDL_GAMECONTROLLER_SENSOR_
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1012
+ * @from SDL_hints.h:1017
  */
 export const SDL_HINT_GDK_TEXTINPUT_DEFAULT_TEXT = "SDL_GDK_TEXTINPUT_DEFAULT_TEXT";
 
@@ -1114,7 +1119,7 @@ export const SDL_HINT_GDK_TEXTINPUT_DEFAULT_TEXT = "SDL_GDK_TEXTINPUT_DEFAULT_TE
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1024
+ * @from SDL_hints.h:1029
  */
 export const SDL_HINT_GDK_TEXTINPUT_DESCRIPTION = "SDL_GDK_TEXTINPUT_DESCRIPTION";
 
@@ -1131,7 +1136,7 @@ export const SDL_HINT_GDK_TEXTINPUT_DESCRIPTION = "SDL_GDK_TEXTINPUT_DESCRIPTION
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1039
+ * @from SDL_hints.h:1044
  */
 export const SDL_HINT_GDK_TEXTINPUT_MAX_LENGTH = "SDL_GDK_TEXTINPUT_MAX_LENGTH";
 
@@ -1149,7 +1154,7 @@ export const SDL_HINT_GDK_TEXTINPUT_MAX_LENGTH = "SDL_GDK_TEXTINPUT_MAX_LENGTH";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1055
+ * @from SDL_hints.h:1060
  */
 export const SDL_HINT_GDK_TEXTINPUT_SCOPE = "SDL_GDK_TEXTINPUT_SCOPE";
 
@@ -1162,7 +1167,7 @@ export const SDL_HINT_GDK_TEXTINPUT_SCOPE = "SDL_GDK_TEXTINPUT_SCOPE";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1066
+ * @from SDL_hints.h:1071
  */
 export const SDL_HINT_GDK_TEXTINPUT_TITLE = "SDL_GDK_TEXTINPUT_TITLE";
 
@@ -1182,7 +1187,7 @@ export const SDL_HINT_GDK_TEXTINPUT_TITLE = "SDL_GDK_TEXTINPUT_TITLE";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1084
+ * @from SDL_hints.h:1089
  */
 export const SDL_HINT_HIDAPI_LIBUSB = "SDL_HIDAPI_LIBUSB";
 
@@ -1196,9 +1201,9 @@ export const SDL_HINT_HIDAPI_LIBUSB = "SDL_HIDAPI_LIBUSB";
  *
  * This hint should be set before SDL is initialized.
  *
- * @since This hint is available since SDL 3.2.0.
+ * @since This hint is available since SDL 3.4.0.
  *
- * @from SDL_hints.h:1099
+ * @from SDL_hints.h:1104
  */
 export const SDL_HINT_HIDAPI_LIBUSB_GAMECUBE = "SDL_HIDAPI_LIBUSB_GAMECUBE";
 
@@ -1218,7 +1223,7 @@ export const SDL_HINT_HIDAPI_LIBUSB_GAMECUBE = "SDL_HIDAPI_LIBUSB_GAMECUBE";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1117
+ * @from SDL_hints.h:1122
  */
 export const SDL_HINT_HIDAPI_LIBUSB_WHITELIST = "SDL_HIDAPI_LIBUSB_WHITELIST";
 
@@ -1234,7 +1239,7 @@ export const SDL_HINT_HIDAPI_LIBUSB_WHITELIST = "SDL_HIDAPI_LIBUSB_WHITELIST";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1131
+ * @from SDL_hints.h:1136
  */
 export const SDL_HINT_HIDAPI_UDEV = "SDL_HIDAPI_UDEV";
 
@@ -1250,7 +1255,7 @@ export const SDL_HINT_HIDAPI_UDEV = "SDL_HIDAPI_UDEV";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1145
+ * @from SDL_hints.h:1150
  */
 export const SDL_HINT_GPU_DRIVER = "SDL_GPU_DRIVER";
 
@@ -1271,7 +1276,7 @@ export const SDL_HINT_GPU_DRIVER = "SDL_GPU_DRIVER";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1164
+ * @from SDL_hints.h:1169
  */
 export const SDL_HINT_HIDAPI_ENUMERATE_ONLY_CONTROLLERS = "SDL_HIDAPI_ENUMERATE_ONLY_CONTROLLERS";
 
@@ -1290,7 +1295,7 @@ export const SDL_HINT_HIDAPI_ENUMERATE_ONLY_CONTROLLERS = "SDL_HIDAPI_ENUMERATE_
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1181
+ * @from SDL_hints.h:1186
  */
 export const SDL_HINT_HIDAPI_IGNORE_DEVICES = "SDL_HIDAPI_IGNORE_DEVICES";
 
@@ -1315,7 +1320,7 @@ export const SDL_HINT_HIDAPI_IGNORE_DEVICES = "SDL_HIDAPI_IGNORE_DEVICES";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1204
+ * @from SDL_hints.h:1209
  */
 export const SDL_HINT_IME_IMPLEMENTED_UI = "SDL_IME_IMPLEMENTED_UI";
 
@@ -1336,7 +1341,7 @@ export const SDL_HINT_IME_IMPLEMENTED_UI = "SDL_IME_IMPLEMENTED_UI";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1223
+ * @from SDL_hints.h:1228
  */
 export const SDL_HINT_IOS_HIDE_HOME_INDICATOR = "SDL_IOS_HIDE_HOME_INDICATOR";
 
@@ -1355,7 +1360,7 @@ export const SDL_HINT_IOS_HIDE_HOME_INDICATOR = "SDL_IOS_HIDE_HOME_INDICATOR";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1240
+ * @from SDL_hints.h:1245
  */
 export const SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS = "SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS";
 
@@ -1374,7 +1379,7 @@ export const SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS = "SDL_JOYSTICK_ALLOW_BAC
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1257
+ * @from SDL_hints.h:1262
  */
 export const SDL_HINT_JOYSTICK_ARCADESTICK_DEVICES = "SDL_JOYSTICK_ARCADESTICK_DEVICES";
 
@@ -1397,7 +1402,7 @@ export const SDL_HINT_JOYSTICK_ARCADESTICK_DEVICES = "SDL_JOYSTICK_ARCADESTICK_D
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1278
+ * @from SDL_hints.h:1283
  */
 export const SDL_HINT_JOYSTICK_ARCADESTICK_DEVICES_EXCLUDED = "SDL_JOYSTICK_ARCADESTICK_DEVICES_EXCLUDED";
 
@@ -1417,7 +1422,7 @@ export const SDL_HINT_JOYSTICK_ARCADESTICK_DEVICES_EXCLUDED = "SDL_JOYSTICK_ARCA
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1296
+ * @from SDL_hints.h:1301
  */
 export const SDL_HINT_JOYSTICK_BLACKLIST_DEVICES = "SDL_JOYSTICK_BLACKLIST_DEVICES";
 
@@ -1440,7 +1445,7 @@ export const SDL_HINT_JOYSTICK_BLACKLIST_DEVICES = "SDL_JOYSTICK_BLACKLIST_DEVIC
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1317
+ * @from SDL_hints.h:1322
  */
 export const SDL_HINT_JOYSTICK_BLACKLIST_DEVICES_EXCLUDED = "SDL_JOYSTICK_BLACKLIST_DEVICES_EXCLUDED";
 
@@ -1452,7 +1457,7 @@ export const SDL_HINT_JOYSTICK_BLACKLIST_DEVICES_EXCLUDED = "SDL_JOYSTICK_BLACKL
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1327
+ * @from SDL_hints.h:1332
  */
 export const SDL_HINT_JOYSTICK_DEVICE = "SDL_JOYSTICK_DEVICE";
 
@@ -1479,7 +1484,7 @@ export const SDL_HINT_JOYSTICK_DEVICE = "SDL_JOYSTICK_DEVICE";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1352
+ * @from SDL_hints.h:1357
  */
 export const SDL_HINT_JOYSTICK_ENHANCED_REPORTS = "SDL_JOYSTICK_ENHANCED_REPORTS";
 
@@ -1498,7 +1503,7 @@ export const SDL_HINT_JOYSTICK_ENHANCED_REPORTS = "SDL_JOYSTICK_ENHANCED_REPORTS
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1369
+ * @from SDL_hints.h:1374
  */
 export const SDL_HINT_JOYSTICK_FLIGHTSTICK_DEVICES = "SDL_JOYSTICK_FLIGHTSTICK_DEVICES";
 
@@ -1521,7 +1526,7 @@ export const SDL_HINT_JOYSTICK_FLIGHTSTICK_DEVICES = "SDL_JOYSTICK_FLIGHTSTICK_D
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1390
+ * @from SDL_hints.h:1395
  */
 export const SDL_HINT_JOYSTICK_FLIGHTSTICK_DEVICES_EXCLUDED = "SDL_JOYSTICK_FLIGHTSTICK_DEVICES_EXCLUDED";
 
@@ -1540,9 +1545,31 @@ export const SDL_HINT_JOYSTICK_FLIGHTSTICK_DEVICES_EXCLUDED = "SDL_JOYSTICK_FLIG
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1407
+ * @from SDL_hints.h:1412
  */
 export const SDL_HINT_JOYSTICK_GAMEINPUT = "SDL_JOYSTICK_GAMEINPUT";
+
+/**
+ * A variable controlling whether GameInput should be used for handling 
+ * GIP devices that require raw report processing, but aren't supported 
+ * by HIDRAW, such as Xbox One Guitars.
+ * 
+ * Note that this is only supported with GameInput 3 or newer.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": GameInput is not used to handle raw GIP devices.
+ * - "1": GameInput is used.
+ *
+ * The default is "1" when using GameInput 3 or newer, and is "0" otherwise.
+ *
+ * This hint should be set before SDL is initialized.
+ *
+ * @since This hint is available since SDL 3.4.4.
+ *
+ * @from SDL_hints.h:1432
+ */
+export const SDL_HINT_JOYSTICK_GAMEINPUT_RAW = "SDL_JOYSTICK_GAMEINPUT_RAW";
 
 /**
  * A variable containing a list of devices known to have a GameCube form
@@ -1560,7 +1587,7 @@ export const SDL_HINT_JOYSTICK_GAMEINPUT = "SDL_JOYSTICK_GAMEINPUT";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1425
+ * @from SDL_hints.h:1450
  */
 export const SDL_HINT_JOYSTICK_GAMECUBE_DEVICES = "SDL_JOYSTICK_GAMECUBE_DEVICES";
 
@@ -1583,7 +1610,7 @@ export const SDL_HINT_JOYSTICK_GAMECUBE_DEVICES = "SDL_JOYSTICK_GAMECUBE_DEVICES
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1446
+ * @from SDL_hints.h:1471
  */
 export const SDL_HINT_JOYSTICK_GAMECUBE_DEVICES_EXCLUDED = "SDL_JOYSTICK_GAMECUBE_DEVICES_EXCLUDED";
 
@@ -1602,7 +1629,7 @@ export const SDL_HINT_JOYSTICK_GAMECUBE_DEVICES_EXCLUDED = "SDL_JOYSTICK_GAMECUB
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1463
+ * @from SDL_hints.h:1488
  */
 export const SDL_HINT_JOYSTICK_HIDAPI = "SDL_JOYSTICK_HIDAPI";
 
@@ -1621,7 +1648,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI = "SDL_JOYSTICK_HIDAPI";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1480
+ * @from SDL_hints.h:1505
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS = "SDL_JOYSTICK_HIDAPI_COMBINE_JOY_CONS";
 
@@ -1640,7 +1667,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS = "SDL_JOYSTICK_HIDAPI_CO
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1497
+ * @from SDL_hints.h:1522
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE = "SDL_JOYSTICK_HIDAPI_GAMECUBE";
 
@@ -1663,7 +1690,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE = "SDL_JOYSTICK_HIDAPI_GAMECUBE";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1518
+ * @from SDL_hints.h:1543
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE_RUMBLE_BRAKE = "SDL_JOYSTICK_HIDAPI_GAMECUBE_RUMBLE_BRAKE";
 
@@ -1682,7 +1709,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE_RUMBLE_BRAKE = "SDL_JOYSTICK_HIDA
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1535
+ * @from SDL_hints.h:1560
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_JOY_CONS = "SDL_JOYSTICK_HIDAPI_JOY_CONS";
 
@@ -1703,7 +1730,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_JOY_CONS = "SDL_JOYSTICK_HIDAPI_JOY_CONS";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1554
+ * @from SDL_hints.h:1579
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED = "SDL_JOYSTICK_HIDAPI_JOYCON_HOME_LED";
 
@@ -1722,7 +1749,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED = "SDL_JOYSTICK_HIDAPI_JOY
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1571
+ * @from SDL_hints.h:1596
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_LUNA = "SDL_JOYSTICK_HIDAPI_LUNA";
 
@@ -1741,7 +1768,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_LUNA = "SDL_JOYSTICK_HIDAPI_LUNA";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1588
+ * @from SDL_hints.h:1613
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC = "SDL_JOYSTICK_HIDAPI_NINTENDO_CLASSIC";
 
@@ -1765,7 +1792,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC = "SDL_JOYSTICK_HIDAPI_NI
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1610
+ * @from SDL_hints.h:1635
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_PS3 = "SDL_JOYSTICK_HIDAPI_PS3";
 
@@ -1784,7 +1811,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_PS3 = "SDL_JOYSTICK_HIDAPI_PS3";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1627
+ * @from SDL_hints.h:1652
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER = "SDL_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER";
 
@@ -1803,7 +1830,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER = "SDL_JOYSTICK_HIDAPI_
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1644
+ * @from SDL_hints.h:1669
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_PS4 = "SDL_JOYSTICK_HIDAPI_PS4";
 
@@ -1820,7 +1847,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_PS4 = "SDL_JOYSTICK_HIDAPI_PS4";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1659
+ * @from SDL_hints.h:1684
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_PS4_REPORT_INTERVAL = "SDL_JOYSTICK_HIDAPI_PS4_REPORT_INTERVAL";
 
@@ -1839,7 +1866,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_PS4_REPORT_INTERVAL = "SDL_JOYSTICK_HIDAPI
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1676
+ * @from SDL_hints.h:1701
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_PS5 = "SDL_JOYSTICK_HIDAPI_PS5";
 
@@ -1854,7 +1881,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_PS5 = "SDL_JOYSTICK_HIDAPI_PS5";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1689
+ * @from SDL_hints.h:1714
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED = "SDL_JOYSTICK_HIDAPI_PS5_PLAYER_LED";
 
@@ -1873,7 +1900,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED = "SDL_JOYSTICK_HIDAPI_PS5_
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1706
+ * @from SDL_hints.h:1731
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_SHIELD = "SDL_JOYSTICK_HIDAPI_SHIELD";
 
@@ -1890,7 +1917,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_SHIELD = "SDL_JOYSTICK_HIDAPI_SHIELD";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1721
+ * @from SDL_hints.h:1746
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_STADIA = "SDL_JOYSTICK_HIDAPI_STADIA";
 
@@ -1909,7 +1936,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_STADIA = "SDL_JOYSTICK_HIDAPI_STADIA";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1738
+ * @from SDL_hints.h:1763
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_STEAM = "SDL_JOYSTICK_HIDAPI_STEAM";
 
@@ -1930,7 +1957,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_STEAM = "SDL_JOYSTICK_HIDAPI_STEAM";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1757
+ * @from SDL_hints.h:1782
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_STEAM_HOME_LED = "SDL_JOYSTICK_HIDAPI_STEAM_HOME_LED";
 
@@ -1949,7 +1976,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_STEAM_HOME_LED = "SDL_JOYSTICK_HIDAPI_STEA
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1774
+ * @from SDL_hints.h:1799
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_STEAMDECK = "SDL_JOYSTICK_HIDAPI_STEAMDECK";
 
@@ -1957,12 +1984,18 @@ export const SDL_HINT_JOYSTICK_HIDAPI_STEAMDECK = "SDL_JOYSTICK_HIDAPI_STEAMDECK
  * A variable controlling whether the HIDAPI driver for HORI licensed Steam
  * controllers should be used.
  *
- * This variable can be set to the following values: "0" - HIDAPI driver is
- * not used "1" - HIDAPI driver is used
+ * The variable can be set to the following values:
  *
- * The default is the value of SDL_HINT_JOYSTICK_HIDAPI
+ * - "0": HIDAPI driver is not used.
+ * - "1": HIDAPI driver is used.
  *
- * @from SDL_hints.h:1785
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI.
+ *
+ * This hint should be set before initializing joysticks and gamepads.
+ *
+ * @since This hint is available since SDL 3.2.0.
+ *
+ * @from SDL_hints.h:1816
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_STEAM_HORI = "SDL_JOYSTICK_HIDAPI_STEAM_HORI";
 
@@ -1970,14 +2003,18 @@ export const SDL_HINT_JOYSTICK_HIDAPI_STEAM_HORI = "SDL_JOYSTICK_HIDAPI_STEAM_HO
  * A variable controlling whether the HIDAPI driver for some Logitech wheels
  * should be used.
  *
- * This variable can be set to the following values:
+ * The variable can be set to the following values:
  *
- * - "0": HIDAPI driver is not used
- * - "1": HIDAPI driver is used
+ * - "0": HIDAPI driver is not used.
+ * - "1": HIDAPI driver is used.
  *
- * The default is the value of SDL_HINT_JOYSTICK_HIDAPI
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI.
  *
- * @from SDL_hints.h:1798
+ * This hint should be set before initializing joysticks and gamepads.
+ *
+ * @since This hint is available since SDL 3.4.0.
+ *
+ * @from SDL_hints.h:1833
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_LG4FF = "SDL_JOYSTICK_HIDAPI_LG4FF";
 
@@ -1985,13 +2022,18 @@ export const SDL_HINT_JOYSTICK_HIDAPI_LG4FF = "SDL_JOYSTICK_HIDAPI_LG4FF";
  * A variable controlling whether the HIDAPI driver for 8BitDo controllers
  * should be used.
  *
- * This variable can be set to the following values:
+ * The variable can be set to the following values:
  *
- * "0" - HIDAPI driver is not used. "1" - HIDAPI driver is used.
+ * - "0": HIDAPI driver is not used.
+ * - "1": HIDAPI driver is used.
  *
- * The default is the value of SDL_HINT_JOYSTICK_HIDAPI
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI.
  *
- * @from SDL_hints.h:1810
+ * This hint should be set before initializing joysticks and gamepads.
+ *
+ * @since This hint is available since SDL 3.4.0.
+ *
+ * @from SDL_hints.h:1850
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_8BITDO = "SDL_JOYSTICK_HIDAPI_8BITDO";
 
@@ -2001,13 +2043,18 @@ export const SDL_HINT_JOYSTICK_HIDAPI_8BITDO = "SDL_JOYSTICK_HIDAPI_8BITDO";
  *
  * More info - https://github.com/HandHeldLegend/SInput-HID
  *
- * This variable can be set to the following values:
+ * The variable can be set to the following values:
  *
- * "0" - HIDAPI driver is not used. "1" - HIDAPI driver is used.
+ * - "0": HIDAPI driver is not used.
+ * - "1": HIDAPI driver is used.
  *
- * The default is the value of SDL_HINT_JOYSTICK_HIDAPI
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI.
  *
- * @from SDL_hints.h:1824
+ * This hint should be set before initializing joysticks and gamepads.
+ *
+ * @since This hint is available since SDL 3.4.0.
+ *
+ * @from SDL_hints.h:1869
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_SINPUT = "SDL_JOYSTICK_HIDAPI_SINPUT";
 
@@ -2015,13 +2062,18 @@ export const SDL_HINT_JOYSTICK_HIDAPI_SINPUT = "SDL_JOYSTICK_HIDAPI_SINPUT";
  * A variable controlling whether the HIDAPI driver for ZUIKI controllers
  * should be used.
  *
- * This variable can be set to the following values:
+ * The variable can be set to the following values:
  *
- * "0" - HIDAPI driver is not used. "1" - HIDAPI driver is used.
+ * - "0": HIDAPI driver is not used.
+ * - "1": HIDAPI driver is used.
  *
- * The default is the value of SDL_HINT_JOYSTICK_HIDAPI
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI.
  *
- * @from SDL_hints.h:1836
+ * This hint should be set before initializing joysticks and gamepads.
+ *
+ * @since This hint is available since SDL 3.4.0.
+ *
+ * @from SDL_hints.h:1886
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_ZUIKI = "SDL_JOYSTICK_HIDAPI_ZUIKI";
 
@@ -2029,13 +2081,18 @@ export const SDL_HINT_JOYSTICK_HIDAPI_ZUIKI = "SDL_JOYSTICK_HIDAPI_ZUIKI";
  * A variable controlling whether the HIDAPI driver for Flydigi controllers
  * should be used.
  *
- * This variable can be set to the following values:
+ * The variable can be set to the following values:
  *
- * "0" - HIDAPI driver is not used. "1" - HIDAPI driver is used.
+ * - "0": HIDAPI driver is not used.
+ * - "1": HIDAPI driver is used.
  *
- * The default is the value of SDL_HINT_JOYSTICK_HIDAPI
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI.
  *
- * @from SDL_hints.h:1848
+ * This hint should be set before initializing joysticks and gamepads.
+ *
+ * @since This hint is available since SDL 3.4.0.
+ *
+ * @from SDL_hints.h:1903
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI = "SDL_JOYSTICK_HIDAPI_FLYDIGI";
 
@@ -2054,7 +2111,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI = "SDL_JOYSTICK_HIDAPI_FLYDIGI";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1865
+ * @from SDL_hints.h:1920
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_SWITCH = "SDL_JOYSTICK_HIDAPI_SWITCH";
 
@@ -2075,7 +2132,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_SWITCH = "SDL_JOYSTICK_HIDAPI_SWITCH";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1884
+ * @from SDL_hints.h:1939
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED = "SDL_JOYSTICK_HIDAPI_SWITCH_HOME_LED";
 
@@ -2092,7 +2149,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED = "SDL_JOYSTICK_HIDAPI_SWI
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1899
+ * @from SDL_hints.h:1954
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED = "SDL_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED";
 
@@ -2111,7 +2168,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED = "SDL_JOYSTICK_HIDAPI_S
  *
  * @since This hint is available since SDL 3.4.0.
  *
- * @from SDL_hints.h:1916
+ * @from SDL_hints.h:1971
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_SWITCH2 = "SDL_JOYSTICK_HIDAPI_SWITCH2";
 
@@ -2129,7 +2186,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_SWITCH2 = "SDL_JOYSTICK_HIDAPI_SWITCH2";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1932
+ * @from SDL_hints.h:1987
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS = "SDL_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS";
 
@@ -2149,7 +2206,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS = "SDL_JOYSTICK_HIDAPI_V
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1950
+ * @from SDL_hints.h:2005
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_WII = "SDL_JOYSTICK_HIDAPI_WII";
 
@@ -2166,7 +2223,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_WII = "SDL_JOYSTICK_HIDAPI_WII";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1965
+ * @from SDL_hints.h:2020
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_WII_PLAYER_LED = "SDL_JOYSTICK_HIDAPI_WII_PLAYER_LED";
 
@@ -2186,7 +2243,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_WII_PLAYER_LED = "SDL_JOYSTICK_HIDAPI_WII_
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:1983
+ * @from SDL_hints.h:2038
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_XBOX = "SDL_JOYSTICK_HIDAPI_XBOX";
 
@@ -2205,7 +2262,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_XBOX = "SDL_JOYSTICK_HIDAPI_XBOX";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2000
+ * @from SDL_hints.h:2055
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_XBOX_360 = "SDL_JOYSTICK_HIDAPI_XBOX_360";
 
@@ -2222,7 +2279,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_XBOX_360 = "SDL_JOYSTICK_HIDAPI_XBOX_360";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2015
+ * @from SDL_hints.h:2070
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED = "SDL_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED";
 
@@ -2241,7 +2298,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED = "SDL_JOYSTICK_HIDAPI
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2032
+ * @from SDL_hints.h:2087
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_XBOX_360_WIRELESS = "SDL_JOYSTICK_HIDAPI_XBOX_360_WIRELESS";
 
@@ -2260,7 +2317,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_XBOX_360_WIRELESS = "SDL_JOYSTICK_HIDAPI_X
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2049
+ * @from SDL_hints.h:2104
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE = "SDL_JOYSTICK_HIDAPI_XBOX_ONE";
 
@@ -2281,7 +2338,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE = "SDL_JOYSTICK_HIDAPI_XBOX_ONE";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2068
+ * @from SDL_hints.h:2123
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED = "SDL_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED";
 
@@ -2300,7 +2357,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED = "SDL_JOYSTICK_HIDAPI_X
  *
  * @since This hint is available since SDL 3.4.0.
  *
- * @from SDL_hints.h:2085
+ * @from SDL_hints.h:2140
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_GIP = "SDL_JOYSTICK_HIDAPI_GIP";
 
@@ -2320,7 +2377,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_GIP = "SDL_JOYSTICK_HIDAPI_GIP";
  *
  * @since This hint is available since SDL 3.4.0.
  *
- * @from SDL_hints.h:2103
+ * @from SDL_hints.h:2158
  */
 export const SDL_HINT_JOYSTICK_HIDAPI_GIP_RESET_FOR_METADATA = "SDL_JOYSTICK_HIDAPI_GIP_RESET_FOR_METADATA";
 
@@ -2337,7 +2394,7 @@ export const SDL_HINT_JOYSTICK_HIDAPI_GIP_RESET_FOR_METADATA = "SDL_JOYSTICK_HID
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2118
+ * @from SDL_hints.h:2173
  */
 export const SDL_HINT_JOYSTICK_IOKIT = "SDL_JOYSTICK_IOKIT";
 
@@ -2354,7 +2411,7 @@ export const SDL_HINT_JOYSTICK_IOKIT = "SDL_JOYSTICK_IOKIT";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2133
+ * @from SDL_hints.h:2188
  */
 export const SDL_HINT_JOYSTICK_LINUX_CLASSIC = "SDL_JOYSTICK_LINUX_CLASSIC";
 
@@ -2371,7 +2428,7 @@ export const SDL_HINT_JOYSTICK_LINUX_CLASSIC = "SDL_JOYSTICK_LINUX_CLASSIC";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2148
+ * @from SDL_hints.h:2203
  */
 export const SDL_HINT_JOYSTICK_LINUX_DEADZONES = "SDL_JOYSTICK_LINUX_DEADZONES";
 
@@ -2391,7 +2448,7 @@ export const SDL_HINT_JOYSTICK_LINUX_DEADZONES = "SDL_JOYSTICK_LINUX_DEADZONES";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2166
+ * @from SDL_hints.h:2221
  */
 export const SDL_HINT_JOYSTICK_LINUX_DIGITAL_HATS = "SDL_JOYSTICK_LINUX_DIGITAL_HATS";
 
@@ -2409,7 +2466,7 @@ export const SDL_HINT_JOYSTICK_LINUX_DIGITAL_HATS = "SDL_JOYSTICK_LINUX_DIGITAL_
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2182
+ * @from SDL_hints.h:2237
  */
 export const SDL_HINT_JOYSTICK_LINUX_HAT_DEADZONES = "SDL_JOYSTICK_LINUX_HAT_DEADZONES";
 
@@ -2426,7 +2483,7 @@ export const SDL_HINT_JOYSTICK_LINUX_HAT_DEADZONES = "SDL_JOYSTICK_LINUX_HAT_DEA
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2197
+ * @from SDL_hints.h:2252
  */
 export const SDL_HINT_JOYSTICK_MFI = "SDL_JOYSTICK_MFI";
 
@@ -2443,7 +2500,7 @@ export const SDL_HINT_JOYSTICK_MFI = "SDL_JOYSTICK_MFI";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2212
+ * @from SDL_hints.h:2267
  */
 export const SDL_HINT_JOYSTICK_RAWINPUT = "SDL_JOYSTICK_RAWINPUT";
 
@@ -2462,7 +2519,7 @@ export const SDL_HINT_JOYSTICK_RAWINPUT = "SDL_JOYSTICK_RAWINPUT";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2229
+ * @from SDL_hints.h:2284
  */
 export const SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT = "SDL_JOYSTICK_RAWINPUT_CORRELATE_XINPUT";
 
@@ -2479,7 +2536,7 @@ export const SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT = "SDL_JOYSTICK_RAWINPU
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2244
+ * @from SDL_hints.h:2299
  */
 export const SDL_HINT_JOYSTICK_ROG_CHAKRAM = "SDL_JOYSTICK_ROG_CHAKRAM";
 
@@ -2496,7 +2553,7 @@ export const SDL_HINT_JOYSTICK_ROG_CHAKRAM = "SDL_JOYSTICK_ROG_CHAKRAM";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2259
+ * @from SDL_hints.h:2314
  */
 export const SDL_HINT_JOYSTICK_THREAD = "SDL_JOYSTICK_THREAD";
 
@@ -2515,7 +2572,7 @@ export const SDL_HINT_JOYSTICK_THREAD = "SDL_JOYSTICK_THREAD";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2276
+ * @from SDL_hints.h:2331
  */
 export const SDL_HINT_JOYSTICK_THROTTLE_DEVICES = "SDL_JOYSTICK_THROTTLE_DEVICES";
 
@@ -2538,7 +2595,7 @@ export const SDL_HINT_JOYSTICK_THROTTLE_DEVICES = "SDL_JOYSTICK_THROTTLE_DEVICES
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2297
+ * @from SDL_hints.h:2352
  */
 export const SDL_HINT_JOYSTICK_THROTTLE_DEVICES_EXCLUDED = "SDL_JOYSTICK_THROTTLE_DEVICES_EXCLUDED";
 
@@ -2555,7 +2612,7 @@ export const SDL_HINT_JOYSTICK_THROTTLE_DEVICES_EXCLUDED = "SDL_JOYSTICK_THROTTL
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2312
+ * @from SDL_hints.h:2367
  */
 export const SDL_HINT_JOYSTICK_WGI = "SDL_JOYSTICK_WGI";
 
@@ -2574,7 +2631,7 @@ export const SDL_HINT_JOYSTICK_WGI = "SDL_JOYSTICK_WGI";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2329
+ * @from SDL_hints.h:2384
  */
 export const SDL_HINT_JOYSTICK_WHEEL_DEVICES = "SDL_JOYSTICK_WHEEL_DEVICES";
 
@@ -2597,7 +2654,7 @@ export const SDL_HINT_JOYSTICK_WHEEL_DEVICES = "SDL_JOYSTICK_WHEEL_DEVICES";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2350
+ * @from SDL_hints.h:2405
  */
 export const SDL_HINT_JOYSTICK_WHEEL_DEVICES_EXCLUDED = "SDL_JOYSTICK_WHEEL_DEVICES_EXCLUDED";
 
@@ -2617,7 +2674,7 @@ export const SDL_HINT_JOYSTICK_WHEEL_DEVICES_EXCLUDED = "SDL_JOYSTICK_WHEEL_DEVI
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2368
+ * @from SDL_hints.h:2423
  */
 export const SDL_HINT_JOYSTICK_ZERO_CENTERED_DEVICES = "SDL_JOYSTICK_ZERO_CENTERED_DEVICES";
 
@@ -2641,7 +2698,7 @@ export const SDL_HINT_JOYSTICK_ZERO_CENTERED_DEVICES = "SDL_JOYSTICK_ZERO_CENTER
  *
  * @since This hint is available since SDL 3.2.5.
  *
- * @from SDL_hints.h:2390
+ * @from SDL_hints.h:2445
  */
 export const SDL_HINT_JOYSTICK_HAPTIC_AXES = "SDL_JOYSTICK_HAPTIC_AXES";
 
@@ -2677,7 +2734,7 @@ export const SDL_HINT_JOYSTICK_HAPTIC_AXES = "SDL_JOYSTICK_HAPTIC_AXES";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2424
+ * @from SDL_hints.h:2479
  */
 export const SDL_HINT_KEYCODE_OPTIONS = "SDL_KEYCODE_OPTIONS";
 
@@ -2693,7 +2750,7 @@ export const SDL_HINT_KEYCODE_OPTIONS = "SDL_KEYCODE_OPTIONS";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2438
+ * @from SDL_hints.h:2493
  */
 export const SDL_HINT_KMSDRM_DEVICE_INDEX = "SDL_KMSDRM_DEVICE_INDEX";
 
@@ -2723,7 +2780,7 @@ export const SDL_HINT_KMSDRM_DEVICE_INDEX = "SDL_KMSDRM_DEVICE_INDEX";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2466
+ * @from SDL_hints.h:2521
  */
 export const SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER = "SDL_KMSDRM_REQUIRE_DRM_MASTER";
 
@@ -2746,7 +2803,7 @@ export const SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER = "SDL_KMSDRM_REQUIRE_DRM_MASTER
  *
  * @since This hint is available since SDL 3.4.0.
  *
- * @from SDL_hints.h:2487
+ * @from SDL_hints.h:2542
  */
 export const SDL_HINT_KMSDRM_ATOMIC = "SDL_KMSDRM_ATOMIC";
 
@@ -2779,7 +2836,7 @@ export const SDL_HINT_KMSDRM_ATOMIC = "SDL_KMSDRM_ATOMIC";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2518
+ * @from SDL_hints.h:2573
  */
 export const SDL_HINT_LOGGING = "SDL_LOGGING";
 
@@ -2797,7 +2854,7 @@ export const SDL_HINT_LOGGING = "SDL_LOGGING";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2534
+ * @from SDL_hints.h:2589
  */
 export const SDL_HINT_MAC_BACKGROUND_APP = "SDL_MAC_BACKGROUND_APP";
 
@@ -2815,7 +2872,7 @@ export const SDL_HINT_MAC_BACKGROUND_APP = "SDL_MAC_BACKGROUND_APP";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2550
+ * @from SDL_hints.h:2605
  */
 export const SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK = "SDL_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK";
 
@@ -2840,7 +2897,7 @@ export const SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK = "SDL_MAC_CTRL_CLICK_E
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2573
+ * @from SDL_hints.h:2628
  */
 export const SDL_HINT_MAC_OPENGL_ASYNC_DISPATCH = "SDL_MAC_OPENGL_ASYNC_DISPATCH";
 
@@ -2867,7 +2924,7 @@ export const SDL_HINT_MAC_OPENGL_ASYNC_DISPATCH = "SDL_MAC_OPENGL_ASYNC_DISPATCH
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2598
+ * @from SDL_hints.h:2653
  */
 export const SDL_HINT_MAC_OPTION_AS_ALT = "SDL_MAC_OPTION_AS_ALT";
 
@@ -2884,7 +2941,7 @@ export const SDL_HINT_MAC_OPTION_AS_ALT = "SDL_MAC_OPTION_AS_ALT";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2613
+ * @from SDL_hints.h:2668
  */
 export const SDL_HINT_MAC_SCROLL_MOMENTUM = "SDL_MAC_SCROLL_MOMENTUM";
 
@@ -2894,14 +2951,14 @@ export const SDL_HINT_MAC_SCROLL_MOMENTUM = "SDL_MAC_SCROLL_MOMENTUM";
  *
  * The variable can be set to the following values:
  *
- * - "0": Holding a key will open the accents menu for that key.
- * - "1": Holding a key will repeat the pressed key. (default)
+ * - "0": Holding a key will repeat the pressed key.
+ * - "1": Holding a key will open the accents menu for that key. (default)
  *
  * This hint needs to be set before SDL_Init().
  *
  * @since This hint is available since SDL 3.4.0.
  *
- * @from SDL_hints.h:2628
+ * @from SDL_hints.h:2683
  */
 export const SDL_HINT_MAC_PRESS_AND_HOLD = "SDL_MAC_PRESS_AND_HOLD";
 
@@ -2933,7 +2990,7 @@ export const SDL_HINT_MAC_PRESS_AND_HOLD = "SDL_MAC_PRESS_AND_HOLD";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2658
+ * @from SDL_hints.h:2713
  */
 export const SDL_HINT_MAIN_CALLBACK_RATE = "SDL_MAIN_CALLBACK_RATE";
 
@@ -2954,7 +3011,7 @@ export const SDL_HINT_MAIN_CALLBACK_RATE = "SDL_MAIN_CALLBACK_RATE";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2677
+ * @from SDL_hints.h:2732
  */
 export const SDL_HINT_MOUSE_AUTO_CAPTURE = "SDL_MOUSE_AUTO_CAPTURE";
 
@@ -2965,7 +3022,7 @@ export const SDL_HINT_MOUSE_AUTO_CAPTURE = "SDL_MOUSE_AUTO_CAPTURE";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2686
+ * @from SDL_hints.h:2741
  */
 export const SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS = "SDL_MOUSE_DOUBLE_CLICK_RADIUS";
 
@@ -2976,7 +3033,7 @@ export const SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS = "SDL_MOUSE_DOUBLE_CLICK_RADIUS
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2695
+ * @from SDL_hints.h:2750
  */
 export const SDL_HINT_MOUSE_DOUBLE_CLICK_TIME = "SDL_MOUSE_DOUBLE_CLICK_TIME";
 
@@ -2990,7 +3047,7 @@ export const SDL_HINT_MOUSE_DOUBLE_CLICK_TIME = "SDL_MOUSE_DOUBLE_CLICK_TIME";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2707
+ * @from SDL_hints.h:2762
  */
 export const SDL_HINT_MOUSE_DEFAULT_SYSTEM_CURSOR = "SDL_MOUSE_DEFAULT_SYSTEM_CURSOR";
 
@@ -3004,13 +3061,13 @@ export const SDL_HINT_MOUSE_DEFAULT_SYSTEM_CURSOR = "SDL_MOUSE_DEFAULT_SYSTEM_CU
  *   (default)
  * - "1": Cursors will automatically match the display content scale (e.g. a
  *   2x sized cursor will be used when the window is on a monitor with 200%
- *   scale). This is currently implemented on Windows and Wayland.
+ *   scale). This is currently implemented on Windows.
  *
  * This hint needs to be set before creating cursors.
  *
  * @since This hint is available since SDL 3.4.0.
  *
- * @from SDL_hints.h:2725
+ * @from SDL_hints.h:2780
  */
 export const SDL_HINT_MOUSE_DPI_SCALE_CURSORS = "SDL_MOUSE_DPI_SCALE_CURSORS";
 
@@ -3044,7 +3101,7 @@ export const SDL_HINT_MOUSE_DPI_SCALE_CURSORS = "SDL_MOUSE_DPI_SCALE_CURSORS";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2757
+ * @from SDL_hints.h:2812
  */
 export const SDL_HINT_MOUSE_EMULATE_WARP_WITH_RELATIVE = "SDL_MOUSE_EMULATE_WARP_WITH_RELATIVE";
 
@@ -3060,7 +3117,7 @@ export const SDL_HINT_MOUSE_EMULATE_WARP_WITH_RELATIVE = "SDL_MOUSE_EMULATE_WARP
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2771
+ * @from SDL_hints.h:2826
  */
 export const SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH = "SDL_MOUSE_FOCUS_CLICKTHROUGH";
 
@@ -3072,7 +3129,7 @@ export const SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH = "SDL_MOUSE_FOCUS_CLICKTHROUGH";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2781
+ * @from SDL_hints.h:2836
  */
 export const SDL_HINT_MOUSE_NORMAL_SPEED_SCALE = "SDL_MOUSE_NORMAL_SPEED_SCALE";
 
@@ -3095,7 +3152,7 @@ export const SDL_HINT_MOUSE_NORMAL_SPEED_SCALE = "SDL_MOUSE_NORMAL_SPEED_SCALE";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2802
+ * @from SDL_hints.h:2857
  */
 export const SDL_HINT_MOUSE_RELATIVE_MODE_CENTER = "SDL_MOUSE_RELATIVE_MODE_CENTER";
 
@@ -3107,7 +3164,7 @@ export const SDL_HINT_MOUSE_RELATIVE_MODE_CENTER = "SDL_MOUSE_RELATIVE_MODE_CENT
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2812
+ * @from SDL_hints.h:2867
  */
 export const SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE = "SDL_MOUSE_RELATIVE_SPEED_SCALE";
 
@@ -3128,7 +3185,7 @@ export const SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE = "SDL_MOUSE_RELATIVE_SPEED_SCA
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2831
+ * @from SDL_hints.h:2886
  */
 export const SDL_HINT_MOUSE_RELATIVE_SYSTEM_SCALE = "SDL_MOUSE_RELATIVE_SYSTEM_SCALE";
 
@@ -3149,7 +3206,7 @@ export const SDL_HINT_MOUSE_RELATIVE_SYSTEM_SCALE = "SDL_MOUSE_RELATIVE_SYSTEM_S
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2850
+ * @from SDL_hints.h:2905
  */
 export const SDL_HINT_MOUSE_RELATIVE_WARP_MOTION = "SDL_MOUSE_RELATIVE_WARP_MOTION";
 
@@ -3170,7 +3227,7 @@ export const SDL_HINT_MOUSE_RELATIVE_WARP_MOTION = "SDL_MOUSE_RELATIVE_WARP_MOTI
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2869
+ * @from SDL_hints.h:2924
  */
 export const SDL_HINT_MOUSE_RELATIVE_CURSOR_VISIBLE = "SDL_MOUSE_RELATIVE_CURSOR_VISIBLE";
 
@@ -3189,7 +3246,7 @@ export const SDL_HINT_MOUSE_RELATIVE_CURSOR_VISIBLE = "SDL_MOUSE_RELATIVE_CURSOR
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2886
+ * @from SDL_hints.h:2941
  */
 export const SDL_HINT_MOUSE_TOUCH_EVENTS = "SDL_MOUSE_TOUCH_EVENTS";
 
@@ -3209,7 +3266,7 @@ export const SDL_HINT_MOUSE_TOUCH_EVENTS = "SDL_MOUSE_TOUCH_EVENTS";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2904
+ * @from SDL_hints.h:2959
  */
 export const SDL_HINT_MUTE_CONSOLE_KEYBOARD = "SDL_MUTE_CONSOLE_KEYBOARD";
 
@@ -3226,7 +3283,7 @@ export const SDL_HINT_MUTE_CONSOLE_KEYBOARD = "SDL_MUTE_CONSOLE_KEYBOARD";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2919
+ * @from SDL_hints.h:2974
  */
 export const SDL_HINT_NO_SIGNAL_HANDLERS = "SDL_NO_SIGNAL_HANDLERS";
 
@@ -3239,7 +3296,7 @@ export const SDL_HINT_NO_SIGNAL_HANDLERS = "SDL_NO_SIGNAL_HANDLERS";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2930
+ * @from SDL_hints.h:2985
  */
 export const SDL_HINT_OPENGL_LIBRARY = "SDL_OPENGL_LIBRARY";
 
@@ -3253,7 +3310,7 @@ export const SDL_HINT_OPENGL_LIBRARY = "SDL_OPENGL_LIBRARY";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2942
+ * @from SDL_hints.h:2997
  */
 export const SDL_HINT_EGL_LIBRARY = "SDL_EGL_LIBRARY";
 
@@ -3289,9 +3346,51 @@ export const SDL_HINT_EGL_LIBRARY = "SDL_EGL_LIBRARY";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2976
+ * @from SDL_hints.h:3031
  */
 export const SDL_HINT_OPENGL_ES_DRIVER = "SDL_OPENGL_ES_DRIVER";
+
+/**
+ * A variable controlling whether to force an sRGB-capable OpenGL context.
+ *
+ * At OpenGL context creation time, some platforms can request an sRGB-capable
+ * context. However, sometimes any form of the request can cause surprising
+ * results on some drivers, platforms, and hardware. Usually the surprise is
+ * in the form of rendering that is either a little darker or a little
+ * brighter than intended.
+ *
+ * This hint allows the user to override the app's sRGB requests and either
+ * force a specific value, or avoid requesting anything at all, depending on
+ * what makes things work correctly for their system.
+ *
+ * This is meant as a fail-safe; apps should probably not explicitly set this,
+ * and most users should not, either.
+ *
+ * Note that some platforms cannot make this request at all, and on all
+ * platforms this request can be denied by the operating system.
+ *
+ * In addition to attempting to obtain the type of sRGB-capable OpenGL context
+ * requested by this hint, SDL will try to force the state of
+ * GL_FRAMEBUFFER_SRGB on the new context, if appropriate.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": Force a request for an OpenGL context that is _not_ sRGB-capable.
+ * - "1": Force a request for an OpenGL context that _is_ sRGB-capable.
+ * - "skip": Don't make any request for an sRGB-capable context (don't specify
+ *   the attribute at all during context creation time).
+ * - any other string is undefined behavior.
+ *
+ * If unset, or set to an empty string, SDL will make a request using the
+ * value the app specified with the SDL_GL_FRAMEBUFFER_SRGB_CAPABLE attribute.
+ *
+ * This hint should be set before an OpenGL context is created.
+ *
+ * @since This hint is available since SDL 3.4.2.
+ *
+ * @from SDL_hints.h:3071
+ */
+export const SDL_HINT_OPENGL_FORCE_SRGB_FRAMEBUFFER = "SDL_OPENGL_FORCE_SRGB_FRAMEBUFFER";
 
 /**
  * Mechanism to specify openvr_api library location
@@ -3303,7 +3402,7 @@ export const SDL_HINT_OPENGL_ES_DRIVER = "SDL_OPENGL_ES_DRIVER";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:2988
+ * @from SDL_hints.h:3083
  */
 export const SDL_HINT_OPENVR_LIBRARY = "SDL_OPENVR_LIBRARY";
 
@@ -3324,7 +3423,7 @@ export const SDL_HINT_OPENVR_LIBRARY = "SDL_OPENVR_LIBRARY";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3007
+ * @from SDL_hints.h:3102
  */
 export const SDL_HINT_ORIENTATIONS = "SDL_ORIENTATIONS";
 
@@ -3346,7 +3445,7 @@ export const SDL_HINT_ORIENTATIONS = "SDL_ORIENTATIONS";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3027
+ * @from SDL_hints.h:3122
  */
 export const SDL_HINT_POLL_SENTINEL = "SDL_POLL_SENTINEL";
 
@@ -3366,7 +3465,7 @@ export const SDL_HINT_POLL_SENTINEL = "SDL_POLL_SENTINEL";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3045
+ * @from SDL_hints.h:3140
  */
 export const SDL_HINT_PREFERRED_LOCALES = "SDL_PREFERRED_LOCALES";
 
@@ -3391,7 +3490,7 @@ export const SDL_HINT_PREFERRED_LOCALES = "SDL_PREFERRED_LOCALES";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3068
+ * @from SDL_hints.h:3163
  */
 export const SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE = "SDL_QUIT_ON_LAST_WINDOW_CLOSE";
 
@@ -3408,7 +3507,7 @@ export const SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE = "SDL_QUIT_ON_LAST_WINDOW_CLOSE
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3083
+ * @from SDL_hints.h:3178
  */
 export const SDL_HINT_RENDER_DIRECT3D_THREADSAFE = "SDL_RENDER_DIRECT3D_THREADSAFE";
 
@@ -3426,7 +3525,7 @@ export const SDL_HINT_RENDER_DIRECT3D_THREADSAFE = "SDL_RENDER_DIRECT3D_THREADSA
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3099
+ * @from SDL_hints.h:3194
  */
 export const SDL_HINT_RENDER_DIRECT3D11_DEBUG = "SDL_RENDER_DIRECT3D11_DEBUG";
 
@@ -3446,7 +3545,7 @@ export const SDL_HINT_RENDER_DIRECT3D11_DEBUG = "SDL_RENDER_DIRECT3D11_DEBUG";
  *
  * @since This hint is available since SDL 3.4.0.
  *
- * @from SDL_hints.h:3117
+ * @from SDL_hints.h:3212
  */
 export const SDL_HINT_RENDER_DIRECT3D11_WARP = "SDL_RENDER_DIRECT3D11_WARP";
 
@@ -3462,7 +3561,7 @@ export const SDL_HINT_RENDER_DIRECT3D11_WARP = "SDL_RENDER_DIRECT3D11_WARP";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3131
+ * @from SDL_hints.h:3226
  */
 export const SDL_HINT_RENDER_VULKAN_DEBUG = "SDL_RENDER_VULKAN_DEBUG";
 
@@ -3478,7 +3577,7 @@ export const SDL_HINT_RENDER_VULKAN_DEBUG = "SDL_RENDER_VULKAN_DEBUG";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3145
+ * @from SDL_hints.h:3240
  */
 export const SDL_HINT_RENDER_GPU_DEBUG = "SDL_RENDER_GPU_DEBUG";
 
@@ -3495,7 +3594,7 @@ export const SDL_HINT_RENDER_GPU_DEBUG = "SDL_RENDER_GPU_DEBUG";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3160
+ * @from SDL_hints.h:3255
  */
 export const SDL_HINT_RENDER_GPU_LOW_POWER = "SDL_RENDER_GPU_LOW_POWER";
 
@@ -3530,7 +3629,7 @@ export const SDL_HINT_RENDER_GPU_LOW_POWER = "SDL_RENDER_GPU_LOW_POWER";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3193
+ * @from SDL_hints.h:3288
  */
 export const SDL_HINT_RENDER_DRIVER = "SDL_RENDER_DRIVER";
 
@@ -3550,7 +3649,7 @@ export const SDL_HINT_RENDER_DRIVER = "SDL_RENDER_DRIVER";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3211
+ * @from SDL_hints.h:3306
  */
 export const SDL_HINT_RENDER_LINE_METHOD = "SDL_RENDER_LINE_METHOD";
 
@@ -3567,7 +3666,7 @@ export const SDL_HINT_RENDER_LINE_METHOD = "SDL_RENDER_LINE_METHOD";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3226
+ * @from SDL_hints.h:3321
  */
 export const SDL_HINT_RENDER_METAL_PREFER_LOW_POWER_DEVICE = "SDL_RENDER_METAL_PREFER_LOW_POWER_DEVICE";
 
@@ -3586,7 +3685,7 @@ export const SDL_HINT_RENDER_METAL_PREFER_LOW_POWER_DEVICE = "SDL_RENDER_METAL_P
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3243
+ * @from SDL_hints.h:3338
  */
 export const SDL_HINT_RENDER_VSYNC = "SDL_RENDER_VSYNC";
 
@@ -3605,7 +3704,7 @@ export const SDL_HINT_RENDER_VSYNC = "SDL_RENDER_VSYNC";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3260
+ * @from SDL_hints.h:3355
  */
 export const SDL_HINT_RETURN_KEY_HIDES_IME = "SDL_RETURN_KEY_HIDES_IME";
 
@@ -3626,7 +3725,7 @@ export const SDL_HINT_RETURN_KEY_HIDES_IME = "SDL_RETURN_KEY_HIDES_IME";
  *
  * @sa SDL_HINT_ROG_GAMEPAD_MICE_EXCLUDED
  *
- * @from SDL_hints.h:3279
+ * @from SDL_hints.h:3374
  */
 export const SDL_HINT_ROG_GAMEPAD_MICE = "SDL_ROG_GAMEPAD_MICE";
 
@@ -3648,46 +3747,58 @@ export const SDL_HINT_ROG_GAMEPAD_MICE = "SDL_ROG_GAMEPAD_MICE";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3299
+ * @from SDL_hints.h:3394
  */
 export const SDL_HINT_ROG_GAMEPAD_MICE_EXCLUDED = "SDL_ROG_GAMEPAD_MICE_EXCLUDED";
 
 /**
- * Variable controlling the width of the PS2's framebuffer in pixels
+ * A variable controlling the width of the PS2's framebuffer in pixels.
  *
- * By default, this variable is "640"
+ * By default, the variable is "640".
  *
- * @from SDL_hints.h:3306
+ * @since This hint is available since SDL 3.4.0.
+ *
+ * @from SDL_hints.h:3403
  */
 export const SDL_HINT_PS2_GS_WIDTH = "SDL_PS2_GS_WIDTH";
 
 /**
- * Variable controlling the height of the PS2's framebuffer in pixels
+ * A variable controlling the height of the PS2's framebuffer in pixels.
  *
- * By default, this variable is "448"
+ * By default, the variable is "448".
  *
- * @from SDL_hints.h:3313
+ * @since This hint is available since SDL 3.4.0.
+ *
+ * @from SDL_hints.h:3412
  */
 export const SDL_HINT_PS2_GS_HEIGHT = "SDL_PS2_GS_HEIGHT";
 
 /**
- * Variable controlling whether the signal is interlaced or progressive
+ * A variable controlling whether the signal is interlaced or progressive.
+ *
+ * The variable can be set to the following values:
  *
  * - "0": Image is interlaced. (default)
- * - "1": Image is progressive
+ * - "1": Image is progressive.
  *
- * @from SDL_hints.h:3321
+ * @since This hint is available since SDL 3.4.0.
+ *
+ * @from SDL_hints.h:3424
  */
 export const SDL_HINT_PS2_GS_PROGRESSIVE = "SDL_PS2_GS_PROGRESSIVE";
 
 /**
- * Variable controlling the video mode of the console
+ * A variable controlling the video mode of the console.
+ *
+ * The variable can be set to the following values:
  *
  * - "": Console-native. (default)
- * - "NTSC": 60hz region
- * - "PAL": 50hz region
+ * - "NTSC": 60hz region.
+ * - "PAL": 50hz region.
  *
- * @from SDL_hints.h:3330
+ * @since This hint is available since SDL 3.4.0.
+ *
+ * @from SDL_hints.h:3437
  */
 export const SDL_HINT_PS2_GS_MODE = "SDL_PS2_GS_MODE";
 
@@ -3701,7 +3812,7 @@ export const SDL_HINT_PS2_GS_MODE = "SDL_PS2_GS_MODE";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3342
+ * @from SDL_hints.h:3449
  */
 export const SDL_HINT_RPI_VIDEO_LAYER = "SDL_RPI_VIDEO_LAYER";
 
@@ -3725,7 +3836,7 @@ export const SDL_HINT_RPI_VIDEO_LAYER = "SDL_RPI_VIDEO_LAYER";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3364
+ * @from SDL_hints.h:3471
  */
 export const SDL_HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME = "SDL_SCREENSAVER_INHIBIT_ACTIVITY_NAME";
 
@@ -3746,7 +3857,7 @@ export const SDL_HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME = "SDL_SCREENSAVER_INHIB
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3383
+ * @from SDL_hints.h:3490
  */
 export const SDL_HINT_SHUTDOWN_DBUS_ON_QUIT = "SDL_SHUTDOWN_DBUS_ON_QUIT";
 
@@ -3762,7 +3873,7 @@ export const SDL_HINT_SHUTDOWN_DBUS_ON_QUIT = "SDL_SHUTDOWN_DBUS_ON_QUIT";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3397
+ * @from SDL_hints.h:3504
  */
 export const SDL_HINT_STORAGE_TITLE_DRIVER = "SDL_STORAGE_TITLE_DRIVER";
 
@@ -3778,7 +3889,7 @@ export const SDL_HINT_STORAGE_TITLE_DRIVER = "SDL_STORAGE_TITLE_DRIVER";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3411
+ * @from SDL_hints.h:3518
  */
 export const SDL_HINT_STORAGE_USER_DRIVER = "SDL_STORAGE_USER_DRIVER";
 
@@ -3809,7 +3920,7 @@ export const SDL_HINT_STORAGE_USER_DRIVER = "SDL_STORAGE_USER_DRIVER";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3440
+ * @from SDL_hints.h:3547
  */
 export const SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL = "SDL_THREAD_FORCE_REALTIME_TIME_CRITICAL";
 
@@ -3834,7 +3945,7 @@ export const SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL = "SDL_THREAD_FORCE_RE
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3463
+ * @from SDL_hints.h:3570
  */
 export const SDL_HINT_THREAD_PRIORITY_POLICY = "SDL_THREAD_PRIORITY_POLICY";
 
@@ -3856,7 +3967,7 @@ export const SDL_HINT_THREAD_PRIORITY_POLICY = "SDL_THREAD_PRIORITY_POLICY";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3483
+ * @from SDL_hints.h:3590
  */
 export const SDL_HINT_TIMER_RESOLUTION = "SDL_TIMER_RESOLUTION";
 
@@ -3873,7 +3984,7 @@ export const SDL_HINT_TIMER_RESOLUTION = "SDL_TIMER_RESOLUTION";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3498
+ * @from SDL_hints.h:3605
  */
 export const SDL_HINT_TOUCH_MOUSE_EVENTS = "SDL_TOUCH_MOUSE_EVENTS";
 
@@ -3896,7 +4007,7 @@ export const SDL_HINT_TOUCH_MOUSE_EVENTS = "SDL_TOUCH_MOUSE_EVENTS";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3519
+ * @from SDL_hints.h:3626
  */
 export const SDL_HINT_TRACKPAD_IS_TOUCH_ONLY = "SDL_TRACKPAD_IS_TOUCH_ONLY";
 
@@ -3913,7 +4024,7 @@ export const SDL_HINT_TRACKPAD_IS_TOUCH_ONLY = "SDL_TRACKPAD_IS_TOUCH_ONLY";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3534
+ * @from SDL_hints.h:3641
  */
 export const SDL_HINT_TV_REMOTE_AS_JOYSTICK = "SDL_TV_REMOTE_AS_JOYSTICK";
 
@@ -3929,7 +4040,7 @@ export const SDL_HINT_TV_REMOTE_AS_JOYSTICK = "SDL_TV_REMOTE_AS_JOYSTICK";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3548
+ * @from SDL_hints.h:3655
  */
 export const SDL_HINT_VIDEO_ALLOW_SCREENSAVER = "SDL_VIDEO_ALLOW_SCREENSAVER";
 
@@ -3958,7 +4069,7 @@ export const SDL_HINT_VIDEO_ALLOW_SCREENSAVER = "SDL_VIDEO_ALLOW_SCREENSAVER";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3575
+ * @from SDL_hints.h:3682
  */
 export const SDL_HINT_VIDEO_DISPLAY_PRIORITY = "SDL_VIDEO_DISPLAY_PRIORITY";
 
@@ -3983,7 +4094,7 @@ export const SDL_HINT_VIDEO_DISPLAY_PRIORITY = "SDL_VIDEO_DISPLAY_PRIORITY";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3598
+ * @from SDL_hints.h:3705
  */
 export const SDL_HINT_VIDEO_DOUBLE_BUFFER = "SDL_VIDEO_DOUBLE_BUFFER";
 
@@ -4003,7 +4114,7 @@ export const SDL_HINT_VIDEO_DOUBLE_BUFFER = "SDL_VIDEO_DOUBLE_BUFFER";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3616
+ * @from SDL_hints.h:3723
  */
 export const SDL_HINT_VIDEO_DRIVER = "SDL_VIDEO_DRIVER";
 
@@ -4018,7 +4129,7 @@ export const SDL_HINT_VIDEO_DRIVER = "SDL_VIDEO_DRIVER";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3629
+ * @from SDL_hints.h:3736
  */
 export const SDL_HINT_VIDEO_DUMMY_SAVE_FRAMES = "SDL_VIDEO_DUMMY_SAVE_FRAMES";
 
@@ -4034,7 +4145,7 @@ export const SDL_HINT_VIDEO_DUMMY_SAVE_FRAMES = "SDL_VIDEO_DUMMY_SAVE_FRAMES";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3643
+ * @from SDL_hints.h:3750
  */
 export const SDL_HINT_VIDEO_EGL_ALLOW_GETDISPLAY_FALLBACK = "SDL_VIDEO_EGL_ALLOW_GETDISPLAY_FALLBACK";
 
@@ -4052,7 +4163,7 @@ export const SDL_HINT_VIDEO_EGL_ALLOW_GETDISPLAY_FALLBACK = "SDL_VIDEO_EGL_ALLOW
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3659
+ * @from SDL_hints.h:3766
  */
 export const SDL_HINT_VIDEO_FORCE_EGL = "SDL_VIDEO_FORCE_EGL";
 
@@ -4072,7 +4183,7 @@ export const SDL_HINT_VIDEO_FORCE_EGL = "SDL_VIDEO_FORCE_EGL";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3677
+ * @from SDL_hints.h:3784
  */
 export const SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES = "SDL_VIDEO_MAC_FULLSCREEN_SPACES";
 
@@ -4095,7 +4206,7 @@ export const SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES = "SDL_VIDEO_MAC_FULLSCREEN_SP
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3698
+ * @from SDL_hints.h:3805
  */
 export const SDL_HINT_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY = "SDL_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY";
 
@@ -4114,7 +4225,7 @@ export const SDL_HINT_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY = "SDL_VIDEO_MAC_FULL
  *
  * @since This hint is available since SDL 3.4.0.
  *
- * @from SDL_hints.h:3715
+ * @from SDL_hints.h:3822
  */
 export const SDL_HINT_VIDEO_METAL_AUTO_RESIZE_DRAWABLE = "SDL_VIDEO_METAL_AUTO_RESIZE_DRAWABLE";
 
@@ -4136,7 +4247,7 @@ export const SDL_HINT_VIDEO_METAL_AUTO_RESIZE_DRAWABLE = "SDL_VIDEO_METAL_AUTO_R
  *
  * @since This hint is available since SDL 3.4.0.
  *
- * @from SDL_hints.h:3735
+ * @from SDL_hints.h:3842
  */
 export const SDL_HINT_VIDEO_MATCH_EXCLUSIVE_MODE_ON_MOVE = "SDL_VIDEO_MATCH_EXCLUSIVE_MODE_ON_MOVE";
 
@@ -4156,7 +4267,7 @@ export const SDL_HINT_VIDEO_MATCH_EXCLUSIVE_MODE_ON_MOVE = "SDL_VIDEO_MATCH_EXCL
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3753
+ * @from SDL_hints.h:3860
  */
 export const SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS = "SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS";
 
@@ -4175,7 +4286,7 @@ export const SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS = "SDL_VIDEO_MINIMIZE_ON_FOCU
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3770
+ * @from SDL_hints.h:3877
  */
 export const SDL_HINT_VIDEO_OFFSCREEN_SAVE_FRAMES = "SDL_VIDEO_OFFSCREEN_SAVE_FRAMES";
 
@@ -4203,7 +4314,7 @@ export const SDL_HINT_VIDEO_OFFSCREEN_SAVE_FRAMES = "SDL_VIDEO_OFFSCREEN_SAVE_FR
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3796
+ * @from SDL_hints.h:3903
  */
 export const SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS = "SDL_VIDEO_SYNC_WINDOW_OPERATIONS";
 
@@ -4223,7 +4334,7 @@ export const SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS = "SDL_VIDEO_SYNC_WINDOW_OPER
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3814
+ * @from SDL_hints.h:3921
  */
 export const SDL_HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR = "SDL_VIDEO_WAYLAND_ALLOW_LIBDECOR";
 
@@ -4245,7 +4356,7 @@ export const SDL_HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR = "SDL_VIDEO_WAYLAND_ALLOW_LI
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3834
+ * @from SDL_hints.h:3941
  */
 export const SDL_HINT_VIDEO_WAYLAND_MODE_EMULATION = "SDL_VIDEO_WAYLAND_MODE_EMULATION";
 
@@ -4269,7 +4380,7 @@ export const SDL_HINT_VIDEO_WAYLAND_MODE_EMULATION = "SDL_VIDEO_WAYLAND_MODE_EMU
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3856
+ * @from SDL_hints.h:3963
  */
 export const SDL_HINT_VIDEO_WAYLAND_MODE_SCALING = "SDL_VIDEO_WAYLAND_MODE_SCALING";
 
@@ -4291,7 +4402,7 @@ export const SDL_HINT_VIDEO_WAYLAND_MODE_SCALING = "SDL_VIDEO_WAYLAND_MODE_SCALI
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3876
+ * @from SDL_hints.h:3983
  */
 export const SDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR = "SDL_VIDEO_WAYLAND_PREFER_LIBDECOR";
 
@@ -4332,7 +4443,7 @@ export const SDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR = "SDL_VIDEO_WAYLAND_PREFER_
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3915
+ * @from SDL_hints.h:4022
  */
 export const SDL_HINT_VIDEO_WAYLAND_SCALE_TO_DISPLAY = "SDL_VIDEO_WAYLAND_SCALE_TO_DISPLAY";
 
@@ -4356,7 +4467,7 @@ export const SDL_HINT_VIDEO_WAYLAND_SCALE_TO_DISPLAY = "SDL_VIDEO_WAYLAND_SCALE_
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3937
+ * @from SDL_hints.h:4044
  */
 export const SDL_HINT_VIDEO_WIN_D3DCOMPILER = "SDL_VIDEO_WIN_D3DCOMPILER";
 
@@ -4374,7 +4485,7 @@ export const SDL_HINT_VIDEO_WIN_D3DCOMPILER = "SDL_VIDEO_WIN_D3DCOMPILER";
  *
  * @since This hint is available since SDL 3.2.10.
  *
- * @from SDL_hints.h:3953
+ * @from SDL_hints.h:4060
  */
 export const SDL_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT = "SDL_VIDEO_X11_EXTERNAL_WINDOW_INPUT";
 
@@ -4391,7 +4502,7 @@ export const SDL_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT = "SDL_VIDEO_X11_EXTERNAL_
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3968
+ * @from SDL_hints.h:4075
  */
 export const SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR = "SDL_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR";
 
@@ -4412,7 +4523,7 @@ export const SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR = "SDL_VIDEO_X11_NET_WM
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:3987
+ * @from SDL_hints.h:4094
  */
 export const SDL_HINT_VIDEO_X11_NET_WM_PING = "SDL_VIDEO_X11_NET_WM_PING";
 
@@ -4428,7 +4539,7 @@ export const SDL_HINT_VIDEO_X11_NET_WM_PING = "SDL_VIDEO_X11_NET_WM_PING";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4001
+ * @from SDL_hints.h:4108
  */
 export const SDL_HINT_VIDEO_X11_NODIRECTCOLOR = "SDL_VIDEO_X11_NODIRECTCOLOR";
 
@@ -4441,7 +4552,7 @@ export const SDL_HINT_VIDEO_X11_NODIRECTCOLOR = "SDL_VIDEO_X11_NODIRECTCOLOR";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4012
+ * @from SDL_hints.h:4119
  */
 export const SDL_HINT_VIDEO_X11_SCALING_FACTOR = "SDL_VIDEO_X11_SCALING_FACTOR";
 
@@ -4452,7 +4563,7 @@ export const SDL_HINT_VIDEO_X11_SCALING_FACTOR = "SDL_VIDEO_X11_SCALING_FACTOR";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4021
+ * @from SDL_hints.h:4128
  */
 export const SDL_HINT_VIDEO_X11_VISUALID = "SDL_VIDEO_X11_VISUALID";
 
@@ -4463,7 +4574,7 @@ export const SDL_HINT_VIDEO_X11_VISUALID = "SDL_VIDEO_X11_VISUALID";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4030
+ * @from SDL_hints.h:4137
  */
 export const SDL_HINT_VIDEO_X11_WINDOW_VISUALID = "SDL_VIDEO_X11_WINDOW_VISUALID";
 
@@ -4479,7 +4590,7 @@ export const SDL_HINT_VIDEO_X11_WINDOW_VISUALID = "SDL_VIDEO_X11_WINDOW_VISUALID
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4044
+ * @from SDL_hints.h:4151
  */
 export const SDL_HINT_VIDEO_X11_XRANDR = "SDL_VIDEO_X11_XRANDR";
 
@@ -4496,7 +4607,7 @@ export const SDL_HINT_VIDEO_X11_XRANDR = "SDL_VIDEO_X11_XRANDR";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4059
+ * @from SDL_hints.h:4166
  */
 export const SDL_HINT_VITA_ENABLE_BACK_TOUCH = "SDL_VITA_ENABLE_BACK_TOUCH";
 
@@ -4513,7 +4624,7 @@ export const SDL_HINT_VITA_ENABLE_BACK_TOUCH = "SDL_VITA_ENABLE_BACK_TOUCH";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4074
+ * @from SDL_hints.h:4181
  */
 export const SDL_HINT_VITA_ENABLE_FRONT_TOUCH = "SDL_VITA_ENABLE_FRONT_TOUCH";
 
@@ -4526,7 +4637,7 @@ export const SDL_HINT_VITA_ENABLE_FRONT_TOUCH = "SDL_VITA_ENABLE_FRONT_TOUCH";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4085
+ * @from SDL_hints.h:4192
  */
 export const SDL_HINT_VITA_MODULE_PATH = "SDL_VITA_MODULE_PATH";
 
@@ -4541,7 +4652,7 @@ export const SDL_HINT_VITA_MODULE_PATH = "SDL_VITA_MODULE_PATH";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4098
+ * @from SDL_hints.h:4205
  */
 export const SDL_HINT_VITA_PVR_INIT = "SDL_VITA_PVR_INIT";
 
@@ -4558,7 +4669,7 @@ export const SDL_HINT_VITA_PVR_INIT = "SDL_VITA_PVR_INIT";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4113
+ * @from SDL_hints.h:4220
  */
 export const SDL_HINT_VITA_RESOLUTION = "SDL_VITA_RESOLUTION";
 
@@ -4575,7 +4686,7 @@ export const SDL_HINT_VITA_RESOLUTION = "SDL_VITA_RESOLUTION";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4128
+ * @from SDL_hints.h:4235
  */
 export const SDL_HINT_VITA_PVR_OPENGL = "SDL_VITA_PVR_OPENGL";
 
@@ -4593,7 +4704,7 @@ export const SDL_HINT_VITA_PVR_OPENGL = "SDL_VITA_PVR_OPENGL";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4144
+ * @from SDL_hints.h:4251
  */
 export const SDL_HINT_VITA_TOUCH_MOUSE_DEVICE = "SDL_VITA_TOUCH_MOUSE_DEVICE";
 
@@ -4606,7 +4717,7 @@ export const SDL_HINT_VITA_TOUCH_MOUSE_DEVICE = "SDL_VITA_TOUCH_MOUSE_DEVICE";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4155
+ * @from SDL_hints.h:4262
  */
 export const SDL_HINT_VULKAN_DISPLAY = "SDL_VULKAN_DISPLAY";
 
@@ -4618,7 +4729,7 @@ export const SDL_HINT_VULKAN_DISPLAY = "SDL_VULKAN_DISPLAY";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4165
+ * @from SDL_hints.h:4272
  */
 export const SDL_HINT_VULKAN_LIBRARY = "SDL_VULKAN_LIBRARY";
 
@@ -4652,7 +4763,7 @@ export const SDL_HINT_VULKAN_LIBRARY = "SDL_VULKAN_LIBRARY";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4197
+ * @from SDL_hints.h:4304
  */
 export const SDL_HINT_WAVE_FACT_CHUNK = "SDL_WAVE_FACT_CHUNK";
 
@@ -4666,7 +4777,7 @@ export const SDL_HINT_WAVE_FACT_CHUNK = "SDL_WAVE_FACT_CHUNK";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4209
+ * @from SDL_hints.h:4316
  */
 export const SDL_HINT_WAVE_CHUNK_LIMIT = "SDL_WAVE_CHUNK_LIMIT";
 
@@ -4696,7 +4807,7 @@ export const SDL_HINT_WAVE_CHUNK_LIMIT = "SDL_WAVE_CHUNK_LIMIT";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4237
+ * @from SDL_hints.h:4344
  */
 export const SDL_HINT_WAVE_RIFF_CHUNK_SIZE = "SDL_WAVE_RIFF_CHUNK_SIZE";
 
@@ -4718,7 +4829,7 @@ export const SDL_HINT_WAVE_RIFF_CHUNK_SIZE = "SDL_WAVE_RIFF_CHUNK_SIZE";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4257
+ * @from SDL_hints.h:4364
  */
 export const SDL_HINT_WAVE_TRUNCATION = "SDL_WAVE_TRUNCATION";
 
@@ -4737,7 +4848,7 @@ export const SDL_HINT_WAVE_TRUNCATION = "SDL_WAVE_TRUNCATION";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4274
+ * @from SDL_hints.h:4381
  */
 export const SDL_HINT_WINDOW_ACTIVATE_WHEN_RAISED = "SDL_WINDOW_ACTIVATE_WHEN_RAISED";
 
@@ -4756,7 +4867,7 @@ export const SDL_HINT_WINDOW_ACTIVATE_WHEN_RAISED = "SDL_WINDOW_ACTIVATE_WHEN_RA
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4291
+ * @from SDL_hints.h:4398
  */
 export const SDL_HINT_WINDOW_ACTIVATE_WHEN_SHOWN = "SDL_WINDOW_ACTIVATE_WHEN_SHOWN";
 
@@ -4776,7 +4887,7 @@ export const SDL_HINT_WINDOW_ACTIVATE_WHEN_SHOWN = "SDL_WINDOW_ACTIVATE_WHEN_SHO
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4309
+ * @from SDL_hints.h:4416
  */
 export const SDL_HINT_WINDOW_ALLOW_TOPMOST = "SDL_WINDOW_ALLOW_TOPMOST";
 
@@ -4794,7 +4905,7 @@ export const SDL_HINT_WINDOW_ALLOW_TOPMOST = "SDL_WINDOW_ALLOW_TOPMOST";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4325
+ * @from SDL_hints.h:4432
  */
 export const SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN = "SDL_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN";
 
@@ -4812,7 +4923,7 @@ export const SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN = "SDL_WINDOW_FRAM
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4341
+ * @from SDL_hints.h:4448
  */
 export const SDL_HINT_WINDOWS_CLOSE_ON_ALT_F4 = "SDL_WINDOWS_CLOSE_ON_ALT_F4";
 
@@ -4843,7 +4954,7 @@ export const SDL_HINT_WINDOWS_CLOSE_ON_ALT_F4 = "SDL_WINDOWS_CLOSE_ON_ALT_F4";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4370
+ * @from SDL_hints.h:4477
  */
 export const SDL_HINT_WINDOWS_ENABLE_MENU_MNEMONICS = "SDL_WINDOWS_ENABLE_MENU_MNEMONICS";
 
@@ -4860,7 +4971,7 @@ export const SDL_HINT_WINDOWS_ENABLE_MENU_MNEMONICS = "SDL_WINDOWS_ENABLE_MENU_M
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4385
+ * @from SDL_hints.h:4492
  */
 export const SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP = "SDL_WINDOWS_ENABLE_MESSAGELOOP";
 
@@ -4877,7 +4988,7 @@ export const SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP = "SDL_WINDOWS_ENABLE_MESSAGELO
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4400
+ * @from SDL_hints.h:4507
  */
 export const SDL_HINT_WINDOWS_GAMEINPUT = "SDL_WINDOWS_GAMEINPUT";
 
@@ -4893,7 +5004,7 @@ export const SDL_HINT_WINDOWS_GAMEINPUT = "SDL_WINDOWS_GAMEINPUT";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4414
+ * @from SDL_hints.h:4521
  */
 export const SDL_HINT_WINDOWS_RAW_KEYBOARD = "SDL_WINDOWS_RAW_KEYBOARD";
 
@@ -4917,9 +5028,28 @@ export const SDL_HINT_WINDOWS_RAW_KEYBOARD = "SDL_WINDOWS_RAW_KEYBOARD";
  *
  * @since This hint is available since SDL 3.4.0.
  *
- * @from SDL_hints.h:4436
+ * @from SDL_hints.h:4543
  */
 export const SDL_HINT_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS = "SDL_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS";
+
+/**
+ * A variable controlling whether the RIDEV_INPUTSINK flag is set when
+ * enabling Windows raw keyboard events.
+ *
+ * This enables the window to still receive input even if not in foreground.
+ *
+ * Focused windows that receive text input will still prevent input events from triggering.
+ *
+ * - "0": Input is not received when not in focus or foreground. (default)
+ * - "1": Input will be received even when not in focus or foreground.
+ *
+ * This hint can be set anytime.
+ *
+ * @since This hint is available since SDL 3.4.4.
+ *
+ * @from SDL_hints.h:4560
+ */
+export const SDL_HINT_WINDOWS_RAW_KEYBOARD_INPUTSINK = "SDL_WINDOWS_RAW_KEYBOARD_INPUTSINK";
 
 /**
  * A variable controlling whether SDL uses Kernel Semaphores on Windows.
@@ -4940,7 +5070,7 @@ export const SDL_HINT_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS = "SDL_WINDOWS_RAW_KE
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4457
+ * @from SDL_hints.h:4581
  */
 export const SDL_HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL = "SDL_WINDOWS_FORCE_SEMAPHORE_KERNEL";
 
@@ -4952,7 +5082,7 @@ export const SDL_HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL = "SDL_WINDOWS_FORCE_SEMAPH
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4467
+ * @from SDL_hints.h:4591
  */
 export const SDL_HINT_WINDOWS_INTRESOURCE_ICON = "SDL_WINDOWS_INTRESOURCE_ICON";
 
@@ -4964,7 +5094,7 @@ export const SDL_HINT_WINDOWS_INTRESOURCE_ICON = "SDL_WINDOWS_INTRESOURCE_ICON";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4477
+ * @from SDL_hints.h:4601
  */
 export const SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL = "SDL_WINDOWS_INTRESOURCE_ICON_SMALL";
 
@@ -4992,7 +5122,7 @@ export const SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL = "SDL_WINDOWS_INTRESOURCE_
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4503
+ * @from SDL_hints.h:4627
  */
 export const SDL_HINT_WINDOWS_USE_D3D9EX = "SDL_WINDOWS_USE_D3D9EX";
 
@@ -5011,7 +5141,7 @@ export const SDL_HINT_WINDOWS_USE_D3D9EX = "SDL_WINDOWS_USE_D3D9EX";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4520
+ * @from SDL_hints.h:4644
  */
 export const SDL_HINT_WINDOWS_ERASE_BACKGROUND_MODE = "SDL_WINDOWS_ERASE_BACKGROUND_MODE";
 
@@ -5034,7 +5164,7 @@ export const SDL_HINT_WINDOWS_ERASE_BACKGROUND_MODE = "SDL_WINDOWS_ERASE_BACKGRO
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4541
+ * @from SDL_hints.h:4665
  */
 export const SDL_HINT_X11_FORCE_OVERRIDE_REDIRECT = "SDL_X11_FORCE_OVERRIDE_REDIRECT";
 
@@ -5053,7 +5183,7 @@ export const SDL_HINT_X11_FORCE_OVERRIDE_REDIRECT = "SDL_X11_FORCE_OVERRIDE_REDI
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4558
+ * @from SDL_hints.h:4682
  */
 export const SDL_HINT_X11_WINDOW_TYPE = "SDL_X11_WINDOW_TYPE";
 
@@ -5066,7 +5196,7 @@ export const SDL_HINT_X11_WINDOW_TYPE = "SDL_X11_WINDOW_TYPE";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4569
+ * @from SDL_hints.h:4693
  */
 export const SDL_HINT_X11_XCB_LIBRARY = "SDL_X11_XCB_LIBRARY";
 
@@ -5083,7 +5213,7 @@ export const SDL_HINT_X11_XCB_LIBRARY = "SDL_X11_XCB_LIBRARY";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4584
+ * @from SDL_hints.h:4708
  */
 export const SDL_HINT_XINPUT_ENABLED = "SDL_XINPUT_ENABLED";
 
@@ -5109,7 +5239,7 @@ export const SDL_HINT_XINPUT_ENABLED = "SDL_XINPUT_ENABLED";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4608
+ * @from SDL_hints.h:4732
  */
 export const SDL_HINT_ASSERT = "SDL_ASSERT";
 
@@ -5126,7 +5256,7 @@ export const SDL_HINT_ASSERT = "SDL_ASSERT";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4623
+ * @from SDL_hints.h:4747
  */
 export const SDL_HINT_PEN_MOUSE_EVENTS = "SDL_PEN_MOUSE_EVENTS";
 
@@ -5143,7 +5273,7 @@ export const SDL_HINT_PEN_MOUSE_EVENTS = "SDL_PEN_MOUSE_EVENTS";
  *
  * @since This hint is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4638
+ * @from SDL_hints.h:4762
  */
 export const SDL_HINT_PEN_TOUCH_EVENTS = "SDL_PEN_TOUCH_EVENTS";
 

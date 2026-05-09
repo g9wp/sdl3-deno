@@ -14,7 +14,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -39,7 +39,7 @@
  *
  * @since This macro is available since SDL 3.2.0.
  *
- * @from SDL_system.h:409
+ * @from SDL_system.h:427
  */
 export const SDL_ANDROID_EXTERNAL_STORAGE_READ = 0x01;
 
@@ -49,7 +49,7 @@ export const SDL_ANDROID_EXTERNAL_STORAGE_READ = 0x01;
  *
  * @since This macro is available since SDL 3.2.0.
  *
- * @from SDL_system.h:417
+ * @from SDL_system.h:435
  */
 export const SDL_ANDROID_EXTERNAL_STORAGE_WRITE = 0x02;
 

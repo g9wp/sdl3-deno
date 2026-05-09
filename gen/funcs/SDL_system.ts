@@ -14,7 +14,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -45,12 +45,14 @@ export const WINDOWS_symbols = {
  * @param callback the SDL_WindowsMessageHook function to call.
  * @param userdata a pointer to pass to every iteration of `callback`.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_WindowsMessageHook
  * @sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP
  *
- * @from SDL_system.h:93 void SDL_SetWindowsMessageHook(SDL_WindowsMessageHook callback, void *userdata);
+ * @from SDL_system.h:95 void SDL_SetWindowsMessageHook(SDL_WindowsMessageHook callback, void *userdata);
  * @platformSpecific WINDOWS SDL_system.h:51 #if defined(SDL_PLATFORM_WINDOWS)
  */
 SDL_SetWindowsMessageHook: {
@@ -74,8 +76,8 @@ export const WIN32_symbols = {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:111 int SDL_GetDirect3D9AdapterIndex(SDL_DisplayID displayID);
- * @platformSpecific WIN32 SDL_system.h:97 #if defined(SDL_PLATFORM_WIN32) || defined(SDL_PLATFORM_WINGDK)
+ * @from SDL_system.h:113 int SDL_GetDirect3D9AdapterIndex(SDL_DisplayID displayID);
+ * @platformSpecific WIN32 SDL_system.h:99 #if defined(SDL_PLATFORM_WIN32) || defined(SDL_PLATFORM_WINGDK)
  */
 SDL_GetDirect3D9AdapterIndex: {
       parameters: ["u32"],
@@ -98,8 +100,8 @@ SDL_GetDirect3D9AdapterIndex: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:128 bool SDL_GetDXGIOutputInfo(SDL_DisplayID displayID, int *adapterIndex, int *outputIndex);
- * @platformSpecific WIN32 SDL_system.h:97 #if defined(SDL_PLATFORM_WIN32) || defined(SDL_PLATFORM_WINGDK)
+ * @from SDL_system.h:130 bool SDL_GetDXGIOutputInfo(SDL_DisplayID displayID, int *adapterIndex, int *outputIndex);
+ * @platformSpecific WIN32 SDL_system.h:99 #if defined(SDL_PLATFORM_WIN32) || defined(SDL_PLATFORM_WINGDK)
  */
 SDL_GetDXGIOutputInfo: {
       parameters: ["u32", "pointer", "pointer"],
@@ -119,9 +121,11 @@ export const symbols = {
  * @param callback the SDL_X11EventHook function to call.
  * @param userdata a pointer to pass to every iteration of `callback`.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:173 void SDL_SetX11EventHook(SDL_X11EventHook callback, void *userdata);
+ * @from SDL_system.h:177 void SDL_SetX11EventHook(SDL_X11EventHook callback, void *userdata);
  */
 SDL_SetX11EventHook: {
       parameters: ["function", "pointer"],
@@ -136,9 +140,11 @@ SDL_SetX11EventHook: {
  *
  * @returns true if the device is a tablet, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:609 bool SDL_IsTablet(void);
+ * @from SDL_system.h:629 bool SDL_IsTablet(void);
  */
 SDL_IsTablet: {
       parameters: [],
@@ -153,9 +159,11 @@ SDL_IsTablet: {
  *
  * @returns true if the device is a TV, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:620 bool SDL_IsTV(void);
+ * @from SDL_system.h:642 bool SDL_IsTV(void);
  */
 SDL_IsTV: {
       parameters: [],
@@ -171,7 +179,7 @@ SDL_IsTV: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:644 SDL_Sandbox SDL_GetSandbox(void);
+ * @from SDL_system.h:666 SDL_Sandbox SDL_GetSandbox(void);
  */
 SDL_GetSandbox: {
       parameters: [],
@@ -194,7 +202,7 @@ SDL_GetSandbox: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:664 void SDL_OnApplicationWillTerminate(void);
+ * @from SDL_system.h:686 void SDL_OnApplicationWillTerminate(void);
  */
 SDL_OnApplicationWillTerminate: {
       parameters: [],
@@ -217,7 +225,7 @@ SDL_OnApplicationWillTerminate: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:681 void SDL_OnApplicationDidReceiveMemoryWarning(void);
+ * @from SDL_system.h:703 void SDL_OnApplicationDidReceiveMemoryWarning(void);
  */
 SDL_OnApplicationDidReceiveMemoryWarning: {
       parameters: [],
@@ -240,7 +248,7 @@ SDL_OnApplicationDidReceiveMemoryWarning: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:698 void SDL_OnApplicationWillEnterBackground(void);
+ * @from SDL_system.h:720 void SDL_OnApplicationWillEnterBackground(void);
  */
 SDL_OnApplicationWillEnterBackground: {
       parameters: [],
@@ -263,7 +271,7 @@ SDL_OnApplicationWillEnterBackground: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:715 void SDL_OnApplicationDidEnterBackground(void);
+ * @from SDL_system.h:737 void SDL_OnApplicationDidEnterBackground(void);
  */
 SDL_OnApplicationDidEnterBackground: {
       parameters: [],
@@ -286,7 +294,7 @@ SDL_OnApplicationDidEnterBackground: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:732 void SDL_OnApplicationWillEnterForeground(void);
+ * @from SDL_system.h:754 void SDL_OnApplicationWillEnterForeground(void);
  */
 SDL_OnApplicationWillEnterForeground: {
       parameters: [],
@@ -309,7 +317,7 @@ SDL_OnApplicationWillEnterForeground: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:749 void SDL_OnApplicationDidEnterForeground(void);
+ * @from SDL_system.h:771 void SDL_OnApplicationDidEnterForeground(void);
  */
 SDL_OnApplicationDidEnterForeground: {
       parameters: [],
@@ -330,10 +338,12 @@ export const LINUX_symbols = {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:190 bool SDL_SetLinuxThreadPriority(Sint64 threadID, int priority);
- * @platformSpecific LINUX SDL_system.h:176 #ifdef SDL_PLATFORM_LINUX
+ * @from SDL_system.h:196 bool SDL_SetLinuxThreadPriority(Sint64 threadID, int priority);
+ * @platformSpecific LINUX SDL_system.h:180 #ifdef SDL_PLATFORM_LINUX
  */
 SDL_SetLinuxThreadPriority: {
       parameters: ["i64", "i32"],
@@ -353,10 +363,12 @@ SDL_SetLinuxThreadPriority: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:206 bool SDL_SetLinuxThreadPriorityAndPolicy(Sint64 threadID, int sdlPriority, int schedPolicy);
- * @platformSpecific LINUX SDL_system.h:176 #ifdef SDL_PLATFORM_LINUX
+ * @from SDL_system.h:214 bool SDL_SetLinuxThreadPriorityAndPolicy(Sint64 threadID, int sdlPriority, int schedPolicy);
+ * @platformSpecific LINUX SDL_system.h:180 #ifdef SDL_PLATFORM_LINUX
  */
 SDL_SetLinuxThreadPriorityAndPolicy: {
       parameters: ["i64", "i32", "i32"],
@@ -400,12 +412,14 @@ export const IOS_symbols = {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_SetiOSEventPump
  *
- * @from SDL_system.h:270 bool SDL_SetiOSAnimationCallback(SDL_Window *window, int interval, SDL_iOSAnimationCallback callback, void *callbackParam);
- * @platformSpecific IOS SDL_system.h:213 #ifdef SDL_PLATFORM_IOS
+ * @from SDL_system.h:280 bool SDL_SetiOSAnimationCallback(SDL_Window *window, int interval, SDL_iOSAnimationCallback callback, void *callbackParam);
+ * @platformSpecific IOS SDL_system.h:221 #ifdef SDL_PLATFORM_IOS
  */
 SDL_SetiOSAnimationCallback: {
       parameters: ["pointer", "i32", "function", "pointer"],
@@ -420,12 +434,14 @@ SDL_SetiOSAnimationCallback: {
  *
  * @param enabled true to enable the event pump, false to disable it.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_SetiOSAnimationCallback
  *
- * @from SDL_system.h:283 void SDL_SetiOSEventPump(bool enabled);
- * @platformSpecific IOS SDL_system.h:213 #ifdef SDL_PLATFORM_IOS
+ * @from SDL_system.h:295 void SDL_SetiOSEventPump(bool enabled);
+ * @platformSpecific IOS SDL_system.h:221 #ifdef SDL_PLATFORM_IOS
  */
 SDL_SetiOSEventPump: {
       parameters: ["bool"],
@@ -448,8 +464,8 @@ SDL_SetiOSEventPump: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:768 void SDL_OnApplicationDidChangeStatusBarOrientation(void);
- * @platformSpecific IOS SDL_system.h:751 #ifdef SDL_PLATFORM_IOS
+ * @from SDL_system.h:790 void SDL_OnApplicationDidChangeStatusBarOrientation(void);
+ * @platformSpecific IOS SDL_system.h:773 #ifdef SDL_PLATFORM_IOS
  */
 SDL_OnApplicationDidChangeStatusBarOrientation: {
       parameters: [],
@@ -480,8 +496,8 @@ export const ANDROID_symbols = {
  *
  * @sa SDL_GetAndroidActivity
  *
- * @from SDL_system.h:313 void * SDL_GetAndroidJNIEnv(void);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:325 void * SDL_GetAndroidJNIEnv(void);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 SDL_GetAndroidJNIEnv: {
       parameters: [],
@@ -512,8 +528,8 @@ SDL_GetAndroidJNIEnv: {
  *
  * @sa SDL_GetAndroidJNIEnv
  *
- * @from SDL_system.h:338 void * SDL_GetAndroidActivity(void);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:350 void * SDL_GetAndroidActivity(void);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 SDL_GetAndroidActivity: {
       parameters: [],
@@ -553,10 +569,12 @@ SDL_GetAndroidActivity: {
  *
  * @returns the Android API level.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:374 int SDL_GetAndroidSDKVersion(void);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:388 int SDL_GetAndroidSDKVersion(void);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 SDL_GetAndroidSDKVersion: {
       parameters: [],
@@ -569,10 +587,12 @@ SDL_GetAndroidSDKVersion: {
  *
  * @returns true if this is a Chromebook, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:383 bool SDL_IsChromebook(void);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:399 bool SDL_IsChromebook(void);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 SDL_IsChromebook: {
       parameters: [],
@@ -585,10 +605,12 @@ SDL_IsChromebook: {
  *
  * @returns true if this is a DeX docking station, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:392 bool SDL_IsDeXMode(void);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:410 bool SDL_IsDeXMode(void);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 SDL_IsDeXMode: {
       parameters: [],
@@ -603,8 +625,8 @@ SDL_IsDeXMode: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:401 void SDL_SendAndroidBackButton(void);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:419 void SDL_SendAndroidBackButton(void);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 SDL_SendAndroidBackButton: {
       parameters: [],
@@ -633,8 +655,8 @@ SDL_SendAndroidBackButton: {
  * @sa SDL_GetAndroidExternalStoragePath
  * @sa SDL_GetAndroidCachePath
  *
- * @from SDL_system.h:440 const char * SDL_GetAndroidInternalStoragePath(void);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:458 const char * SDL_GetAndroidInternalStoragePath(void);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 SDL_GetAndroidInternalStoragePath: {
       parameters: [],
@@ -657,8 +679,8 @@ SDL_GetAndroidInternalStoragePath: {
  *
  * @sa SDL_GetAndroidExternalStoragePath
  *
- * @from SDL_system.h:457 Uint32 SDL_GetAndroidExternalStorageState(void);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:475 Uint32 SDL_GetAndroidExternalStorageState(void);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 SDL_GetAndroidExternalStorageState: {
       parameters: [],
@@ -688,8 +710,8 @@ SDL_GetAndroidExternalStorageState: {
  * @sa SDL_GetAndroidInternalStoragePath
  * @sa SDL_GetAndroidCachePath
  *
- * @from SDL_system.h:481 const char * SDL_GetAndroidExternalStoragePath(void);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:499 const char * SDL_GetAndroidExternalStoragePath(void);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 SDL_GetAndroidExternalStoragePath: {
       parameters: [],
@@ -717,8 +739,8 @@ SDL_GetAndroidExternalStoragePath: {
  * @sa SDL_GetAndroidInternalStoragePath
  * @sa SDL_GetAndroidExternalStoragePath
  *
- * @from SDL_system.h:503 const char * SDL_GetAndroidCachePath(void);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:521 const char * SDL_GetAndroidCachePath(void);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 SDL_GetAndroidCachePath: {
       parameters: [],
@@ -760,8 +782,8 @@ SDL_GetAndroidCachePath: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:552 bool SDL_RequestAndroidPermission(const char *permission, SDL_RequestAndroidPermissionCallback cb, void *userdata);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:570 bool SDL_RequestAndroidPermission(const char *permission, SDL_RequestAndroidPermissionCallback cb, void *userdata);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 SDL_RequestAndroidPermission: {
       parameters: ["pointer", "function", "pointer"],
@@ -795,8 +817,8 @@ SDL_RequestAndroidPermission: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:580 bool SDL_ShowAndroidToast(const char *message, int duration, int gravity, int xoffset, int yoffset);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:598 bool SDL_ShowAndroidToast(const char *message, int duration, int gravity, int xoffset, int yoffset);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 SDL_ShowAndroidToast: {
       parameters: ["pointer", "i32", "i32", "i32", "i32"],
@@ -818,8 +840,8 @@ SDL_ShowAndroidToast: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:596 bool SDL_SendAndroidMessage(Uint32 command, int param);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:614 bool SDL_SendAndroidMessage(Uint32 command, int param);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 SDL_SendAndroidMessage: {
       parameters: ["u32", "i32"],
@@ -844,8 +866,8 @@ export const GDK_symbols = {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:792 bool SDL_GetGDKTaskQueue(XTaskQueueHandle *outTaskQueue);
- * @platformSpecific GDK SDL_system.h:774 #ifdef SDL_PLATFORM_GDK
+ * @from SDL_system.h:814 bool SDL_GetGDKTaskQueue(XTaskQueueHandle *outTaskQueue);
+ * @platformSpecific GDK SDL_system.h:796 #ifdef SDL_PLATFORM_GDK
  */
 SDL_GetGDKTaskQueue: {
       parameters: ["pointer"],
@@ -866,8 +888,8 @@ SDL_GetGDKTaskQueue: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:807 bool SDL_GetGDKDefaultUser(XUserHandle *outUserHandle);
- * @platformSpecific GDK SDL_system.h:774 #ifdef SDL_PLATFORM_GDK
+ * @from SDL_system.h:829 bool SDL_GetGDKDefaultUser(XUserHandle *outUserHandle);
+ * @platformSpecific GDK SDL_system.h:796 #ifdef SDL_PLATFORM_GDK
  */
 SDL_GetGDKDefaultUser: {
       parameters: ["pointer"],

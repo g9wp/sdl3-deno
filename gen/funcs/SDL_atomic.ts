@@ -30,7 +30,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -142,7 +142,7 @@ SDL_UnlockSpinlock: {
  *
  * @sa SDL_MemoryBarrierRelease
  *
- * @from SDL_atomic.h:191 void SDL_MemoryBarrierReleaseFunction(void);
+ * @from SDL_atomic.h:194 void SDL_MemoryBarrierReleaseFunction(void);
  */
 SDL_MemoryBarrierReleaseFunction: {
       parameters: [],
@@ -168,7 +168,7 @@ SDL_MemoryBarrierReleaseFunction: {
  *
  * @sa SDL_MemoryBarrierAcquire
  *
- * @from SDL_atomic.h:211 void SDL_MemoryBarrierAcquireFunction(void);
+ * @from SDL_atomic.h:214 void SDL_MemoryBarrierAcquireFunction(void);
  */
 SDL_MemoryBarrierAcquireFunction: {
       parameters: [],
@@ -194,7 +194,7 @@ SDL_MemoryBarrierAcquireFunction: {
  * @sa SDL_GetAtomicInt
  * @sa SDL_SetAtomicInt
  *
- * @from SDL_atomic.h:414 bool SDL_CompareAndSwapAtomicInt(SDL_AtomicInt *a, int oldval, int newval);
+ * @from SDL_atomic.h:424 bool SDL_CompareAndSwapAtomicInt(SDL_AtomicInt *a, int oldval, int newval);
  */
 SDL_CompareAndSwapAtomicInt: {
       parameters: ["pointer", "i32", "i32"],
@@ -220,7 +220,7 @@ SDL_CompareAndSwapAtomicInt: {
  *
  * @sa SDL_GetAtomicInt
  *
- * @from SDL_atomic.h:434 int SDL_SetAtomicInt(SDL_AtomicInt *a, int v);
+ * @from SDL_atomic.h:444 int SDL_SetAtomicInt(SDL_AtomicInt *a, int v);
  */
 SDL_SetAtomicInt: {
       parameters: ["pointer", "i32"],
@@ -243,7 +243,7 @@ SDL_SetAtomicInt: {
  *
  * @sa SDL_SetAtomicInt
  *
- * @from SDL_atomic.h:451 int SDL_GetAtomicInt(SDL_AtomicInt *a);
+ * @from SDL_atomic.h:461 int SDL_GetAtomicInt(SDL_AtomicInt *a);
  */
 SDL_GetAtomicInt: {
       parameters: ["pointer"],
@@ -270,7 +270,7 @@ SDL_GetAtomicInt: {
  * @sa SDL_AtomicDecRef
  * @sa SDL_AtomicIncRef
  *
- * @from SDL_atomic.h:472 int SDL_AddAtomicInt(SDL_AtomicInt *a, int v);
+ * @from SDL_atomic.h:482 int SDL_AddAtomicInt(SDL_AtomicInt *a, int v);
  */
 SDL_AddAtomicInt: {
       parameters: ["pointer", "i32"],
@@ -296,7 +296,7 @@ SDL_AddAtomicInt: {
  * @sa SDL_GetAtomicU32
  * @sa SDL_SetAtomicU32
  *
- * @from SDL_atomic.h:559 bool SDL_CompareAndSwapAtomicU32(SDL_AtomicU32 *a, Uint32 oldval, Uint32 newval);
+ * @from SDL_atomic.h:569 bool SDL_CompareAndSwapAtomicU32(SDL_AtomicU32 *a, Uint32 oldval, Uint32 newval);
  */
 SDL_CompareAndSwapAtomicU32: {
       parameters: ["pointer", "u32", "u32"],
@@ -322,7 +322,7 @@ SDL_CompareAndSwapAtomicU32: {
  *
  * @sa SDL_GetAtomicU32
  *
- * @from SDL_atomic.h:579 Uint32 SDL_SetAtomicU32(SDL_AtomicU32 *a, Uint32 v);
+ * @from SDL_atomic.h:589 Uint32 SDL_SetAtomicU32(SDL_AtomicU32 *a, Uint32 v);
  */
 SDL_SetAtomicU32: {
       parameters: ["pointer", "u32"],
@@ -345,7 +345,7 @@ SDL_SetAtomicU32: {
  *
  * @sa SDL_SetAtomicU32
  *
- * @from SDL_atomic.h:596 Uint32 SDL_GetAtomicU32(SDL_AtomicU32 *a);
+ * @from SDL_atomic.h:606 Uint32 SDL_GetAtomicU32(SDL_AtomicU32 *a);
  */
 SDL_GetAtomicU32: {
       parameters: ["pointer"],
@@ -369,7 +369,7 @@ SDL_GetAtomicU32: {
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @from SDL_atomic.h:614 Uint32 SDL_AddAtomicU32(SDL_AtomicU32 *a, int v);
+ * @from SDL_atomic.h:624 Uint32 SDL_AddAtomicU32(SDL_AtomicU32 *a, int v);
  */
 SDL_AddAtomicU32: {
       parameters: ["pointer", "i32"],
@@ -396,7 +396,7 @@ SDL_AddAtomicU32: {
  * @sa SDL_GetAtomicPointer
  * @sa SDL_SetAtomicPointer
  *
- * @from SDL_atomic.h:635 bool SDL_CompareAndSwapAtomicPointer(void **a, void *oldval, void *newval);
+ * @from SDL_atomic.h:645 bool SDL_CompareAndSwapAtomicPointer(void **a, void *oldval, void *newval);
  */
 SDL_CompareAndSwapAtomicPointer: {
       parameters: ["pointer", "pointer", "pointer"],
@@ -421,7 +421,7 @@ SDL_CompareAndSwapAtomicPointer: {
  * @sa SDL_CompareAndSwapAtomicPointer
  * @sa SDL_GetAtomicPointer
  *
- * @from SDL_atomic.h:654 void * SDL_SetAtomicPointer(void **a, void *v);
+ * @from SDL_atomic.h:664 void * SDL_SetAtomicPointer(void **a, void *v);
  */
 SDL_SetAtomicPointer: {
       parameters: ["pointer", "pointer"],
@@ -445,7 +445,7 @@ SDL_SetAtomicPointer: {
  * @sa SDL_CompareAndSwapAtomicPointer
  * @sa SDL_SetAtomicPointer
  *
- * @from SDL_atomic.h:672 void * SDL_GetAtomicPointer(void **a);
+ * @from SDL_atomic.h:682 void * SDL_GetAtomicPointer(void **a);
  */
 SDL_GetAtomicPointer: {
       parameters: ["pointer"],

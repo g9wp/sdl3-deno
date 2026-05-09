@@ -21,7 +21,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -52,7 +52,7 @@ import { symbols } from './symbols/SDL_thread.ts';
  *
  * @sa SDL_SetTLS
  *
- * @from SDL_thread.h:529 typedef void (*SDL_TLSDestructorCallback)(void *value);
+ * @from SDL_thread.h:552 typedef void (*SDL_TLSDestructorCallback)(void *value);
  */
 export function TLSDestructorCallback(cb: (
     value: Deno.PointerValue, 

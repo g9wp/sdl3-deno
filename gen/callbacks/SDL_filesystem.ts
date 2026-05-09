@@ -24,7 +24,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -68,7 +68,7 @@ import { symbols } from './symbols/SDL_filesystem.ts';
  *
  * @sa SDL_EnumerateDirectory
  *
- * @from SDL_filesystem.h:344 typedef SDL_EnumerationResult (*SDL_EnumerateDirectoryCallback)(void *userdata, const char *dirname, const char *fname);
+ * @from SDL_filesystem.h:343 typedef SDL_EnumerationResult (*SDL_EnumerateDirectoryCallback)(void *userdata, const char *dirname, const char *fname);
  */
 export function EnumerateDirectoryCallback(cb: (
     userdata: Deno.PointerValue, 

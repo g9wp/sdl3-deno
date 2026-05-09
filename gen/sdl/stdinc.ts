@@ -26,7 +26,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -79,7 +79,7 @@ export {
  * @sa SDL_realloc
  * @sa SDL_aligned_alloc
  *
- * @from SDL_stdinc.h:1346 SDL_MALLOC void * SDL_malloc(size_t size);
+ * @from SDL_stdinc.h:1340 SDL_MALLOC void * SDL_malloc(size_t size);
  */
 export function malloc(size: bigint): Deno.PointerValue {
   return lib.symbols.SDL_malloc(size);
@@ -108,7 +108,7 @@ export function malloc(size: bigint): Deno.PointerValue {
  * @sa SDL_malloc
  * @sa SDL_realloc
  *
- * @from SDL_stdinc.h:1371 SDL_MALLOC SDL_ALLOC_SIZE2(1, 2) void * SDL_calloc(size_t nmemb, size_t size);
+ * @from SDL_stdinc.h:1365 SDL_MALLOC SDL_ALLOC_SIZE2(1, 2) void * SDL_calloc(size_t nmemb, size_t size);
  */
 export function calloc(nmemb: bigint, size: bigint): Deno.PointerValue {
   return lib.symbols.SDL_calloc(nmemb, size);
@@ -152,7 +152,7 @@ export function calloc(nmemb: bigint, size: bigint): Deno.PointerValue {
  * @sa SDL_malloc
  * @sa SDL_calloc
  *
- * @from SDL_stdinc.h:1411 SDL_ALLOC_SIZE(2) void * SDL_realloc(void *mem, size_t size);
+ * @from SDL_stdinc.h:1405 SDL_ALLOC_SIZE(2) void * SDL_realloc(void *mem, size_t size);
  */
 export function realloc(mem: Deno.PointerValue, size: bigint): Deno.PointerValue {
   return lib.symbols.SDL_realloc(mem, size);
@@ -176,7 +176,7 @@ export function realloc(mem: Deno.PointerValue, size: bigint): Deno.PointerValue
  * @sa SDL_calloc
  * @sa SDL_realloc
  *
- * @from SDL_stdinc.h:1431 void SDL_free(void *mem);
+ * @from SDL_stdinc.h:1425 void SDL_free(void *mem);
  */
 export function free(mem: Deno.PointerValue): void {
   return lib.symbols.SDL_free(mem);
@@ -199,7 +199,7 @@ export function free(mem: Deno.PointerValue): void {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:1529 void SDL_GetOriginalMemoryFunctions(SDL_malloc_func *malloc_func, SDL_calloc_func *calloc_func, SDL_realloc_func *realloc_func, SDL_free_func *free_func);
+ * @from SDL_stdinc.h:1523 void SDL_GetOriginalMemoryFunctions(SDL_malloc_func *malloc_func, SDL_calloc_func *calloc_func, SDL_realloc_func *realloc_func, SDL_free_func *free_func);
  */
 export function getOriginalMemoryFunctions(): { malloc_func: Deno.PointerValue; calloc_func: Deno.PointerValue; realloc_func: Deno.PointerValue; free_func: Deno.PointerValue } {
   lib.symbols.SDL_GetOriginalMemoryFunctions(_p.u64.p0, _p.u64.p1, _p.u64.p2, _p.u64.p3);
@@ -223,7 +223,7 @@ export function getOriginalMemoryFunctions(): { malloc_func: Deno.PointerValue; 
  * @sa SDL_SetMemoryFunctions
  * @sa SDL_GetOriginalMemoryFunctions
  *
- * @from SDL_stdinc.h:1551 void SDL_GetMemoryFunctions(SDL_malloc_func *malloc_func, SDL_calloc_func *calloc_func, SDL_realloc_func *realloc_func, SDL_free_func *free_func);
+ * @from SDL_stdinc.h:1545 void SDL_GetMemoryFunctions(SDL_malloc_func *malloc_func, SDL_calloc_func *calloc_func, SDL_realloc_func *realloc_func, SDL_free_func *free_func);
  */
 export function getMemoryFunctions(): { malloc_func: Deno.PointerValue; calloc_func: Deno.PointerValue; realloc_func: Deno.PointerValue; free_func: Deno.PointerValue } {
   lib.symbols.SDL_GetMemoryFunctions(_p.u64.p0, _p.u64.p1, _p.u64.p2, _p.u64.p3);
@@ -256,7 +256,7 @@ export function getMemoryFunctions(): { malloc_func: Deno.PointerValue; calloc_f
  * @sa SDL_GetMemoryFunctions
  * @sa SDL_GetOriginalMemoryFunctions
  *
- * @from SDL_stdinc.h:1582 bool SDL_SetMemoryFunctions(SDL_malloc_func malloc_func, SDL_calloc_func calloc_func, SDL_realloc_func realloc_func, SDL_free_func free_func);
+ * @from SDL_stdinc.h:1576 bool SDL_SetMemoryFunctions(SDL_malloc_func malloc_func, SDL_calloc_func calloc_func, SDL_realloc_func realloc_func, SDL_free_func free_func);
  */
 export function setMemoryFunctions(
     malloc_func: Deno.PointerValue,
@@ -289,7 +289,7 @@ export function setMemoryFunctions(
  *
  * @sa SDL_aligned_free
  *
- * @from SDL_stdinc.h:1609 SDL_MALLOC void * SDL_aligned_alloc(size_t alignment, size_t size);
+ * @from SDL_stdinc.h:1603 SDL_MALLOC void * SDL_aligned_alloc(size_t alignment, size_t size);
  */
 export function alignedAlloc(alignment: bigint, size: bigint): Deno.PointerValue {
   return lib.symbols.SDL_aligned_alloc(alignment, size);
@@ -311,7 +311,7 @@ export function alignedAlloc(alignment: bigint, size: bigint): Deno.PointerValue
  *
  * @sa SDL_aligned_alloc
  *
- * @from SDL_stdinc.h:1627 void SDL_aligned_free(void *mem);
+ * @from SDL_stdinc.h:1621 void SDL_aligned_free(void *mem);
  */
 export function alignedFree(mem: Deno.PointerValue): void {
   return lib.symbols.SDL_aligned_free(mem);
@@ -327,7 +327,7 @@ export function alignedFree(mem: Deno.PointerValue): void {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:1639 int SDL_GetNumAllocations(void);
+ * @from SDL_stdinc.h:1633 int SDL_GetNumAllocations(void);
  */
 export function getNumAllocations(): number {
   return lib.symbols.SDL_GetNumAllocations();
@@ -354,7 +354,7 @@ export function getNumAllocations(): number {
  * @sa SDL_SetEnvironmentVariable
  * @sa SDL_UnsetEnvironmentVariable
  *
- * @from SDL_stdinc.h:1677 SDL_Environment * SDL_GetEnvironment(void);
+ * @from SDL_stdinc.h:1671 SDL_Environment * SDL_GetEnvironment(void);
  */
 export function getEnvironment(): Deno.PointerValue<"SDL_Environment"> {
   return lib.symbols.SDL_GetEnvironment() as Deno.PointerValue<"SDL_Environment">;
@@ -380,7 +380,7 @@ export function getEnvironment(): Deno.PointerValue<"SDL_Environment"> {
  * @sa SDL_UnsetEnvironmentVariable
  * @sa SDL_DestroyEnvironment
  *
- * @from SDL_stdinc.h:1699 SDL_Environment * SDL_CreateEnvironment(bool populated);
+ * @from SDL_stdinc.h:1693 SDL_Environment * SDL_CreateEnvironment(bool populated);
  */
 export function createEnvironment(populated: boolean): Deno.PointerValue<"SDL_Environment"> {
   return lib.symbols.SDL_CreateEnvironment(populated) as Deno.PointerValue<"SDL_Environment">;
@@ -404,7 +404,7 @@ export function createEnvironment(populated: boolean): Deno.PointerValue<"SDL_En
  * @sa SDL_SetEnvironmentVariable
  * @sa SDL_UnsetEnvironmentVariable
  *
- * @from SDL_stdinc.h:1719 const char * SDL_GetEnvironmentVariable(SDL_Environment *env, const char *name);
+ * @from SDL_stdinc.h:1713 const char * SDL_GetEnvironmentVariable(SDL_Environment *env, const char *name);
  */
 export function getEnvironmentVariable(env: Deno.PointerValue<"SDL_Environment">, name: string): string {
   return _p.getCstr2(lib.symbols.SDL_GetEnvironmentVariable(env, _p.toCstr(name)));
@@ -429,7 +429,7 @@ export function getEnvironmentVariable(env: Deno.PointerValue<"SDL_Environment">
  * @sa SDL_SetEnvironmentVariable
  * @sa SDL_UnsetEnvironmentVariable
  *
- * @from SDL_stdinc.h:1740 char ** SDL_GetEnvironmentVariables(SDL_Environment *env);
+ * @from SDL_stdinc.h:1734 char ** SDL_GetEnvironmentVariables(SDL_Environment *env);
  */
 export function getEnvironmentVariables(env: Deno.PointerValue<"SDL_Environment">): Deno.PointerValue {
   return lib.symbols.SDL_GetEnvironmentVariables(env);
@@ -457,7 +457,7 @@ export function getEnvironmentVariables(env: Deno.PointerValue<"SDL_Environment"
  * @sa SDL_GetEnvironmentVariables
  * @sa SDL_UnsetEnvironmentVariable
  *
- * @from SDL_stdinc.h:1764 bool SDL_SetEnvironmentVariable(SDL_Environment *env, const char *name, const char *value, bool overwrite);
+ * @from SDL_stdinc.h:1758 bool SDL_SetEnvironmentVariable(SDL_Environment *env, const char *name, const char *value, bool overwrite);
  */
 export function setEnvironmentVariable(
     env: Deno.PointerValue<"SDL_Environment">,
@@ -487,7 +487,7 @@ export function setEnvironmentVariable(
  * @sa SDL_SetEnvironmentVariable
  * @sa SDL_UnsetEnvironmentVariable
  *
- * @from SDL_stdinc.h:1785 bool SDL_UnsetEnvironmentVariable(SDL_Environment *env, const char *name);
+ * @from SDL_stdinc.h:1779 bool SDL_UnsetEnvironmentVariable(SDL_Environment *env, const char *name);
  */
 export function unsetEnvironmentVariable(env: Deno.PointerValue<"SDL_Environment">, name: string): boolean {
   return lib.symbols.SDL_UnsetEnvironmentVariable(env, _p.toCstr(name));
@@ -505,7 +505,7 @@ export function unsetEnvironmentVariable(env: Deno.PointerValue<"SDL_Environment
  *
  * @sa SDL_CreateEnvironment
  *
- * @from SDL_stdinc.h:1799 void SDL_DestroyEnvironment(SDL_Environment *env);
+ * @from SDL_stdinc.h:1793 void SDL_DestroyEnvironment(SDL_Environment *env);
  */
 export function destroyEnvironment(env: Deno.PointerValue<"SDL_Environment">): void {
   return lib.symbols.SDL_DestroyEnvironment(env);
@@ -513,6 +513,8 @@ export function destroyEnvironment(env: Deno.PointerValue<"SDL_Environment">): v
 
 /**
  * Get the value of a variable in the environment.
+ *
+ * The name of the variable is case sensitive on all platforms.
  *
  * This function uses SDL's cached copy of the environment and is thread-safe.
  *
@@ -524,7 +526,7 @@ export function destroyEnvironment(env: Deno.PointerValue<"SDL_Environment">): v
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:1814 const char * SDL_getenv(const char *name);
+ * @from SDL_stdinc.h:1810 const char * SDL_getenv(const char *name);
  */
 export function getenv(name: string): string {
   return _p.getCstr2(lib.symbols.SDL_getenv(_p.toCstr(name)));
@@ -535,6 +537,11 @@ export function getenv(name: string): string {
  *
  * This function bypasses SDL's cached copy of the environment and is not
  * thread-safe.
+ *
+ * On some platforms, this may make case-insensitive matches, while other
+ * platforms are case-sensitive. It is best to be precise with strings used
+ * for queries through this interface. SDL_getenv is always case-sensitive,
+ * however.
  *
  * @param name the name of the variable to get.
  * @returns a pointer to the value of the variable or NULL if it can't be
@@ -547,7 +554,7 @@ export function getenv(name: string): string {
  *
  * @sa SDL_getenv
  *
- * @from SDL_stdinc.h:1833 const char * SDL_getenv_unsafe(const char *name);
+ * @from SDL_stdinc.h:1834 const char * SDL_getenv_unsafe(const char *name);
  */
 export function getenvUnsafe(name: string): string {
   return _p.getCstr2(lib.symbols.SDL_getenv_unsafe(_p.toCstr(name)));
@@ -569,7 +576,7 @@ export function getenvUnsafe(name: string): string {
  *
  * @sa SDL_SetEnvironmentVariable
  *
- * @from SDL_stdinc.h:1851 int SDL_setenv_unsafe(const char *name, const char *value, int overwrite);
+ * @from SDL_stdinc.h:1852 int SDL_setenv_unsafe(const char *name, const char *value, int overwrite);
  */
 export function setenvUnsafe(name: string, value: string, overwrite: number): number {
   return lib.symbols.SDL_setenv_unsafe(_p.toCstr(name), _p.toCstr(value), overwrite);
@@ -588,7 +595,7 @@ export function setenvUnsafe(name: string, value: string, overwrite: number): nu
  *
  * @sa SDL_UnsetEnvironmentVariable
  *
- * @from SDL_stdinc.h:1866 int SDL_unsetenv_unsafe(const char *name);
+ * @from SDL_stdinc.h:1867 int SDL_unsetenv_unsafe(const char *name);
  */
 export function unsetenvUnsafe(name: string): number {
   return lib.symbols.SDL_unsetenv_unsafe(_p.toCstr(name));
@@ -638,7 +645,7 @@ export function unsetenvUnsafe(name: string): number {
  * @sa SDL_bsearch
  * @sa SDL_qsort_r
  *
- * @from SDL_stdinc.h:1928 void SDL_qsort(void *base, size_t nmemb, size_t size, SDL_CompareCallback compare);
+ * @from SDL_stdinc.h:1929 void SDL_qsort(void *base, size_t nmemb, size_t size, SDL_CompareCallback compare);
  */
 export function qsort(
     base: Deno.PointerValue,
@@ -697,7 +704,7 @@ export function qsort(
  * @sa SDL_bsearch_r
  * @sa SDL_qsort
  *
- * @from SDL_stdinc.h:1978 void * SDL_bsearch(const void *key, const void *base, size_t nmemb, size_t size, SDL_CompareCallback compare);
+ * @from SDL_stdinc.h:1979 void * SDL_bsearch(const void *key, const void *base, size_t nmemb, size_t size, SDL_CompareCallback compare);
  */
 export function bsearch(
     key: Deno.PointerValue,
@@ -760,7 +767,7 @@ export function bsearch(
  * @sa SDL_bsearch_r
  * @sa SDL_qsort
  *
- * @from SDL_stdinc.h:2048 void SDL_qsort_r(void *base, size_t nmemb, size_t size, SDL_CompareCallback_r compare, void *userdata);
+ * @from SDL_stdinc.h:2049 void SDL_qsort_r(void *base, size_t nmemb, size_t size, SDL_CompareCallback_r compare, void *userdata);
  */
 export function qsortR(
     base: Deno.PointerValue,
@@ -828,7 +835,7 @@ export function qsortR(
  * @sa SDL_bsearch
  * @sa SDL_qsort_r
  *
- * @from SDL_stdinc.h:2106 void * SDL_bsearch_r(const void *key, const void *base, size_t nmemb, size_t size, SDL_CompareCallback_r compare, void *userdata);
+ * @from SDL_stdinc.h:2107 void * SDL_bsearch_r(const void *key, const void *base, size_t nmemb, size_t size, SDL_CompareCallback_r compare, void *userdata);
  */
 export function bsearchR(
     key: Deno.PointerValue,
@@ -851,7 +858,7 @@ export function bsearchR(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2118 int SDL_abs(int x);
+ * @from SDL_stdinc.h:2119 int SDL_abs(int x);
  */
 export function abs(x: number): number {
   return lib.symbols.SDL_abs(x);
@@ -870,7 +877,7 @@ export function abs(x: number): number {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2193 int SDL_isalpha(int x);
+ * @from SDL_stdinc.h:2194 int SDL_isalpha(int x);
  */
 export function isalpha(x: number): number {
   return lib.symbols.SDL_isalpha(x);
@@ -889,7 +896,7 @@ export function isalpha(x: number): number {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2208 int SDL_isalnum(int x);
+ * @from SDL_stdinc.h:2209 int SDL_isalnum(int x);
  */
 export function isalnum(x: number): number {
   return lib.symbols.SDL_isalnum(x);
@@ -908,7 +915,7 @@ export function isalnum(x: number): number {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2223 int SDL_isblank(int x);
+ * @from SDL_stdinc.h:2224 int SDL_isblank(int x);
  */
 export function isblank(x: number): number {
   return lib.symbols.SDL_isblank(x);
@@ -927,7 +934,7 @@ export function isblank(x: number): number {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2238 int SDL_iscntrl(int x);
+ * @from SDL_stdinc.h:2239 int SDL_iscntrl(int x);
  */
 export function iscntrl(x: number): number {
   return lib.symbols.SDL_iscntrl(x);
@@ -946,7 +953,7 @@ export function iscntrl(x: number): number {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2253 int SDL_isdigit(int x);
+ * @from SDL_stdinc.h:2254 int SDL_isdigit(int x);
  */
 export function isdigit(x: number): number {
   return lib.symbols.SDL_isdigit(x);
@@ -965,7 +972,7 @@ export function isdigit(x: number): number {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2268 int SDL_isxdigit(int x);
+ * @from SDL_stdinc.h:2269 int SDL_isxdigit(int x);
  */
 export function isxdigit(x: number): number {
   return lib.symbols.SDL_isxdigit(x);
@@ -987,7 +994,7 @@ export function isxdigit(x: number): number {
  * @sa SDL_isgraph
  * @sa SDL_isalnum
  *
- * @from SDL_stdinc.h:2286 int SDL_ispunct(int x);
+ * @from SDL_stdinc.h:2287 int SDL_ispunct(int x);
  */
 export function ispunct(x: number): number {
   return lib.symbols.SDL_ispunct(x);
@@ -1013,7 +1020,7 @@ export function ispunct(x: number): number {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2308 int SDL_isspace(int x);
+ * @from SDL_stdinc.h:2309 int SDL_isspace(int x);
  */
 export function isspace(x: number): number {
   return lib.symbols.SDL_isspace(x);
@@ -1032,7 +1039,7 @@ export function isspace(x: number): number {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2323 int SDL_isupper(int x);
+ * @from SDL_stdinc.h:2324 int SDL_isupper(int x);
  */
 export function isupper(x: number): number {
   return lib.symbols.SDL_isupper(x);
@@ -1051,7 +1058,7 @@ export function isupper(x: number): number {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2338 int SDL_islower(int x);
+ * @from SDL_stdinc.h:2339 int SDL_islower(int x);
  */
 export function islower(x: number): number {
   return lib.symbols.SDL_islower(x);
@@ -1074,7 +1081,7 @@ export function islower(x: number): number {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2357 int SDL_isprint(int x);
+ * @from SDL_stdinc.h:2358 int SDL_isprint(int x);
  */
 export function isprint(x: number): number {
   return lib.symbols.SDL_isprint(x);
@@ -1099,7 +1106,7 @@ export function isprint(x: number): number {
  *
  * @sa SDL_isprint
  *
- * @from SDL_stdinc.h:2378 int SDL_isgraph(int x);
+ * @from SDL_stdinc.h:2379 int SDL_isgraph(int x);
  */
 export function isgraph(x: number): number {
   return lib.symbols.SDL_isgraph(x);
@@ -1121,7 +1128,7 @@ export function isgraph(x: number): number {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2396 int SDL_toupper(int x);
+ * @from SDL_stdinc.h:2397 int SDL_toupper(int x);
  */
 export function toupper(x: number): number {
   return lib.symbols.SDL_toupper(x);
@@ -1143,7 +1150,7 @@ export function toupper(x: number): number {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2414 int SDL_tolower(int x);
+ * @from SDL_stdinc.h:2415 int SDL_tolower(int x);
  */
 export function tolower(x: number): number {
   return lib.symbols.SDL_tolower(x);
@@ -1168,7 +1175,7 @@ export function tolower(x: number): number {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2435 Uint16 SDL_crc16(Uint16 crc, const void *data, size_t len);
+ * @from SDL_stdinc.h:2436 Uint16 SDL_crc16(Uint16 crc, const void *data, size_t len);
  */
 export function crc16(crc: number, data: Deno.PointerValue, len: bigint): number {
   return lib.symbols.SDL_crc16(crc, data, len);
@@ -1193,7 +1200,7 @@ export function crc16(crc: number, data: Deno.PointerValue, len: bigint): number
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2456 Uint32 SDL_crc32(Uint32 crc, const void *data, size_t len);
+ * @from SDL_stdinc.h:2457 Uint32 SDL_crc32(Uint32 crc, const void *data, size_t len);
  */
 export function crc32(crc: number, data: Deno.PointerValue, len: bigint): number {
   return lib.symbols.SDL_crc32(crc, data, len);
@@ -1223,7 +1230,7 @@ export function crc32(crc: number, data: Deno.PointerValue, len: bigint): number
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2482 Uint32 SDL_murmur3_32(const void *data, size_t len, Uint32 seed);
+ * @from SDL_stdinc.h:2483 Uint32 SDL_murmur3_32(const void *data, size_t len, Uint32 seed);
  */
 export function murmur332(data: Deno.PointerValue, len: bigint, seed: number): number {
   return lib.symbols.SDL_murmur3_32(data, len, seed);
@@ -1247,7 +1254,7 @@ export function murmur332(data: Deno.PointerValue, len: bigint, seed: number): n
  *
  * @sa SDL_memmove
  *
- * @from SDL_stdinc.h:2502 void * SDL_memcpy(SDL_OUT_BYTECAP(len) void *dst, SDL_IN_BYTECAP(len) const void *src, size_t len);
+ * @from SDL_stdinc.h:2503 void * SDL_memcpy(SDL_OUT_BYTECAP(len) void *dst, SDL_IN_BYTECAP(len) const void *src, size_t len);
  */
 export function memcpy(dst: Deno.PointerValue, src: Deno.PointerValue, len: bigint): Deno.PointerValue {
   return lib.symbols.SDL_memcpy(dst, src, len);
@@ -1270,7 +1277,7 @@ export function memcpy(dst: Deno.PointerValue, src: Deno.PointerValue, len: bigi
  *
  * @sa SDL_memcpy
  *
- * @from SDL_stdinc.h:2558 void * SDL_memmove(SDL_OUT_BYTECAP(len) void *dst, SDL_IN_BYTECAP(len) const void *src, size_t len);
+ * @from SDL_stdinc.h:2559 void * SDL_memmove(SDL_OUT_BYTECAP(len) void *dst, SDL_IN_BYTECAP(len) const void *src, size_t len);
  */
 export function memmove(dst: Deno.PointerValue, src: Deno.PointerValue, len: bigint): Deno.PointerValue {
   return lib.symbols.SDL_memmove(dst, src, len);
@@ -1294,7 +1301,7 @@ export function memmove(dst: Deno.PointerValue, src: Deno.PointerValue, len: big
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2586 void * SDL_memset(SDL_OUT_BYTECAP(len) void *dst, int c, size_t len);
+ * @from SDL_stdinc.h:2587 void * SDL_memset(SDL_OUT_BYTECAP(len) void *dst, int c, size_t len);
  */
 export function memset(dst: Deno.PointerValue, c: number, len: bigint): Deno.PointerValue {
   return lib.symbols.SDL_memset(dst, c, len);
@@ -1318,7 +1325,7 @@ export function memset(dst: Deno.PointerValue, c: number, len: bigint): Deno.Poi
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2606 void * SDL_memset4(void *dst, Uint32 val, size_t dwords);
+ * @from SDL_stdinc.h:2607 void * SDL_memset4(void *dst, Uint32 val, size_t dwords);
  */
 export function memset4(dst: Deno.PointerValue, val: number, dwords: bigint): Deno.PointerValue {
   return lib.symbols.SDL_memset4(dst, val, dwords);
@@ -1338,7 +1345,7 @@ export function memset4(dst: Deno.PointerValue, val: number, dwords: bigint): De
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2688 int SDL_memcmp(const void *s1, const void *s2, size_t len);
+ * @from SDL_stdinc.h:2689 int SDL_memcmp(const void *s1, const void *s2, size_t len);
  */
 export function memcmp(s1: Deno.PointerValue, s2: Deno.PointerValue, len: bigint): number {
   return lib.symbols.SDL_memcmp(s1, s2, len);
@@ -1369,7 +1376,7 @@ export function memcmp(s1: Deno.PointerValue, s2: Deno.PointerValue, len: bigint
  * @sa SDL_utf8strlen
  * @sa SDL_utf8strnlen
  *
- * @from SDL_stdinc.h:2715 size_t SDL_wcslen(const wchar_t *wstr);
+ * @from SDL_stdinc.h:2716 size_t SDL_wcslen(const wchar_t *wstr);
  */
 export function wcslen(wstr: wchar_t): wchar_t {
   _p.i16.arr[0] = wstr;
@@ -1407,7 +1414,7 @@ export function wcslen(wstr: wchar_t): wchar_t {
  * @sa SDL_utf8strlen
  * @sa SDL_utf8strnlen
  *
- * @from SDL_stdinc.h:2746 size_t SDL_wcsnlen(const wchar_t *wstr, size_t maxlen);
+ * @from SDL_stdinc.h:2747 size_t SDL_wcsnlen(const wchar_t *wstr, size_t maxlen);
  */
 export function wcsnlen(wstr: wchar_t, maxlen: bigint): wchar_t {
   _p.i16.arr[0] = wstr;
@@ -1441,7 +1448,7 @@ export function wcsnlen(wstr: wchar_t, maxlen: bigint): wchar_t {
  *
  * @sa SDL_wcslcat
  *
- * @from SDL_stdinc.h:2773 size_t SDL_wcslcpy(SDL_OUT_Z_CAP(maxlen) wchar_t *dst, const wchar_t *src, size_t maxlen);
+ * @from SDL_stdinc.h:2774 size_t SDL_wcslcpy(SDL_OUT_Z_CAP(maxlen) wchar_t *dst, const wchar_t *src, size_t maxlen);
  */
 export function wcslcpy(src: wchar_t, maxlen: bigint): { dst: wchar_t; src: wchar_t } {
   _p.i16.arr[1] = src;
@@ -1477,7 +1484,7 @@ export function wcslcpy(src: wchar_t, maxlen: bigint): { dst: wchar_t; src: wcha
  *
  * @sa SDL_wcslcpy
  *
- * @from SDL_stdinc.h:2802 size_t SDL_wcslcat(SDL_INOUT_Z_CAP(maxlen) wchar_t *dst, const wchar_t *src, size_t maxlen);
+ * @from SDL_stdinc.h:2803 size_t SDL_wcslcat(SDL_INOUT_Z_CAP(maxlen) wchar_t *dst, const wchar_t *src, size_t maxlen);
  */
 export function wcslcat(src: wchar_t, maxlen: bigint): { dst: wchar_t; src: wchar_t } {
   _p.i16.arr[1] = src;
@@ -1502,7 +1509,7 @@ export function wcslcat(src: wchar_t, maxlen: bigint): { dst: wchar_t; src: wcha
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2820 wchar_t * SDL_wcsdup(const wchar_t *wstr);
+ * @from SDL_stdinc.h:2821 wchar_t * SDL_wcsdup(const wchar_t *wstr);
  */
 export function wcsdup(wstr: wchar_t): { wstr: wchar_t; ret: Deno.PointerValue } {
   _p.i16.arr[0] = wstr;
@@ -1529,7 +1536,7 @@ export function wcsdup(wstr: wchar_t): { wstr: wchar_t; ret: Deno.PointerValue }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2840 wchar_t * SDL_wcsstr(const wchar_t *haystack, const wchar_t *needle);
+ * @from SDL_stdinc.h:2841 wchar_t * SDL_wcsstr(const wchar_t *haystack, const wchar_t *needle);
  */
 export function wcsstr(haystack: wchar_t, needle: wchar_t): { haystack: wchar_t; needle: wchar_t; ret: Deno.PointerValue } {
   _p.i16.arr[0] = haystack;
@@ -1562,7 +1569,7 @@ export function wcsstr(haystack: wchar_t, needle: wchar_t): { haystack: wchar_t;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2865 wchar_t * SDL_wcsnstr(const wchar_t *haystack, const wchar_t *needle, size_t maxlen);
+ * @from SDL_stdinc.h:2866 wchar_t * SDL_wcsnstr(const wchar_t *haystack, const wchar_t *needle, size_t maxlen);
  */
 export function wcsnstr(haystack: wchar_t, needle: wchar_t, maxlen: bigint): { haystack: wchar_t; needle: wchar_t; ret: Deno.PointerValue } {
   _p.i16.arr[0] = haystack;
@@ -1589,7 +1596,7 @@ export function wcsnstr(haystack: wchar_t, needle: wchar_t, maxlen: bigint): { h
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2884 int SDL_wcscmp(const wchar_t *str1, const wchar_t *str2);
+ * @from SDL_stdinc.h:2885 int SDL_wcscmp(const wchar_t *str1, const wchar_t *str2);
  */
 export function wcscmp(str1: wchar_t, str2: wchar_t): { str1: wchar_t; str2: wchar_t } {
   _p.i16.arr[0] = str1;
@@ -1628,7 +1635,7 @@ export function wcscmp(str1: wchar_t, str2: wchar_t): { str1: wchar_t; str2: wch
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2915 int SDL_wcsncmp(const wchar_t *str1, const wchar_t *str2, size_t maxlen);
+ * @from SDL_stdinc.h:2916 int SDL_wcsncmp(const wchar_t *str1, const wchar_t *str2, size_t maxlen);
  */
 export function wcsncmp(str1: wchar_t, str2: wchar_t, maxlen: bigint): { str1: wchar_t; str2: wchar_t } {
   _p.i16.arr[0] = str1;
@@ -1666,7 +1673,7 @@ export function wcsncmp(str1: wchar_t, str2: wchar_t, maxlen: bigint): { str1: w
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2945 int SDL_wcscasecmp(const wchar_t *str1, const wchar_t *str2);
+ * @from SDL_stdinc.h:2946 int SDL_wcscasecmp(const wchar_t *str1, const wchar_t *str2);
  */
 export function wcscasecmp(str1: wchar_t, str2: wchar_t): { str1: wchar_t; str2: wchar_t } {
   _p.i16.arr[0] = str1;
@@ -1716,7 +1723,7 @@ export function wcscasecmp(str1: wchar_t, str2: wchar_t): { str1: wchar_t; str2:
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:2987 int SDL_wcsncasecmp(const wchar_t *str1, const wchar_t *str2, size_t maxlen);
+ * @from SDL_stdinc.h:2988 int SDL_wcsncasecmp(const wchar_t *str1, const wchar_t *str2, size_t maxlen);
  */
 export function wcsncasecmp(str1: wchar_t, str2: wchar_t, maxlen: bigint): { str1: wchar_t; str2: wchar_t } {
   _p.i16.arr[0] = str1;
@@ -1751,7 +1758,7 @@ export function wcsncasecmp(str1: wchar_t, str2: wchar_t, maxlen: bigint): { str
  *
  * @sa SDL_strtol
  *
- * @from SDL_stdinc.h:3014 long SDL_wcstol(const wchar_t *str, wchar_t **endp, int base);
+ * @from SDL_stdinc.h:3015 long SDL_wcstol(const wchar_t *str, wchar_t **endp, int base);
  */
 export function wcstol(str: wchar_t, endp: Deno.PointerValue, base: number): wchar_t {
   _p.i16.arr[0] = str;
@@ -1778,7 +1785,7 @@ export function wcstol(str: wchar_t, endp: Deno.PointerValue, base: number): wch
  * @sa SDL_utf8strlen
  * @sa SDL_utf8strnlen
  *
- * @from SDL_stdinc.h:3034 size_t SDL_strlen(const char *str);
+ * @from SDL_stdinc.h:3035 size_t SDL_strlen(const char *str);
  */
 export function strlen(str: string): bigint {
   return lib.symbols.SDL_strlen(_p.toCstr(str));
@@ -1806,7 +1813,7 @@ export function strlen(str: string): bigint {
  * @sa SDL_utf8strlen
  * @sa SDL_utf8strnlen
  *
- * @from SDL_stdinc.h:3058 size_t SDL_strnlen(const char *str, size_t maxlen);
+ * @from SDL_stdinc.h:3059 size_t SDL_strnlen(const char *str, size_t maxlen);
  */
 export function strnlen(str: string, maxlen: bigint): bigint {
   return lib.symbols.SDL_strnlen(_p.toCstr(str), maxlen);
@@ -1839,7 +1846,7 @@ export function strnlen(str: string, maxlen: bigint): bigint {
  * @sa SDL_strlcat
  * @sa SDL_utf8strlcpy
  *
- * @from SDL_stdinc.h:3087 size_t SDL_strlcpy(SDL_OUT_Z_CAP(maxlen) char *dst, const char *src, size_t maxlen);
+ * @from SDL_stdinc.h:3088 size_t SDL_strlcpy(SDL_OUT_Z_CAP(maxlen) char *dst, const char *src, size_t maxlen);
  */
 export function strlcpy(src: string, maxlen: bigint): string {
   if(!lib.symbols.SDL_strlcpy(_p.cstr.p0, _p.toCstr(src), maxlen))
@@ -1873,7 +1880,7 @@ export function strlcpy(src: string, maxlen: bigint): string {
  *
  * @sa SDL_strlcpy
  *
- * @from SDL_stdinc.h:3115 size_t SDL_utf8strlcpy(SDL_OUT_Z_CAP(dst_bytes) char *dst, const char *src, size_t dst_bytes);
+ * @from SDL_stdinc.h:3116 size_t SDL_utf8strlcpy(SDL_OUT_Z_CAP(dst_bytes) char *dst, const char *src, size_t dst_bytes);
  */
 export function utf8Strlcpy(src: string, dst_bytes: bigint): string {
   if(!lib.symbols.SDL_utf8strlcpy(_p.cstr.p0, _p.toCstr(src), dst_bytes))
@@ -1907,7 +1914,7 @@ export function utf8Strlcpy(src: string, dst_bytes: bigint): string {
  *
  * @sa SDL_strlcpy
  *
- * @from SDL_stdinc.h:3143 size_t SDL_strlcat(SDL_INOUT_Z_CAP(maxlen) char *dst, const char *src, size_t maxlen);
+ * @from SDL_stdinc.h:3144 size_t SDL_strlcat(SDL_INOUT_Z_CAP(maxlen) char *dst, const char *src, size_t maxlen);
  */
 export function strlcat(src: string, maxlen: bigint): string {
   if(!lib.symbols.SDL_strlcat(_p.cstr.p0, _p.toCstr(src), maxlen))
@@ -1931,7 +1938,7 @@ export function strlcat(src: string, maxlen: bigint): string {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3161 SDL_MALLOC char * SDL_strdup(const char *str);
+ * @from SDL_stdinc.h:3162 SDL_MALLOC char * SDL_strdup(const char *str);
  */
 export function strdup(str: string): string {
   return _p.getCstr2(lib.symbols.SDL_strdup(_p.toCstr(str)));
@@ -1960,7 +1967,7 @@ export function strdup(str: string): string {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3186 SDL_MALLOC char * SDL_strndup(const char *str, size_t maxlen);
+ * @from SDL_stdinc.h:3187 SDL_MALLOC char * SDL_strndup(const char *str, size_t maxlen);
  */
 export function strndup(str: string, maxlen: bigint): string {
   return _p.getCstr2(lib.symbols.SDL_strndup(_p.toCstr(str), maxlen));
@@ -1985,7 +1992,7 @@ export function strndup(str: string, maxlen: bigint): string {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3207 char * SDL_strrev(char *str);
+ * @from SDL_stdinc.h:3208 char * SDL_strrev(char *str);
  */
 export function strrev(): { str: string; ret: string } {
   const ret = lib.symbols.SDL_strrev(_p.cstr.p0) as string;
@@ -2012,7 +2019,7 @@ export function strrev(): { str: string; ret: string } {
  *
  * @sa SDL_strlwr
  *
- * @from SDL_stdinc.h:3228 char * SDL_strupr(char *str);
+ * @from SDL_stdinc.h:3229 char * SDL_strupr(char *str);
  */
 export function strupr(): { str: string; ret: string } {
   const ret = lib.symbols.SDL_strupr(_p.cstr.p0) as string;
@@ -2039,7 +2046,7 @@ export function strupr(): { str: string; ret: string } {
  *
  * @sa SDL_strupr
  *
- * @from SDL_stdinc.h:3249 char * SDL_strlwr(char *str);
+ * @from SDL_stdinc.h:3250 char * SDL_strlwr(char *str);
  */
 export function strlwr(): { str: string; ret: string } {
   const ret = lib.symbols.SDL_strlwr(_p.cstr.p0) as string;
@@ -2065,7 +2072,7 @@ export function strlwr(): { str: string; ret: string } {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3269 char * SDL_strchr(const char *str, int c);
+ * @from SDL_stdinc.h:3270 char * SDL_strchr(const char *str, int c);
  */
 export function strchr(str: string, c: number): string {
   return _p.getCstr2(lib.symbols.SDL_strchr(_p.toCstr(str), c));
@@ -2088,7 +2095,7 @@ export function strchr(str: string, c: number): string {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3288 char * SDL_strrchr(const char *str, int c);
+ * @from SDL_stdinc.h:3289 char * SDL_strrchr(const char *str, int c);
  */
 export function strrchr(str: string, c: number): string {
   return _p.getCstr2(lib.symbols.SDL_strrchr(_p.toCstr(str), c));
@@ -2112,7 +2119,7 @@ export function strrchr(str: string, c: number): string {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3308 char * SDL_strstr(const char *haystack, const char *needle);
+ * @from SDL_stdinc.h:3309 char * SDL_strstr(const char *haystack, const char *needle);
  */
 export function strstr(haystack: string, needle: string): string {
   return _p.getCstr2(lib.symbols.SDL_strstr(_p.toCstr(haystack), _p.toCstr(needle)));
@@ -2139,7 +2146,7 @@ export function strstr(haystack: string, needle: string): string {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3331 char * SDL_strnstr(const char *haystack, const char *needle, size_t maxlen);
+ * @from SDL_stdinc.h:3332 char * SDL_strnstr(const char *haystack, const char *needle, size_t maxlen);
  */
 export function strnstr(haystack: string, needle: string, maxlen: bigint): string {
   return _p.getCstr2(lib.symbols.SDL_strnstr(_p.toCstr(haystack), _p.toCstr(needle), maxlen));
@@ -2171,7 +2178,7 @@ export function strnstr(haystack: string, needle: string, maxlen: bigint): strin
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3359 char * SDL_strcasestr(const char *haystack, const char *needle);
+ * @from SDL_stdinc.h:3360 char * SDL_strcasestr(const char *haystack, const char *needle);
  */
 export function strcasestr(haystack: string, needle: string): string {
   return _p.getCstr2(lib.symbols.SDL_strcasestr(_p.toCstr(haystack), _p.toCstr(needle)));
@@ -2204,7 +2211,7 @@ export function strcasestr(haystack: string, needle: string): string {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3388 char * SDL_strtok_r(char *str, const char *delim, char **saveptr);
+ * @from SDL_stdinc.h:3389 char * SDL_strtok_r(char *str, const char *delim, char **saveptr);
  */
 export function strtokR(delim: string): { str: string; saveptr: Deno.PointerValue; ret: string } {
   const ret = lib.symbols.SDL_strtok_r(_p.cstr.p0, _p.toCstr(delim), _p.ptr.p0) as string;
@@ -2238,7 +2245,7 @@ export function strtokR(delim: string): { str: string; saveptr: Deno.PointerValu
  * @sa SDL_utf8strnlen
  * @sa SDL_strlen
  *
- * @from SDL_stdinc.h:3416 size_t SDL_utf8strlen(const char *str);
+ * @from SDL_stdinc.h:3417 size_t SDL_utf8strlen(const char *str);
  */
 export function utf8Strlen(str: string): bigint {
   return lib.symbols.SDL_utf8strlen(_p.toCstr(str));
@@ -2275,7 +2282,7 @@ export function utf8Strlen(str: string): bigint {
  * @sa SDL_utf8strlen
  * @sa SDL_strnlen
  *
- * @from SDL_stdinc.h:3449 size_t SDL_utf8strnlen(const char *str, size_t bytes);
+ * @from SDL_stdinc.h:3450 size_t SDL_utf8strnlen(const char *str, size_t bytes);
  */
 export function utf8Strnlen(str: string, bytes: bigint): bigint {
   return lib.symbols.SDL_utf8strnlen(_p.toCstr(str), bytes);
@@ -2307,7 +2314,7 @@ export function utf8Strnlen(str: string, bytes: bigint): bigint {
  * @sa SDL_ltoa
  * @sa SDL_lltoa
  *
- * @from SDL_stdinc.h:3477 char * SDL_itoa(int value, char *str, int radix);
+ * @from SDL_stdinc.h:3478 char * SDL_itoa(int value, char *str, int radix);
  */
 export function itoa(value: number, radix: number): { str: string; ret: string } {
   const ret = lib.symbols.SDL_itoa(value, _p.cstr.p0, radix) as string;
@@ -2341,7 +2348,7 @@ export function itoa(value: number, radix: number): { str: string; ret: string }
  * @sa SDL_ultoa
  * @sa SDL_ulltoa
  *
- * @from SDL_stdinc.h:3505 char * SDL_uitoa(unsigned int value, char *str, int radix);
+ * @from SDL_stdinc.h:3506 char * SDL_uitoa(unsigned int value, char *str, int radix);
  */
 export function uitoa(value: number, radix: number): { str: string; ret: string } {
   const ret = lib.symbols.SDL_uitoa(value, _p.cstr.p0, radix) as string;
@@ -2375,7 +2382,7 @@ export function uitoa(value: number, radix: number): { str: string; ret: string 
  * @sa SDL_itoa
  * @sa SDL_lltoa
  *
- * @from SDL_stdinc.h:3533 char * SDL_ltoa(long value, char *str, int radix);
+ * @from SDL_stdinc.h:3534 char * SDL_ltoa(long value, char *str, int radix);
  */
 export function ltoa(value: bigint, radix: number): { str: string; ret: string } {
   const ret = lib.symbols.SDL_ltoa(value, _p.cstr.p0, radix) as string;
@@ -2409,7 +2416,7 @@ export function ltoa(value: bigint, radix: number): { str: string; ret: string }
  * @sa SDL_uitoa
  * @sa SDL_ulltoa
  *
- * @from SDL_stdinc.h:3561 char * SDL_ultoa(unsigned long value, char *str, int radix);
+ * @from SDL_stdinc.h:3562 char * SDL_ultoa(unsigned long value, char *str, int radix);
  */
 export function ultoa(value: bigint, radix: number): { str: string; ret: string } {
   const ret = lib.symbols.SDL_ultoa(value, _p.cstr.p0, radix) as string;
@@ -2443,7 +2450,7 @@ export function ultoa(value: bigint, radix: number): { str: string; ret: string 
  * @sa SDL_itoa
  * @sa SDL_ltoa
  *
- * @from SDL_stdinc.h:3591 char * SDL_lltoa(long long value, char *str, int radix);
+ * @from SDL_stdinc.h:3592 char * SDL_lltoa(long long value, char *str, int radix);
  */
 export function lltoa(value: bigint, radix: number): { str: string; ret: string } {
   const ret = lib.symbols.SDL_lltoa(value, _p.cstr.p0, radix) as string;
@@ -2477,7 +2484,7 @@ export function lltoa(value: bigint, radix: number): { str: string; ret: string 
  * @sa SDL_uitoa
  * @sa SDL_ultoa
  *
- * @from SDL_stdinc.h:3619 char * SDL_ulltoa(unsigned long long value, char *str, int radix);
+ * @from SDL_stdinc.h:3620 char * SDL_ulltoa(unsigned long long value, char *str, int radix);
  */
 export function ulltoa(value: bigint, radix: number): { str: string; ret: string } {
   const ret = lib.symbols.SDL_ulltoa(value, _p.cstr.p0, radix) as string;
@@ -2506,7 +2513,7 @@ export function ulltoa(value: bigint, radix: number): { str: string; ret: string
  * @sa SDL_strtod
  * @sa SDL_itoa
  *
- * @from SDL_stdinc.h:3643 int SDL_atoi(const char *str);
+ * @from SDL_stdinc.h:3644 int SDL_atoi(const char *str);
  */
 export function atoi(str: string): number {
   return lib.symbols.SDL_atoi(_p.toCstr(str));
@@ -2532,7 +2539,7 @@ export function atoi(str: string): number {
  * @sa SDL_strtoull
  * @sa SDL_strtod
  *
- * @from SDL_stdinc.h:3665 double SDL_atof(const char *str);
+ * @from SDL_stdinc.h:3666 double SDL_atof(const char *str);
  */
 export function atof(str: string): number {
   return lib.symbols.SDL_atof(_p.toCstr(str));
@@ -2570,7 +2577,7 @@ export function atof(str: string): number {
  * @sa SDL_ltoa
  * @sa SDL_wcstol
  *
- * @from SDL_stdinc.h:3699 long SDL_strtol(const char *str, char **endp, int base);
+ * @from SDL_stdinc.h:3700 long SDL_strtol(const char *str, char **endp, int base);
  */
 export function strtol(str: string, base: number): Deno.PointerValue {
   if(!lib.symbols.SDL_strtol(_p.toCstr(str), _p.ptr.p0, base))
@@ -2609,7 +2616,7 @@ export function strtol(str: string, base: number): Deno.PointerValue {
  * @sa SDL_strtod
  * @sa SDL_ultoa
  *
- * @from SDL_stdinc.h:3732 unsigned long SDL_strtoul(const char *str, char **endp, int base);
+ * @from SDL_stdinc.h:3733 unsigned long SDL_strtoul(const char *str, char **endp, int base);
  */
 export function strtoul(str: string, base: number): Deno.PointerValue {
   if(!lib.symbols.SDL_strtoul(_p.toCstr(str), _p.ptr.p0, base))
@@ -2648,7 +2655,7 @@ export function strtoul(str: string, base: number): Deno.PointerValue {
  * @sa SDL_strtod
  * @sa SDL_lltoa
  *
- * @from SDL_stdinc.h:3767 long long SDL_strtoll(const char *str, char **endp, int base);
+ * @from SDL_stdinc.h:3768 long long SDL_strtoll(const char *str, char **endp, int base);
  */
 export function strtoll(str: string, base: number): Deno.PointerValue {
   if(!lib.symbols.SDL_strtoll(_p.toCstr(str), _p.ptr.p0, base))
@@ -2688,7 +2695,7 @@ export function strtoll(str: string, base: number): Deno.PointerValue {
  * @sa SDL_strtod
  * @sa SDL_ulltoa
  *
- * @from SDL_stdinc.h:3801 unsigned long long SDL_strtoull(const char *str, char **endp, int base);
+ * @from SDL_stdinc.h:3802 unsigned long long SDL_strtoull(const char *str, char **endp, int base);
  */
 export function strtoull(str: string, base: number): Deno.PointerValue {
   if(!lib.symbols.SDL_strtoull(_p.toCstr(str), _p.ptr.p0, base))
@@ -2723,7 +2730,7 @@ export function strtoull(str: string, base: number): Deno.PointerValue {
  * @sa SDL_strtoul
  * @sa SDL_strtoull
  *
- * @from SDL_stdinc.h:3831 double SDL_strtod(const char *str, char **endp);
+ * @from SDL_stdinc.h:3832 double SDL_strtod(const char *str, char **endp);
  */
 export function strtod(str: string): Deno.PointerValue {
   if(!lib.symbols.SDL_strtod(_p.toCstr(str), _p.ptr.p0))
@@ -2749,7 +2756,7 @@ export function strtod(str: string): Deno.PointerValue {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3851 int SDL_strcmp(const char *str1, const char *str2);
+ * @from SDL_stdinc.h:3852 int SDL_strcmp(const char *str1, const char *str2);
  */
 export function strcmp(str1: string, str2: string): number {
   return lib.symbols.SDL_strcmp(_p.toCstr(str1), _p.toCstr(str2));
@@ -2783,7 +2790,7 @@ export function strcmp(str1: string, str2: string): number {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3881 int SDL_strncmp(const char *str1, const char *str2, size_t maxlen);
+ * @from SDL_stdinc.h:3882 int SDL_strncmp(const char *str1, const char *str2, size_t maxlen);
  */
 export function strncmp(str1: string, str2: string, maxlen: bigint): number {
   return lib.symbols.SDL_strncmp(_p.toCstr(str1), _p.toCstr(str2), maxlen);
@@ -2815,7 +2822,7 @@ export function strncmp(str1: string, str2: string, maxlen: bigint): number {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3909 int SDL_strcasecmp(const char *str1, const char *str2);
+ * @from SDL_stdinc.h:3910 int SDL_strcasecmp(const char *str1, const char *str2);
  */
 export function strcasecmp(str1: string, str2: string): number {
   return lib.symbols.SDL_strcasecmp(_p.toCstr(str1), _p.toCstr(str2));
@@ -2858,7 +2865,7 @@ export function strcasecmp(str1: string, str2: string): number {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3949 int SDL_strncasecmp(const char *str1, const char *str2, size_t maxlen);
+ * @from SDL_stdinc.h:3950 int SDL_strncasecmp(const char *str1, const char *str2, size_t maxlen);
  */
 export function strncasecmp(str1: string, str2: string, maxlen: bigint): number {
   return lib.symbols.SDL_strncasecmp(_p.toCstr(str1), _p.toCstr(str2), maxlen);
@@ -2880,7 +2887,7 @@ export function strncasecmp(str1: string, str2: string, maxlen: bigint): number 
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:3967 char * SDL_strpbrk(const char *str, const char *breakset);
+ * @from SDL_stdinc.h:3968 char * SDL_strpbrk(const char *str, const char *breakset);
  */
 export function strpbrk(str: string, breakset: string): string {
   return _p.getCstr2(lib.symbols.SDL_strpbrk(_p.toCstr(str), _p.toCstr(breakset)));
@@ -2929,7 +2936,7 @@ export function strpbrk(str: string, breakset: string): string {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:4027 Uint32 SDL_StepUTF8(const char **pstr, size_t *pslen);
+ * @from SDL_stdinc.h:4028 Uint32 SDL_StepUTF8(const char **pstr, size_t *pslen);
  */
 export function stepUtf8(pstr: Deno.PointerValue): bigint {
   if(!lib.symbols.SDL_StepUTF8(pstr, _p.u64.p0))
@@ -2966,7 +2973,7 @@ export function stepUtf8(pstr: Deno.PointerValue): bigint {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:4058 Uint32 SDL_StepBackUTF8(const char *start, const char **pstr);
+ * @from SDL_stdinc.h:4059 Uint32 SDL_StepBackUTF8(const char *start, const char **pstr);
  */
 export function stepBackUtf8(start: string, pstr: Deno.PointerValue): number {
   return lib.symbols.SDL_StepBackUTF8(_p.toCstr(start), pstr);
@@ -2999,7 +3006,7 @@ export function stepBackUtf8(start: string, pstr: Deno.PointerValue): number {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_stdinc.h:4087 char * SDL_UCS4ToUTF8(Uint32 codepoint, char *dst);
+ * @from SDL_stdinc.h:4088 char * SDL_UCS4ToUTF8(Uint32 codepoint, char *dst);
  */
 export function ucs4ToUtf8(codepoint: number): { dst: string; ret: string } {
   const ret = lib.symbols.SDL_UCS4ToUTF8(codepoint, _p.cstr.p0) as string;
@@ -3025,7 +3032,7 @@ export function ucs4ToUtf8(codepoint: number): { dst: string; ret: string } {
  * @sa SDL_rand_bits
  * @sa SDL_randf
  *
- * @from SDL_stdinc.h:4299 void SDL_srand(Uint64 seed);
+ * @from SDL_stdinc.h:4300 void SDL_srand(Uint64 seed);
  */
 export function srand(seed: bigint): void {
   return lib.symbols.SDL_srand(seed);
@@ -3063,7 +3070,7 @@ export function srand(seed: bigint): void {
  * @sa SDL_srand
  * @sa SDL_randf
  *
- * @from SDL_stdinc.h:4333 Sint32 SDL_rand(Sint32 n);
+ * @from SDL_stdinc.h:4334 Sint32 SDL_rand(Sint32 n);
  */
 export function rand(n: number): number {
   return lib.symbols.SDL_rand(n);
@@ -3090,7 +3097,7 @@ export function rand(n: number): number {
  * @sa SDL_srand
  * @sa SDL_rand
  *
- * @from SDL_stdinc.h:4356 float SDL_randf(void);
+ * @from SDL_stdinc.h:4357 float SDL_randf(void);
  */
 export function randf(): number {
   return lib.symbols.SDL_randf();
@@ -3117,7 +3124,7 @@ export function randf(): number {
  * @sa SDL_randf
  * @sa SDL_srand
  *
- * @from SDL_stdinc.h:4379 Uint32 SDL_rand_bits(void);
+ * @from SDL_stdinc.h:4380 Uint32 SDL_rand_bits(void);
  */
 export function randBits(): number {
   return lib.symbols.SDL_rand_bits();
@@ -3156,7 +3163,7 @@ export function randBits(): number {
  * @sa SDL_rand_bits_r
  * @sa SDL_randf_r
  *
- * @from SDL_stdinc.h:4414 Sint32 SDL_rand_r(Uint64 *state, Sint32 n);
+ * @from SDL_stdinc.h:4415 Sint32 SDL_rand_r(Uint64 *state, Sint32 n);
  */
 export function randR(n: number): bigint {
   if(!lib.symbols.SDL_rand_r(_p.u64.p0, n))
@@ -3189,7 +3196,7 @@ export function randR(n: number): bigint {
  * @sa SDL_rand_r
  * @sa SDL_randf
  *
- * @from SDL_stdinc.h:4441 float SDL_randf_r(Uint64 *state);
+ * @from SDL_stdinc.h:4442 float SDL_randf_r(Uint64 *state);
  */
 export function randfR(): bigint {
   if(!lib.symbols.SDL_randf_r(_p.u64.p0))
@@ -3220,7 +3227,7 @@ export function randfR(): bigint {
  * @sa SDL_rand_r
  * @sa SDL_randf_r
  *
- * @from SDL_stdinc.h:4466 Uint32 SDL_rand_bits_r(Uint64 *state);
+ * @from SDL_stdinc.h:4467 Uint32 SDL_rand_bits_r(Uint64 *state);
  */
 export function randBitsR(): bigint {
   if(!lib.symbols.SDL_rand_bits_r(_p.u64.p0))
@@ -3256,7 +3263,7 @@ export function randBitsR(): bigint {
  * @sa SDL_asin
  * @sa SDL_cos
  *
- * @from SDL_stdinc.h:4520 double SDL_acos(double x);
+ * @from SDL_stdinc.h:4521 double SDL_acos(double x);
  */
 export function acos(x: number): number {
   return lib.symbols.SDL_acos(x);
@@ -3290,7 +3297,7 @@ export function acos(x: number): number {
  * @sa SDL_asinf
  * @sa SDL_cosf
  *
- * @from SDL_stdinc.h:4550 float SDL_acosf(float x);
+ * @from SDL_stdinc.h:4551 float SDL_acosf(float x);
  */
 export function acosf(x: number): number {
   return lib.symbols.SDL_acosf(x);
@@ -3324,7 +3331,7 @@ export function acosf(x: number): number {
  * @sa SDL_acos
  * @sa SDL_sin
  *
- * @from SDL_stdinc.h:4580 double SDL_asin(double x);
+ * @from SDL_stdinc.h:4581 double SDL_asin(double x);
  */
 export function asin(x: number): number {
   return lib.symbols.SDL_asin(x);
@@ -3358,7 +3365,7 @@ export function asin(x: number): number {
  * @sa SDL_acosf
  * @sa SDL_sinf
  *
- * @from SDL_stdinc.h:4610 float SDL_asinf(float x);
+ * @from SDL_stdinc.h:4611 float SDL_asinf(float x);
  */
 export function asinf(x: number): number {
   return lib.symbols.SDL_asinf(x);
@@ -3394,7 +3401,7 @@ export function asinf(x: number): number {
  * @sa SDL_atan2
  * @sa SDL_tan
  *
- * @from SDL_stdinc.h:4642 double SDL_atan(double x);
+ * @from SDL_stdinc.h:4643 double SDL_atan(double x);
  */
 export function atan(x: number): number {
   return lib.symbols.SDL_atan(x);
@@ -3430,7 +3437,7 @@ export function atan(x: number): number {
  * @sa SDL_atan2f
  * @sa SDL_tanf
  *
- * @from SDL_stdinc.h:4674 float SDL_atanf(float x);
+ * @from SDL_stdinc.h:4675 float SDL_atanf(float x);
  */
 export function atanf(x: number): number {
   return lib.symbols.SDL_atanf(x);
@@ -3470,7 +3477,7 @@ export function atanf(x: number): number {
  * @sa SDL_atan
  * @sa SDL_tan
  *
- * @from SDL_stdinc.h:4710 double SDL_atan2(double y, double x);
+ * @from SDL_stdinc.h:4711 double SDL_atan2(double y, double x);
  */
 export function atan2(y: number, x: number): number {
   return lib.symbols.SDL_atan2(y, x);
@@ -3510,7 +3517,7 @@ export function atan2(y: number, x: number): number {
  * @sa SDL_atan
  * @sa SDL_tan
  *
- * @from SDL_stdinc.h:4746 float SDL_atan2f(float y, float x);
+ * @from SDL_stdinc.h:4747 float SDL_atan2f(float y, float x);
  */
 export function atan2F(y: number, x: number): number {
   return lib.symbols.SDL_atan2f(y, x);
@@ -3542,7 +3549,7 @@ export function atan2F(y: number, x: number): number {
  * @sa SDL_round
  * @sa SDL_lround
  *
- * @from SDL_stdinc.h:4774 double SDL_ceil(double x);
+ * @from SDL_stdinc.h:4775 double SDL_ceil(double x);
  */
 export function ceil(x: number): number {
   return lib.symbols.SDL_ceil(x);
@@ -3574,7 +3581,7 @@ export function ceil(x: number): number {
  * @sa SDL_roundf
  * @sa SDL_lroundf
  *
- * @from SDL_stdinc.h:4802 float SDL_ceilf(float x);
+ * @from SDL_stdinc.h:4803 float SDL_ceilf(float x);
  */
 export function ceilf(x: number): number {
   return lib.symbols.SDL_ceilf(x);
@@ -3604,7 +3611,7 @@ export function ceilf(x: number): number {
  * @sa SDL_copysignf
  * @sa SDL_fabs
  *
- * @from SDL_stdinc.h:4828 double SDL_copysign(double x, double y);
+ * @from SDL_stdinc.h:4829 double SDL_copysign(double x, double y);
  */
 export function copysign(x: number, y: number): number {
   return lib.symbols.SDL_copysign(x, y);
@@ -3634,7 +3641,7 @@ export function copysign(x: number, y: number): number {
  * @sa SDL_copysign
  * @sa SDL_fabsf
  *
- * @from SDL_stdinc.h:4854 float SDL_copysignf(float x, float y);
+ * @from SDL_stdinc.h:4855 float SDL_copysignf(float x, float y);
  */
 export function copysignf(x: number, y: number): number {
   return lib.symbols.SDL_copysignf(x, y);
@@ -3666,7 +3673,7 @@ export function copysignf(x: number, y: number): number {
  * @sa SDL_acos
  * @sa SDL_sin
  *
- * @from SDL_stdinc.h:4882 double SDL_cos(double x);
+ * @from SDL_stdinc.h:4883 double SDL_cos(double x);
  */
 export function cos(x: number): number {
   return lib.symbols.SDL_cos(x);
@@ -3698,7 +3705,7 @@ export function cos(x: number): number {
  * @sa SDL_acosf
  * @sa SDL_sinf
  *
- * @from SDL_stdinc.h:4910 float SDL_cosf(float x);
+ * @from SDL_stdinc.h:4911 float SDL_cosf(float x);
  */
 export function cosf(x: number): number {
   return lib.symbols.SDL_cosf(x);
@@ -3734,7 +3741,7 @@ export function cosf(x: number): number {
  * @sa SDL_expf
  * @sa SDL_log
  *
- * @from SDL_stdinc.h:4942 double SDL_exp(double x);
+ * @from SDL_stdinc.h:4943 double SDL_exp(double x);
  */
 export function exp(x: number): number {
   return lib.symbols.SDL_exp(x);
@@ -3770,7 +3777,7 @@ export function exp(x: number): number {
  * @sa SDL_exp
  * @sa SDL_logf
  *
- * @from SDL_stdinc.h:4974 float SDL_expf(float x);
+ * @from SDL_stdinc.h:4975 float SDL_expf(float x);
  */
 export function expf(x: number): number {
   return lib.symbols.SDL_expf(x);
@@ -3795,7 +3802,7 @@ export function expf(x: number): number {
  *
  * @sa SDL_fabsf
  *
- * @from SDL_stdinc.h:4995 double SDL_fabs(double x);
+ * @from SDL_stdinc.h:4996 double SDL_fabs(double x);
  */
 export function fabs(x: number): number {
   return lib.symbols.SDL_fabs(x);
@@ -3820,7 +3827,7 @@ export function fabs(x: number): number {
  *
  * @sa SDL_fabs
  *
- * @from SDL_stdinc.h:5016 float SDL_fabsf(float x);
+ * @from SDL_stdinc.h:5017 float SDL_fabsf(float x);
  */
 export function fabsf(x: number): number {
   return lib.symbols.SDL_fabsf(x);
@@ -3852,7 +3859,7 @@ export function fabsf(x: number): number {
  * @sa SDL_round
  * @sa SDL_lround
  *
- * @from SDL_stdinc.h:5044 double SDL_floor(double x);
+ * @from SDL_stdinc.h:5045 double SDL_floor(double x);
  */
 export function floor(x: number): number {
   return lib.symbols.SDL_floor(x);
@@ -3884,7 +3891,7 @@ export function floor(x: number): number {
  * @sa SDL_roundf
  * @sa SDL_lroundf
  *
- * @from SDL_stdinc.h:5072 float SDL_floorf(float x);
+ * @from SDL_stdinc.h:5073 float SDL_floorf(float x);
  */
 export function floorf(x: number): number {
   return lib.symbols.SDL_floorf(x);
@@ -3917,7 +3924,7 @@ export function floorf(x: number): number {
  * @sa SDL_round
  * @sa SDL_lround
  *
- * @from SDL_stdinc.h:5101 double SDL_trunc(double x);
+ * @from SDL_stdinc.h:5102 double SDL_trunc(double x);
  */
 export function trunc(x: number): number {
   return lib.symbols.SDL_trunc(x);
@@ -3950,7 +3957,7 @@ export function trunc(x: number): number {
  * @sa SDL_roundf
  * @sa SDL_lroundf
  *
- * @from SDL_stdinc.h:5130 float SDL_truncf(float x);
+ * @from SDL_stdinc.h:5131 float SDL_truncf(float x);
  */
 export function truncf(x: number): number {
   return lib.symbols.SDL_truncf(x);
@@ -3984,7 +3991,7 @@ export function truncf(x: number): number {
  * @sa SDL_round
  * @sa SDL_lround
  *
- * @from SDL_stdinc.h:5160 double SDL_fmod(double x, double y);
+ * @from SDL_stdinc.h:5161 double SDL_fmod(double x, double y);
  */
 export function fmod(x: number, y: number): number {
   return lib.symbols.SDL_fmod(x, y);
@@ -4018,7 +4025,7 @@ export function fmod(x: number, y: number): number {
  * @sa SDL_roundf
  * @sa SDL_lroundf
  *
- * @from SDL_stdinc.h:5190 float SDL_fmodf(float x, float y);
+ * @from SDL_stdinc.h:5191 float SDL_fmodf(float x, float y);
  */
 export function fmodf(x: number, y: number): number {
   return lib.symbols.SDL_fmodf(x, y);
@@ -4036,7 +4043,7 @@ export function fmodf(x: number, y: number): number {
  *
  * @sa SDL_isinff
  *
- * @from SDL_stdinc.h:5204 int SDL_isinf(double x);
+ * @from SDL_stdinc.h:5205 int SDL_isinf(double x);
  */
 export function isinf(x: number): number {
   return lib.symbols.SDL_isinf(x);
@@ -4054,7 +4061,7 @@ export function isinf(x: number): number {
  *
  * @sa SDL_isinf
  *
- * @from SDL_stdinc.h:5218 int SDL_isinff(float x);
+ * @from SDL_stdinc.h:5219 int SDL_isinff(float x);
  */
 export function isinff(x: number): number {
   return lib.symbols.SDL_isinff(x);
@@ -4072,7 +4079,7 @@ export function isinff(x: number): number {
  *
  * @sa SDL_isnanf
  *
- * @from SDL_stdinc.h:5232 int SDL_isnan(double x);
+ * @from SDL_stdinc.h:5233 int SDL_isnan(double x);
  */
 export function isnan(x: number): number {
   return lib.symbols.SDL_isnan(x);
@@ -4090,7 +4097,7 @@ export function isnan(x: number): number {
  *
  * @sa SDL_isnan
  *
- * @from SDL_stdinc.h:5246 int SDL_isnanf(float x);
+ * @from SDL_stdinc.h:5247 int SDL_isnanf(float x);
  */
 export function isnanf(x: number): number {
   return lib.symbols.SDL_isnanf(x);
@@ -4124,7 +4131,7 @@ export function isnanf(x: number): number {
  * @sa SDL_log10
  * @sa SDL_exp
  *
- * @from SDL_stdinc.h:5276 double SDL_log(double x);
+ * @from SDL_stdinc.h:5277 double SDL_log(double x);
  */
 export function log(x: number): number {
   return lib.symbols.SDL_log(x);
@@ -4157,7 +4164,7 @@ export function log(x: number): number {
  * @sa SDL_log
  * @sa SDL_expf
  *
- * @from SDL_stdinc.h:5305 float SDL_logf(float x);
+ * @from SDL_stdinc.h:5306 float SDL_logf(float x);
  */
 export function logf(x: number): number {
   return lib.symbols.SDL_logf(x);
@@ -4191,7 +4198,7 @@ export function logf(x: number): number {
  * @sa SDL_log
  * @sa SDL_pow
  *
- * @from SDL_stdinc.h:5335 double SDL_log10(double x);
+ * @from SDL_stdinc.h:5336 double SDL_log10(double x);
  */
 export function log10(x: number): number {
   return lib.symbols.SDL_log10(x);
@@ -4225,7 +4232,7 @@ export function log10(x: number): number {
  * @sa SDL_logf
  * @sa SDL_powf
  *
- * @from SDL_stdinc.h:5365 float SDL_log10f(float x);
+ * @from SDL_stdinc.h:5366 float SDL_log10f(float x);
  */
 export function log10F(x: number): number {
   return lib.symbols.SDL_log10f(x);
@@ -4249,7 +4256,7 @@ export function log10F(x: number): number {
  * @sa SDL_trunc
  * @sa SDL_fmod
  *
- * @from SDL_stdinc.h:5385 double SDL_modf(double x, double *y);
+ * @from SDL_stdinc.h:5386 double SDL_modf(double x, double *y);
  */
 export function modf(x: number): number {
   if(!lib.symbols.SDL_modf(x, _p.f64.p0))
@@ -4275,7 +4282,7 @@ export function modf(x: number): number {
  * @sa SDL_truncf
  * @sa SDL_fmodf
  *
- * @from SDL_stdinc.h:5405 float SDL_modff(float x, float *y);
+ * @from SDL_stdinc.h:5406 float SDL_modff(float x, float *y);
  */
 export function modff(x: number): number {
   if(!lib.symbols.SDL_modff(x, _p.f32.p0))
@@ -4313,7 +4320,7 @@ export function modff(x: number): number {
  * @sa SDL_exp
  * @sa SDL_log
  *
- * @from SDL_stdinc.h:5437 double SDL_pow(double x, double y);
+ * @from SDL_stdinc.h:5438 double SDL_pow(double x, double y);
  */
 export function pow(x: number, y: number): number {
   return lib.symbols.SDL_pow(x, y);
@@ -4349,7 +4356,7 @@ export function pow(x: number, y: number): number {
  * @sa SDL_expf
  * @sa SDL_logf
  *
- * @from SDL_stdinc.h:5469 float SDL_powf(float x, float y);
+ * @from SDL_stdinc.h:5470 float SDL_powf(float x, float y);
  */
 export function powf(x: number, y: number): number {
   return lib.symbols.SDL_powf(x, y);
@@ -4382,7 +4389,7 @@ export function powf(x: number, y: number): number {
  * @sa SDL_ceil
  * @sa SDL_trunc
  *
- * @from SDL_stdinc.h:5498 double SDL_round(double x);
+ * @from SDL_stdinc.h:5499 double SDL_round(double x);
  */
 export function round(x: number): number {
   return lib.symbols.SDL_round(x);
@@ -4415,7 +4422,7 @@ export function round(x: number): number {
  * @sa SDL_ceilf
  * @sa SDL_truncf
  *
- * @from SDL_stdinc.h:5527 float SDL_roundf(float x);
+ * @from SDL_stdinc.h:5528 float SDL_roundf(float x);
  */
 export function roundf(x: number): number {
   return lib.symbols.SDL_roundf(x);
@@ -4448,7 +4455,7 @@ export function roundf(x: number): number {
  * @sa SDL_ceil
  * @sa SDL_trunc
  *
- * @from SDL_stdinc.h:5556 long SDL_lround(double x);
+ * @from SDL_stdinc.h:5557 long SDL_lround(double x);
  */
 export function lround(x: number): bigint {
   return lib.symbols.SDL_lround(x);
@@ -4481,7 +4488,7 @@ export function lround(x: number): bigint {
  * @sa SDL_ceilf
  * @sa SDL_truncf
  *
- * @from SDL_stdinc.h:5585 long SDL_lroundf(float x);
+ * @from SDL_stdinc.h:5586 long SDL_lroundf(float x);
  */
 export function lroundf(x: number): bigint {
   return lib.symbols.SDL_lroundf(x);
@@ -4510,7 +4517,7 @@ export function lroundf(x: number): bigint {
  * @sa SDL_scalbnf
  * @sa SDL_pow
  *
- * @from SDL_stdinc.h:5610 double SDL_scalbn(double x, int n);
+ * @from SDL_stdinc.h:5611 double SDL_scalbn(double x, int n);
  */
 export function scalbn(x: number, n: number): number {
   return lib.symbols.SDL_scalbn(x, n);
@@ -4539,7 +4546,7 @@ export function scalbn(x: number, n: number): number {
  * @sa SDL_scalbn
  * @sa SDL_powf
  *
- * @from SDL_stdinc.h:5635 float SDL_scalbnf(float x, int n);
+ * @from SDL_stdinc.h:5636 float SDL_scalbnf(float x, int n);
  */
 export function scalbnf(x: number, n: number): number {
   return lib.symbols.SDL_scalbnf(x, n);
@@ -4571,7 +4578,7 @@ export function scalbnf(x: number, n: number): number {
  * @sa SDL_asin
  * @sa SDL_cos
  *
- * @from SDL_stdinc.h:5663 double SDL_sin(double x);
+ * @from SDL_stdinc.h:5664 double SDL_sin(double x);
  */
 export function sin(x: number): number {
   return lib.symbols.SDL_sin(x);
@@ -4603,7 +4610,7 @@ export function sin(x: number): number {
  * @sa SDL_asinf
  * @sa SDL_cosf
  *
- * @from SDL_stdinc.h:5691 float SDL_sinf(float x);
+ * @from SDL_stdinc.h:5692 float SDL_sinf(float x);
  */
 export function sinf(x: number): number {
   return lib.symbols.SDL_sinf(x);
@@ -4633,7 +4640,7 @@ export function sinf(x: number): number {
  *
  * @sa SDL_sqrtf
  *
- * @from SDL_stdinc.h:5717 double SDL_sqrt(double x);
+ * @from SDL_stdinc.h:5718 double SDL_sqrt(double x);
  */
 export function sqrt(x: number): number {
   return lib.symbols.SDL_sqrt(x);
@@ -4663,7 +4670,7 @@ export function sqrt(x: number): number {
  *
  * @sa SDL_sqrt
  *
- * @from SDL_stdinc.h:5743 float SDL_sqrtf(float x);
+ * @from SDL_stdinc.h:5744 float SDL_sqrtf(float x);
  */
 export function sqrtf(x: number): number {
   return lib.symbols.SDL_sqrtf(x);
@@ -4697,7 +4704,7 @@ export function sqrtf(x: number): number {
  * @sa SDL_atan
  * @sa SDL_atan2
  *
- * @from SDL_stdinc.h:5773 double SDL_tan(double x);
+ * @from SDL_stdinc.h:5774 double SDL_tan(double x);
  */
 export function tan(x: number): number {
   return lib.symbols.SDL_tan(x);
@@ -4731,7 +4738,7 @@ export function tan(x: number): number {
  * @sa SDL_atanf
  * @sa SDL_atan2f
  *
- * @from SDL_stdinc.h:5803 float SDL_tanf(float x);
+ * @from SDL_stdinc.h:5804 float SDL_tanf(float x);
  */
 export function tanf(x: number): number {
   return lib.symbols.SDL_tanf(x);
@@ -4756,13 +4763,15 @@ export function tanf(x: number): number {
  * @param inbytesleft the size of the input string _in bytes_.
  * @returns a new string, converted to the new encoding, or NULL on error.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_iconv_open
  * @sa SDL_iconv_close
  * @sa SDL_iconv
  *
- * @from SDL_stdinc.h:5917 char * SDL_iconv_string(const char *tocode, const char *fromcode, const char *inbuf, size_t inbytesleft);
+ * @from SDL_stdinc.h:5926 char * SDL_iconv_string(const char *tocode, const char *fromcode, const char *inbuf, size_t inbytesleft);
  */
 export function iconvString(
     tocode: string,
