@@ -397,7 +397,7 @@ export function loadTextureTypedIo(
  */
 export function loadGpuTexture(device: Deno.PointerValue<"SDL_GPUDevice">, copy_pass: Deno.PointerValue<"SDL_GPUCopyPass">, file: string): { width: number; height: number; ret: Deno.PointerValue<"SDL_GPUTexture"> } {
   const ret = lib.symbols.IMG_LoadGPUTexture(device, copy_pass, _p.toCstr(file), _p.i32.p0, _p.i32.p1) as Deno.PointerValue<"SDL_GPUTexture">;
-  if(!ret) throw new Error(`IMG_LoadGPUTexture: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  if(!ret) throw new Error(`IMG_LoadGPUTexture: ${_p.getCstr2(sdl.symbols.SDL_GetError())}`);
   return { width: _p.i32.v0, height: _p.i32.v1, ret };
 }
 
@@ -452,7 +452,7 @@ export function loadGpuTextureIo(
     closeio: boolean,
 ): { width: number; height: number; ret: Deno.PointerValue<"SDL_GPUTexture"> } {
   const ret = lib.symbols.IMG_LoadGPUTexture_IO(device, copy_pass, src, closeio, _p.i32.p0, _p.i32.p1) as Deno.PointerValue<"SDL_GPUTexture">;
-  if(!ret) throw new Error(`IMG_LoadGPUTexture_IO: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  if(!ret) throw new Error(`IMG_LoadGPUTexture_IO: ${_p.getCstr2(sdl.symbols.SDL_GetError())}`);
   return { width: _p.i32.v0, height: _p.i32.v1, ret };
 }
 
@@ -516,7 +516,7 @@ export function loadGpuTextureTypedIo(
     type: string,
 ): { width: number; height: number; ret: Deno.PointerValue<"SDL_GPUTexture"> } {
   const ret = lib.symbols.IMG_LoadGPUTextureTyped_IO(device, copy_pass, src, closeio, _p.toCstr(type), _p.i32.p0, _p.i32.p1) as Deno.PointerValue<"SDL_GPUTexture">;
-  if(!ret) throw new Error(`IMG_LoadGPUTextureTyped_IO: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+  if(!ret) throw new Error(`IMG_LoadGPUTextureTyped_IO: ${_p.getCstr2(sdl.symbols.SDL_GetError())}`);
   return { width: _p.i32.v0, height: _p.i32.v1, ret };
 }
 
@@ -3619,7 +3619,7 @@ export function getAnimationDecoderProperties(decoder: Deno.PointerValue<"IMG_An
  */
 export function getAnimationDecoderFrame(decoder: Deno.PointerValue<"IMG_AnimationDecoder">): { frame: Deno.PointerValue<"SDL_Surface">; duration: bigint } {
   if(!lib.symbols.IMG_GetAnimationDecoderFrame(decoder, _p.ptr.p0, _p.u64.p0))
-    throw new Error(`IMG_GetAnimationDecoderFrame: ${_p.getCstr2(lib.symbols.SDL_GetError())}`);
+    throw new Error(`IMG_GetAnimationDecoderFrame: ${_p.getCstr2(sdl.symbols.SDL_GetError())}`);
   return { frame: _p.ptr.v0 as Deno.PointerValue<"SDL_Surface">, duration: _p.u64.v0 };
 }
 
