@@ -1971,7 +1971,6 @@ export class Window {
     return SDL.setWindowAlwaysOnTop(this.pointer, on_top);
   }
 
-
   /**
    * Set the window to fill the current document space (Emscripten only).
    *
@@ -2006,7 +2005,6 @@ export class Window {
   setFillDocument(fill: boolean): boolean {
     return SDL.setWindowFillDocument(this.pointer, fill);
   }
-
 
   /**
    * Show a window.
@@ -2798,7 +2796,6 @@ export class Window {
   flash(operation: number): boolean {
     return SDL.flashWindow(this.pointer, operation);
   }
-
 
   /**
    * Sets the state of the progress bar for the given window’s taskbar icon.

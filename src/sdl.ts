@@ -79,6 +79,8 @@ export class SdlContext {
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
    *
+   * @threadsafety This function should only be called on the main thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa SDL_SetAppMetadata
@@ -88,7 +90,7 @@ export class SdlContext {
    * @sa SDL_SetMainReady
    * @sa SDL_WasInit
    *
-   * @from SDL_init.h:235 bool SDL_Init(SDL_InitFlags flags);
+   * @from SDL_init.h:237 bool SDL_Init(SDL_InitFlags flags);
    */
   constructor(flags?: number) {
     if (SdlContext.#inited) throw new Error("only one SdlContext allowed");
@@ -115,12 +117,14 @@ export class SdlContext {
    * @returns a mask of all initialized subsystems if `flags` is 0, otherwise it
    *          returns the initialization status of the specified subsystems.
    *
+   * @threadsafety This function is not thread safe.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa SDL_Init
    * @sa SDL_InitSubSystem
    *
-   * @from SDL_init.h:281 SDL_InitFlags SDL_WasInit(SDL_InitFlags flags);
+   * @from SDL_init.h:289 SDL_InitFlags SDL_WasInit(SDL_InitFlags flags);
    */
   wasInit(flags: number = 0): number {
     return SDL.wasInit(flags);
@@ -137,12 +141,14 @@ export class SdlContext {
    * application is shutdown, but it is not wise to do this from a library or
    * other dynamically loaded code.
    *
+   * @threadsafety This function should only be called on the main thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa SDL_Init
    * @sa SDL_QuitSubSystem
    *
-   * @from SDL_init.h:299 void SDL_Quit(void);
+   * @from SDL_init.h:309 void SDL_Quit(void);
    */
   quit() {
     if (!SdlContext.#inited) return;

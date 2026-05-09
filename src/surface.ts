@@ -136,9 +136,8 @@ export class Surface {
    *
    * @sa IMG_LoadTyped_IO
    * @sa IMG_Load_IO
-   * @sa SDL_DestroySurface
    *
-   * @from SDL_image.h:177 SDL_Surface * IMG_Load(const char *file);
+   * @from SDL_image.h:114 SDL_Surface * IMG_Load(const char *file);
    */
   static load(imagePath: string): Surface {
     return new Surface(imagePath);
@@ -194,9 +193,8 @@ export class Surface {
    *
    * @sa IMG_Load
    * @sa IMG_LoadTyped_IO
-   * @sa SDL_DestroySurface
    *
-   * @from SDL_image.h:231 SDL_Surface * IMG_Load_IO(SDL_IOStream *src, bool closeio);
+   * @from SDL_image.h:167 SDL_Surface * IMG_Load_IO(SDL_IOStream *src, bool closeio);
    */
   static loadMem(buffer: Uint8Array<ArrayBuffer>): Surface {
     const io = IO.ioFromConstMem(
@@ -266,9 +264,8 @@ export class Surface {
    *
    * @sa IMG_Load
    * @sa IMG_Load_IO
-   * @sa SDL_DestroySurface
    *
-   * @from SDL_image.h:132 SDL_Surface * IMG_LoadTyped_IO(SDL_IOStream *src, bool closeio, const char *type);
+   * @from SDL_image.h:228 SDL_Surface * IMG_LoadTyped_IO(SDL_IOStream *src, bool closeio, const char *type);
    */
   static loadMemTyped(
     buffer: Uint8Array<ArrayBuffer>,
@@ -1180,7 +1177,6 @@ export class Surface {
     return SDL.flipSurface(this.pointer, flip);
   }
 
-
   /**
    * Return a copy of a surface rotated clockwise a number of degrees.
    *
@@ -1211,11 +1207,12 @@ export class Surface {
    * @from SDL_surface.h:1047 SDL_Surface * SDL_RotateSurface(SDL_Surface *surface, float angle);
    */
   rotate(angle: number): Surface {
-    const pointer = SDL.rotateSurface(this.pointer, angle) as Deno.PointerValue<"SDL_Surface">;
+    const pointer = SDL.rotateSurface(this.pointer, angle) as Deno.PointerValue<
+      "SDL_Surface"
+    >;
     if (!pointer) throw SdlError("rotateSurface");
     return Surface.of(pointer);
   }
-
 
   /**
    * Creates a new surface identical to the existing surface.

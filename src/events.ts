@@ -222,15 +222,13 @@ export class Event extends EventUnion {
    * Poll for currently pending events.
    *
    * If `event` is not NULL, the next event is removed from the queue and stored
-   * in the SDL_Event structure pointed to by `event`. The 1 returned refers to
-   * this event, immediately stored in the SDL Event structure -- not an event
-   * to follow.
+   * in the SDL_Event structure pointed to by `event`.
    *
-   * If `event` is NULL, it simply returns 1 if there is an event in the queue,
-   * but will not remove it from the queue.
+   * If `event` is NULL, it simply returns true if there is an event in the
+   * queue, but will not remove it from the queue.
    *
    * As this function may implicitly call SDL_PumpEvents(), you can only call
-   * this function in the thread that set the video mode.
+   * this function in the thread that initialized the video subsystem.
    *
    * SDL_PollEvent() is the favored way of receiving system events since it can
    * be done from the main loop and does not suspend the main loop while waiting
@@ -269,7 +267,7 @@ export class Event extends EventUnion {
    * @sa SDL_WaitEvent
    * @sa SDL_WaitEventTimeout
    *
-   * @from SDL_events.h:1305 bool SDL_PollEvent(SDL_Event *event);
+   * @from SDL_events.h:1303 bool SDL_PollEvent(SDL_Event *event);
    */
   poll(): boolean {
     return SDL.pollEvent(this.pointer) && this.readType_();
@@ -303,7 +301,7 @@ export class Event extends EventUnion {
    * @sa SDL_PushEvent
    * @sa SDL_WaitEventTimeout
    *
-   * @from SDL_events.h:1329 bool SDL_WaitEvent(SDL_Event *event);
+   * @from SDL_events.h:1327 bool SDL_WaitEvent(SDL_Event *event);
    */
   wait(): boolean {
     return SDL.waitEvent(this.pointer) && this.readType_();
@@ -337,7 +335,7 @@ export class Event extends EventUnion {
    * @sa SDL_PushEvent
    * @sa SDL_WaitEvent
    *
-   * @from SDL_events.h:1359 bool SDL_WaitEventTimeout(SDL_Event *event, Sint32 timeoutMS);
+   * @from SDL_events.h:1357 bool SDL_WaitEventTimeout(SDL_Event *event, Sint32 timeoutMS);
    */
   waitTimeout(timeoutMS: number): boolean {
     return SDL.waitEventTimeout(this.pointer, timeoutMS) && this.readType_();
@@ -401,7 +399,7 @@ export class Event extends EventUnion {
    * @sa SDL_PollEvent
    * @sa SDL_RegisterEvents
    *
-   * @from SDL_events.h:1393 bool SDL_PushEvent(SDL_Event *event);
+   * @from SDL_events.h:1391 bool SDL_PushEvent(SDL_Event *event);
    */
   override push(): boolean {
     return SDL.pushEvent(this.pointer);
@@ -628,7 +626,7 @@ export class Event extends EventUnion {
    * @sa SDL_PeepEvents
    * @sa SDL_PushEvent
    *
-   * @from SDL_events.h:1458 void SDL_SetEventFilter(SDL_EventFilter filter, void *userdata);
+   * @from SDL_events.h:1456 void SDL_SetEventFilter(SDL_EventFilter filter, void *userdata);
    */
   static setFilter(filter: EventFilter, userdata: Deno.PointerValue) {
     const cb = createCb(filter);
@@ -656,7 +654,7 @@ export class Event extends EventUnion {
    *
    * @sa SDL_SetEventFilter
    *
-   * @from SDL_events.h:1477 bool SDL_GetEventFilter(SDL_EventFilter *filter, void **userdata);
+   * @from SDL_events.h:1475 bool SDL_GetEventFilter(SDL_EventFilter *filter, void **userdata);
    */
   static getFilter():
     | { filter: EventFilter; userdata: Deno.PointerValue }
@@ -711,7 +709,7 @@ export class Event extends EventUnion {
    * @sa SDL_RemoveEventWatch
    * @sa SDL_SetEventFilter
    *
-   * @from SDL_events.h:1509 bool SDL_AddEventWatch(SDL_EventFilter filter, void *userdata);
+   * @from SDL_events.h:1507 bool SDL_AddEventWatch(SDL_EventFilter filter, void *userdata);
    */
   static addWatch(filter: EventFilter, userdata: Deno.PointerValue) {
     const watcher = createCb(filter);
@@ -737,7 +735,7 @@ export class Event extends EventUnion {
    *
    * @sa SDL_AddEventWatch
    *
-   * @from SDL_events.h:1526 void SDL_RemoveEventWatch(SDL_EventFilter filter, void *userdata);
+   * @from SDL_events.h:1524 void SDL_RemoveEventWatch(SDL_EventFilter filter, void *userdata);
    */
   static removeWatch(filter: EventFilter, userdata: Deno.PointerValue) {
     const watcher = eventWatchers.remove(filter, userdata);
@@ -763,7 +761,7 @@ export class Event extends EventUnion {
    * @sa SDL_GetEventFilter
    * @sa SDL_SetEventFilter
    *
-   * @from SDL_events.h:1546 void SDL_FilterEvents(SDL_EventFilter filter, void *userdata);
+   * @from SDL_events.h:1544 void SDL_FilterEvents(SDL_EventFilter filter, void *userdata);
    */
   static filter(filter: EventFilter, userdata: Deno.PointerValue) {
     const cb = createCb(filter);
@@ -783,7 +781,7 @@ export class Event extends EventUnion {
    *
    * @sa SDL_EventEnabled
    *
-   * @from SDL_events.h:1560 void SDL_SetEventEnabled(Uint32 type, bool enabled);
+   * @from SDL_events.h:1558 void SDL_SetEventEnabled(Uint32 type, bool enabled);
    */
   static setEnabled(type: number, enabled: boolean) {
     SDL.setEventEnabled(type, enabled);
@@ -801,7 +799,7 @@ export class Event extends EventUnion {
    *
    * @sa SDL_SetEventEnabled
    *
-   * @from SDL_events.h:1574 bool SDL_EventEnabled(Uint32 type);
+   * @from SDL_events.h:1572 bool SDL_EventEnabled(Uint32 type);
    */
   static isEnabled(type: number): boolean {
     return SDL.eventEnabled(type);
@@ -821,7 +819,7 @@ export class Event extends EventUnion {
    *
    * @sa SDL_PushEvent
    *
-   * @from SDL_events.h:1590 Uint32 SDL_RegisterEvents(int numevents);
+   * @from SDL_events.h:1588 Uint32 SDL_RegisterEvents(int numevents);
    */
   static register(numevents: number): number {
     const r = SDL.registerEvents(numevents);
@@ -847,7 +845,7 @@ export class Event extends EventUnion {
    * @sa SDL_WaitEvent
    * @sa SDL_WaitEventTimeout
    *
-   * @from SDL_events.h:1606 SDL_Window * SDL_GetWindowFromEvent(const SDL_Event *event);
+   * @from SDL_events.h:1604 SDL_Window * SDL_GetWindowFromEvent(const SDL_Event *event);
    */
   get windowPointer(): WindowPointer {
     return SDL.getWindowFromEvent(this.pointer);
