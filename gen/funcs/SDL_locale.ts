@@ -14,7 +14,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -75,9 +75,11 @@ export const symbols = {
  *          allocation that should be freed with SDL_free() when it is no
  *          longer needed.
  *
+ * @threadsafety This function is not thread safe.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_locale.h:106 SDL_Locale ** SDL_GetPreferredLocales(int *count);
+ * @from SDL_locale.h:108 SDL_Locale ** SDL_GetPreferredLocales(int *count);
  */
 SDL_GetPreferredLocales: {
       parameters: ["pointer"],

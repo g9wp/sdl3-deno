@@ -9,7 +9,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -43,11 +43,13 @@ export const symbols = {
  *
  * @returns the version of the linked library.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_GetRevision
  *
- * @from SDL_version.h:147 int SDL_GetVersion(void);
+ * @from SDL_version.h:159 int SDL_GetVersion(void);
  */
 SDL_GetVersion: {
       parameters: [],
@@ -76,11 +78,13 @@ SDL_GetVersion: {
  * @returns an arbitrary string, uniquely identifying the exact revision of
  *          the SDL library in use.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_GetVersion
  *
- * @from SDL_version.h:174 const char * SDL_GetRevision(void);
+ * @from SDL_version.h:188 const char * SDL_GetRevision(void);
  */
 SDL_GetRevision: {
       parameters: [],

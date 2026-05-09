@@ -14,7 +14,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -84,7 +84,7 @@ SDL_WindowsMessageHook: {
  *
  * @sa SDL_SetX11EventHook
  *
- * @from SDL_system.h:160 typedef bool (*SDL_X11EventHook)(void *userdata, XEvent *xevent);
+ * @from SDL_system.h:162 typedef bool (*SDL_X11EventHook)(void *userdata, XEvent *xevent);
  */
 SDL_X11EventHook: {
       parameters: ["pointer", "pointer"],
@@ -107,8 +107,8 @@ SDL_X11EventHook: {
  *
  * @sa SDL_SetiOSAnimationCallback
  *
- * @from SDL_system.h:231 typedef void (*SDL_iOSAnimationCallback)(void *userdata);
- * @platformSpecific IOS SDL_system.h:213 #ifdef SDL_PLATFORM_IOS
+ * @from SDL_system.h:239 typedef void (*SDL_iOSAnimationCallback)(void *userdata);
+ * @platformSpecific IOS SDL_system.h:221 #ifdef SDL_PLATFORM_IOS
  */
 SDL_iOSAnimationCallback: {
       parameters: ["pointer"],
@@ -126,8 +126,8 @@ SDL_iOSAnimationCallback: {
  *
  * @sa SDL_RequestAndroidPermission
  *
- * @from SDL_system.h:516 typedef void (*SDL_RequestAndroidPermissionCallback)(void *userdata, const char *permission, bool granted);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:534 typedef void (*SDL_RequestAndroidPermissionCallback)(void *userdata, const char *permission, bool granted);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 SDL_RequestAndroidPermissionCallback: {
       parameters: ["pointer", "pointer", "bool"],
@@ -189,7 +189,7 @@ export function WindowsMessageHook(cb: (
  *
  * @sa SDL_SetX11EventHook
  *
- * @from SDL_system.h:160 typedef bool (*SDL_X11EventHook)(void *userdata, XEvent *xevent);
+ * @from SDL_system.h:162 typedef bool (*SDL_X11EventHook)(void *userdata, XEvent *xevent);
  */
 export function X11EventHook(cb: (
     userdata: Deno.PointerValue, 
@@ -214,8 +214,8 @@ export function X11EventHook(cb: (
  *
  * @sa SDL_SetiOSAnimationCallback
  *
- * @from SDL_system.h:231 typedef void (*SDL_iOSAnimationCallback)(void *userdata);
- * @platformSpecific IOS SDL_system.h:213 #ifdef SDL_PLATFORM_IOS
+ * @from SDL_system.h:239 typedef void (*SDL_iOSAnimationCallback)(void *userdata);
+ * @platformSpecific IOS SDL_system.h:221 #ifdef SDL_PLATFORM_IOS
  */
 export function iOSAnimationCallback(cb: (
     userdata: Deno.PointerValue, 
@@ -234,8 +234,8 @@ export function iOSAnimationCallback(cb: (
  *
  * @sa SDL_RequestAndroidPermission
  *
- * @from SDL_system.h:516 typedef void (*SDL_RequestAndroidPermissionCallback)(void *userdata, const char *permission, bool granted);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:534 typedef void (*SDL_RequestAndroidPermissionCallback)(void *userdata, const char *permission, bool granted);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 export function RequestAndroidPermissionCallback(cb: (
     userdata: Deno.PointerValue, 

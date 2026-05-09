@@ -16,7 +16,7 @@
 
 /*
 Simple DirectMedia Layer
-Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
 This software is provided 'as-is', without any express or implied
 warranty.  In no event will the authors be held liable for any damages
@@ -53,9 +53,11 @@ export const symbols = {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety This function is not thread safe.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_time.h:110 bool SDL_GetDateTimeLocalePreferences(SDL_DateFormat *dateFormat, SDL_TimeFormat *timeFormat);
+ * @from SDL_time.h:112 bool SDL_GetDateTimeLocalePreferences(SDL_DateFormat *dateFormat, SDL_TimeFormat *timeFormat);
  */
 SDL_GetDateTimeLocalePreferences: {
       parameters: ["pointer", "pointer"],
@@ -71,9 +73,11 @@ SDL_GetDateTimeLocalePreferences: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_time.h:122 bool SDL_GetCurrentTime(SDL_Time *ticks);
+ * @from SDL_time.h:126 bool SDL_GetCurrentTime(SDL_Time *ticks);
  */
 SDL_GetCurrentTime: {
       parameters: ["pointer"],
@@ -93,9 +97,11 @@ SDL_GetCurrentTime: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_time.h:138 bool SDL_TimeToDateTime(SDL_Time ticks, SDL_DateTime *dt, bool localTime);
+ * @from SDL_time.h:144 bool SDL_TimeToDateTime(SDL_Time ticks, SDL_DateTime *dt, bool localTime);
  */
 SDL_TimeToDateTime: {
       parameters: ["i64", "pointer", "bool"],
@@ -114,9 +120,11 @@ SDL_TimeToDateTime: {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_time.h:153 bool SDL_DateTimeToTime(const SDL_DateTime *dt, SDL_Time *ticks);
+ * @from SDL_time.h:161 bool SDL_DateTimeToTime(const SDL_DateTime *dt, SDL_Time *ticks);
  */
 SDL_DateTimeToTime: {
       parameters: ["pointer", "pointer"],
@@ -136,9 +144,11 @@ SDL_DateTimeToTime: {
  * @param dwHighDateTime a pointer filled in with the high portion of the
  *                       Windows FILETIME value.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_time.h:169 void SDL_TimeToWindows(SDL_Time ticks, Uint32 *dwLowDateTime, Uint32 *dwHighDateTime);
+ * @from SDL_time.h:179 void SDL_TimeToWindows(SDL_Time ticks, Uint32 *dwLowDateTime, Uint32 *dwHighDateTime);
  */
 SDL_TimeToWindows: {
       parameters: ["i64", "pointer", "pointer"],
@@ -157,9 +167,11 @@ SDL_TimeToWindows: {
  * @param dwHighDateTime the high portion of the Windows FILETIME value.
  * @returns the converted SDL time.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_time.h:184 SDL_Time SDL_TimeFromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime);
+ * @from SDL_time.h:196 SDL_Time SDL_TimeFromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime);
  */
 SDL_TimeFromWindows: {
       parameters: ["u32", "u32"],
@@ -175,9 +187,11 @@ SDL_TimeFromWindows: {
  * @returns the number of days in the requested month or -1 on failure; call
  *          SDL_GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_time.h:196 int SDL_GetDaysInMonth(int year, int month);
+ * @from SDL_time.h:210 int SDL_GetDaysInMonth(int year, int month);
  */
 SDL_GetDaysInMonth: {
       parameters: ["i32", "i32"],
@@ -194,9 +208,11 @@ SDL_GetDaysInMonth: {
  * @returns the day of year [0-365] if the date is valid or -1 on failure;
  *          call SDL_GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_time.h:209 int SDL_GetDayOfYear(int year, int month, int day);
+ * @from SDL_time.h:225 int SDL_GetDayOfYear(int year, int month, int day);
  */
 SDL_GetDayOfYear: {
       parameters: ["i32", "i32", "i32"],
@@ -213,9 +229,11 @@ SDL_GetDayOfYear: {
  * @returns a value between 0 and 6 (0 being Sunday) if the date is valid or
  *          -1 on failure; call SDL_GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_time.h:222 int SDL_GetDayOfWeek(int year, int month, int day);
+ * @from SDL_time.h:240 int SDL_GetDayOfWeek(int year, int month, int day);
  */
 SDL_GetDayOfWeek: {
       parameters: ["i32", "i32", "i32"],

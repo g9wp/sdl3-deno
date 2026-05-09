@@ -17,7 +17,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -60,7 +60,7 @@ export const symbols = {
  * @sa SDL_ResetHint
  * @sa SDL_SetHint
  *
- * @from SDL_hints.h:4673 bool SDL_SetHintWithPriority(const char *name, const char *value, SDL_HintPriority priority);
+ * @from SDL_hints.h:4797 bool SDL_SetHintWithPriority(const char *name, const char *value, SDL_HintPriority priority);
  */
 SDL_SetHintWithPriority: {
       parameters: ["pointer", "pointer", "u32"],
@@ -88,7 +88,7 @@ SDL_SetHintWithPriority: {
  * @sa SDL_ResetHint
  * @sa SDL_SetHintWithPriority
  *
- * @from SDL_hints.h:4695 bool SDL_SetHint(const char *name, const char *value);
+ * @from SDL_hints.h:4819 bool SDL_SetHint(const char *name, const char *value);
  */
 SDL_SetHint: {
       parameters: ["pointer", "pointer"],
@@ -114,7 +114,7 @@ SDL_SetHint: {
  * @sa SDL_SetHint
  * @sa SDL_ResetHints
  *
- * @from SDL_hints.h:4715 bool SDL_ResetHint(const char *name);
+ * @from SDL_hints.h:4839 bool SDL_ResetHint(const char *name);
  */
 SDL_ResetHint: {
       parameters: ["pointer"],
@@ -135,7 +135,7 @@ SDL_ResetHint: {
  *
  * @sa SDL_ResetHint
  *
- * @from SDL_hints.h:4730 void SDL_ResetHints(void);
+ * @from SDL_hints.h:4854 void SDL_ResetHints(void);
  */
 SDL_ResetHints: {
       parameters: [],
@@ -156,7 +156,7 @@ SDL_ResetHints: {
  * @sa SDL_SetHint
  * @sa SDL_SetHintWithPriority
  *
- * @from SDL_hints.h:4745 const char *SDL_GetHint(const char *name);
+ * @from SDL_hints.h:4869 const char *SDL_GetHint(const char *name);
  */
 SDL_GetHint: {
       parameters: ["pointer"],
@@ -179,7 +179,7 @@ SDL_GetHint: {
  * @sa SDL_GetHint
  * @sa SDL_SetHint
  *
- * @from SDL_hints.h:4762 bool SDL_GetHintBoolean(const char *name, bool default_value);
+ * @from SDL_hints.h:4886 bool SDL_GetHintBoolean(const char *name, bool default_value);
  */
 SDL_GetHintBoolean: {
       parameters: ["pointer", "bool"],
@@ -206,7 +206,7 @@ SDL_GetHintBoolean: {
  *
  * @sa SDL_RemoveHintCallback
  *
- * @from SDL_hints.h:4804 bool SDL_AddHintCallback(const char *name, SDL_HintCallback callback, void *userdata);
+ * @from SDL_hints.h:4929 bool SDL_AddHintCallback(const char *name, SDL_HintCallback callback, void *userdata);
  */
 SDL_AddHintCallback: {
       parameters: ["pointer", "function", "pointer"],
@@ -228,7 +228,7 @@ SDL_AddHintCallback: {
  *
  * @sa SDL_AddHintCallback
  *
- * @from SDL_hints.h:4820 void SDL_RemoveHintCallback(const char *name, SDL_HintCallback callback, void *userdata);
+ * @from SDL_hints.h:4945 void SDL_RemoveHintCallback(const char *name, SDL_HintCallback callback, void *userdata);
  */
 SDL_RemoveHintCallback: {
       parameters: ["pointer", "function", "pointer"],

@@ -17,7 +17,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -65,7 +65,7 @@ export {
  * @sa SDL_ResetHint
  * @sa SDL_SetHint
  *
- * @from SDL_hints.h:4673 bool SDL_SetHintWithPriority(const char *name, const char *value, SDL_HintPriority priority);
+ * @from SDL_hints.h:4797 bool SDL_SetHintWithPriority(const char *name, const char *value, SDL_HintPriority priority);
  */
 export function setHintWithPriority(name: string, value: string, priority: number): boolean {
   return lib.symbols.SDL_SetHintWithPriority(_p.toCstr(name), _p.toCstr(value), priority);
@@ -91,7 +91,7 @@ export function setHintWithPriority(name: string, value: string, priority: numbe
  * @sa SDL_ResetHint
  * @sa SDL_SetHintWithPriority
  *
- * @from SDL_hints.h:4695 bool SDL_SetHint(const char *name, const char *value);
+ * @from SDL_hints.h:4819 bool SDL_SetHint(const char *name, const char *value);
  */
 export function setHint(name: string, value: string): boolean {
   return lib.symbols.SDL_SetHint(_p.toCstr(name), _p.toCstr(value));
@@ -115,7 +115,7 @@ export function setHint(name: string, value: string): boolean {
  * @sa SDL_SetHint
  * @sa SDL_ResetHints
  *
- * @from SDL_hints.h:4715 bool SDL_ResetHint(const char *name);
+ * @from SDL_hints.h:4839 bool SDL_ResetHint(const char *name);
  */
 export function resetHint(name: string): boolean {
   return lib.symbols.SDL_ResetHint(_p.toCstr(name));
@@ -134,7 +134,7 @@ export function resetHint(name: string): boolean {
  *
  * @sa SDL_ResetHint
  *
- * @from SDL_hints.h:4730 void SDL_ResetHints(void);
+ * @from SDL_hints.h:4854 void SDL_ResetHints(void);
  */
 export function resetHints(): void {
   return lib.symbols.SDL_ResetHints();
@@ -153,7 +153,7 @@ export function resetHints(): void {
  * @sa SDL_SetHint
  * @sa SDL_SetHintWithPriority
  *
- * @from SDL_hints.h:4745 const char *SDL_GetHint(const char *name);
+ * @from SDL_hints.h:4869 const char *SDL_GetHint(const char *name);
  */
 export function getHint(name: string): string {
   return _p.getCstr2(lib.symbols.SDL_GetHint(_p.toCstr(name)));
@@ -174,7 +174,7 @@ export function getHint(name: string): string {
  * @sa SDL_GetHint
  * @sa SDL_SetHint
  *
- * @from SDL_hints.h:4762 bool SDL_GetHintBoolean(const char *name, bool default_value);
+ * @from SDL_hints.h:4886 bool SDL_GetHintBoolean(const char *name, bool default_value);
  */
 export function getHintBoolean(name: string, default_value: boolean): boolean {
   return lib.symbols.SDL_GetHintBoolean(_p.toCstr(name), default_value);
@@ -199,7 +199,7 @@ export function getHintBoolean(name: string, default_value: boolean): boolean {
  *
  * @sa SDL_RemoveHintCallback
  *
- * @from SDL_hints.h:4804 bool SDL_AddHintCallback(const char *name, SDL_HintCallback callback, void *userdata);
+ * @from SDL_hints.h:4929 bool SDL_AddHintCallback(const char *name, SDL_HintCallback callback, void *userdata);
  */
 export function addHintCallback(name: string, callback: Deno.PointerValue, userdata: Deno.PointerValue): boolean {
   return lib.symbols.SDL_AddHintCallback(_p.toCstr(name), callback, userdata);
@@ -219,7 +219,7 @@ export function addHintCallback(name: string, callback: Deno.PointerValue, userd
  *
  * @sa SDL_AddHintCallback
  *
- * @from SDL_hints.h:4820 void SDL_RemoveHintCallback(const char *name, SDL_HintCallback callback, void *userdata);
+ * @from SDL_hints.h:4945 void SDL_RemoveHintCallback(const char *name, SDL_HintCallback callback, void *userdata);
  */
 export function removeHintCallback(name: string, callback: Deno.PointerValue, userdata: Deno.PointerValue): void {
   return lib.symbols.SDL_RemoveHintCallback(_p.toCstr(name), callback, userdata);

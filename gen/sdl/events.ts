@@ -32,7 +32,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -253,15 +253,13 @@ export function flushEvents(minType: number, maxType: number): void {
  * Poll for currently pending events.
  *
  * If `event` is not NULL, the next event is removed from the queue and stored
- * in the SDL_Event structure pointed to by `event`. The 1 returned refers to
- * this event, immediately stored in the SDL Event structure -- not an event
- * to follow.
+ * in the SDL_Event structure pointed to by `event`.
  *
- * If `event` is NULL, it simply returns 1 if there is an event in the queue,
- * but will not remove it from the queue.
+ * If `event` is NULL, it simply returns true if there is an event in the
+ * queue, but will not remove it from the queue.
  *
  * As this function may implicitly call SDL_PumpEvents(), you can only call
- * this function in the thread that set the video mode.
+ * this function in the thread that initialized the video subsystem.
  *
  * SDL_PollEvent() is the favored way of receiving system events since it can
  * be done from the main loop and does not suspend the main loop while waiting
@@ -300,7 +298,7 @@ export function flushEvents(minType: number, maxType: number): void {
  * @sa SDL_WaitEvent
  * @sa SDL_WaitEventTimeout
  *
- * @from SDL_events.h:1305 bool SDL_PollEvent(SDL_Event *event);
+ * @from SDL_events.h:1303 bool SDL_PollEvent(SDL_Event *event);
  */
 export function pollEvent(event: Deno.PointerValue<"SDL_Event">): boolean {
   return lib.symbols.SDL_PollEvent(event);
@@ -328,7 +326,7 @@ export function pollEvent(event: Deno.PointerValue<"SDL_Event">): boolean {
  * @sa SDL_PushEvent
  * @sa SDL_WaitEventTimeout
  *
- * @from SDL_events.h:1329 bool SDL_WaitEvent(SDL_Event *event);
+ * @from SDL_events.h:1327 bool SDL_WaitEvent(SDL_Event *event);
  */
 export function waitEvent(event: Deno.PointerValue<"SDL_Event">): boolean {
   return lib.symbols.SDL_WaitEvent(event);
@@ -362,7 +360,7 @@ export function waitEvent(event: Deno.PointerValue<"SDL_Event">): boolean {
  * @sa SDL_PushEvent
  * @sa SDL_WaitEvent
  *
- * @from SDL_events.h:1359 bool SDL_WaitEventTimeout(SDL_Event *event, Sint32 timeoutMS);
+ * @from SDL_events.h:1357 bool SDL_WaitEventTimeout(SDL_Event *event, Sint32 timeoutMS);
  */
 export function waitEventTimeout(event: Deno.PointerValue<"SDL_Event">, timeoutMS: number): boolean {
   return lib.symbols.SDL_WaitEventTimeout(event, timeoutMS);
@@ -400,7 +398,7 @@ export function waitEventTimeout(event: Deno.PointerValue<"SDL_Event">, timeoutM
  * @sa SDL_PollEvent
  * @sa SDL_RegisterEvents
  *
- * @from SDL_events.h:1393 bool SDL_PushEvent(SDL_Event *event);
+ * @from SDL_events.h:1391 bool SDL_PushEvent(SDL_Event *event);
  */
 export function pushEvent(event: Deno.PointerValue<"SDL_Event">): boolean {
   return lib.symbols.SDL_PushEvent(event);
@@ -448,7 +446,7 @@ export function pushEvent(event: Deno.PointerValue<"SDL_Event">): boolean {
  * @sa SDL_PeepEvents
  * @sa SDL_PushEvent
  *
- * @from SDL_events.h:1458 void SDL_SetEventFilter(SDL_EventFilter filter, void *userdata);
+ * @from SDL_events.h:1456 void SDL_SetEventFilter(SDL_EventFilter filter, void *userdata);
  */
 export function setEventFilter(filter: Deno.PointerValue, userdata: Deno.PointerValue): void {
   return lib.symbols.SDL_SetEventFilter(filter, userdata);
@@ -471,7 +469,7 @@ export function setEventFilter(filter: Deno.PointerValue, userdata: Deno.Pointer
  *
  * @sa SDL_SetEventFilter
  *
- * @from SDL_events.h:1477 bool SDL_GetEventFilter(SDL_EventFilter *filter, void **userdata);
+ * @from SDL_events.h:1475 bool SDL_GetEventFilter(SDL_EventFilter *filter, void **userdata);
  */
 export function getEventFilter(): { filter: Deno.PointerValue<"SDL_EventFilter">; userdata: Deno.PointerValue } | null {
   if(!lib.symbols.SDL_GetEventFilter(_p.ptr.p0, _p.ptr.p1))
@@ -509,7 +507,7 @@ export function getEventFilter(): { filter: Deno.PointerValue<"SDL_EventFilter">
  * @sa SDL_RemoveEventWatch
  * @sa SDL_SetEventFilter
  *
- * @from SDL_events.h:1509 bool SDL_AddEventWatch(SDL_EventFilter filter, void *userdata);
+ * @from SDL_events.h:1507 bool SDL_AddEventWatch(SDL_EventFilter filter, void *userdata);
  */
 export function addEventWatch(filter: Deno.PointerValue, userdata: Deno.PointerValue): boolean {
   return lib.symbols.SDL_AddEventWatch(filter, userdata);
@@ -530,7 +528,7 @@ export function addEventWatch(filter: Deno.PointerValue, userdata: Deno.PointerV
  *
  * @sa SDL_AddEventWatch
  *
- * @from SDL_events.h:1526 void SDL_RemoveEventWatch(SDL_EventFilter filter, void *userdata);
+ * @from SDL_events.h:1524 void SDL_RemoveEventWatch(SDL_EventFilter filter, void *userdata);
  */
 export function removeEventWatch(filter: Deno.PointerValue, userdata: Deno.PointerValue): void {
   return lib.symbols.SDL_RemoveEventWatch(filter, userdata);
@@ -554,7 +552,7 @@ export function removeEventWatch(filter: Deno.PointerValue, userdata: Deno.Point
  * @sa SDL_GetEventFilter
  * @sa SDL_SetEventFilter
  *
- * @from SDL_events.h:1546 void SDL_FilterEvents(SDL_EventFilter filter, void *userdata);
+ * @from SDL_events.h:1544 void SDL_FilterEvents(SDL_EventFilter filter, void *userdata);
  */
 export function filterEvents(filter: Deno.PointerValue, userdata: Deno.PointerValue): void {
   return lib.symbols.SDL_FilterEvents(filter, userdata);
@@ -572,7 +570,7 @@ export function filterEvents(filter: Deno.PointerValue, userdata: Deno.PointerVa
  *
  * @sa SDL_EventEnabled
  *
- * @from SDL_events.h:1560 void SDL_SetEventEnabled(Uint32 type, bool enabled);
+ * @from SDL_events.h:1558 void SDL_SetEventEnabled(Uint32 type, bool enabled);
  */
 export function setEventEnabled(type: number, enabled: boolean): void {
   return lib.symbols.SDL_SetEventEnabled(type, enabled);
@@ -590,7 +588,7 @@ export function setEventEnabled(type: number, enabled: boolean): void {
  *
  * @sa SDL_SetEventEnabled
  *
- * @from SDL_events.h:1574 bool SDL_EventEnabled(Uint32 type);
+ * @from SDL_events.h:1572 bool SDL_EventEnabled(Uint32 type);
  */
 export function eventEnabled(type: number): boolean {
   return lib.symbols.SDL_EventEnabled(type);
@@ -610,7 +608,7 @@ export function eventEnabled(type: number): boolean {
  *
  * @sa SDL_PushEvent
  *
- * @from SDL_events.h:1590 Uint32 SDL_RegisterEvents(int numevents);
+ * @from SDL_events.h:1588 Uint32 SDL_RegisterEvents(int numevents);
  */
 export function registerEvents(numevents: number): number {
   return lib.symbols.SDL_RegisterEvents(numevents);
@@ -630,7 +628,7 @@ export function registerEvents(numevents: number): number {
  * @sa SDL_WaitEvent
  * @sa SDL_WaitEventTimeout
  *
- * @from SDL_events.h:1606 SDL_Window * SDL_GetWindowFromEvent(const SDL_Event *event);
+ * @from SDL_events.h:1604 SDL_Window * SDL_GetWindowFromEvent(const SDL_Event *event);
  */
 export function getWindowFromEvent(event: Deno.PointerValue<"SDL_Event">): Deno.PointerValue<"SDL_Window"> {
   return lib.symbols.SDL_GetWindowFromEvent(event) as Deno.PointerValue<"SDL_Window">;
@@ -666,7 +664,7 @@ export function getWindowFromEvent(event: Deno.PointerValue<"SDL_Event">): Deno.
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @from SDL_events.h:1638 int SDL_GetEventDescription(const SDL_Event *event, char *buf, int buflen);
+ * @from SDL_events.h:1636 int SDL_GetEventDescription(const SDL_Event *event, char *buf, int buflen);
  */
 export function getEventDescription(event: Deno.PointerValue<"SDL_Event">, buflen: number): string {
   if(!lib.symbols.SDL_GetEventDescription(event, _p.cstr.p0, buflen))

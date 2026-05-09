@@ -30,7 +30,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -97,7 +97,7 @@ export const SDL_Texture = new _.Struct({
  *
  * @sa SDL_CreateGPURenderState
  *
- * @from SDL_render.h:2920
+ * @from SDL_render.h:2922
  */
 export const SDL_GPURenderStateCreateInfo = new _.Struct({
   fragment_shader: _.u64, /**< SDL_GPUShader * : The fragment shader to use when this render state is active */

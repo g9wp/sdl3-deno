@@ -44,7 +44,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -86,7 +86,7 @@ export {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_assert.h:347 SDL_AssertState SDL_ReportAssertion(SDL_AssertData *data, const char *func, const char *file, int line) SDL_ANALYZER_NORETURN;
+ * @from SDL_assert.h:349 SDL_AssertState SDL_ReportAssertion(SDL_AssertData *data, const char *func, const char *file, int line) SDL_ANALYZER_NORETURN;
  */
 export function reportAssertion(
     data: Deno.PointerValue<"SDL_AssertData">,
@@ -129,7 +129,7 @@ export function reportAssertion(
  *
  * @sa SDL_ResetAssertionReport
  *
- * @from SDL_assert.h:668 const SDL_AssertData * SDL_GetAssertionReport(void);
+ * @from SDL_assert.h:670 const SDL_AssertData * SDL_GetAssertionReport(void);
  */
 export function getAssertionReport(): Deno.PointerValue<"SDL_AssertData"> {
   return lib.symbols.SDL_GetAssertionReport() as Deno.PointerValue<"SDL_AssertData">;
@@ -151,7 +151,7 @@ export function getAssertionReport(): Deno.PointerValue<"SDL_AssertData"> {
  *
  * @sa SDL_GetAssertionReport
  *
- * @from SDL_assert.h:686 void SDL_ResetAssertionReport(void);
+ * @from SDL_assert.h:688 void SDL_ResetAssertionReport(void);
  */
 export function resetAssertionReport(): void {
   return lib.symbols.SDL_ResetAssertionReport();

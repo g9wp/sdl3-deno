@@ -367,7 +367,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -387,32 +387,32 @@
 */
 
 /**
- * @from SDL_gpu:2607
+ * @from SDL_gpu:2635
  */
 export const SDL_PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING = "SDL.gpu.computepipeline.create.name";
 
 /**
- * @from SDL_gpu:2634
+ * @from SDL_gpu:2662
  */
 export const SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING = "SDL.gpu.graphicspipeline.create.name";
 
 /**
- * @from SDL_gpu:2661
+ * @from SDL_gpu:2689
  */
 export const SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING = "SDL.gpu.sampler.create.name";
 
 /**
- * @from SDL_gpu:2740
+ * @from SDL_gpu:2768
  */
 export const SDL_PROP_GPU_SHADER_CREATE_NAME_STRING = "SDL.gpu.shader.create.name";
 
 /**
- * @from SDL_gpu:2860
+ * @from SDL_gpu:2888
  */
 export const SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING = "SDL.gpu.buffer.create.name";
 
 /**
- * @from SDL_gpu:2893
+ * @from SDL_gpu:2921
  */
 export const SDL_PROP_GPU_TRANSFERBUFFER_CREATE_NAME_STRING = "SDL.gpu.transferbuffer.create.name";
 

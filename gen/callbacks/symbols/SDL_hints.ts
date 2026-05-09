@@ -17,7 +17,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -41,7 +41,8 @@ export const symbols = {
  * A callback used to send notifications of hint value changes.
  *
  * This is called an initial time during SDL_AddHintCallback with the hint's
- * current value, and then again each time the hint's value changes.
+ * current value, and then again each time the hint's value changes. In the
+ * initial call, the current value is in both `oldValue` and `newValue`.
  *
  * @param userdata what was passed as `userdata` to SDL_AddHintCallback().
  * @param name what was passed as `name` to SDL_AddHintCallback().
@@ -56,7 +57,7 @@ export const symbols = {
  *
  * @sa SDL_AddHintCallback
  *
- * @from SDL_hints.h:4783 typedef void(*SDL_HintCallback)(void *userdata, const char *name, const char *oldValue, const char *newValue);
+ * @from SDL_hints.h:4908 typedef void(*SDL_HintCallback)(void *userdata, const char *name, const char *oldValue, const char *newValue);
  */
 SDL_HintCallback: {
       parameters: ["pointer", "pointer", "pointer", "pointer"],
@@ -70,7 +71,8 @@ SDL_HintCallback: {
  * A callback used to send notifications of hint value changes.
  *
  * This is called an initial time during SDL_AddHintCallback with the hint's
- * current value, and then again each time the hint's value changes.
+ * current value, and then again each time the hint's value changes. In the
+ * initial call, the current value is in both `oldValue` and `newValue`.
  *
  * @param userdata what was passed as `userdata` to SDL_AddHintCallback().
  * @param name what was passed as `name` to SDL_AddHintCallback().
@@ -85,7 +87,7 @@ SDL_HintCallback: {
  *
  * @sa SDL_AddHintCallback
  *
- * @from SDL_hints.h:4783 typedef void(*SDL_HintCallback)(void *userdata, const char *name, const char *oldValue, const char *newValue);
+ * @from SDL_hints.h:4908 typedef void(*SDL_HintCallback)(void *userdata, const char *name, const char *oldValue, const char *newValue);
  */
 export function HintCallback(cb: (
     userdata: Deno.PointerValue, 

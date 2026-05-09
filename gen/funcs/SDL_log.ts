@@ -50,7 +50,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -188,7 +188,8 @@ SDL_SetLogPriorityPrefix: {
 /**
  * Get the default log output function.
  *
- * @returns the default log output callback.
+ * @returns the default log output callback. It should be called with NULL for
+ *          the userdata argument.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -197,7 +198,7 @@ SDL_SetLogPriorityPrefix: {
  * @sa SDL_SetLogOutputFunction
  * @sa SDL_GetLogOutputFunction
  *
- * @from SDL_log.h:498 SDL_LogOutputFunction SDL_GetDefaultLogOutputFunction(void);
+ * @from SDL_log.h:499 SDL_LogOutputFunction SDL_GetDefaultLogOutputFunction(void);
  */
 SDL_GetDefaultLogOutputFunction: {
       parameters: [],
@@ -220,7 +221,7 @@ SDL_GetDefaultLogOutputFunction: {
  * @sa SDL_GetDefaultLogOutputFunction
  * @sa SDL_SetLogOutputFunction
  *
- * @from SDL_log.h:515 void SDL_GetLogOutputFunction(SDL_LogOutputFunction *callback, void **userdata);
+ * @from SDL_log.h:516 void SDL_GetLogOutputFunction(SDL_LogOutputFunction *callback, void **userdata);
  */
 SDL_GetLogOutputFunction: {
       parameters: ["pointer", "pointer"],
@@ -241,7 +242,7 @@ SDL_GetLogOutputFunction: {
  * @sa SDL_GetDefaultLogOutputFunction
  * @sa SDL_GetLogOutputFunction
  *
- * @from SDL_log.h:530 void SDL_SetLogOutputFunction(SDL_LogOutputFunction callback, void *userdata);
+ * @from SDL_log.h:531 void SDL_SetLogOutputFunction(SDL_LogOutputFunction callback, void *userdata);
  */
 SDL_SetLogOutputFunction: {
       parameters: ["function", "pointer"],

@@ -30,7 +30,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -106,7 +106,7 @@ export enum PROP_RENDERER {
 
 
 /**
- * @from SDL_render:807 SDL_PROP_TEXTURE_CREATE_
+ * @from SDL_render:805 SDL_PROP_TEXTURE_CREATE_
  */
 export enum PROP_TEXTURE_CREATE {
   COLORSPACE_NUMBER = "SDL.texture.create.colorspace", 
@@ -143,7 +143,7 @@ export enum PROP_TEXTURE_CREATE {
 
 
 /**
- * @from SDL_render:936 SDL_PROP_TEXTURE_
+ * @from SDL_render:934 SDL_PROP_TEXTURE_
  */
 export enum PROP_TEXTURE {
   COLORSPACE_NUMBER = "SDL.texture.colorspace", 
@@ -181,7 +181,7 @@ export enum PROP_TEXTURE {
 
 
 /**
- * @from SDL_render:2777 SDL_RENDERER_VSYNC_
+ * @from SDL_render:2779 SDL_RENDERER_VSYNC_
  */
 export enum RENDERER_VSYNC {
   DISABLED = 0, 

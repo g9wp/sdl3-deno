@@ -367,7 +367,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -437,7 +437,7 @@ export {
  *
  * @sa SDL_CreateGPUDevice
  *
- * @from SDL_gpu.h:2198 bool SDL_GPUSupportsShaderFormats(SDL_GPUShaderFormat format_flags, const char *name);
+ * @from SDL_gpu.h:2199 bool SDL_GPUSupportsShaderFormats(SDL_GPUShaderFormat format_flags, const char *name);
  */
 export function gpuSupportsShaderFormats(format_flags: number, name: string): boolean {
   return lib.symbols.SDL_GPUSupportsShaderFormats(format_flags, _p.toCstr(name));
@@ -453,7 +453,7 @@ export function gpuSupportsShaderFormats(format_flags: number, name: string): bo
  *
  * @sa SDL_CreateGPUDeviceWithProperties
  *
- * @from SDL_gpu.h:2212 bool SDL_GPUSupportsProperties(SDL_PropertiesID props);
+ * @from SDL_gpu.h:2213 bool SDL_GPUSupportsProperties(SDL_PropertiesID props);
  */
 export function gpuSupportsProperties(props: number): boolean {
   return lib.symbols.SDL_GPUSupportsProperties(props);
@@ -485,7 +485,7 @@ export function gpuSupportsProperties(props: number): boolean {
  * @sa SDL_DestroyGPUDevice
  * @sa SDL_GPUSupportsShaderFormats
  *
- * @from SDL_gpu.h:2241 SDL_GPUDevice * SDL_CreateGPUDevice(SDL_GPUShaderFormat format_flags, bool debug_mode, const char *name);
+ * @from SDL_gpu.h:2242 SDL_GPUDevice * SDL_CreateGPUDevice(SDL_GPUShaderFormat format_flags, bool debug_mode, const char *name);
  */
 export function createGpuDevice(format_flags: number, debug_mode: boolean, name: string): Deno.PointerValue<"SDL_GPUDevice"> {
   return lib.symbols.SDL_CreateGPUDevice(format_flags, debug_mode, _p.toCstr(name)) as Deno.PointerValue<"SDL_GPUDevice">;
@@ -553,6 +553,21 @@ export function createGpuDevice(format_flags: number, debug_mode: boolean, name:
  *   useful for targeting Intel Haswell and Broadwell GPUs; other hardware
  *   either supports Tier 2 Resource Binding or does not support D3D12 in any
  *   capacity. Defaults to false.
+ * - `SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER`: Certain
+ *   feature checks are only possible on Windows 11 by default. By setting
+ *   this alongside `SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_PATH_STRING`
+ *   and vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make
+ *   those feature checks possible on older platforms. The version you provide
+ *   must match the one given in the DLL.
+ * - `SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_PATH_STRING`: Certain
+ *   feature checks are only possible on Windows 11 by default. By setting
+ *   this alongside
+ *   `SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER` and
+ *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
+ *   feature checks possible on older platforms. The path you provide must be
+ *   relative to the executable path of your app. Be sure not to put the DLL
+ *   in the same directory as the exe; Microsoft strongly advises against
+ *   this!
  *
  * With the Vulkan backend:
  *
@@ -568,6 +583,15 @@ export function createGpuDevice(format_flags: number, debug_mode: boolean, name:
  *   increasing the API version and opting into extensions aside from the
  *   minimal set SDL requires.
  *
+ * With the Metal backend: -
+ * `SDL_PROP_GPU_DEVICE_CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN`: By default,
+ * macOS support requires what Apple calls "MTLGPUFamilyMac2" hardware or
+ * newer. However, an application can set this property to true to enable
+ * support for "MTLGPUFamilyMac1" hardware, if (and only if) the application
+ * does not write to sRGB textures. (For history's sake: MacFamily1 also does
+ * not support indirect command buffers, MSAA depth resolve, and stencil
+ * resolve/feedback, but these are not exposed features in SDL_GPU.)
+ *
  * @param props the properties to use.
  * @returns a GPU context on success or NULL on failure; call SDL_GetError()
  *          for more information.
@@ -579,7 +603,7 @@ export function createGpuDevice(format_flags: number, debug_mode: boolean, name:
  * @sa SDL_DestroyGPUDevice
  * @sa SDL_GPUSupportsProperties
  *
- * @from SDL_gpu.h:2334 SDL_GPUDevice * SDL_CreateGPUDeviceWithProperties(SDL_PropertiesID props);
+ * @from SDL_gpu.h:2359 SDL_GPUDevice * SDL_CreateGPUDeviceWithProperties(SDL_PropertiesID props);
  */
 export function createGpuDeviceWithProperties(props: number): Deno.PointerValue<"SDL_GPUDevice"> {
   return lib.symbols.SDL_CreateGPUDeviceWithProperties(props) as Deno.PointerValue<"SDL_GPUDevice">;
@@ -594,7 +618,7 @@ export function createGpuDeviceWithProperties(props: number): Deno.PointerValue<
  *
  * @sa SDL_CreateGPUDevice
  *
- * @from SDL_gpu.h:2393 void SDL_DestroyGPUDevice(SDL_GPUDevice *device);
+ * @from SDL_gpu.h:2421 void SDL_DestroyGPUDevice(SDL_GPUDevice *device);
  */
 export function destroyGpuDevice(device: Deno.PointerValue<"SDL_GPUDevice">): void {
   return lib.symbols.SDL_DestroyGPUDevice(device);
@@ -609,7 +633,7 @@ export function destroyGpuDevice(device: Deno.PointerValue<"SDL_GPUDevice">): vo
  *
  * @sa SDL_GetGPUDriver
  *
- * @from SDL_gpu.h:2404 int SDL_GetNumGPUDrivers(void);
+ * @from SDL_gpu.h:2432 int SDL_GetNumGPUDrivers(void);
  */
 export function getNumGpuDrivers(): number {
   return lib.symbols.SDL_GetNumGPUDrivers();
@@ -632,7 +656,7 @@ export function getNumGpuDrivers(): number {
  *
  * @sa SDL_GetNumGPUDrivers
  *
- * @from SDL_gpu.h:2423 const char * SDL_GetGPUDriver(int index);
+ * @from SDL_gpu.h:2451 const char * SDL_GetGPUDriver(int index);
  */
 export function getGpuDriver(index: number): string {
   return _p.getCstr2(lib.symbols.SDL_GetGPUDriver(index));
@@ -646,7 +670,7 @@ export function getGpuDriver(index: number): string {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:2433 const char * SDL_GetGPUDeviceDriver(SDL_GPUDevice *device);
+ * @from SDL_gpu.h:2461 const char * SDL_GetGPUDeviceDriver(SDL_GPUDevice *device);
  */
 export function getGpuDeviceDriver(device: Deno.PointerValue<"SDL_GPUDevice">): string {
   return _p.getCstr2(lib.symbols.SDL_GetGPUDeviceDriver(device));
@@ -661,7 +685,7 @@ export function getGpuDeviceDriver(device: Deno.PointerValue<"SDL_GPUDevice">): 
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:2444 SDL_GPUShaderFormat SDL_GetGPUShaderFormats(SDL_GPUDevice *device);
+ * @from SDL_gpu.h:2472 SDL_GPUShaderFormat SDL_GetGPUShaderFormats(SDL_GPUDevice *device);
  */
 export function getGpuShaderFormats(device: Deno.PointerValue<"SDL_GPUDevice">): number {
   return lib.symbols.SDL_GetGPUShaderFormats(device);
@@ -769,7 +793,7 @@ export function getGpuShaderFormats(device: Deno.PointerValue<"SDL_GPUDevice">):
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @from SDL_gpu.h:2548 SDL_PropertiesID SDL_GetGPUDeviceProperties(SDL_GPUDevice *device);
+ * @from SDL_gpu.h:2576 SDL_PropertiesID SDL_GetGPUDeviceProperties(SDL_GPUDevice *device);
  */
 export function getGpuDeviceProperties(device: Deno.PointerValue<"SDL_GPUDevice">): number {
   return lib.symbols.SDL_GetGPUDeviceProperties(device);
@@ -820,7 +844,7 @@ export function getGpuDeviceProperties(device: Deno.PointerValue<"SDL_GPUDevice"
  * @sa SDL_BindGPUComputePipeline
  * @sa SDL_ReleaseGPUComputePipeline
  *
- * @from SDL_gpu.h:2603 SDL_GPUComputePipeline * SDL_CreateGPUComputePipeline(SDL_GPUDevice *device, const SDL_GPUComputePipelineCreateInfo *createinfo);
+ * @from SDL_gpu.h:2631 SDL_GPUComputePipeline * SDL_CreateGPUComputePipeline(SDL_GPUDevice *device, const SDL_GPUComputePipelineCreateInfo *createinfo);
  */
 export function createGpuComputePipeline(device: Deno.PointerValue<"SDL_GPUDevice">, createinfo: Deno.PointerValue<"SDL_GPUComputePipelineCreateInfo">): Deno.PointerValue<"SDL_GPUComputePipeline"> {
   return lib.symbols.SDL_CreateGPUComputePipeline(device, createinfo) as Deno.PointerValue<"SDL_GPUComputePipeline">;
@@ -847,7 +871,7 @@ export function createGpuComputePipeline(device: Deno.PointerValue<"SDL_GPUDevic
  * @sa SDL_BindGPUGraphicsPipeline
  * @sa SDL_ReleaseGPUGraphicsPipeline
  *
- * @from SDL_gpu.h:2630 SDL_GPUGraphicsPipeline * SDL_CreateGPUGraphicsPipeline(SDL_GPUDevice *device, const SDL_GPUGraphicsPipelineCreateInfo *createinfo);
+ * @from SDL_gpu.h:2658 SDL_GPUGraphicsPipeline * SDL_CreateGPUGraphicsPipeline(SDL_GPUDevice *device, const SDL_GPUGraphicsPipelineCreateInfo *createinfo);
  */
 export function createGpuGraphicsPipeline(device: Deno.PointerValue<"SDL_GPUDevice">, createinfo: Deno.PointerValue<"SDL_GPUGraphicsPipelineCreateInfo">): Deno.PointerValue<"SDL_GPUGraphicsPipeline"> {
   return lib.symbols.SDL_CreateGPUGraphicsPipeline(device, createinfo) as Deno.PointerValue<"SDL_GPUGraphicsPipeline">;
@@ -874,7 +898,7 @@ export function createGpuGraphicsPipeline(device: Deno.PointerValue<"SDL_GPUDevi
  * @sa SDL_BindGPUFragmentSamplers
  * @sa SDL_ReleaseGPUSampler
  *
- * @from SDL_gpu.h:2657 SDL_GPUSampler * SDL_CreateGPUSampler(SDL_GPUDevice *device, const SDL_GPUSamplerCreateInfo *createinfo);
+ * @from SDL_gpu.h:2685 SDL_GPUSampler * SDL_CreateGPUSampler(SDL_GPUDevice *device, const SDL_GPUSamplerCreateInfo *createinfo);
  */
 export function createGpuSampler(device: Deno.PointerValue<"SDL_GPUDevice">, createinfo: Deno.PointerValue<"SDL_GPUSamplerCreateInfo">): Deno.PointerValue<"SDL_GPUSampler"> {
   return lib.symbols.SDL_CreateGPUSampler(device, createinfo) as Deno.PointerValue<"SDL_GPUSampler">;
@@ -953,7 +977,7 @@ export function createGpuSampler(device: Deno.PointerValue<"SDL_GPUDevice">, cre
  * @sa SDL_CreateGPUGraphicsPipeline
  * @sa SDL_ReleaseGPUShader
  *
- * @from SDL_gpu.h:2736 SDL_GPUShader * SDL_CreateGPUShader(SDL_GPUDevice *device, const SDL_GPUShaderCreateInfo *createinfo);
+ * @from SDL_gpu.h:2764 SDL_GPUShader * SDL_CreateGPUShader(SDL_GPUDevice *device, const SDL_GPUShaderCreateInfo *createinfo);
  */
 export function createGpuShader(device: Deno.PointerValue<"SDL_GPUDevice">, createinfo: Deno.PointerValue<"SDL_GPUShaderCreateInfo">): Deno.PointerValue<"SDL_GPUShader"> {
   return lib.symbols.SDL_CreateGPUShader(device, createinfo) as Deno.PointerValue<"SDL_GPUShader">;
@@ -1017,7 +1041,7 @@ export function createGpuShader(device: Deno.PointerValue<"SDL_GPUDevice">, crea
  * @sa SDL_ReleaseGPUTexture
  * @sa SDL_GPUTextureSupportsFormat
  *
- * @from SDL_gpu.h:2800 SDL_GPUTexture * SDL_CreateGPUTexture(SDL_GPUDevice *device, const SDL_GPUTextureCreateInfo *createinfo);
+ * @from SDL_gpu.h:2828 SDL_GPUTexture * SDL_CreateGPUTexture(SDL_GPUDevice *device, const SDL_GPUTextureCreateInfo *createinfo);
  */
 export function createGpuTexture(device: Deno.PointerValue<"SDL_GPUDevice">, createinfo: Deno.PointerValue<"SDL_GPUTextureCreateInfo">): Deno.PointerValue<"SDL_GPUTexture"> {
   return lib.symbols.SDL_CreateGPUTexture(device, createinfo) as Deno.PointerValue<"SDL_GPUTexture">;
@@ -1067,7 +1091,7 @@ export function createGpuTexture(device: Deno.PointerValue<"SDL_GPUDevice">, cre
  * @sa SDL_DispatchGPUComputeIndirect
  * @sa SDL_ReleaseGPUBuffer
  *
- * @from SDL_gpu.h:2856 SDL_GPUBuffer * SDL_CreateGPUBuffer(SDL_GPUDevice *device, const SDL_GPUBufferCreateInfo *createinfo);
+ * @from SDL_gpu.h:2884 SDL_GPUBuffer * SDL_CreateGPUBuffer(SDL_GPUDevice *device, const SDL_GPUBufferCreateInfo *createinfo);
  */
 export function createGpuBuffer(device: Deno.PointerValue<"SDL_GPUDevice">, createinfo: Deno.PointerValue<"SDL_GPUBufferCreateInfo">): Deno.PointerValue<"SDL_GPUBuffer"> {
   return lib.symbols.SDL_CreateGPUBuffer(device, createinfo) as Deno.PointerValue<"SDL_GPUBuffer">;
@@ -1100,7 +1124,7 @@ export function createGpuBuffer(device: Deno.PointerValue<"SDL_GPUDevice">, crea
  * @sa SDL_DownloadFromGPUTexture
  * @sa SDL_ReleaseGPUTransferBuffer
  *
- * @from SDL_gpu.h:2889 SDL_GPUTransferBuffer * SDL_CreateGPUTransferBuffer(SDL_GPUDevice *device, const SDL_GPUTransferBufferCreateInfo *createinfo);
+ * @from SDL_gpu.h:2917 SDL_GPUTransferBuffer * SDL_CreateGPUTransferBuffer(SDL_GPUDevice *device, const SDL_GPUTransferBufferCreateInfo *createinfo);
  */
 export function createGpuTransferBuffer(device: Deno.PointerValue<"SDL_GPUDevice">, createinfo: Deno.PointerValue<"SDL_GPUTransferBufferCreateInfo">): Deno.PointerValue<"SDL_GPUTransferBuffer"> {
   return lib.symbols.SDL_CreateGPUTransferBuffer(device, createinfo) as Deno.PointerValue<"SDL_GPUTransferBuffer">;
@@ -1123,7 +1147,7 @@ export function createGpuTransferBuffer(device: Deno.PointerValue<"SDL_GPUDevice
  *
  * @sa SDL_CreateGPUBuffer
  *
- * @from SDL_gpu.h:2914 void SDL_SetGPUBufferName(SDL_GPUDevice *device, SDL_GPUBuffer *buffer, const char *text);
+ * @from SDL_gpu.h:2942 void SDL_SetGPUBufferName(SDL_GPUDevice *device, SDL_GPUBuffer *buffer, const char *text);
  */
 export function setGpuBufferName(device: Deno.PointerValue<"SDL_GPUDevice">, buffer: Deno.PointerValue<"SDL_GPUBuffer">, text: string): void {
   return lib.symbols.SDL_SetGPUBufferName(device, buffer, _p.toCstr(text));
@@ -1147,7 +1171,7 @@ export function setGpuBufferName(device: Deno.PointerValue<"SDL_GPUDevice">, buf
  *
  * @sa SDL_CreateGPUTexture
  *
- * @from SDL_gpu.h:2937 void SDL_SetGPUTextureName(SDL_GPUDevice *device, SDL_GPUTexture *texture, const char *text);
+ * @from SDL_gpu.h:2965 void SDL_SetGPUTextureName(SDL_GPUDevice *device, SDL_GPUTexture *texture, const char *text);
  */
 export function setGpuTextureName(device: Deno.PointerValue<"SDL_GPUDevice">, texture: Deno.PointerValue<"SDL_GPUTexture">, text: string): void {
   return lib.symbols.SDL_SetGPUTextureName(device, texture, _p.toCstr(text));
@@ -1169,7 +1193,7 @@ export function setGpuTextureName(device: Deno.PointerValue<"SDL_GPUDevice">, te
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:2958 void SDL_InsertGPUDebugLabel(SDL_GPUCommandBuffer *command_buffer, const char *text);
+ * @from SDL_gpu.h:2986 void SDL_InsertGPUDebugLabel(SDL_GPUCommandBuffer *command_buffer, const char *text);
  */
 export function insertGpuDebugLabel(command_buffer: Deno.PointerValue<"SDL_GPUCommandBuffer">, text: string): void {
   return lib.symbols.SDL_InsertGPUDebugLabel(command_buffer, _p.toCstr(text));
@@ -1201,7 +1225,7 @@ export function insertGpuDebugLabel(command_buffer: Deno.PointerValue<"SDL_GPUCo
  *
  * @sa SDL_PopGPUDebugGroup
  *
- * @from SDL_gpu.h:2988 void SDL_PushGPUDebugGroup(SDL_GPUCommandBuffer *command_buffer, const char *name);
+ * @from SDL_gpu.h:3016 void SDL_PushGPUDebugGroup(SDL_GPUCommandBuffer *command_buffer, const char *name);
  */
 export function pushGpuDebugGroup(command_buffer: Deno.PointerValue<"SDL_GPUCommandBuffer">, name: string): void {
   return lib.symbols.SDL_PushGPUDebugGroup(command_buffer, _p.toCstr(name));
@@ -1221,7 +1245,7 @@ export function pushGpuDebugGroup(command_buffer: Deno.PointerValue<"SDL_GPUComm
  *
  * @sa SDL_PushGPUDebugGroup
  *
- * @from SDL_gpu.h:3006 void SDL_PopGPUDebugGroup(SDL_GPUCommandBuffer *command_buffer);
+ * @from SDL_gpu.h:3034 void SDL_PopGPUDebugGroup(SDL_GPUCommandBuffer *command_buffer);
  */
 export function popGpuDebugGroup(command_buffer: Deno.PointerValue<"SDL_GPUCommandBuffer">): void {
   return lib.symbols.SDL_PopGPUDebugGroup(command_buffer);
@@ -1237,7 +1261,7 @@ export function popGpuDebugGroup(command_buffer: Deno.PointerValue<"SDL_GPUComma
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3021 void SDL_ReleaseGPUTexture(SDL_GPUDevice *device, SDL_GPUTexture *texture);
+ * @from SDL_gpu.h:3049 void SDL_ReleaseGPUTexture(SDL_GPUDevice *device, SDL_GPUTexture *texture);
  */
 export function releaseGpuTexture(device: Deno.PointerValue<"SDL_GPUDevice">, texture: Deno.PointerValue<"SDL_GPUTexture">): void {
   return lib.symbols.SDL_ReleaseGPUTexture(device, texture);
@@ -1253,7 +1277,7 @@ export function releaseGpuTexture(device: Deno.PointerValue<"SDL_GPUDevice">, te
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3035 void SDL_ReleaseGPUSampler(SDL_GPUDevice *device, SDL_GPUSampler *sampler);
+ * @from SDL_gpu.h:3063 void SDL_ReleaseGPUSampler(SDL_GPUDevice *device, SDL_GPUSampler *sampler);
  */
 export function releaseGpuSampler(device: Deno.PointerValue<"SDL_GPUDevice">, sampler: Deno.PointerValue<"SDL_GPUSampler">): void {
   return lib.symbols.SDL_ReleaseGPUSampler(device, sampler);
@@ -1269,7 +1293,7 @@ export function releaseGpuSampler(device: Deno.PointerValue<"SDL_GPUDevice">, sa
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3049 void SDL_ReleaseGPUBuffer(SDL_GPUDevice *device, SDL_GPUBuffer *buffer);
+ * @from SDL_gpu.h:3077 void SDL_ReleaseGPUBuffer(SDL_GPUDevice *device, SDL_GPUBuffer *buffer);
  */
 export function releaseGpuBuffer(device: Deno.PointerValue<"SDL_GPUDevice">, buffer: Deno.PointerValue<"SDL_GPUBuffer">): void {
   return lib.symbols.SDL_ReleaseGPUBuffer(device, buffer);
@@ -1285,7 +1309,7 @@ export function releaseGpuBuffer(device: Deno.PointerValue<"SDL_GPUDevice">, buf
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3063 void SDL_ReleaseGPUTransferBuffer(SDL_GPUDevice *device, SDL_GPUTransferBuffer *transfer_buffer);
+ * @from SDL_gpu.h:3091 void SDL_ReleaseGPUTransferBuffer(SDL_GPUDevice *device, SDL_GPUTransferBuffer *transfer_buffer);
  */
 export function releaseGpuTransferBuffer(device: Deno.PointerValue<"SDL_GPUDevice">, transfer_buffer: Deno.PointerValue<"SDL_GPUTransferBuffer">): void {
   return lib.symbols.SDL_ReleaseGPUTransferBuffer(device, transfer_buffer);
@@ -1301,7 +1325,7 @@ export function releaseGpuTransferBuffer(device: Deno.PointerValue<"SDL_GPUDevic
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3077 void SDL_ReleaseGPUComputePipeline(SDL_GPUDevice *device, SDL_GPUComputePipeline *compute_pipeline);
+ * @from SDL_gpu.h:3105 void SDL_ReleaseGPUComputePipeline(SDL_GPUDevice *device, SDL_GPUComputePipeline *compute_pipeline);
  */
 export function releaseGpuComputePipeline(device: Deno.PointerValue<"SDL_GPUDevice">, compute_pipeline: Deno.PointerValue<"SDL_GPUComputePipeline">): void {
   return lib.symbols.SDL_ReleaseGPUComputePipeline(device, compute_pipeline);
@@ -1317,7 +1341,7 @@ export function releaseGpuComputePipeline(device: Deno.PointerValue<"SDL_GPUDevi
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3091 void SDL_ReleaseGPUShader(SDL_GPUDevice *device, SDL_GPUShader *shader);
+ * @from SDL_gpu.h:3119 void SDL_ReleaseGPUShader(SDL_GPUDevice *device, SDL_GPUShader *shader);
  */
 export function releaseGpuShader(device: Deno.PointerValue<"SDL_GPUDevice">, shader: Deno.PointerValue<"SDL_GPUShader">): void {
   return lib.symbols.SDL_ReleaseGPUShader(device, shader);
@@ -1333,7 +1357,7 @@ export function releaseGpuShader(device: Deno.PointerValue<"SDL_GPUDevice">, sha
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3105 void SDL_ReleaseGPUGraphicsPipeline(SDL_GPUDevice *device, SDL_GPUGraphicsPipeline *graphics_pipeline);
+ * @from SDL_gpu.h:3133 void SDL_ReleaseGPUGraphicsPipeline(SDL_GPUDevice *device, SDL_GPUGraphicsPipeline *graphics_pipeline);
  */
 export function releaseGpuGraphicsPipeline(device: Deno.PointerValue<"SDL_GPUDevice">, graphics_pipeline: Deno.PointerValue<"SDL_GPUGraphicsPipeline">): void {
   return lib.symbols.SDL_ReleaseGPUGraphicsPipeline(device, graphics_pipeline);
@@ -1363,7 +1387,7 @@ export function releaseGpuGraphicsPipeline(device: Deno.PointerValue<"SDL_GPUDev
  * @sa SDL_SubmitGPUCommandBuffer
  * @sa SDL_SubmitGPUCommandBufferAndAcquireFence
  *
- * @from SDL_gpu.h:3133 SDL_GPUCommandBuffer * SDL_AcquireGPUCommandBuffer(SDL_GPUDevice *device);
+ * @from SDL_gpu.h:3161 SDL_GPUCommandBuffer * SDL_AcquireGPUCommandBuffer(SDL_GPUDevice *device);
  */
 export function acquireGpuCommandBuffer(device: Deno.PointerValue<"SDL_GPUDevice">): Deno.PointerValue<"SDL_GPUCommandBuffer"> {
   return lib.symbols.SDL_AcquireGPUCommandBuffer(device) as Deno.PointerValue<"SDL_GPUCommandBuffer">;
@@ -1388,7 +1412,7 @@ export function acquireGpuCommandBuffer(device: Deno.PointerValue<"SDL_GPUDevice
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3157 void SDL_PushGPUVertexUniformData(SDL_GPUCommandBuffer *command_buffer, Uint32 slot_index, const void *data, Uint32 length);
+ * @from SDL_gpu.h:3185 void SDL_PushGPUVertexUniformData(SDL_GPUCommandBuffer *command_buffer, Uint32 slot_index, const void *data, Uint32 length);
  */
 export function pushGpuVertexUniformData(
     command_buffer: Deno.PointerValue<"SDL_GPUCommandBuffer">,
@@ -1415,7 +1439,7 @@ export function pushGpuVertexUniformData(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3179 void SDL_PushGPUFragmentUniformData(SDL_GPUCommandBuffer *command_buffer, Uint32 slot_index, const void *data, Uint32 length);
+ * @from SDL_gpu.h:3207 void SDL_PushGPUFragmentUniformData(SDL_GPUCommandBuffer *command_buffer, Uint32 slot_index, const void *data, Uint32 length);
  */
 export function pushGpuFragmentUniformData(
     command_buffer: Deno.PointerValue<"SDL_GPUCommandBuffer">,
@@ -1442,7 +1466,7 @@ export function pushGpuFragmentUniformData(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3201 void SDL_PushGPUComputeUniformData(SDL_GPUCommandBuffer *command_buffer, Uint32 slot_index, const void *data, Uint32 length);
+ * @from SDL_gpu.h:3229 void SDL_PushGPUComputeUniformData(SDL_GPUCommandBuffer *command_buffer, Uint32 slot_index, const void *data, Uint32 length);
  */
 export function pushGpuComputeUniformData(
     command_buffer: Deno.PointerValue<"SDL_GPUCommandBuffer">,
@@ -1486,7 +1510,7 @@ export function pushGpuComputeUniformData(
  *
  * @sa SDL_EndGPURenderPass
  *
- * @from SDL_gpu.h:3242 SDL_GPURenderPass * SDL_BeginGPURenderPass(SDL_GPUCommandBuffer *command_buffer, const SDL_GPUColorTargetInfo *color_target_infos, Uint32 num_color_targets, const SDL_GPUDepthStencilTargetInfo *depth_stencil_target_info);
+ * @from SDL_gpu.h:3270 SDL_GPURenderPass * SDL_BeginGPURenderPass(SDL_GPUCommandBuffer *command_buffer, const SDL_GPUColorTargetInfo *color_target_infos, Uint32 num_color_targets, const SDL_GPUDepthStencilTargetInfo *depth_stencil_target_info);
  */
 export function beginGpuRenderPass(
     command_buffer: Deno.PointerValue<"SDL_GPUCommandBuffer">,
@@ -1507,7 +1531,7 @@ export function beginGpuRenderPass(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3258 void SDL_BindGPUGraphicsPipeline(SDL_GPURenderPass *render_pass, SDL_GPUGraphicsPipeline *graphics_pipeline);
+ * @from SDL_gpu.h:3286 void SDL_BindGPUGraphicsPipeline(SDL_GPURenderPass *render_pass, SDL_GPUGraphicsPipeline *graphics_pipeline);
  */
 export function bindGpuGraphicsPipeline(render_pass: Deno.PointerValue<"SDL_GPURenderPass">, graphics_pipeline: Deno.PointerValue<"SDL_GPUGraphicsPipeline">): void {
   return lib.symbols.SDL_BindGPUGraphicsPipeline(render_pass, graphics_pipeline);
@@ -1521,7 +1545,7 @@ export function bindGpuGraphicsPipeline(render_pass: Deno.PointerValue<"SDL_GPUR
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3270 void SDL_SetGPUViewport(SDL_GPURenderPass *render_pass, const SDL_GPUViewport *viewport);
+ * @from SDL_gpu.h:3298 void SDL_SetGPUViewport(SDL_GPURenderPass *render_pass, const SDL_GPUViewport *viewport);
  */
 export function setGpuViewport(render_pass: Deno.PointerValue<"SDL_GPURenderPass">, viewport: Deno.PointerValue<"SDL_GPUViewport">): void {
   return lib.symbols.SDL_SetGPUViewport(render_pass, viewport);
@@ -1535,7 +1559,7 @@ export function setGpuViewport(render_pass: Deno.PointerValue<"SDL_GPURenderPass
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3282 void SDL_SetGPUScissor(SDL_GPURenderPass *render_pass, const SDL_Rect *scissor);
+ * @from SDL_gpu.h:3310 void SDL_SetGPUScissor(SDL_GPURenderPass *render_pass, const SDL_Rect *scissor);
  */
 export function setGpuScissor(render_pass: Deno.PointerValue<"SDL_GPURenderPass">, scissor: { x: number; y: number; w: number; h: number; } | null): void {
   if (scissor) _p.i32.arr.set([scissor.x, scissor.y, scissor.w, scissor.h], 0);
@@ -1550,7 +1574,7 @@ export function setGpuScissor(render_pass: Deno.PointerValue<"SDL_GPURenderPass"
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3309 void SDL_SetGPUStencilReference(SDL_GPURenderPass *render_pass, Uint8 reference);
+ * @from SDL_gpu.h:3337 void SDL_SetGPUStencilReference(SDL_GPURenderPass *render_pass, Uint8 reference);
  */
 export function setGpuStencilReference(render_pass: Deno.PointerValue<"SDL_GPURenderPass">, reference: number): void {
   return lib.symbols.SDL_SetGPUStencilReference(render_pass, reference);
@@ -1568,7 +1592,7 @@ export function setGpuStencilReference(render_pass: Deno.PointerValue<"SDL_GPURe
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3325 void SDL_BindGPUVertexBuffers(SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUBufferBinding *bindings, Uint32 num_bindings);
+ * @from SDL_gpu.h:3353 void SDL_BindGPUVertexBuffers(SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUBufferBinding *bindings, Uint32 num_bindings);
  */
 export function bindGpuVertexBuffers(
     render_pass: Deno.PointerValue<"SDL_GPURenderPass">,
@@ -1590,7 +1614,7 @@ export function bindGpuVertexBuffers(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3342 void SDL_BindGPUIndexBuffer(SDL_GPURenderPass *render_pass, const SDL_GPUBufferBinding *binding, SDL_GPUIndexElementSize index_element_size);
+ * @from SDL_gpu.h:3370 void SDL_BindGPUIndexBuffer(SDL_GPURenderPass *render_pass, const SDL_GPUBufferBinding *binding, SDL_GPUIndexElementSize index_element_size);
  */
 export function bindGpuIndexBuffer(render_pass: Deno.PointerValue<"SDL_GPURenderPass">, binding: Deno.PointerValue<"SDL_GPUBufferBinding">, index_element_size: number): void {
   return lib.symbols.SDL_BindGPUIndexBuffer(render_pass, binding, index_element_size);
@@ -1615,7 +1639,7 @@ export function bindGpuIndexBuffer(render_pass: Deno.PointerValue<"SDL_GPURender
  *
  * @sa SDL_CreateGPUShader
  *
- * @from SDL_gpu.h:3366 void SDL_BindGPUVertexSamplers(SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);
+ * @from SDL_gpu.h:3394 void SDL_BindGPUVertexSamplers(SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);
  */
 export function bindGpuVertexSamplers(
     render_pass: Deno.PointerValue<"SDL_GPURenderPass">,
@@ -1644,7 +1668,7 @@ export function bindGpuVertexSamplers(
  *
  * @sa SDL_CreateGPUShader
  *
- * @from SDL_gpu.h:3390 void SDL_BindGPUVertexStorageTextures(SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings);
+ * @from SDL_gpu.h:3418 void SDL_BindGPUVertexStorageTextures(SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings);
  */
 export function bindGpuVertexStorageTextures(
     render_pass: Deno.PointerValue<"SDL_GPURenderPass">,
@@ -1673,7 +1697,7 @@ export function bindGpuVertexStorageTextures(
  *
  * @sa SDL_CreateGPUShader
  *
- * @from SDL_gpu.h:3414 void SDL_BindGPUVertexStorageBuffers(SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUBuffer *const *storage_buffers, Uint32 num_bindings);
+ * @from SDL_gpu.h:3442 void SDL_BindGPUVertexStorageBuffers(SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUBuffer *const *storage_buffers, Uint32 num_bindings);
  */
 export function bindGpuVertexStorageBuffers(
     render_pass: Deno.PointerValue<"SDL_GPURenderPass">,
@@ -1703,7 +1727,7 @@ export function bindGpuVertexStorageBuffers(
  *
  * @sa SDL_CreateGPUShader
  *
- * @from SDL_gpu.h:3439 void SDL_BindGPUFragmentSamplers(SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);
+ * @from SDL_gpu.h:3467 void SDL_BindGPUFragmentSamplers(SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);
  */
 export function bindGpuFragmentSamplers(
     render_pass: Deno.PointerValue<"SDL_GPURenderPass">,
@@ -1732,7 +1756,7 @@ export function bindGpuFragmentSamplers(
  *
  * @sa SDL_CreateGPUShader
  *
- * @from SDL_gpu.h:3463 void SDL_BindGPUFragmentStorageTextures(SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings);
+ * @from SDL_gpu.h:3491 void SDL_BindGPUFragmentStorageTextures(SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings);
  */
 export function bindGpuFragmentStorageTextures(
     render_pass: Deno.PointerValue<"SDL_GPURenderPass">,
@@ -1761,7 +1785,7 @@ export function bindGpuFragmentStorageTextures(
  *
  * @sa SDL_CreateGPUShader
  *
- * @from SDL_gpu.h:3487 void SDL_BindGPUFragmentStorageBuffers(SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUBuffer *const *storage_buffers, Uint32 num_bindings);
+ * @from SDL_gpu.h:3515 void SDL_BindGPUFragmentStorageBuffers(SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUBuffer *const *storage_buffers, Uint32 num_bindings);
  */
 export function bindGpuFragmentStorageBuffers(
     render_pass: Deno.PointerValue<"SDL_GPURenderPass">,
@@ -1795,7 +1819,7 @@ export function bindGpuFragmentStorageBuffers(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3518 void SDL_DrawGPUIndexedPrimitives(SDL_GPURenderPass *render_pass, Uint32 num_indices, Uint32 num_instances, Uint32 first_index, Sint32 vertex_offset, Uint32 first_instance);
+ * @from SDL_gpu.h:3546 void SDL_DrawGPUIndexedPrimitives(SDL_GPURenderPass *render_pass, Uint32 num_indices, Uint32 num_instances, Uint32 first_index, Sint32 vertex_offset, Uint32 first_instance);
  */
 export function drawGpuIndexedPrimitives(
     render_pass: Deno.PointerValue<"SDL_GPURenderPass">,
@@ -1828,7 +1852,7 @@ export function drawGpuIndexedPrimitives(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3546 void SDL_DrawGPUPrimitives(SDL_GPURenderPass *render_pass, Uint32 num_vertices, Uint32 num_instances, Uint32 first_vertex, Uint32 first_instance);
+ * @from SDL_gpu.h:3574 void SDL_DrawGPUPrimitives(SDL_GPURenderPass *render_pass, Uint32 num_vertices, Uint32 num_instances, Uint32 first_vertex, Uint32 first_instance);
  */
 export function drawGpuPrimitives(
     render_pass: Deno.PointerValue<"SDL_GPURenderPass">,
@@ -1856,7 +1880,7 @@ export function drawGpuPrimitives(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3569 void SDL_DrawGPUPrimitivesIndirect(SDL_GPURenderPass *render_pass, SDL_GPUBuffer *buffer, Uint32 offset, Uint32 draw_count);
+ * @from SDL_gpu.h:3597 void SDL_DrawGPUPrimitivesIndirect(SDL_GPURenderPass *render_pass, SDL_GPUBuffer *buffer, Uint32 offset, Uint32 draw_count);
  */
 export function drawGpuPrimitivesIndirect(
     render_pass: Deno.PointerValue<"SDL_GPURenderPass">,
@@ -1883,7 +1907,7 @@ export function drawGpuPrimitivesIndirect(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3591 void SDL_DrawGPUIndexedPrimitivesIndirect(SDL_GPURenderPass *render_pass, SDL_GPUBuffer *buffer, Uint32 offset, Uint32 draw_count);
+ * @from SDL_gpu.h:3619 void SDL_DrawGPUIndexedPrimitivesIndirect(SDL_GPURenderPass *render_pass, SDL_GPUBuffer *buffer, Uint32 offset, Uint32 draw_count);
  */
 export function drawGpuIndexedPrimitivesIndirect(
     render_pass: Deno.PointerValue<"SDL_GPURenderPass">,
@@ -1904,7 +1928,7 @@ export function drawGpuIndexedPrimitivesIndirect(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3607 void SDL_EndGPURenderPass(SDL_GPURenderPass *render_pass);
+ * @from SDL_gpu.h:3635 void SDL_EndGPURenderPass(SDL_GPURenderPass *render_pass);
  */
 export function endGpuRenderPass(render_pass: Deno.PointerValue<"SDL_GPURenderPass">): void {
   return lib.symbols.SDL_EndGPURenderPass(render_pass);
@@ -1947,7 +1971,7 @@ export function endGpuRenderPass(render_pass: Deno.PointerValue<"SDL_GPURenderPa
  *
  * @sa SDL_EndGPUComputePass
  *
- * @from SDL_gpu.h:3649 SDL_GPUComputePass * SDL_BeginGPUComputePass(SDL_GPUCommandBuffer *command_buffer, const SDL_GPUStorageTextureReadWriteBinding *storage_texture_bindings, Uint32 num_storage_texture_bindings, const SDL_GPUStorageBufferReadWriteBinding *storage_buffer_bindings, Uint32 num_storage_buffer_bindings);
+ * @from SDL_gpu.h:3677 SDL_GPUComputePass * SDL_BeginGPUComputePass(SDL_GPUCommandBuffer *command_buffer, const SDL_GPUStorageTextureReadWriteBinding *storage_texture_bindings, Uint32 num_storage_texture_bindings, const SDL_GPUStorageBufferReadWriteBinding *storage_buffer_bindings, Uint32 num_storage_buffer_bindings);
  */
 export function beginGpuComputePass(
     command_buffer: Deno.PointerValue<"SDL_GPUCommandBuffer">,
@@ -1967,7 +1991,7 @@ export function beginGpuComputePass(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3664 void SDL_BindGPUComputePipeline(SDL_GPUComputePass *compute_pass, SDL_GPUComputePipeline *compute_pipeline);
+ * @from SDL_gpu.h:3692 void SDL_BindGPUComputePipeline(SDL_GPUComputePass *compute_pass, SDL_GPUComputePipeline *compute_pipeline);
  */
 export function bindGpuComputePipeline(compute_pass: Deno.PointerValue<"SDL_GPUComputePass">, compute_pipeline: Deno.PointerValue<"SDL_GPUComputePipeline">): void {
   return lib.symbols.SDL_BindGPUComputePipeline(compute_pass, compute_pipeline);
@@ -1992,7 +2016,7 @@ export function bindGpuComputePipeline(compute_pass: Deno.PointerValue<"SDL_GPUC
  *
  * @sa SDL_CreateGPUComputePipeline
  *
- * @from SDL_gpu.h:3687 void SDL_BindGPUComputeSamplers(SDL_GPUComputePass *compute_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);
+ * @from SDL_gpu.h:3715 void SDL_BindGPUComputeSamplers(SDL_GPUComputePass *compute_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);
  */
 export function bindGpuComputeSamplers(
     compute_pass: Deno.PointerValue<"SDL_GPUComputePass">,
@@ -2021,7 +2045,7 @@ export function bindGpuComputeSamplers(
  *
  * @sa SDL_CreateGPUComputePipeline
  *
- * @from SDL_gpu.h:3711 void SDL_BindGPUComputeStorageTextures(SDL_GPUComputePass *compute_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings);
+ * @from SDL_gpu.h:3739 void SDL_BindGPUComputeStorageTextures(SDL_GPUComputePass *compute_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings);
  */
 export function bindGpuComputeStorageTextures(
     compute_pass: Deno.PointerValue<"SDL_GPUComputePass">,
@@ -2050,7 +2074,7 @@ export function bindGpuComputeStorageTextures(
  *
  * @sa SDL_CreateGPUComputePipeline
  *
- * @from SDL_gpu.h:3735 void SDL_BindGPUComputeStorageBuffers(SDL_GPUComputePass *compute_pass, Uint32 first_slot, SDL_GPUBuffer *const *storage_buffers, Uint32 num_bindings);
+ * @from SDL_gpu.h:3763 void SDL_BindGPUComputeStorageBuffers(SDL_GPUComputePass *compute_pass, Uint32 first_slot, SDL_GPUBuffer *const *storage_buffers, Uint32 num_bindings);
  */
 export function bindGpuComputeStorageBuffers(
     compute_pass: Deno.PointerValue<"SDL_GPUComputePass">,
@@ -2081,7 +2105,7 @@ export function bindGpuComputeStorageBuffers(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3761 void SDL_DispatchGPUCompute(SDL_GPUComputePass *compute_pass, Uint32 groupcount_x, Uint32 groupcount_y, Uint32 groupcount_z);
+ * @from SDL_gpu.h:3789 void SDL_DispatchGPUCompute(SDL_GPUComputePass *compute_pass, Uint32 groupcount_x, Uint32 groupcount_y, Uint32 groupcount_z);
  */
 export function dispatchGpuCompute(
     compute_pass: Deno.PointerValue<"SDL_GPUComputePass">,
@@ -2110,7 +2134,7 @@ export function dispatchGpuCompute(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3785 void SDL_DispatchGPUComputeIndirect(SDL_GPUComputePass *compute_pass, SDL_GPUBuffer *buffer, Uint32 offset);
+ * @from SDL_gpu.h:3813 void SDL_DispatchGPUComputeIndirect(SDL_GPUComputePass *compute_pass, SDL_GPUBuffer *buffer, Uint32 offset);
  */
 export function dispatchGpuComputeIndirect(compute_pass: Deno.PointerValue<"SDL_GPUComputePass">, buffer: Deno.PointerValue<"SDL_GPUBuffer">, offset: number): void {
   return lib.symbols.SDL_DispatchGPUComputeIndirect(compute_pass, buffer, offset);
@@ -2126,7 +2150,7 @@ export function dispatchGpuComputeIndirect(compute_pass: Deno.PointerValue<"SDL_
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3800 void SDL_EndGPUComputePass(SDL_GPUComputePass *compute_pass);
+ * @from SDL_gpu.h:3828 void SDL_EndGPUComputePass(SDL_GPUComputePass *compute_pass);
  */
 export function endGpuComputePass(compute_pass: Deno.PointerValue<"SDL_GPUComputePass">): void {
   return lib.symbols.SDL_EndGPUComputePass(compute_pass);
@@ -2147,7 +2171,7 @@ export function endGpuComputePass(compute_pass: Deno.PointerValue<"SDL_GPUComput
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3820 void * SDL_MapGPUTransferBuffer(SDL_GPUDevice *device, SDL_GPUTransferBuffer *transfer_buffer, bool cycle);
+ * @from SDL_gpu.h:3848 void * SDL_MapGPUTransferBuffer(SDL_GPUDevice *device, SDL_GPUTransferBuffer *transfer_buffer, bool cycle);
  */
 export function mapGpuTransferBuffer(device: Deno.PointerValue<"SDL_GPUDevice">, transfer_buffer: Deno.PointerValue<"SDL_GPUTransferBuffer">, cycle: boolean): Deno.PointerValue {
   return lib.symbols.SDL_MapGPUTransferBuffer(device, transfer_buffer, cycle);
@@ -2161,7 +2185,7 @@ export function mapGpuTransferBuffer(device: Deno.PointerValue<"SDL_GPUDevice">,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3833 void SDL_UnmapGPUTransferBuffer(SDL_GPUDevice *device, SDL_GPUTransferBuffer *transfer_buffer);
+ * @from SDL_gpu.h:3861 void SDL_UnmapGPUTransferBuffer(SDL_GPUDevice *device, SDL_GPUTransferBuffer *transfer_buffer);
  */
 export function unmapGpuTransferBuffer(device: Deno.PointerValue<"SDL_GPUDevice">, transfer_buffer: Deno.PointerValue<"SDL_GPUTransferBuffer">): void {
   return lib.symbols.SDL_UnmapGPUTransferBuffer(device, transfer_buffer);
@@ -2181,7 +2205,7 @@ export function unmapGpuTransferBuffer(device: Deno.PointerValue<"SDL_GPUDevice"
  *
  * @sa SDL_EndGPUCopyPass
  *
- * @from SDL_gpu.h:3853 SDL_GPUCopyPass * SDL_BeginGPUCopyPass(SDL_GPUCommandBuffer *command_buffer);
+ * @from SDL_gpu.h:3881 SDL_GPUCopyPass * SDL_BeginGPUCopyPass(SDL_GPUCommandBuffer *command_buffer);
  */
 export function beginGpuCopyPass(command_buffer: Deno.PointerValue<"SDL_GPUCommandBuffer">): Deno.PointerValue<"SDL_GPUCopyPass"> {
   return lib.symbols.SDL_BeginGPUCopyPass(command_buffer) as Deno.PointerValue<"SDL_GPUCopyPass">;
@@ -2204,7 +2228,7 @@ export function beginGpuCopyPass(command_buffer: Deno.PointerValue<"SDL_GPUComma
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3873 void SDL_UploadToGPUTexture(SDL_GPUCopyPass *copy_pass, const SDL_GPUTextureTransferInfo *source, const SDL_GPUTextureRegion *destination, bool cycle);
+ * @from SDL_gpu.h:3901 void SDL_UploadToGPUTexture(SDL_GPUCopyPass *copy_pass, const SDL_GPUTextureTransferInfo *source, const SDL_GPUTextureRegion *destination, bool cycle);
  */
 export function uploadToGpuTexture(
     copy_pass: Deno.PointerValue<"SDL_GPUCopyPass">,
@@ -2229,7 +2253,7 @@ export function uploadToGpuTexture(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3893 void SDL_UploadToGPUBuffer(SDL_GPUCopyPass *copy_pass, const SDL_GPUTransferBufferLocation *source, const SDL_GPUBufferRegion *destination, bool cycle);
+ * @from SDL_gpu.h:3921 void SDL_UploadToGPUBuffer(SDL_GPUCopyPass *copy_pass, const SDL_GPUTransferBufferLocation *source, const SDL_GPUBufferRegion *destination, bool cycle);
  */
 export function uploadToGpuBuffer(
     copy_pass: Deno.PointerValue<"SDL_GPUCopyPass">,
@@ -2261,7 +2285,7 @@ export function uploadToGpuBuffer(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3920 void SDL_CopyGPUTextureToTexture(SDL_GPUCopyPass *copy_pass, const SDL_GPUTextureLocation *source, const SDL_GPUTextureLocation *destination, Uint32 w, Uint32 h, Uint32 d, bool cycle);
+ * @from SDL_gpu.h:3948 void SDL_CopyGPUTextureToTexture(SDL_GPUCopyPass *copy_pass, const SDL_GPUTextureLocation *source, const SDL_GPUTextureLocation *destination, Uint32 w, Uint32 h, Uint32 d, bool cycle);
  */
 export function copyGpuTextureToTexture(
     copy_pass: Deno.PointerValue<"SDL_GPUCopyPass">,
@@ -2290,7 +2314,7 @@ export function copyGpuTextureToTexture(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3944 void SDL_CopyGPUBufferToBuffer(SDL_GPUCopyPass *copy_pass, const SDL_GPUBufferLocation *source, const SDL_GPUBufferLocation *destination, Uint32 size, bool cycle);
+ * @from SDL_gpu.h:3972 void SDL_CopyGPUBufferToBuffer(SDL_GPUCopyPass *copy_pass, const SDL_GPUBufferLocation *source, const SDL_GPUBufferLocation *destination, Uint32 size, bool cycle);
  */
 export function copyGpuBufferToBuffer(
     copy_pass: Deno.PointerValue<"SDL_GPUCopyPass">,
@@ -2315,7 +2339,7 @@ export function copyGpuBufferToBuffer(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3964 void SDL_DownloadFromGPUTexture(SDL_GPUCopyPass *copy_pass, const SDL_GPUTextureRegion *source, const SDL_GPUTextureTransferInfo *destination);
+ * @from SDL_gpu.h:3992 void SDL_DownloadFromGPUTexture(SDL_GPUCopyPass *copy_pass, const SDL_GPUTextureRegion *source, const SDL_GPUTextureTransferInfo *destination);
  */
 export function downloadFromGpuTexture(copy_pass: Deno.PointerValue<"SDL_GPUCopyPass">, source: Deno.PointerValue<"SDL_GPUTextureRegion">, destination: Deno.PointerValue<"SDL_GPUTextureTransferInfo">): void {
   return lib.symbols.SDL_DownloadFromGPUTexture(copy_pass, source, destination);
@@ -2333,7 +2357,7 @@ export function downloadFromGpuTexture(copy_pass: Deno.PointerValue<"SDL_GPUCopy
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3981 void SDL_DownloadFromGPUBuffer(SDL_GPUCopyPass *copy_pass, const SDL_GPUBufferRegion *source, const SDL_GPUTransferBufferLocation *destination);
+ * @from SDL_gpu.h:4009 void SDL_DownloadFromGPUBuffer(SDL_GPUCopyPass *copy_pass, const SDL_GPUBufferRegion *source, const SDL_GPUTransferBufferLocation *destination);
  */
 export function downloadFromGpuBuffer(copy_pass: Deno.PointerValue<"SDL_GPUCopyPass">, source: Deno.PointerValue<"SDL_GPUBufferRegion">, destination: Deno.PointerValue<"SDL_GPUTransferBufferLocation">): void {
   return lib.symbols.SDL_DownloadFromGPUBuffer(copy_pass, source, destination);
@@ -2346,7 +2370,7 @@ export function downloadFromGpuBuffer(copy_pass: Deno.PointerValue<"SDL_GPUCopyP
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3993 void SDL_EndGPUCopyPass(SDL_GPUCopyPass *copy_pass);
+ * @from SDL_gpu.h:4021 void SDL_EndGPUCopyPass(SDL_GPUCopyPass *copy_pass);
  */
 export function endGpuCopyPass(copy_pass: Deno.PointerValue<"SDL_GPUCopyPass">): void {
   return lib.symbols.SDL_EndGPUCopyPass(copy_pass);
@@ -2362,7 +2386,7 @@ export function endGpuCopyPass(copy_pass: Deno.PointerValue<"SDL_GPUCopyPass">):
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:4006 void SDL_GenerateMipmapsForGPUTexture(SDL_GPUCommandBuffer *command_buffer, SDL_GPUTexture *texture);
+ * @from SDL_gpu.h:4034 void SDL_GenerateMipmapsForGPUTexture(SDL_GPUCommandBuffer *command_buffer, SDL_GPUTexture *texture);
  */
 export function generateMipmapsForGpuTexture(command_buffer: Deno.PointerValue<"SDL_GPUCommandBuffer">, texture: Deno.PointerValue<"SDL_GPUTexture">): void {
   return lib.symbols.SDL_GenerateMipmapsForGPUTexture(command_buffer, texture);
@@ -2378,7 +2402,7 @@ export function generateMipmapsForGpuTexture(command_buffer: Deno.PointerValue<"
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:4020 void SDL_BlitGPUTexture(SDL_GPUCommandBuffer *command_buffer, const SDL_GPUBlitInfo *info);
+ * @from SDL_gpu.h:4048 void SDL_BlitGPUTexture(SDL_GPUCommandBuffer *command_buffer, const SDL_GPUBlitInfo *info);
  */
 export function blitGpuTexture(command_buffer: Deno.PointerValue<"SDL_GPUCommandBuffer">, info: Deno.PointerValue<"SDL_GPUBlitInfo">): void {
   return lib.symbols.SDL_BlitGPUTexture(command_buffer, info);
@@ -2398,7 +2422,7 @@ export function blitGpuTexture(command_buffer: Deno.PointerValue<"SDL_GPUCommand
  *
  * @sa SDL_ClaimWindowForGPUDevice
  *
- * @from SDL_gpu.h:4040 bool SDL_WindowSupportsGPUSwapchainComposition(SDL_GPUDevice *device, SDL_Window *window, SDL_GPUSwapchainComposition swapchain_composition);
+ * @from SDL_gpu.h:4068 bool SDL_WindowSupportsGPUSwapchainComposition(SDL_GPUDevice *device, SDL_Window *window, SDL_GPUSwapchainComposition swapchain_composition);
  */
 export function windowSupportsGpuSwapchainComposition(device: Deno.PointerValue<"SDL_GPUDevice">, window: Deno.PointerValue<"SDL_Window">, swapchain_composition: number): boolean {
   return lib.symbols.SDL_WindowSupportsGPUSwapchainComposition(device, window, swapchain_composition);
@@ -2418,7 +2442,7 @@ export function windowSupportsGpuSwapchainComposition(device: Deno.PointerValue<
  *
  * @sa SDL_ClaimWindowForGPUDevice
  *
- * @from SDL_gpu.h:4059 bool SDL_WindowSupportsGPUPresentMode(SDL_GPUDevice *device, SDL_Window *window, SDL_GPUPresentMode present_mode);
+ * @from SDL_gpu.h:4087 bool SDL_WindowSupportsGPUPresentMode(SDL_GPUDevice *device, SDL_Window *window, SDL_GPUPresentMode present_mode);
  */
 export function windowSupportsGpuPresentMode(device: Deno.PointerValue<"SDL_GPUDevice">, window: Deno.PointerValue<"SDL_Window">, present_mode: number): boolean {
   return lib.symbols.SDL_WindowSupportsGPUPresentMode(device, window, present_mode);
@@ -2451,7 +2475,7 @@ export function windowSupportsGpuPresentMode(device: Deno.PointerValue<"SDL_GPUD
  * @sa SDL_WindowSupportsGPUPresentMode
  * @sa SDL_WindowSupportsGPUSwapchainComposition
  *
- * @from SDL_gpu.h:4091 bool SDL_ClaimWindowForGPUDevice(SDL_GPUDevice *device, SDL_Window *window);
+ * @from SDL_gpu.h:4119 bool SDL_ClaimWindowForGPUDevice(SDL_GPUDevice *device, SDL_Window *window);
  */
 export function claimWindowForGpuDevice(device: Deno.PointerValue<"SDL_GPUDevice">, window: Deno.PointerValue<"SDL_Window">): boolean {
   return lib.symbols.SDL_ClaimWindowForGPUDevice(device, window);
@@ -2467,7 +2491,7 @@ export function claimWindowForGpuDevice(device: Deno.PointerValue<"SDL_GPUDevice
  *
  * @sa SDL_ClaimWindowForGPUDevice
  *
- * @from SDL_gpu.h:4105 void SDL_ReleaseWindowFromGPUDevice(SDL_GPUDevice *device, SDL_Window *window);
+ * @from SDL_gpu.h:4133 void SDL_ReleaseWindowFromGPUDevice(SDL_GPUDevice *device, SDL_Window *window);
  */
 export function releaseWindowFromGpuDevice(device: Deno.PointerValue<"SDL_GPUDevice">, window: Deno.PointerValue<"SDL_Window">): void {
   return lib.symbols.SDL_ReleaseWindowFromGPUDevice(device, window);
@@ -2496,7 +2520,7 @@ export function releaseWindowFromGpuDevice(device: Deno.PointerValue<"SDL_GPUDev
  * @sa SDL_WindowSupportsGPUPresentMode
  * @sa SDL_WindowSupportsGPUSwapchainComposition
  *
- * @from SDL_gpu.h:4132 bool SDL_SetGPUSwapchainParameters(SDL_GPUDevice *device, SDL_Window *window, SDL_GPUSwapchainComposition swapchain_composition, SDL_GPUPresentMode present_mode);
+ * @from SDL_gpu.h:4160 bool SDL_SetGPUSwapchainParameters(SDL_GPUDevice *device, SDL_Window *window, SDL_GPUSwapchainComposition swapchain_composition, SDL_GPUPresentMode present_mode);
  */
 export function setGpuSwapchainParameters(
     device: Deno.PointerValue<"SDL_GPUDevice">,
@@ -2532,7 +2556,7 @@ export function setGpuSwapchainParameters(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:4163 bool SDL_SetGPUAllowedFramesInFlight(SDL_GPUDevice *device, Uint32 allowed_frames_in_flight);
+ * @from SDL_gpu.h:4191 bool SDL_SetGPUAllowedFramesInFlight(SDL_GPUDevice *device, Uint32 allowed_frames_in_flight);
  */
 export function setGpuAllowedFramesInFlight(device: Deno.PointerValue<"SDL_GPUDevice">, allowed_frames_in_flight: number): boolean {
   return lib.symbols.SDL_SetGPUAllowedFramesInFlight(device, allowed_frames_in_flight);
@@ -2549,7 +2573,7 @@ export function setGpuAllowedFramesInFlight(device: Deno.PointerValue<"SDL_GPUDe
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:4178 SDL_GPUTextureFormat SDL_GetGPUSwapchainTextureFormat(SDL_GPUDevice *device, SDL_Window *window);
+ * @from SDL_gpu.h:4206 SDL_GPUTextureFormat SDL_GetGPUSwapchainTextureFormat(SDL_GPUDevice *device, SDL_Window *window);
  */
 export function getGpuSwapchainTextureFormat(device: Deno.PointerValue<"SDL_GPUDevice">, window: Deno.PointerValue<"SDL_Window">): number {
   return lib.symbols.SDL_GetGPUSwapchainTextureFormat(device, window);
@@ -2603,7 +2627,7 @@ export function getGpuSwapchainTextureFormat(device: Deno.PointerValue<"SDL_GPUD
  * @sa SDL_WaitAndAcquireGPUSwapchainTexture
  * @sa SDL_SetGPUAllowedFramesInFlight
  *
- * @from SDL_gpu.h:4230 bool SDL_AcquireGPUSwapchainTexture(SDL_GPUCommandBuffer *command_buffer, SDL_Window *window, SDL_GPUTexture **swapchain_texture, Uint32 *swapchain_texture_width, Uint32 *swapchain_texture_height);
+ * @from SDL_gpu.h:4258 bool SDL_AcquireGPUSwapchainTexture(SDL_GPUCommandBuffer *command_buffer, SDL_Window *window, SDL_GPUTexture **swapchain_texture, Uint32 *swapchain_texture_width, Uint32 *swapchain_texture_height);
  */
 export function acquireGpuSwapchainTexture(command_buffer: Deno.PointerValue<"SDL_GPUCommandBuffer">, window: Deno.PointerValue<"SDL_Window">): { swapchain_texture: Deno.PointerValue<"SDL_GPUTexture">; swapchain_texture_width: number; swapchain_texture_height: number } {
   if(!lib.symbols.SDL_AcquireGPUSwapchainTexture(command_buffer, window, _p.ptr.p0, _p.u32.p0, _p.u32.p1))
@@ -2628,7 +2652,7 @@ export function acquireGpuSwapchainTexture(command_buffer: Deno.PointerValue<"SD
  * @sa SDL_WaitAndAcquireGPUSwapchainTexture
  * @sa SDL_SetGPUAllowedFramesInFlight
  *
- * @from SDL_gpu.h:4254 bool SDL_WaitForGPUSwapchain(SDL_GPUDevice *device, SDL_Window *window);
+ * @from SDL_gpu.h:4282 bool SDL_WaitForGPUSwapchain(SDL_GPUDevice *device, SDL_Window *window);
  */
 export function waitForGpuSwapchain(device: Deno.PointerValue<"SDL_GPUDevice">, window: Deno.PointerValue<"SDL_Window">): boolean {
   return lib.symbols.SDL_WaitForGPUSwapchain(device, window);
@@ -2676,7 +2700,7 @@ export function waitForGpuSwapchain(device: Deno.PointerValue<"SDL_GPUDevice">, 
  * @sa SDL_SubmitGPUCommandBufferAndAcquireFence
  * @sa SDL_AcquireGPUSwapchainTexture
  *
- * @from SDL_gpu.h:4300 bool SDL_WaitAndAcquireGPUSwapchainTexture(SDL_GPUCommandBuffer *command_buffer, SDL_Window *window, SDL_GPUTexture **swapchain_texture, Uint32 *swapchain_texture_width, Uint32 *swapchain_texture_height);
+ * @from SDL_gpu.h:4328 bool SDL_WaitAndAcquireGPUSwapchainTexture(SDL_GPUCommandBuffer *command_buffer, SDL_Window *window, SDL_GPUTexture **swapchain_texture, Uint32 *swapchain_texture_width, Uint32 *swapchain_texture_height);
  */
 export function waitAndAcquireGpuSwapchainTexture(command_buffer: Deno.PointerValue<"SDL_GPUCommandBuffer">, window: Deno.PointerValue<"SDL_Window">): { swapchain_texture: Deno.PointerValue<"SDL_GPUTexture">; swapchain_texture_width: number; swapchain_texture_height: number } {
   if(!lib.symbols.SDL_WaitAndAcquireGPUSwapchainTexture(command_buffer, window, _p.ptr.p0, _p.u32.p0, _p.u32.p1))
@@ -2705,7 +2729,7 @@ export function waitAndAcquireGpuSwapchainTexture(command_buffer: Deno.PointerVa
  * @sa SDL_AcquireGPUSwapchainTexture
  * @sa SDL_SubmitGPUCommandBufferAndAcquireFence
  *
- * @from SDL_gpu.h:4328 bool SDL_SubmitGPUCommandBuffer(SDL_GPUCommandBuffer *command_buffer);
+ * @from SDL_gpu.h:4356 bool SDL_SubmitGPUCommandBuffer(SDL_GPUCommandBuffer *command_buffer);
  */
 export function submitGpuCommandBuffer(command_buffer: Deno.PointerValue<"SDL_GPUCommandBuffer">): boolean {
   return lib.symbols.SDL_SubmitGPUCommandBuffer(command_buffer);
@@ -2735,7 +2759,7 @@ export function submitGpuCommandBuffer(command_buffer: Deno.PointerValue<"SDL_GP
  * @sa SDL_SubmitGPUCommandBuffer
  * @sa SDL_ReleaseGPUFence
  *
- * @from SDL_gpu.h:4355 SDL_GPUFence * SDL_SubmitGPUCommandBufferAndAcquireFence(SDL_GPUCommandBuffer *command_buffer);
+ * @from SDL_gpu.h:4383 SDL_GPUFence * SDL_SubmitGPUCommandBufferAndAcquireFence(SDL_GPUCommandBuffer *command_buffer);
  */
 export function submitGpuCommandBufferAndAcquireFence(command_buffer: Deno.PointerValue<"SDL_GPUCommandBuffer">): Deno.PointerValue<"SDL_GPUFence"> {
   return lib.symbols.SDL_SubmitGPUCommandBufferAndAcquireFence(command_buffer) as Deno.PointerValue<"SDL_GPUFence">;
@@ -2763,7 +2787,7 @@ export function submitGpuCommandBufferAndAcquireFence(command_buffer: Deno.Point
  * @sa SDL_AcquireGPUCommandBuffer
  * @sa SDL_AcquireGPUSwapchainTexture
  *
- * @from SDL_gpu.h:4380 bool SDL_CancelGPUCommandBuffer(SDL_GPUCommandBuffer *command_buffer);
+ * @from SDL_gpu.h:4408 bool SDL_CancelGPUCommandBuffer(SDL_GPUCommandBuffer *command_buffer);
  */
 export function cancelGpuCommandBuffer(command_buffer: Deno.PointerValue<"SDL_GPUCommandBuffer">): boolean {
   return lib.symbols.SDL_CancelGPUCommandBuffer(command_buffer);
@@ -2780,7 +2804,7 @@ export function cancelGpuCommandBuffer(command_buffer: Deno.PointerValue<"SDL_GP
  *
  * @sa SDL_WaitForGPUFences
  *
- * @from SDL_gpu.h:4394 bool SDL_WaitForGPUIdle(SDL_GPUDevice *device);
+ * @from SDL_gpu.h:4422 bool SDL_WaitForGPUIdle(SDL_GPUDevice *device);
  */
 export function waitForGpuIdle(device: Deno.PointerValue<"SDL_GPUDevice">): boolean {
   return lib.symbols.SDL_WaitForGPUIdle(device);
@@ -2802,7 +2826,7 @@ export function waitForGpuIdle(device: Deno.PointerValue<"SDL_GPUDevice">): bool
  * @sa SDL_SubmitGPUCommandBufferAndAcquireFence
  * @sa SDL_WaitForGPUIdle
  *
- * @from SDL_gpu.h:4413 bool SDL_WaitForGPUFences(SDL_GPUDevice *device, bool wait_all, SDL_GPUFence *const *fences, Uint32 num_fences);
+ * @from SDL_gpu.h:4441 bool SDL_WaitForGPUFences(SDL_GPUDevice *device, bool wait_all, SDL_GPUFence *const *fences, Uint32 num_fences);
  */
 export function waitForGpuFences(
     device: Deno.PointerValue<"SDL_GPUDevice">,
@@ -2824,7 +2848,7 @@ export function waitForGpuFences(
  *
  * @sa SDL_SubmitGPUCommandBufferAndAcquireFence
  *
- * @from SDL_gpu.h:4430 bool SDL_QueryGPUFence(SDL_GPUDevice *device, SDL_GPUFence *fence);
+ * @from SDL_gpu.h:4458 bool SDL_QueryGPUFence(SDL_GPUDevice *device, SDL_GPUFence *fence);
  */
 export function queryGpuFence(device: Deno.PointerValue<"SDL_GPUDevice">, fence: Deno.PointerValue<"SDL_GPUFence">): boolean {
   return lib.symbols.SDL_QueryGPUFence(device, fence);
@@ -2842,7 +2866,7 @@ export function queryGpuFence(device: Deno.PointerValue<"SDL_GPUDevice">, fence:
  *
  * @sa SDL_SubmitGPUCommandBufferAndAcquireFence
  *
- * @from SDL_gpu.h:4446 void SDL_ReleaseGPUFence(SDL_GPUDevice *device, SDL_GPUFence *fence);
+ * @from SDL_gpu.h:4474 void SDL_ReleaseGPUFence(SDL_GPUDevice *device, SDL_GPUFence *fence);
  */
 export function releaseGpuFence(device: Deno.PointerValue<"SDL_GPUDevice">, fence: Deno.PointerValue<"SDL_GPUFence">): void {
   return lib.symbols.SDL_ReleaseGPUFence(device, fence);
@@ -2858,7 +2882,7 @@ export function releaseGpuFence(device: Deno.PointerValue<"SDL_GPUDevice">, fenc
  *
  * @sa SDL_UploadToGPUTexture
  *
- * @from SDL_gpu.h:4462 Uint32 SDL_GPUTextureFormatTexelBlockSize(SDL_GPUTextureFormat format);
+ * @from SDL_gpu.h:4490 Uint32 SDL_GPUTextureFormatTexelBlockSize(SDL_GPUTextureFormat format);
  */
 export function gpuTextureFormatTexelBlockSize(format: number): number {
   return lib.symbols.SDL_GPUTextureFormatTexelBlockSize(format);
@@ -2876,7 +2900,7 @@ export function gpuTextureFormatTexelBlockSize(format: number): number {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:4477 bool SDL_GPUTextureSupportsFormat(SDL_GPUDevice *device, SDL_GPUTextureFormat format, SDL_GPUTextureType type, SDL_GPUTextureUsageFlags usage);
+ * @from SDL_gpu.h:4505 bool SDL_GPUTextureSupportsFormat(SDL_GPUDevice *device, SDL_GPUTextureFormat format, SDL_GPUTextureType type, SDL_GPUTextureUsageFlags usage);
  */
 export function gpuTextureSupportsFormat(
     device: Deno.PointerValue<"SDL_GPUDevice">,
@@ -2897,7 +2921,7 @@ export function gpuTextureSupportsFormat(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:4493 bool SDL_GPUTextureSupportsSampleCount(SDL_GPUDevice *device, SDL_GPUTextureFormat format, SDL_GPUSampleCount sample_count);
+ * @from SDL_gpu.h:4521 bool SDL_GPUTextureSupportsSampleCount(SDL_GPUDevice *device, SDL_GPUTextureFormat format, SDL_GPUSampleCount sample_count);
  */
 export function gpuTextureSupportsSampleCount(device: Deno.PointerValue<"SDL_GPUDevice">, format: number, sample_count: number): boolean {
   return lib.symbols.SDL_GPUTextureSupportsSampleCount(device, format, sample_count);
@@ -2914,7 +2938,7 @@ export function gpuTextureSupportsSampleCount(device: Deno.PointerValue<"SDL_GPU
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:4509 Uint32 SDL_CalculateGPUTextureFormatSize(SDL_GPUTextureFormat format, Uint32 width, Uint32 height, Uint32 depth_or_layer_count);
+ * @from SDL_gpu.h:4537 Uint32 SDL_CalculateGPUTextureFormatSize(SDL_GPUTextureFormat format, Uint32 width, Uint32 height, Uint32 depth_or_layer_count);
  */
 export function calculateGpuTextureFormatSize(
     format: number,
@@ -2934,7 +2958,7 @@ export function calculateGpuTextureFormatSize(
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @from SDL_gpu.h:4524 SDL_PixelFormat SDL_GetPixelFormatFromGPUTextureFormat(SDL_GPUTextureFormat format);
+ * @from SDL_gpu.h:4552 SDL_PixelFormat SDL_GetPixelFormatFromGPUTextureFormat(SDL_GPUTextureFormat format);
  */
 export function getPixelFormatFromGpuTextureFormat(format: number): number {
   return lib.symbols.SDL_GetPixelFormatFromGPUTextureFormat(format);
@@ -2950,7 +2974,7 @@ export function getPixelFormatFromGpuTextureFormat(format: number): number {
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @from SDL_gpu.h:4536 SDL_GPUTextureFormat SDL_GetGPUTextureFormatFromPixelFormat(SDL_PixelFormat format);
+ * @from SDL_gpu.h:4564 SDL_GPUTextureFormat SDL_GetGPUTextureFormatFromPixelFormat(SDL_PixelFormat format);
  */
 export function getGpuTextureFormatFromPixelFormat(format: number): number {
   return lib.symbols.SDL_GetGPUTextureFormatFromPixelFormat(format);
@@ -2969,8 +2993,8 @@ export function getGpuTextureFormatFromPixelFormat(format: number): number {
  *
  * @sa SDL_AddEventWatch
  *
- * @from SDL_gpu.h:4553 void SDL_GDKSuspendGPU(SDL_GPUDevice *device);
- * @platformSpecific GDK SDL_gpu.h:4538 #ifdef SDL_PLATFORM_GDK
+ * @from SDL_gpu.h:4581 void SDL_GDKSuspendGPU(SDL_GPUDevice *device);
+ * @platformSpecific GDK SDL_gpu.h:4566 #ifdef SDL_PLATFORM_GDK
  */
 export function gdkSuspendGpu(device: Deno.PointerValue<"SDL_GPUDevice">): void {
   if (!lib.symbols.SDL_GDKSuspendGPU) throw new Error(`SDL_GDKSuspendGPU is unavailable in this platform`);
@@ -2990,8 +3014,8 @@ export function gdkSuspendGpu(device: Deno.PointerValue<"SDL_GPUDevice">): void 
  *
  * @sa SDL_AddEventWatch
  *
- * @from SDL_gpu.h:4568 void SDL_GDKResumeGPU(SDL_GPUDevice *device);
- * @platformSpecific GDK SDL_gpu.h:4538 #ifdef SDL_PLATFORM_GDK
+ * @from SDL_gpu.h:4596 void SDL_GDKResumeGPU(SDL_GPUDevice *device);
+ * @platformSpecific GDK SDL_gpu.h:4566 #ifdef SDL_PLATFORM_GDK
  */
 export function gdkResumeGpu(device: Deno.PointerValue<"SDL_GPUDevice">): void {
   if (!lib.symbols.SDL_GDKResumeGPU) throw new Error(`SDL_GDKResumeGPU is unavailable in this platform`);

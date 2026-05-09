@@ -56,7 +56,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -233,7 +233,7 @@ export function hasPrimarySelectionText(): boolean {
  * @sa SDL_GetClipboardData
  * @sa SDL_HasClipboardData
  *
- * @from SDL_clipboard.h:254 bool SDL_SetClipboardData(SDL_ClipboardDataCallback callback, SDL_ClipboardCleanupCallback cleanup, void *userdata, const char **mime_types, size_t num_mime_types);
+ * @from SDL_clipboard.h:254 bool SDL_SetClipboardData(SDL_ClipboardDataCallback callback, SDL_ClipboardCleanupCallback cleanup, void *userdata, const char *const *mime_types, size_t num_mime_types);
  */
 export function setClipboardData(
     callback: Deno.PointerValue,

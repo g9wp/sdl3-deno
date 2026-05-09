@@ -17,7 +17,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -41,7 +41,7 @@
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @from SDL_hints.h:4645 SDL_HINT_
+ * @from SDL_hints.h:4769 SDL_HINT_
  */
 export enum SDL_HintPriority {
   DEFAULT, 

@@ -24,7 +24,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -55,7 +55,7 @@ import * as _b from "../_structs/SDL_filesystem.ts";
  * @sa SDL_GetPathInfo
  * @sa SDL_GetStoragePathInfo
  *
- * @from SDL_filesystem.h:267
+ * @from SDL_filesystem.h:266
  */
 export interface PathInfo {
   type: number; /**< SDL_PathType : the path type */

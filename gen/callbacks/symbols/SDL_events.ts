@@ -32,7 +32,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -71,7 +71,7 @@ export const symbols = {
  * @sa SDL_SetEventFilter
  * @sa SDL_AddEventWatch
  *
- * @from SDL_events.h:1414 typedef bool (*SDL_EventFilter)(void *userdata, SDL_Event *event);
+ * @from SDL_events.h:1412 typedef bool (*SDL_EventFilter)(void *userdata, SDL_Event *event);
  */
 SDL_EventFilter: {
       parameters: ["pointer", "pointer"],
@@ -100,7 +100,7 @@ SDL_EventFilter: {
  * @sa SDL_SetEventFilter
  * @sa SDL_AddEventWatch
  *
- * @from SDL_events.h:1414 typedef bool (*SDL_EventFilter)(void *userdata, SDL_Event *event);
+ * @from SDL_events.h:1412 typedef bool (*SDL_EventFilter)(void *userdata, SDL_Event *event);
  */
 export function EventFilter(cb: (
     userdata: Deno.PointerValue, 

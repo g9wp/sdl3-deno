@@ -9,7 +9,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -46,9 +46,11 @@ import * as _p from "@g9wp/ptr";
  * @returns the name of the platform. If the correct platform name is not
  *          available, returns a string beginning with the text "Unknown".
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_platform.h:55 const char * SDL_GetPlatform(void);
+ * @from SDL_platform.h:57 const char * SDL_GetPlatform(void);
  */
 export function getPlatform(): string {
   return _p.getCstr2(lib.symbols.SDL_GetPlatform());

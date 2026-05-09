@@ -30,7 +30,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -132,7 +132,7 @@ export function write_Texture(t: Texture, dt: DataView) {
  *
  * @sa SDL_CreateGPURenderState
  *
- * @from SDL_render.h:2920
+ * @from SDL_render.h:2922
  */
 export interface GPURenderStateCreateInfo {
   fragment_shader: Deno.PointerValue; /**< SDL_GPUShader * : The fragment shader to use when this render state is active */

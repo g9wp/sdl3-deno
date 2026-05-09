@@ -21,7 +21,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -41,7 +41,7 @@
 */
 
 /**
- * @from SDL_thread:283 SDL_PROP_THREAD_CREATE_
+ * @from SDL_thread:287 SDL_PROP_THREAD_CREATE_
  */
 export enum PROP_THREAD_CREATE {
   ENTRY_FUNCTION_POINTER = "SDL.thread.create.entry_function", 

@@ -367,7 +367,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -402,7 +402,7 @@ export const symbols = {
  *
  * @sa SDL_CreateGPUDevice
  *
- * @from SDL_gpu.h:2198 bool SDL_GPUSupportsShaderFormats(SDL_GPUShaderFormat format_flags, const char *name);
+ * @from SDL_gpu.h:2199 bool SDL_GPUSupportsShaderFormats(SDL_GPUShaderFormat format_flags, const char *name);
  */
 SDL_GPUSupportsShaderFormats: {
       parameters: ["u32", "pointer"],
@@ -420,7 +420,7 @@ SDL_GPUSupportsShaderFormats: {
  *
  * @sa SDL_CreateGPUDeviceWithProperties
  *
- * @from SDL_gpu.h:2212 bool SDL_GPUSupportsProperties(SDL_PropertiesID props);
+ * @from SDL_gpu.h:2213 bool SDL_GPUSupportsProperties(SDL_PropertiesID props);
  */
 SDL_GPUSupportsProperties: {
       parameters: ["u32"],
@@ -454,7 +454,7 @@ SDL_GPUSupportsProperties: {
  * @sa SDL_DestroyGPUDevice
  * @sa SDL_GPUSupportsShaderFormats
  *
- * @from SDL_gpu.h:2241 SDL_GPUDevice * SDL_CreateGPUDevice(SDL_GPUShaderFormat format_flags, bool debug_mode, const char *name);
+ * @from SDL_gpu.h:2242 SDL_GPUDevice * SDL_CreateGPUDevice(SDL_GPUShaderFormat format_flags, bool debug_mode, const char *name);
  */
 SDL_CreateGPUDevice: {
       parameters: ["u32", "bool", "pointer"],
@@ -524,6 +524,21 @@ SDL_CreateGPUDevice: {
  *   useful for targeting Intel Haswell and Broadwell GPUs; other hardware
  *   either supports Tier 2 Resource Binding or does not support D3D12 in any
  *   capacity. Defaults to false.
+ * - `SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER`: Certain
+ *   feature checks are only possible on Windows 11 by default. By setting
+ *   this alongside `SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_PATH_STRING`
+ *   and vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make
+ *   those feature checks possible on older platforms. The version you provide
+ *   must match the one given in the DLL.
+ * - `SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_PATH_STRING`: Certain
+ *   feature checks are only possible on Windows 11 by default. By setting
+ *   this alongside
+ *   `SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER` and
+ *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
+ *   feature checks possible on older platforms. The path you provide must be
+ *   relative to the executable path of your app. Be sure not to put the DLL
+ *   in the same directory as the exe; Microsoft strongly advises against
+ *   this!
  *
  * With the Vulkan backend:
  *
@@ -539,6 +554,15 @@ SDL_CreateGPUDevice: {
  *   increasing the API version and opting into extensions aside from the
  *   minimal set SDL requires.
  *
+ * With the Metal backend: -
+ * `SDL_PROP_GPU_DEVICE_CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN`: By default,
+ * macOS support requires what Apple calls "MTLGPUFamilyMac2" hardware or
+ * newer. However, an application can set this property to true to enable
+ * support for "MTLGPUFamilyMac1" hardware, if (and only if) the application
+ * does not write to sRGB textures. (For history's sake: MacFamily1 also does
+ * not support indirect command buffers, MSAA depth resolve, and stencil
+ * resolve/feedback, but these are not exposed features in SDL_GPU.)
+ *
  * @param props the properties to use.
  * @returns a GPU context on success or NULL on failure; call SDL_GetError()
  *          for more information.
@@ -550,7 +574,7 @@ SDL_CreateGPUDevice: {
  * @sa SDL_DestroyGPUDevice
  * @sa SDL_GPUSupportsProperties
  *
- * @from SDL_gpu.h:2334 SDL_GPUDevice * SDL_CreateGPUDeviceWithProperties(SDL_PropertiesID props);
+ * @from SDL_gpu.h:2359 SDL_GPUDevice * SDL_CreateGPUDeviceWithProperties(SDL_PropertiesID props);
  */
 SDL_CreateGPUDeviceWithProperties: {
       parameters: ["u32"],
@@ -567,7 +591,7 @@ SDL_CreateGPUDeviceWithProperties: {
  *
  * @sa SDL_CreateGPUDevice
  *
- * @from SDL_gpu.h:2393 void SDL_DestroyGPUDevice(SDL_GPUDevice *device);
+ * @from SDL_gpu.h:2421 void SDL_DestroyGPUDevice(SDL_GPUDevice *device);
  */
 SDL_DestroyGPUDevice: {
       parameters: ["pointer"],
@@ -584,7 +608,7 @@ SDL_DestroyGPUDevice: {
  *
  * @sa SDL_GetGPUDriver
  *
- * @from SDL_gpu.h:2404 int SDL_GetNumGPUDrivers(void);
+ * @from SDL_gpu.h:2432 int SDL_GetNumGPUDrivers(void);
  */
 SDL_GetNumGPUDrivers: {
       parameters: [],
@@ -609,7 +633,7 @@ SDL_GetNumGPUDrivers: {
  *
  * @sa SDL_GetNumGPUDrivers
  *
- * @from SDL_gpu.h:2423 const char * SDL_GetGPUDriver(int index);
+ * @from SDL_gpu.h:2451 const char * SDL_GetGPUDriver(int index);
  */
 SDL_GetGPUDriver: {
       parameters: ["i32"],
@@ -625,7 +649,7 @@ SDL_GetGPUDriver: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:2433 const char * SDL_GetGPUDeviceDriver(SDL_GPUDevice *device);
+ * @from SDL_gpu.h:2461 const char * SDL_GetGPUDeviceDriver(SDL_GPUDevice *device);
  */
 SDL_GetGPUDeviceDriver: {
       parameters: ["pointer"],
@@ -642,7 +666,7 @@ SDL_GetGPUDeviceDriver: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:2444 SDL_GPUShaderFormat SDL_GetGPUShaderFormats(SDL_GPUDevice *device);
+ * @from SDL_gpu.h:2472 SDL_GPUShaderFormat SDL_GetGPUShaderFormats(SDL_GPUDevice *device);
  */
 SDL_GetGPUShaderFormats: {
       parameters: ["pointer"],
@@ -752,7 +776,7 @@ SDL_GetGPUShaderFormats: {
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @from SDL_gpu.h:2548 SDL_PropertiesID SDL_GetGPUDeviceProperties(SDL_GPUDevice *device);
+ * @from SDL_gpu.h:2576 SDL_PropertiesID SDL_GetGPUDeviceProperties(SDL_GPUDevice *device);
  */
 SDL_GetGPUDeviceProperties: {
       parameters: ["pointer"],
@@ -805,7 +829,7 @@ SDL_GetGPUDeviceProperties: {
  * @sa SDL_BindGPUComputePipeline
  * @sa SDL_ReleaseGPUComputePipeline
  *
- * @from SDL_gpu.h:2603 SDL_GPUComputePipeline * SDL_CreateGPUComputePipeline(SDL_GPUDevice *device, const SDL_GPUComputePipelineCreateInfo *createinfo);
+ * @from SDL_gpu.h:2631 SDL_GPUComputePipeline * SDL_CreateGPUComputePipeline(SDL_GPUDevice *device, const SDL_GPUComputePipelineCreateInfo *createinfo);
  */
 SDL_CreateGPUComputePipeline: {
       parameters: ["pointer", "pointer"],
@@ -834,7 +858,7 @@ SDL_CreateGPUComputePipeline: {
  * @sa SDL_BindGPUGraphicsPipeline
  * @sa SDL_ReleaseGPUGraphicsPipeline
  *
- * @from SDL_gpu.h:2630 SDL_GPUGraphicsPipeline * SDL_CreateGPUGraphicsPipeline(SDL_GPUDevice *device, const SDL_GPUGraphicsPipelineCreateInfo *createinfo);
+ * @from SDL_gpu.h:2658 SDL_GPUGraphicsPipeline * SDL_CreateGPUGraphicsPipeline(SDL_GPUDevice *device, const SDL_GPUGraphicsPipelineCreateInfo *createinfo);
  */
 SDL_CreateGPUGraphicsPipeline: {
       parameters: ["pointer", "pointer"],
@@ -863,7 +887,7 @@ SDL_CreateGPUGraphicsPipeline: {
  * @sa SDL_BindGPUFragmentSamplers
  * @sa SDL_ReleaseGPUSampler
  *
- * @from SDL_gpu.h:2657 SDL_GPUSampler * SDL_CreateGPUSampler(SDL_GPUDevice *device, const SDL_GPUSamplerCreateInfo *createinfo);
+ * @from SDL_gpu.h:2685 SDL_GPUSampler * SDL_CreateGPUSampler(SDL_GPUDevice *device, const SDL_GPUSamplerCreateInfo *createinfo);
  */
 SDL_CreateGPUSampler: {
       parameters: ["pointer", "pointer"],
@@ -944,7 +968,7 @@ SDL_CreateGPUSampler: {
  * @sa SDL_CreateGPUGraphicsPipeline
  * @sa SDL_ReleaseGPUShader
  *
- * @from SDL_gpu.h:2736 SDL_GPUShader * SDL_CreateGPUShader(SDL_GPUDevice *device, const SDL_GPUShaderCreateInfo *createinfo);
+ * @from SDL_gpu.h:2764 SDL_GPUShader * SDL_CreateGPUShader(SDL_GPUDevice *device, const SDL_GPUShaderCreateInfo *createinfo);
  */
 SDL_CreateGPUShader: {
       parameters: ["pointer", "pointer"],
@@ -1010,7 +1034,7 @@ SDL_CreateGPUShader: {
  * @sa SDL_ReleaseGPUTexture
  * @sa SDL_GPUTextureSupportsFormat
  *
- * @from SDL_gpu.h:2800 SDL_GPUTexture * SDL_CreateGPUTexture(SDL_GPUDevice *device, const SDL_GPUTextureCreateInfo *createinfo);
+ * @from SDL_gpu.h:2828 SDL_GPUTexture * SDL_CreateGPUTexture(SDL_GPUDevice *device, const SDL_GPUTextureCreateInfo *createinfo);
  */
 SDL_CreateGPUTexture: {
       parameters: ["pointer", "pointer"],
@@ -1062,7 +1086,7 @@ SDL_CreateGPUTexture: {
  * @sa SDL_DispatchGPUComputeIndirect
  * @sa SDL_ReleaseGPUBuffer
  *
- * @from SDL_gpu.h:2856 SDL_GPUBuffer * SDL_CreateGPUBuffer(SDL_GPUDevice *device, const SDL_GPUBufferCreateInfo *createinfo);
+ * @from SDL_gpu.h:2884 SDL_GPUBuffer * SDL_CreateGPUBuffer(SDL_GPUDevice *device, const SDL_GPUBufferCreateInfo *createinfo);
  */
 SDL_CreateGPUBuffer: {
       parameters: ["pointer", "pointer"],
@@ -1097,7 +1121,7 @@ SDL_CreateGPUBuffer: {
  * @sa SDL_DownloadFromGPUTexture
  * @sa SDL_ReleaseGPUTransferBuffer
  *
- * @from SDL_gpu.h:2889 SDL_GPUTransferBuffer * SDL_CreateGPUTransferBuffer(SDL_GPUDevice *device, const SDL_GPUTransferBufferCreateInfo *createinfo);
+ * @from SDL_gpu.h:2917 SDL_GPUTransferBuffer * SDL_CreateGPUTransferBuffer(SDL_GPUDevice *device, const SDL_GPUTransferBufferCreateInfo *createinfo);
  */
 SDL_CreateGPUTransferBuffer: {
       parameters: ["pointer", "pointer"],
@@ -1122,7 +1146,7 @@ SDL_CreateGPUTransferBuffer: {
  *
  * @sa SDL_CreateGPUBuffer
  *
- * @from SDL_gpu.h:2914 void SDL_SetGPUBufferName(SDL_GPUDevice *device, SDL_GPUBuffer *buffer, const char *text);
+ * @from SDL_gpu.h:2942 void SDL_SetGPUBufferName(SDL_GPUDevice *device, SDL_GPUBuffer *buffer, const char *text);
  */
 SDL_SetGPUBufferName: {
       parameters: ["pointer", "pointer", "pointer"],
@@ -1148,7 +1172,7 @@ SDL_SetGPUBufferName: {
  *
  * @sa SDL_CreateGPUTexture
  *
- * @from SDL_gpu.h:2937 void SDL_SetGPUTextureName(SDL_GPUDevice *device, SDL_GPUTexture *texture, const char *text);
+ * @from SDL_gpu.h:2965 void SDL_SetGPUTextureName(SDL_GPUDevice *device, SDL_GPUTexture *texture, const char *text);
  */
 SDL_SetGPUTextureName: {
       parameters: ["pointer", "pointer", "pointer"],
@@ -1172,7 +1196,7 @@ SDL_SetGPUTextureName: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:2958 void SDL_InsertGPUDebugLabel(SDL_GPUCommandBuffer *command_buffer, const char *text);
+ * @from SDL_gpu.h:2986 void SDL_InsertGPUDebugLabel(SDL_GPUCommandBuffer *command_buffer, const char *text);
  */
 SDL_InsertGPUDebugLabel: {
       parameters: ["pointer", "pointer"],
@@ -1206,7 +1230,7 @@ SDL_InsertGPUDebugLabel: {
  *
  * @sa SDL_PopGPUDebugGroup
  *
- * @from SDL_gpu.h:2988 void SDL_PushGPUDebugGroup(SDL_GPUCommandBuffer *command_buffer, const char *name);
+ * @from SDL_gpu.h:3016 void SDL_PushGPUDebugGroup(SDL_GPUCommandBuffer *command_buffer, const char *name);
  */
 SDL_PushGPUDebugGroup: {
       parameters: ["pointer", "pointer"],
@@ -1228,7 +1252,7 @@ SDL_PushGPUDebugGroup: {
  *
  * @sa SDL_PushGPUDebugGroup
  *
- * @from SDL_gpu.h:3006 void SDL_PopGPUDebugGroup(SDL_GPUCommandBuffer *command_buffer);
+ * @from SDL_gpu.h:3034 void SDL_PopGPUDebugGroup(SDL_GPUCommandBuffer *command_buffer);
  */
 SDL_PopGPUDebugGroup: {
       parameters: ["pointer"],
@@ -1246,7 +1270,7 @@ SDL_PopGPUDebugGroup: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3021 void SDL_ReleaseGPUTexture(SDL_GPUDevice *device, SDL_GPUTexture *texture);
+ * @from SDL_gpu.h:3049 void SDL_ReleaseGPUTexture(SDL_GPUDevice *device, SDL_GPUTexture *texture);
  */
 SDL_ReleaseGPUTexture: {
       parameters: ["pointer", "pointer"],
@@ -1264,7 +1288,7 @@ SDL_ReleaseGPUTexture: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3035 void SDL_ReleaseGPUSampler(SDL_GPUDevice *device, SDL_GPUSampler *sampler);
+ * @from SDL_gpu.h:3063 void SDL_ReleaseGPUSampler(SDL_GPUDevice *device, SDL_GPUSampler *sampler);
  */
 SDL_ReleaseGPUSampler: {
       parameters: ["pointer", "pointer"],
@@ -1282,7 +1306,7 @@ SDL_ReleaseGPUSampler: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3049 void SDL_ReleaseGPUBuffer(SDL_GPUDevice *device, SDL_GPUBuffer *buffer);
+ * @from SDL_gpu.h:3077 void SDL_ReleaseGPUBuffer(SDL_GPUDevice *device, SDL_GPUBuffer *buffer);
  */
 SDL_ReleaseGPUBuffer: {
       parameters: ["pointer", "pointer"],
@@ -1300,7 +1324,7 @@ SDL_ReleaseGPUBuffer: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3063 void SDL_ReleaseGPUTransferBuffer(SDL_GPUDevice *device, SDL_GPUTransferBuffer *transfer_buffer);
+ * @from SDL_gpu.h:3091 void SDL_ReleaseGPUTransferBuffer(SDL_GPUDevice *device, SDL_GPUTransferBuffer *transfer_buffer);
  */
 SDL_ReleaseGPUTransferBuffer: {
       parameters: ["pointer", "pointer"],
@@ -1318,7 +1342,7 @@ SDL_ReleaseGPUTransferBuffer: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3077 void SDL_ReleaseGPUComputePipeline(SDL_GPUDevice *device, SDL_GPUComputePipeline *compute_pipeline);
+ * @from SDL_gpu.h:3105 void SDL_ReleaseGPUComputePipeline(SDL_GPUDevice *device, SDL_GPUComputePipeline *compute_pipeline);
  */
 SDL_ReleaseGPUComputePipeline: {
       parameters: ["pointer", "pointer"],
@@ -1336,7 +1360,7 @@ SDL_ReleaseGPUComputePipeline: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3091 void SDL_ReleaseGPUShader(SDL_GPUDevice *device, SDL_GPUShader *shader);
+ * @from SDL_gpu.h:3119 void SDL_ReleaseGPUShader(SDL_GPUDevice *device, SDL_GPUShader *shader);
  */
 SDL_ReleaseGPUShader: {
       parameters: ["pointer", "pointer"],
@@ -1354,7 +1378,7 @@ SDL_ReleaseGPUShader: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3105 void SDL_ReleaseGPUGraphicsPipeline(SDL_GPUDevice *device, SDL_GPUGraphicsPipeline *graphics_pipeline);
+ * @from SDL_gpu.h:3133 void SDL_ReleaseGPUGraphicsPipeline(SDL_GPUDevice *device, SDL_GPUGraphicsPipeline *graphics_pipeline);
  */
 SDL_ReleaseGPUGraphicsPipeline: {
       parameters: ["pointer", "pointer"],
@@ -1386,7 +1410,7 @@ SDL_ReleaseGPUGraphicsPipeline: {
  * @sa SDL_SubmitGPUCommandBuffer
  * @sa SDL_SubmitGPUCommandBufferAndAcquireFence
  *
- * @from SDL_gpu.h:3133 SDL_GPUCommandBuffer * SDL_AcquireGPUCommandBuffer(SDL_GPUDevice *device);
+ * @from SDL_gpu.h:3161 SDL_GPUCommandBuffer * SDL_AcquireGPUCommandBuffer(SDL_GPUDevice *device);
  */
 SDL_AcquireGPUCommandBuffer: {
       parameters: ["pointer"],
@@ -1413,7 +1437,7 @@ SDL_AcquireGPUCommandBuffer: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3157 void SDL_PushGPUVertexUniformData(SDL_GPUCommandBuffer *command_buffer, Uint32 slot_index, const void *data, Uint32 length);
+ * @from SDL_gpu.h:3185 void SDL_PushGPUVertexUniformData(SDL_GPUCommandBuffer *command_buffer, Uint32 slot_index, const void *data, Uint32 length);
  */
 SDL_PushGPUVertexUniformData: {
       parameters: ["pointer", "u32", "pointer", "u32"],
@@ -1437,7 +1461,7 @@ SDL_PushGPUVertexUniformData: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3179 void SDL_PushGPUFragmentUniformData(SDL_GPUCommandBuffer *command_buffer, Uint32 slot_index, const void *data, Uint32 length);
+ * @from SDL_gpu.h:3207 void SDL_PushGPUFragmentUniformData(SDL_GPUCommandBuffer *command_buffer, Uint32 slot_index, const void *data, Uint32 length);
  */
 SDL_PushGPUFragmentUniformData: {
       parameters: ["pointer", "u32", "pointer", "u32"],
@@ -1461,7 +1485,7 @@ SDL_PushGPUFragmentUniformData: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3201 void SDL_PushGPUComputeUniformData(SDL_GPUCommandBuffer *command_buffer, Uint32 slot_index, const void *data, Uint32 length);
+ * @from SDL_gpu.h:3229 void SDL_PushGPUComputeUniformData(SDL_GPUCommandBuffer *command_buffer, Uint32 slot_index, const void *data, Uint32 length);
  */
 SDL_PushGPUComputeUniformData: {
       parameters: ["pointer", "u32", "pointer", "u32"],
@@ -1502,7 +1526,7 @@ SDL_PushGPUComputeUniformData: {
  *
  * @sa SDL_EndGPURenderPass
  *
- * @from SDL_gpu.h:3242 SDL_GPURenderPass * SDL_BeginGPURenderPass(SDL_GPUCommandBuffer *command_buffer, const SDL_GPUColorTargetInfo *color_target_infos, Uint32 num_color_targets, const SDL_GPUDepthStencilTargetInfo *depth_stencil_target_info);
+ * @from SDL_gpu.h:3270 SDL_GPURenderPass * SDL_BeginGPURenderPass(SDL_GPUCommandBuffer *command_buffer, const SDL_GPUColorTargetInfo *color_target_infos, Uint32 num_color_targets, const SDL_GPUDepthStencilTargetInfo *depth_stencil_target_info);
  */
 SDL_BeginGPURenderPass: {
       parameters: ["pointer", "pointer", "u32", "pointer"],
@@ -1520,7 +1544,7 @@ SDL_BeginGPURenderPass: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3258 void SDL_BindGPUGraphicsPipeline(SDL_GPURenderPass *render_pass, SDL_GPUGraphicsPipeline *graphics_pipeline);
+ * @from SDL_gpu.h:3286 void SDL_BindGPUGraphicsPipeline(SDL_GPURenderPass *render_pass, SDL_GPUGraphicsPipeline *graphics_pipeline);
  */
 SDL_BindGPUGraphicsPipeline: {
       parameters: ["pointer", "pointer"],
@@ -1536,7 +1560,7 @@ SDL_BindGPUGraphicsPipeline: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3270 void SDL_SetGPUViewport(SDL_GPURenderPass *render_pass, const SDL_GPUViewport *viewport);
+ * @from SDL_gpu.h:3298 void SDL_SetGPUViewport(SDL_GPURenderPass *render_pass, const SDL_GPUViewport *viewport);
  */
 SDL_SetGPUViewport: {
       parameters: ["pointer", "pointer"],
@@ -1552,7 +1576,7 @@ SDL_SetGPUViewport: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3282 void SDL_SetGPUScissor(SDL_GPURenderPass *render_pass, const SDL_Rect *scissor);
+ * @from SDL_gpu.h:3310 void SDL_SetGPUScissor(SDL_GPURenderPass *render_pass, const SDL_Rect *scissor);
  */
 SDL_SetGPUScissor: {
       parameters: ["pointer", "pointer"],
@@ -1568,7 +1592,7 @@ SDL_SetGPUScissor: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3309 void SDL_SetGPUStencilReference(SDL_GPURenderPass *render_pass, Uint8 reference);
+ * @from SDL_gpu.h:3337 void SDL_SetGPUStencilReference(SDL_GPURenderPass *render_pass, Uint8 reference);
  */
 SDL_SetGPUStencilReference: {
       parameters: ["pointer", "u8"],
@@ -1588,7 +1612,7 @@ SDL_SetGPUStencilReference: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3325 void SDL_BindGPUVertexBuffers(SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUBufferBinding *bindings, Uint32 num_bindings);
+ * @from SDL_gpu.h:3353 void SDL_BindGPUVertexBuffers(SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUBufferBinding *bindings, Uint32 num_bindings);
  */
 SDL_BindGPUVertexBuffers: {
       parameters: ["pointer", "u32", "pointer", "u32"],
@@ -1607,7 +1631,7 @@ SDL_BindGPUVertexBuffers: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3342 void SDL_BindGPUIndexBuffer(SDL_GPURenderPass *render_pass, const SDL_GPUBufferBinding *binding, SDL_GPUIndexElementSize index_element_size);
+ * @from SDL_gpu.h:3370 void SDL_BindGPUIndexBuffer(SDL_GPURenderPass *render_pass, const SDL_GPUBufferBinding *binding, SDL_GPUIndexElementSize index_element_size);
  */
 SDL_BindGPUIndexBuffer: {
       parameters: ["pointer", "pointer", "u32"],
@@ -1634,7 +1658,7 @@ SDL_BindGPUIndexBuffer: {
  *
  * @sa SDL_CreateGPUShader
  *
- * @from SDL_gpu.h:3366 void SDL_BindGPUVertexSamplers(SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);
+ * @from SDL_gpu.h:3394 void SDL_BindGPUVertexSamplers(SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);
  */
 SDL_BindGPUVertexSamplers: {
       parameters: ["pointer", "u32", "pointer", "u32"],
@@ -1660,7 +1684,7 @@ SDL_BindGPUVertexSamplers: {
  *
  * @sa SDL_CreateGPUShader
  *
- * @from SDL_gpu.h:3390 void SDL_BindGPUVertexStorageTextures(SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings);
+ * @from SDL_gpu.h:3418 void SDL_BindGPUVertexStorageTextures(SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings);
  */
 SDL_BindGPUVertexStorageTextures: {
       parameters: ["pointer", "u32", "pointer", "u32"],
@@ -1686,7 +1710,7 @@ SDL_BindGPUVertexStorageTextures: {
  *
  * @sa SDL_CreateGPUShader
  *
- * @from SDL_gpu.h:3414 void SDL_BindGPUVertexStorageBuffers(SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUBuffer *const *storage_buffers, Uint32 num_bindings);
+ * @from SDL_gpu.h:3442 void SDL_BindGPUVertexStorageBuffers(SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUBuffer *const *storage_buffers, Uint32 num_bindings);
  */
 SDL_BindGPUVertexStorageBuffers: {
       parameters: ["pointer", "u32", "pointer", "u32"],
@@ -1713,7 +1737,7 @@ SDL_BindGPUVertexStorageBuffers: {
  *
  * @sa SDL_CreateGPUShader
  *
- * @from SDL_gpu.h:3439 void SDL_BindGPUFragmentSamplers(SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);
+ * @from SDL_gpu.h:3467 void SDL_BindGPUFragmentSamplers(SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);
  */
 SDL_BindGPUFragmentSamplers: {
       parameters: ["pointer", "u32", "pointer", "u32"],
@@ -1739,7 +1763,7 @@ SDL_BindGPUFragmentSamplers: {
  *
  * @sa SDL_CreateGPUShader
  *
- * @from SDL_gpu.h:3463 void SDL_BindGPUFragmentStorageTextures(SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings);
+ * @from SDL_gpu.h:3491 void SDL_BindGPUFragmentStorageTextures(SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings);
  */
 SDL_BindGPUFragmentStorageTextures: {
       parameters: ["pointer", "u32", "pointer", "u32"],
@@ -1765,7 +1789,7 @@ SDL_BindGPUFragmentStorageTextures: {
  *
  * @sa SDL_CreateGPUShader
  *
- * @from SDL_gpu.h:3487 void SDL_BindGPUFragmentStorageBuffers(SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUBuffer *const *storage_buffers, Uint32 num_bindings);
+ * @from SDL_gpu.h:3515 void SDL_BindGPUFragmentStorageBuffers(SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUBuffer *const *storage_buffers, Uint32 num_bindings);
  */
 SDL_BindGPUFragmentStorageBuffers: {
       parameters: ["pointer", "u32", "pointer", "u32"],
@@ -1796,7 +1820,7 @@ SDL_BindGPUFragmentStorageBuffers: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3518 void SDL_DrawGPUIndexedPrimitives(SDL_GPURenderPass *render_pass, Uint32 num_indices, Uint32 num_instances, Uint32 first_index, Sint32 vertex_offset, Uint32 first_instance);
+ * @from SDL_gpu.h:3546 void SDL_DrawGPUIndexedPrimitives(SDL_GPURenderPass *render_pass, Uint32 num_indices, Uint32 num_instances, Uint32 first_index, Sint32 vertex_offset, Uint32 first_instance);
  */
 SDL_DrawGPUIndexedPrimitives: {
       parameters: ["pointer", "u32", "u32", "u32", "i32", "u32"],
@@ -1824,7 +1848,7 @@ SDL_DrawGPUIndexedPrimitives: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3546 void SDL_DrawGPUPrimitives(SDL_GPURenderPass *render_pass, Uint32 num_vertices, Uint32 num_instances, Uint32 first_vertex, Uint32 first_instance);
+ * @from SDL_gpu.h:3574 void SDL_DrawGPUPrimitives(SDL_GPURenderPass *render_pass, Uint32 num_vertices, Uint32 num_instances, Uint32 first_vertex, Uint32 first_instance);
  */
 SDL_DrawGPUPrimitives: {
       parameters: ["pointer", "u32", "u32", "u32", "u32"],
@@ -1848,7 +1872,7 @@ SDL_DrawGPUPrimitives: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3569 void SDL_DrawGPUPrimitivesIndirect(SDL_GPURenderPass *render_pass, SDL_GPUBuffer *buffer, Uint32 offset, Uint32 draw_count);
+ * @from SDL_gpu.h:3597 void SDL_DrawGPUPrimitivesIndirect(SDL_GPURenderPass *render_pass, SDL_GPUBuffer *buffer, Uint32 offset, Uint32 draw_count);
  */
 SDL_DrawGPUPrimitivesIndirect: {
       parameters: ["pointer", "pointer", "u32", "u32"],
@@ -1872,7 +1896,7 @@ SDL_DrawGPUPrimitivesIndirect: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3591 void SDL_DrawGPUIndexedPrimitivesIndirect(SDL_GPURenderPass *render_pass, SDL_GPUBuffer *buffer, Uint32 offset, Uint32 draw_count);
+ * @from SDL_gpu.h:3619 void SDL_DrawGPUIndexedPrimitivesIndirect(SDL_GPURenderPass *render_pass, SDL_GPUBuffer *buffer, Uint32 offset, Uint32 draw_count);
  */
 SDL_DrawGPUIndexedPrimitivesIndirect: {
       parameters: ["pointer", "pointer", "u32", "u32"],
@@ -1890,7 +1914,7 @@ SDL_DrawGPUIndexedPrimitivesIndirect: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3607 void SDL_EndGPURenderPass(SDL_GPURenderPass *render_pass);
+ * @from SDL_gpu.h:3635 void SDL_EndGPURenderPass(SDL_GPURenderPass *render_pass);
  */
 SDL_EndGPURenderPass: {
       parameters: ["pointer"],
@@ -1935,7 +1959,7 @@ SDL_EndGPURenderPass: {
  *
  * @sa SDL_EndGPUComputePass
  *
- * @from SDL_gpu.h:3649 SDL_GPUComputePass * SDL_BeginGPUComputePass(SDL_GPUCommandBuffer *command_buffer, const SDL_GPUStorageTextureReadWriteBinding *storage_texture_bindings, Uint32 num_storage_texture_bindings, const SDL_GPUStorageBufferReadWriteBinding *storage_buffer_bindings, Uint32 num_storage_buffer_bindings);
+ * @from SDL_gpu.h:3677 SDL_GPUComputePass * SDL_BeginGPUComputePass(SDL_GPUCommandBuffer *command_buffer, const SDL_GPUStorageTextureReadWriteBinding *storage_texture_bindings, Uint32 num_storage_texture_bindings, const SDL_GPUStorageBufferReadWriteBinding *storage_buffer_bindings, Uint32 num_storage_buffer_bindings);
  */
 SDL_BeginGPUComputePass: {
       parameters: ["pointer", "pointer", "u32", "pointer", "u32"],
@@ -1951,7 +1975,7 @@ SDL_BeginGPUComputePass: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3664 void SDL_BindGPUComputePipeline(SDL_GPUComputePass *compute_pass, SDL_GPUComputePipeline *compute_pipeline);
+ * @from SDL_gpu.h:3692 void SDL_BindGPUComputePipeline(SDL_GPUComputePass *compute_pass, SDL_GPUComputePipeline *compute_pipeline);
  */
 SDL_BindGPUComputePipeline: {
       parameters: ["pointer", "pointer"],
@@ -1978,7 +2002,7 @@ SDL_BindGPUComputePipeline: {
  *
  * @sa SDL_CreateGPUComputePipeline
  *
- * @from SDL_gpu.h:3687 void SDL_BindGPUComputeSamplers(SDL_GPUComputePass *compute_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);
+ * @from SDL_gpu.h:3715 void SDL_BindGPUComputeSamplers(SDL_GPUComputePass *compute_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings);
  */
 SDL_BindGPUComputeSamplers: {
       parameters: ["pointer", "u32", "pointer", "u32"],
@@ -2004,7 +2028,7 @@ SDL_BindGPUComputeSamplers: {
  *
  * @sa SDL_CreateGPUComputePipeline
  *
- * @from SDL_gpu.h:3711 void SDL_BindGPUComputeStorageTextures(SDL_GPUComputePass *compute_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings);
+ * @from SDL_gpu.h:3739 void SDL_BindGPUComputeStorageTextures(SDL_GPUComputePass *compute_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings);
  */
 SDL_BindGPUComputeStorageTextures: {
       parameters: ["pointer", "u32", "pointer", "u32"],
@@ -2030,7 +2054,7 @@ SDL_BindGPUComputeStorageTextures: {
  *
  * @sa SDL_CreateGPUComputePipeline
  *
- * @from SDL_gpu.h:3735 void SDL_BindGPUComputeStorageBuffers(SDL_GPUComputePass *compute_pass, Uint32 first_slot, SDL_GPUBuffer *const *storage_buffers, Uint32 num_bindings);
+ * @from SDL_gpu.h:3763 void SDL_BindGPUComputeStorageBuffers(SDL_GPUComputePass *compute_pass, Uint32 first_slot, SDL_GPUBuffer *const *storage_buffers, Uint32 num_bindings);
  */
 SDL_BindGPUComputeStorageBuffers: {
       parameters: ["pointer", "u32", "pointer", "u32"],
@@ -2058,7 +2082,7 @@ SDL_BindGPUComputeStorageBuffers: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3761 void SDL_DispatchGPUCompute(SDL_GPUComputePass *compute_pass, Uint32 groupcount_x, Uint32 groupcount_y, Uint32 groupcount_z);
+ * @from SDL_gpu.h:3789 void SDL_DispatchGPUCompute(SDL_GPUComputePass *compute_pass, Uint32 groupcount_x, Uint32 groupcount_y, Uint32 groupcount_z);
  */
 SDL_DispatchGPUCompute: {
       parameters: ["pointer", "u32", "u32", "u32"],
@@ -2084,7 +2108,7 @@ SDL_DispatchGPUCompute: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3785 void SDL_DispatchGPUComputeIndirect(SDL_GPUComputePass *compute_pass, SDL_GPUBuffer *buffer, Uint32 offset);
+ * @from SDL_gpu.h:3813 void SDL_DispatchGPUComputeIndirect(SDL_GPUComputePass *compute_pass, SDL_GPUBuffer *buffer, Uint32 offset);
  */
 SDL_DispatchGPUComputeIndirect: {
       parameters: ["pointer", "pointer", "u32"],
@@ -2102,7 +2126,7 @@ SDL_DispatchGPUComputeIndirect: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3800 void SDL_EndGPUComputePass(SDL_GPUComputePass *compute_pass);
+ * @from SDL_gpu.h:3828 void SDL_EndGPUComputePass(SDL_GPUComputePass *compute_pass);
  */
 SDL_EndGPUComputePass: {
       parameters: ["pointer"],
@@ -2125,7 +2149,7 @@ SDL_EndGPUComputePass: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3820 void * SDL_MapGPUTransferBuffer(SDL_GPUDevice *device, SDL_GPUTransferBuffer *transfer_buffer, bool cycle);
+ * @from SDL_gpu.h:3848 void * SDL_MapGPUTransferBuffer(SDL_GPUDevice *device, SDL_GPUTransferBuffer *transfer_buffer, bool cycle);
  */
 SDL_MapGPUTransferBuffer: {
       parameters: ["pointer", "pointer", "bool"],
@@ -2141,7 +2165,7 @@ SDL_MapGPUTransferBuffer: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3833 void SDL_UnmapGPUTransferBuffer(SDL_GPUDevice *device, SDL_GPUTransferBuffer *transfer_buffer);
+ * @from SDL_gpu.h:3861 void SDL_UnmapGPUTransferBuffer(SDL_GPUDevice *device, SDL_GPUTransferBuffer *transfer_buffer);
  */
 SDL_UnmapGPUTransferBuffer: {
       parameters: ["pointer", "pointer"],
@@ -2163,7 +2187,7 @@ SDL_UnmapGPUTransferBuffer: {
  *
  * @sa SDL_EndGPUCopyPass
  *
- * @from SDL_gpu.h:3853 SDL_GPUCopyPass * SDL_BeginGPUCopyPass(SDL_GPUCommandBuffer *command_buffer);
+ * @from SDL_gpu.h:3881 SDL_GPUCopyPass * SDL_BeginGPUCopyPass(SDL_GPUCommandBuffer *command_buffer);
  */
 SDL_BeginGPUCopyPass: {
       parameters: ["pointer"],
@@ -2188,7 +2212,7 @@ SDL_BeginGPUCopyPass: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3873 void SDL_UploadToGPUTexture(SDL_GPUCopyPass *copy_pass, const SDL_GPUTextureTransferInfo *source, const SDL_GPUTextureRegion *destination, bool cycle);
+ * @from SDL_gpu.h:3901 void SDL_UploadToGPUTexture(SDL_GPUCopyPass *copy_pass, const SDL_GPUTextureTransferInfo *source, const SDL_GPUTextureRegion *destination, bool cycle);
  */
 SDL_UploadToGPUTexture: {
       parameters: ["pointer", "pointer", "pointer", "bool"],
@@ -2210,7 +2234,7 @@ SDL_UploadToGPUTexture: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3893 void SDL_UploadToGPUBuffer(SDL_GPUCopyPass *copy_pass, const SDL_GPUTransferBufferLocation *source, const SDL_GPUBufferRegion *destination, bool cycle);
+ * @from SDL_gpu.h:3921 void SDL_UploadToGPUBuffer(SDL_GPUCopyPass *copy_pass, const SDL_GPUTransferBufferLocation *source, const SDL_GPUBufferRegion *destination, bool cycle);
  */
 SDL_UploadToGPUBuffer: {
       parameters: ["pointer", "pointer", "pointer", "bool"],
@@ -2239,7 +2263,7 @@ SDL_UploadToGPUBuffer: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3920 void SDL_CopyGPUTextureToTexture(SDL_GPUCopyPass *copy_pass, const SDL_GPUTextureLocation *source, const SDL_GPUTextureLocation *destination, Uint32 w, Uint32 h, Uint32 d, bool cycle);
+ * @from SDL_gpu.h:3948 void SDL_CopyGPUTextureToTexture(SDL_GPUCopyPass *copy_pass, const SDL_GPUTextureLocation *source, const SDL_GPUTextureLocation *destination, Uint32 w, Uint32 h, Uint32 d, bool cycle);
  */
 SDL_CopyGPUTextureToTexture: {
       parameters: ["pointer", "pointer", "pointer", "u32", "u32", "u32", "bool"],
@@ -2262,7 +2286,7 @@ SDL_CopyGPUTextureToTexture: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3944 void SDL_CopyGPUBufferToBuffer(SDL_GPUCopyPass *copy_pass, const SDL_GPUBufferLocation *source, const SDL_GPUBufferLocation *destination, Uint32 size, bool cycle);
+ * @from SDL_gpu.h:3972 void SDL_CopyGPUBufferToBuffer(SDL_GPUCopyPass *copy_pass, const SDL_GPUBufferLocation *source, const SDL_GPUBufferLocation *destination, Uint32 size, bool cycle);
  */
 SDL_CopyGPUBufferToBuffer: {
       parameters: ["pointer", "pointer", "pointer", "u32", "bool"],
@@ -2283,7 +2307,7 @@ SDL_CopyGPUBufferToBuffer: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3964 void SDL_DownloadFromGPUTexture(SDL_GPUCopyPass *copy_pass, const SDL_GPUTextureRegion *source, const SDL_GPUTextureTransferInfo *destination);
+ * @from SDL_gpu.h:3992 void SDL_DownloadFromGPUTexture(SDL_GPUCopyPass *copy_pass, const SDL_GPUTextureRegion *source, const SDL_GPUTextureTransferInfo *destination);
  */
 SDL_DownloadFromGPUTexture: {
       parameters: ["pointer", "pointer", "pointer"],
@@ -2303,7 +2327,7 @@ SDL_DownloadFromGPUTexture: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3981 void SDL_DownloadFromGPUBuffer(SDL_GPUCopyPass *copy_pass, const SDL_GPUBufferRegion *source, const SDL_GPUTransferBufferLocation *destination);
+ * @from SDL_gpu.h:4009 void SDL_DownloadFromGPUBuffer(SDL_GPUCopyPass *copy_pass, const SDL_GPUBufferRegion *source, const SDL_GPUTransferBufferLocation *destination);
  */
 SDL_DownloadFromGPUBuffer: {
       parameters: ["pointer", "pointer", "pointer"],
@@ -2318,7 +2342,7 @@ SDL_DownloadFromGPUBuffer: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:3993 void SDL_EndGPUCopyPass(SDL_GPUCopyPass *copy_pass);
+ * @from SDL_gpu.h:4021 void SDL_EndGPUCopyPass(SDL_GPUCopyPass *copy_pass);
  */
 SDL_EndGPUCopyPass: {
       parameters: ["pointer"],
@@ -2336,7 +2360,7 @@ SDL_EndGPUCopyPass: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:4006 void SDL_GenerateMipmapsForGPUTexture(SDL_GPUCommandBuffer *command_buffer, SDL_GPUTexture *texture);
+ * @from SDL_gpu.h:4034 void SDL_GenerateMipmapsForGPUTexture(SDL_GPUCommandBuffer *command_buffer, SDL_GPUTexture *texture);
  */
 SDL_GenerateMipmapsForGPUTexture: {
       parameters: ["pointer", "pointer"],
@@ -2354,7 +2378,7 @@ SDL_GenerateMipmapsForGPUTexture: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:4020 void SDL_BlitGPUTexture(SDL_GPUCommandBuffer *command_buffer, const SDL_GPUBlitInfo *info);
+ * @from SDL_gpu.h:4048 void SDL_BlitGPUTexture(SDL_GPUCommandBuffer *command_buffer, const SDL_GPUBlitInfo *info);
  */
 SDL_BlitGPUTexture: {
       parameters: ["pointer", "pointer"],
@@ -2376,7 +2400,7 @@ SDL_BlitGPUTexture: {
  *
  * @sa SDL_ClaimWindowForGPUDevice
  *
- * @from SDL_gpu.h:4040 bool SDL_WindowSupportsGPUSwapchainComposition(SDL_GPUDevice *device, SDL_Window *window, SDL_GPUSwapchainComposition swapchain_composition);
+ * @from SDL_gpu.h:4068 bool SDL_WindowSupportsGPUSwapchainComposition(SDL_GPUDevice *device, SDL_Window *window, SDL_GPUSwapchainComposition swapchain_composition);
  */
 SDL_WindowSupportsGPUSwapchainComposition: {
       parameters: ["pointer", "pointer", "u32"],
@@ -2398,7 +2422,7 @@ SDL_WindowSupportsGPUSwapchainComposition: {
  *
  * @sa SDL_ClaimWindowForGPUDevice
  *
- * @from SDL_gpu.h:4059 bool SDL_WindowSupportsGPUPresentMode(SDL_GPUDevice *device, SDL_Window *window, SDL_GPUPresentMode present_mode);
+ * @from SDL_gpu.h:4087 bool SDL_WindowSupportsGPUPresentMode(SDL_GPUDevice *device, SDL_Window *window, SDL_GPUPresentMode present_mode);
  */
 SDL_WindowSupportsGPUPresentMode: {
       parameters: ["pointer", "pointer", "u32"],
@@ -2433,7 +2457,7 @@ SDL_WindowSupportsGPUPresentMode: {
  * @sa SDL_WindowSupportsGPUPresentMode
  * @sa SDL_WindowSupportsGPUSwapchainComposition
  *
- * @from SDL_gpu.h:4091 bool SDL_ClaimWindowForGPUDevice(SDL_GPUDevice *device, SDL_Window *window);
+ * @from SDL_gpu.h:4119 bool SDL_ClaimWindowForGPUDevice(SDL_GPUDevice *device, SDL_Window *window);
  */
 SDL_ClaimWindowForGPUDevice: {
       parameters: ["pointer", "pointer"],
@@ -2451,7 +2475,7 @@ SDL_ClaimWindowForGPUDevice: {
  *
  * @sa SDL_ClaimWindowForGPUDevice
  *
- * @from SDL_gpu.h:4105 void SDL_ReleaseWindowFromGPUDevice(SDL_GPUDevice *device, SDL_Window *window);
+ * @from SDL_gpu.h:4133 void SDL_ReleaseWindowFromGPUDevice(SDL_GPUDevice *device, SDL_Window *window);
  */
 SDL_ReleaseWindowFromGPUDevice: {
       parameters: ["pointer", "pointer"],
@@ -2482,7 +2506,7 @@ SDL_ReleaseWindowFromGPUDevice: {
  * @sa SDL_WindowSupportsGPUPresentMode
  * @sa SDL_WindowSupportsGPUSwapchainComposition
  *
- * @from SDL_gpu.h:4132 bool SDL_SetGPUSwapchainParameters(SDL_GPUDevice *device, SDL_Window *window, SDL_GPUSwapchainComposition swapchain_composition, SDL_GPUPresentMode present_mode);
+ * @from SDL_gpu.h:4160 bool SDL_SetGPUSwapchainParameters(SDL_GPUDevice *device, SDL_Window *window, SDL_GPUSwapchainComposition swapchain_composition, SDL_GPUPresentMode present_mode);
  */
 SDL_SetGPUSwapchainParameters: {
       parameters: ["pointer", "pointer", "u32", "u32"],
@@ -2515,7 +2539,7 @@ SDL_SetGPUSwapchainParameters: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:4163 bool SDL_SetGPUAllowedFramesInFlight(SDL_GPUDevice *device, Uint32 allowed_frames_in_flight);
+ * @from SDL_gpu.h:4191 bool SDL_SetGPUAllowedFramesInFlight(SDL_GPUDevice *device, Uint32 allowed_frames_in_flight);
  */
 SDL_SetGPUAllowedFramesInFlight: {
       parameters: ["pointer", "u32"],
@@ -2534,7 +2558,7 @@ SDL_SetGPUAllowedFramesInFlight: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:4178 SDL_GPUTextureFormat SDL_GetGPUSwapchainTextureFormat(SDL_GPUDevice *device, SDL_Window *window);
+ * @from SDL_gpu.h:4206 SDL_GPUTextureFormat SDL_GetGPUSwapchainTextureFormat(SDL_GPUDevice *device, SDL_Window *window);
  */
 SDL_GetGPUSwapchainTextureFormat: {
       parameters: ["pointer", "pointer"],
@@ -2590,7 +2614,7 @@ SDL_GetGPUSwapchainTextureFormat: {
  * @sa SDL_WaitAndAcquireGPUSwapchainTexture
  * @sa SDL_SetGPUAllowedFramesInFlight
  *
- * @from SDL_gpu.h:4230 bool SDL_AcquireGPUSwapchainTexture(SDL_GPUCommandBuffer *command_buffer, SDL_Window *window, SDL_GPUTexture **swapchain_texture, Uint32 *swapchain_texture_width, Uint32 *swapchain_texture_height);
+ * @from SDL_gpu.h:4258 bool SDL_AcquireGPUSwapchainTexture(SDL_GPUCommandBuffer *command_buffer, SDL_Window *window, SDL_GPUTexture **swapchain_texture, Uint32 *swapchain_texture_width, Uint32 *swapchain_texture_height);
  */
 SDL_AcquireGPUSwapchainTexture: {
       parameters: ["pointer", "pointer", "pointer", "pointer", "pointer"],
@@ -2615,7 +2639,7 @@ SDL_AcquireGPUSwapchainTexture: {
  * @sa SDL_WaitAndAcquireGPUSwapchainTexture
  * @sa SDL_SetGPUAllowedFramesInFlight
  *
- * @from SDL_gpu.h:4254 bool SDL_WaitForGPUSwapchain(SDL_GPUDevice *device, SDL_Window *window);
+ * @from SDL_gpu.h:4282 bool SDL_WaitForGPUSwapchain(SDL_GPUDevice *device, SDL_Window *window);
  */
 SDL_WaitForGPUSwapchain: {
       parameters: ["pointer", "pointer"],
@@ -2665,7 +2689,7 @@ SDL_WaitForGPUSwapchain: {
  * @sa SDL_SubmitGPUCommandBufferAndAcquireFence
  * @sa SDL_AcquireGPUSwapchainTexture
  *
- * @from SDL_gpu.h:4300 bool SDL_WaitAndAcquireGPUSwapchainTexture(SDL_GPUCommandBuffer *command_buffer, SDL_Window *window, SDL_GPUTexture **swapchain_texture, Uint32 *swapchain_texture_width, Uint32 *swapchain_texture_height);
+ * @from SDL_gpu.h:4328 bool SDL_WaitAndAcquireGPUSwapchainTexture(SDL_GPUCommandBuffer *command_buffer, SDL_Window *window, SDL_GPUTexture **swapchain_texture, Uint32 *swapchain_texture_width, Uint32 *swapchain_texture_height);
  */
 SDL_WaitAndAcquireGPUSwapchainTexture: {
       parameters: ["pointer", "pointer", "pointer", "pointer", "pointer"],
@@ -2694,7 +2718,7 @@ SDL_WaitAndAcquireGPUSwapchainTexture: {
  * @sa SDL_AcquireGPUSwapchainTexture
  * @sa SDL_SubmitGPUCommandBufferAndAcquireFence
  *
- * @from SDL_gpu.h:4328 bool SDL_SubmitGPUCommandBuffer(SDL_GPUCommandBuffer *command_buffer);
+ * @from SDL_gpu.h:4356 bool SDL_SubmitGPUCommandBuffer(SDL_GPUCommandBuffer *command_buffer);
  */
 SDL_SubmitGPUCommandBuffer: {
       parameters: ["pointer"],
@@ -2726,7 +2750,7 @@ SDL_SubmitGPUCommandBuffer: {
  * @sa SDL_SubmitGPUCommandBuffer
  * @sa SDL_ReleaseGPUFence
  *
- * @from SDL_gpu.h:4355 SDL_GPUFence * SDL_SubmitGPUCommandBufferAndAcquireFence(SDL_GPUCommandBuffer *command_buffer);
+ * @from SDL_gpu.h:4383 SDL_GPUFence * SDL_SubmitGPUCommandBufferAndAcquireFence(SDL_GPUCommandBuffer *command_buffer);
  */
 SDL_SubmitGPUCommandBufferAndAcquireFence: {
       parameters: ["pointer"],
@@ -2756,7 +2780,7 @@ SDL_SubmitGPUCommandBufferAndAcquireFence: {
  * @sa SDL_AcquireGPUCommandBuffer
  * @sa SDL_AcquireGPUSwapchainTexture
  *
- * @from SDL_gpu.h:4380 bool SDL_CancelGPUCommandBuffer(SDL_GPUCommandBuffer *command_buffer);
+ * @from SDL_gpu.h:4408 bool SDL_CancelGPUCommandBuffer(SDL_GPUCommandBuffer *command_buffer);
  */
 SDL_CancelGPUCommandBuffer: {
       parameters: ["pointer"],
@@ -2775,7 +2799,7 @@ SDL_CancelGPUCommandBuffer: {
  *
  * @sa SDL_WaitForGPUFences
  *
- * @from SDL_gpu.h:4394 bool SDL_WaitForGPUIdle(SDL_GPUDevice *device);
+ * @from SDL_gpu.h:4422 bool SDL_WaitForGPUIdle(SDL_GPUDevice *device);
  */
 SDL_WaitForGPUIdle: {
       parameters: ["pointer"],
@@ -2799,7 +2823,7 @@ SDL_WaitForGPUIdle: {
  * @sa SDL_SubmitGPUCommandBufferAndAcquireFence
  * @sa SDL_WaitForGPUIdle
  *
- * @from SDL_gpu.h:4413 bool SDL_WaitForGPUFences(SDL_GPUDevice *device, bool wait_all, SDL_GPUFence *const *fences, Uint32 num_fences);
+ * @from SDL_gpu.h:4441 bool SDL_WaitForGPUFences(SDL_GPUDevice *device, bool wait_all, SDL_GPUFence *const *fences, Uint32 num_fences);
  */
 SDL_WaitForGPUFences: {
       parameters: ["pointer", "bool", "pointer", "u32"],
@@ -2818,7 +2842,7 @@ SDL_WaitForGPUFences: {
  *
  * @sa SDL_SubmitGPUCommandBufferAndAcquireFence
  *
- * @from SDL_gpu.h:4430 bool SDL_QueryGPUFence(SDL_GPUDevice *device, SDL_GPUFence *fence);
+ * @from SDL_gpu.h:4458 bool SDL_QueryGPUFence(SDL_GPUDevice *device, SDL_GPUFence *fence);
  */
 SDL_QueryGPUFence: {
       parameters: ["pointer", "pointer"],
@@ -2838,7 +2862,7 @@ SDL_QueryGPUFence: {
  *
  * @sa SDL_SubmitGPUCommandBufferAndAcquireFence
  *
- * @from SDL_gpu.h:4446 void SDL_ReleaseGPUFence(SDL_GPUDevice *device, SDL_GPUFence *fence);
+ * @from SDL_gpu.h:4474 void SDL_ReleaseGPUFence(SDL_GPUDevice *device, SDL_GPUFence *fence);
  */
 SDL_ReleaseGPUFence: {
       parameters: ["pointer", "pointer"],
@@ -2856,7 +2880,7 @@ SDL_ReleaseGPUFence: {
  *
  * @sa SDL_UploadToGPUTexture
  *
- * @from SDL_gpu.h:4462 Uint32 SDL_GPUTextureFormatTexelBlockSize(SDL_GPUTextureFormat format);
+ * @from SDL_gpu.h:4490 Uint32 SDL_GPUTextureFormatTexelBlockSize(SDL_GPUTextureFormat format);
  */
 SDL_GPUTextureFormatTexelBlockSize: {
       parameters: ["u32"],
@@ -2876,7 +2900,7 @@ SDL_GPUTextureFormatTexelBlockSize: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:4477 bool SDL_GPUTextureSupportsFormat(SDL_GPUDevice *device, SDL_GPUTextureFormat format, SDL_GPUTextureType type, SDL_GPUTextureUsageFlags usage);
+ * @from SDL_gpu.h:4505 bool SDL_GPUTextureSupportsFormat(SDL_GPUDevice *device, SDL_GPUTextureFormat format, SDL_GPUTextureType type, SDL_GPUTextureUsageFlags usage);
  */
 SDL_GPUTextureSupportsFormat: {
       parameters: ["pointer", "u32", "u32", "u32"],
@@ -2894,7 +2918,7 @@ SDL_GPUTextureSupportsFormat: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:4493 bool SDL_GPUTextureSupportsSampleCount(SDL_GPUDevice *device, SDL_GPUTextureFormat format, SDL_GPUSampleCount sample_count);
+ * @from SDL_gpu.h:4521 bool SDL_GPUTextureSupportsSampleCount(SDL_GPUDevice *device, SDL_GPUTextureFormat format, SDL_GPUSampleCount sample_count);
  */
 SDL_GPUTextureSupportsSampleCount: {
       parameters: ["pointer", "u32", "u32"],
@@ -2913,7 +2937,7 @@ SDL_GPUTextureSupportsSampleCount: {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_gpu.h:4509 Uint32 SDL_CalculateGPUTextureFormatSize(SDL_GPUTextureFormat format, Uint32 width, Uint32 height, Uint32 depth_or_layer_count);
+ * @from SDL_gpu.h:4537 Uint32 SDL_CalculateGPUTextureFormatSize(SDL_GPUTextureFormat format, Uint32 width, Uint32 height, Uint32 depth_or_layer_count);
  */
 SDL_CalculateGPUTextureFormatSize: {
       parameters: ["u32", "u32", "u32", "u32"],
@@ -2930,7 +2954,7 @@ SDL_CalculateGPUTextureFormatSize: {
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @from SDL_gpu.h:4524 SDL_PixelFormat SDL_GetPixelFormatFromGPUTextureFormat(SDL_GPUTextureFormat format);
+ * @from SDL_gpu.h:4552 SDL_PixelFormat SDL_GetPixelFormatFromGPUTextureFormat(SDL_GPUTextureFormat format);
  */
 SDL_GetPixelFormatFromGPUTextureFormat: {
       parameters: ["u32"],
@@ -2948,7 +2972,7 @@ SDL_GetPixelFormatFromGPUTextureFormat: {
  *
  * @since This function is available since SDL 3.4.0.
  *
- * @from SDL_gpu.h:4536 SDL_GPUTextureFormat SDL_GetGPUTextureFormatFromPixelFormat(SDL_PixelFormat format);
+ * @from SDL_gpu.h:4564 SDL_GPUTextureFormat SDL_GetGPUTextureFormatFromPixelFormat(SDL_PixelFormat format);
  */
 SDL_GetGPUTextureFormatFromPixelFormat: {
       parameters: ["u32"],
@@ -2972,8 +2996,8 @@ export const GDK_symbols = {
  *
  * @sa SDL_AddEventWatch
  *
- * @from SDL_gpu.h:4553 void SDL_GDKSuspendGPU(SDL_GPUDevice *device);
- * @platformSpecific GDK SDL_gpu.h:4538 #ifdef SDL_PLATFORM_GDK
+ * @from SDL_gpu.h:4581 void SDL_GDKSuspendGPU(SDL_GPUDevice *device);
+ * @platformSpecific GDK SDL_gpu.h:4566 #ifdef SDL_PLATFORM_GDK
  */
 SDL_GDKSuspendGPU: {
       parameters: ["pointer"],
@@ -2994,8 +3018,8 @@ SDL_GDKSuspendGPU: {
  *
  * @sa SDL_AddEventWatch
  *
- * @from SDL_gpu.h:4568 void SDL_GDKResumeGPU(SDL_GPUDevice *device);
- * @platformSpecific GDK SDL_gpu.h:4538 #ifdef SDL_PLATFORM_GDK
+ * @from SDL_gpu.h:4596 void SDL_GDKResumeGPU(SDL_GPUDevice *device);
+ * @platformSpecific GDK SDL_gpu.h:4566 #ifdef SDL_PLATFORM_GDK
  */
 SDL_GDKResumeGPU: {
       parameters: ["pointer"],

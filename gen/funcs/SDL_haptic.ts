@@ -96,7 +96,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -706,7 +706,7 @@ SDL_ResumeHaptic: {
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_RunHapticEffect
- * @sa SDL_StopHapticEffects
+ * @sa SDL_StopHapticEffect
  *
  * @from SDL_haptic.h:1396 bool SDL_StopHapticEffects(SDL_Haptic *haptic);
  */

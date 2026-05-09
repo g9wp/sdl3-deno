@@ -21,7 +21,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -41,22 +41,22 @@
 */
 
 /**
- * @from SDL_thread:296
+ * @from SDL_thread:300
  */
 export const SDL_BeginThreadFunction = _beginthreadex;
 
 /**
- * @from SDL_thread:299
+ * @from SDL_thread:303
  */
 export const SDL_EndThreadFunction = _endthreadex;
 
 /**
- * @from SDL_thread:307
+ * @from SDL_thread:311
  */
 export const SDL_BeginThreadFunction = NULL;
 
 /**
- * @from SDL_thread:313
+ * @from SDL_thread:317
  */
 export const SDL_EndThreadFunction = NULL;
 

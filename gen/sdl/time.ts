@@ -16,7 +16,7 @@
 
 /*
 Simple DirectMedia Layer
-Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
 This software is provided 'as-is', without any express or implied
 warranty.  In no event will the authors be held liable for any damages
@@ -59,9 +59,11 @@ export {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety This function is not thread safe.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_time.h:110 bool SDL_GetDateTimeLocalePreferences(SDL_DateFormat *dateFormat, SDL_TimeFormat *timeFormat);
+ * @from SDL_time.h:112 bool SDL_GetDateTimeLocalePreferences(SDL_DateFormat *dateFormat, SDL_TimeFormat *timeFormat);
  */
 export function getDateTimeLocalePreferences(): { dateFormat: number; timeFormat: number } {
   if(!lib.symbols.SDL_GetDateTimeLocalePreferences(_p.u32.p0, _p.u32.p1))
@@ -77,9 +79,11 @@ export function getDateTimeLocalePreferences(): { dateFormat: number; timeFormat
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_time.h:122 bool SDL_GetCurrentTime(SDL_Time *ticks);
+ * @from SDL_time.h:126 bool SDL_GetCurrentTime(SDL_Time *ticks);
  */
 export function getCurrentTime(): bigint {
   if(!lib.symbols.SDL_GetCurrentTime(_p.i64.p0))
@@ -99,9 +103,11 @@ export function getCurrentTime(): bigint {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_time.h:138 bool SDL_TimeToDateTime(SDL_Time ticks, SDL_DateTime *dt, bool localTime);
+ * @from SDL_time.h:144 bool SDL_TimeToDateTime(SDL_Time ticks, SDL_DateTime *dt, bool localTime);
  */
 export function timeToDateTime(ticks: bigint, dt: Deno.PointerValue<"SDL_DateTime">, localTime: boolean): boolean {
   return lib.symbols.SDL_TimeToDateTime(ticks, dt, localTime);
@@ -118,9 +124,11 @@ export function timeToDateTime(ticks: bigint, dt: Deno.PointerValue<"SDL_DateTim
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_time.h:153 bool SDL_DateTimeToTime(const SDL_DateTime *dt, SDL_Time *ticks);
+ * @from SDL_time.h:161 bool SDL_DateTimeToTime(const SDL_DateTime *dt, SDL_Time *ticks);
  */
 export function dateTimeToTime(dt: Deno.PointerValue<"SDL_DateTime">): bigint {
   if(!lib.symbols.SDL_DateTimeToTime(dt, _p.i64.p0))
@@ -140,9 +148,11 @@ export function dateTimeToTime(dt: Deno.PointerValue<"SDL_DateTime">): bigint {
  * @param dwHighDateTime a pointer filled in with the high portion of the
  *                       Windows FILETIME value.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_time.h:169 void SDL_TimeToWindows(SDL_Time ticks, Uint32 *dwLowDateTime, Uint32 *dwHighDateTime);
+ * @from SDL_time.h:179 void SDL_TimeToWindows(SDL_Time ticks, Uint32 *dwLowDateTime, Uint32 *dwHighDateTime);
  */
 export function timeToWindows(ticks: bigint): { dwLowDateTime: number; dwHighDateTime: number } {
   lib.symbols.SDL_TimeToWindows(ticks, _p.u32.p0, _p.u32.p1);
@@ -160,9 +170,11 @@ export function timeToWindows(ticks: bigint): { dwLowDateTime: number; dwHighDat
  * @param dwHighDateTime the high portion of the Windows FILETIME value.
  * @returns the converted SDL time.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_time.h:184 SDL_Time SDL_TimeFromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime);
+ * @from SDL_time.h:196 SDL_Time SDL_TimeFromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime);
  */
 export function timeFromWindows(dwLowDateTime: number, dwHighDateTime: number): bigint {
   return lib.symbols.SDL_TimeFromWindows(dwLowDateTime, dwHighDateTime);
@@ -176,9 +188,11 @@ export function timeFromWindows(dwLowDateTime: number, dwHighDateTime: number): 
  * @returns the number of days in the requested month or -1 on failure; call
  *          SDL_GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_time.h:196 int SDL_GetDaysInMonth(int year, int month);
+ * @from SDL_time.h:210 int SDL_GetDaysInMonth(int year, int month);
  */
 export function getDaysInMonth(year: number, month: number): number {
   return lib.symbols.SDL_GetDaysInMonth(year, month);
@@ -193,9 +207,11 @@ export function getDaysInMonth(year: number, month: number): number {
  * @returns the day of year [0-365] if the date is valid or -1 on failure;
  *          call SDL_GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_time.h:209 int SDL_GetDayOfYear(int year, int month, int day);
+ * @from SDL_time.h:225 int SDL_GetDayOfYear(int year, int month, int day);
  */
 export function getDayOfYear(year: number, month: number, day: number): number {
   return lib.symbols.SDL_GetDayOfYear(year, month, day);
@@ -210,9 +226,11 @@ export function getDayOfYear(year: number, month: number, day: number): number {
  * @returns a value between 0 and 6 (0 being Sunday) if the date is valid or
  *          -1 on failure; call SDL_GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_time.h:222 int SDL_GetDayOfWeek(int year, int month, int day);
+ * @from SDL_time.h:240 int SDL_GetDayOfWeek(int year, int month, int day);
  */
 export function getDayOfWeek(year: number, month: number, day: number): number {
   return lib.symbols.SDL_GetDayOfWeek(year, month, day);

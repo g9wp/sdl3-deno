@@ -21,7 +21,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -109,12 +109,14 @@ export {
  *          new thread could not be created; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_CreateThread
  * @sa SDL_WaitThread
  *
- * @from SDL_thread.h:281 SDL_Thread * SDL_CreateThreadWithProperties(SDL_PropertiesID props);
+ * @from SDL_thread.h:285 SDL_Thread * SDL_CreateThreadWithProperties(SDL_PropertiesID props);
  */
 /*export function createThreadWithProperties(props: number): Deno.PointerValue<"SDL_Thread"> {
   return lib.symbols.SDL_CreateThreadWithProperties(props) as Deno.PointerValue<"SDL_Thread">;
@@ -130,9 +132,11 @@ export {
  *          new thread could not be created; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_thread.h:347 SDL_Thread * SDL_CreateThreadWithPropertiesRuntime(SDL_PropertiesID props, SDL_FunctionPointer pfnBeginThread, SDL_FunctionPointer pfnEndThread);
+ * @from SDL_thread.h:355 SDL_Thread * SDL_CreateThreadWithPropertiesRuntime(SDL_PropertiesID props, SDL_FunctionPointer pfnBeginThread, SDL_FunctionPointer pfnEndThread);
  */
 export function createThreadWithPropertiesRuntime(props: number, pfnBeginThread: Deno.PointerValue, pfnEndThread: Deno.PointerValue): Deno.PointerValue<"SDL_Thread"> {
   return lib.symbols.SDL_CreateThreadWithPropertiesRuntime(props, pfnBeginThread, pfnEndThread) as Deno.PointerValue<"SDL_Thread">;
@@ -145,9 +149,11 @@ export function createThreadWithPropertiesRuntime(props: number, pfnBeginThread:
  * @returns a pointer to a UTF-8 string that names the specified thread, or
  *          NULL if it doesn't have a name.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_thread.h:367 const char * SDL_GetThreadName(SDL_Thread *thread);
+ * @from SDL_thread.h:377 const char * SDL_GetThreadName(SDL_Thread *thread);
  */
 export function getThreadName(thread: Deno.PointerValue<"SDL_Thread">): string {
   return _p.getCstr2(lib.symbols.SDL_GetThreadName(thread));
@@ -165,11 +171,13 @@ export function getThreadName(thread: Deno.PointerValue<"SDL_Thread">): string {
  *
  * @returns the ID of the current thread.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_GetThreadID
  *
- * @from SDL_thread.h:385 SDL_ThreadID SDL_GetCurrentThreadID(void);
+ * @from SDL_thread.h:397 SDL_ThreadID SDL_GetCurrentThreadID(void);
  */
 export function getCurrentThreadId(): bigint {
   return lib.symbols.SDL_GetCurrentThreadID();
@@ -186,11 +194,13 @@ export function getCurrentThreadId(): bigint {
  * @returns the ID of the specified thread, or the ID of the current thread if
  *          `thread` is NULL.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_GetCurrentThreadID
  *
- * @from SDL_thread.h:402 SDL_ThreadID SDL_GetThreadID(SDL_Thread *thread);
+ * @from SDL_thread.h:416 SDL_ThreadID SDL_GetThreadID(SDL_Thread *thread);
  */
 export function getThreadId(thread: Deno.PointerValue<"SDL_Thread">): bigint {
   return lib.symbols.SDL_GetThreadID(thread);
@@ -207,9 +217,11 @@ export function getThreadId(thread: Deno.PointerValue<"SDL_Thread">): bigint {
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_thread.h:417 bool SDL_SetCurrentThreadPriority(SDL_ThreadPriority priority);
+ * @from SDL_thread.h:433 bool SDL_SetCurrentThreadPriority(SDL_ThreadPriority priority);
  */
 export function setCurrentThreadPriority(priority: number): boolean {
   return lib.symbols.SDL_SetCurrentThreadPriority(priority);
@@ -243,12 +255,15 @@ export function setCurrentThreadPriority(priority: number): boolean {
  *               function by its 'return', or -1 if the thread has been
  *               detached or isn't valid, may be NULL.
  *
+ * @threadsafety It is safe to call this function from any thread, but only a
+ *               single thread can wait any specific thread to finish.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_CreateThread
  * @sa SDL_DetachThread
  *
- * @from SDL_thread.h:452 void SDL_WaitThread(SDL_Thread *thread, int *status);
+ * @from SDL_thread.h:471 void SDL_WaitThread(SDL_Thread *thread, int *status);
  */
 export function waitThread(thread: Deno.PointerValue<"SDL_Thread">): number {
   lib.symbols.SDL_WaitThread(thread, _p.i32.p0);
@@ -262,11 +277,13 @@ export function waitThread(thread: Deno.PointerValue<"SDL_Thread">): number {
  * @returns the current state of a thread, or SDL_THREAD_UNKNOWN if the thread
  *          isn't valid.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_ThreadState
  *
- * @from SDL_thread.h:465 SDL_ThreadState SDL_GetThreadState(SDL_Thread *thread);
+ * @from SDL_thread.h:486 SDL_ThreadState SDL_GetThreadState(SDL_Thread *thread);
  */
 export function getThreadState(thread: Deno.PointerValue<"SDL_Thread">): number {
   return lib.symbols.SDL_GetThreadState(thread);
@@ -301,12 +318,14 @@ export function getThreadState(thread: Deno.PointerValue<"SDL_Thread">): number 
  * @param thread the SDL_Thread pointer that was returned from the
  *               SDL_CreateThread() call that started this thread.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_CreateThread
  * @sa SDL_WaitThread
  *
- * @from SDL_thread.h:501 void SDL_DetachThread(SDL_Thread *thread);
+ * @from SDL_thread.h:524 void SDL_DetachThread(SDL_Thread *thread);
  */
 export function detachThread(thread: Deno.PointerValue<"SDL_Thread">): void {
   return lib.symbols.SDL_DetachThread(thread);
@@ -325,7 +344,7 @@ export function detachThread(thread: Deno.PointerValue<"SDL_Thread">): void {
  *
  * @sa SDL_SetTLS
  *
- * @from SDL_thread.h:516 void * SDL_GetTLS(SDL_TLSID *id);
+ * @from SDL_thread.h:539 void * SDL_GetTLS(SDL_TLSID *id);
  */
 export function getTls(id: Deno.PointerValue<"SDL_TLSID">): Deno.PointerValue {
   return lib.symbols.SDL_GetTLS(id);
@@ -357,7 +376,7 @@ export function getTls(id: Deno.PointerValue<"SDL_TLSID">): Deno.PointerValue {
  *
  * @sa SDL_GetTLS
  *
- * @from SDL_thread.h:557 bool SDL_SetTLS(SDL_TLSID *id, const void *value, SDL_TLSDestructorCallback destructor);
+ * @from SDL_thread.h:580 bool SDL_SetTLS(SDL_TLSID *id, const void *value, SDL_TLSDestructorCallback destructor);
  */
 export function setTls(id: Deno.PointerValue<"SDL_TLSID">, value: Deno.PointerValue, destructor: Deno.PointerValue): boolean {
   return lib.symbols.SDL_SetTLS(id, value, destructor);
@@ -374,7 +393,7 @@ export function setTls(id: Deno.PointerValue<"SDL_TLSID">, value: Deno.PointerVa
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_thread.h:570 void SDL_CleanupTLS(void);
+ * @from SDL_thread.h:593 void SDL_CleanupTLS(void);
  */
 export function cleanupTls(): void {
   return lib.symbols.SDL_CleanupTLS();

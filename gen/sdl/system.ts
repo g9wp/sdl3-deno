@@ -14,7 +14,7 @@
 
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -50,12 +50,14 @@ export {
  * @param callback the SDL_WindowsMessageHook function to call.
  * @param userdata a pointer to pass to every iteration of `callback`.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_WindowsMessageHook
  * @sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP
  *
- * @from SDL_system.h:93 void SDL_SetWindowsMessageHook(SDL_WindowsMessageHook callback, void *userdata);
+ * @from SDL_system.h:95 void SDL_SetWindowsMessageHook(SDL_WindowsMessageHook callback, void *userdata);
  * @platformSpecific WINDOWS SDL_system.h:51 #if defined(SDL_PLATFORM_WINDOWS)
  */
 export function setWindowsMessageHook(callback: Deno.PointerValue, userdata: Deno.PointerValue): void {
@@ -75,8 +77,8 @@ export function setWindowsMessageHook(callback: Deno.PointerValue, userdata: Den
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:111 int SDL_GetDirect3D9AdapterIndex(SDL_DisplayID displayID);
- * @platformSpecific WIN32 SDL_system.h:97 #if defined(SDL_PLATFORM_WIN32) || defined(SDL_PLATFORM_WINGDK)
+ * @from SDL_system.h:113 int SDL_GetDirect3D9AdapterIndex(SDL_DisplayID displayID);
+ * @platformSpecific WIN32 SDL_system.h:99 #if defined(SDL_PLATFORM_WIN32) || defined(SDL_PLATFORM_WINGDK)
  */
 export function getDirect3D9AdapterIndex(displayID: number): number {
   if (!lib.symbols.SDL_GetDirect3D9AdapterIndex) throw new Error(`SDL_GetDirect3D9AdapterIndex is unavailable in this platform`);
@@ -98,8 +100,8 @@ export function getDirect3D9AdapterIndex(displayID: number): number {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:128 bool SDL_GetDXGIOutputInfo(SDL_DisplayID displayID, int *adapterIndex, int *outputIndex);
- * @platformSpecific WIN32 SDL_system.h:97 #if defined(SDL_PLATFORM_WIN32) || defined(SDL_PLATFORM_WINGDK)
+ * @from SDL_system.h:130 bool SDL_GetDXGIOutputInfo(SDL_DisplayID displayID, int *adapterIndex, int *outputIndex);
+ * @platformSpecific WIN32 SDL_system.h:99 #if defined(SDL_PLATFORM_WIN32) || defined(SDL_PLATFORM_WINGDK)
  */
 export function getDxgiOutputInfo(displayID: number): { adapterIndex: number; outputIndex: number } {
   if (!lib.symbols.SDL_GetDXGIOutputInfo) throw new Error(`SDL_GetDXGIOutputInfo is unavailable in this platform`);
@@ -117,9 +119,11 @@ export function getDxgiOutputInfo(displayID: number): { adapterIndex: number; ou
  * @param callback the SDL_X11EventHook function to call.
  * @param userdata a pointer to pass to every iteration of `callback`.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:173 void SDL_SetX11EventHook(SDL_X11EventHook callback, void *userdata);
+ * @from SDL_system.h:177 void SDL_SetX11EventHook(SDL_X11EventHook callback, void *userdata);
  */
 export function setX11EventHook(callback: Deno.PointerValue, userdata: Deno.PointerValue): void {
   return lib.symbols.SDL_SetX11EventHook(callback, userdata);
@@ -135,10 +139,12 @@ export function setX11EventHook(callback: Deno.PointerValue, userdata: Deno.Poin
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:190 bool SDL_SetLinuxThreadPriority(Sint64 threadID, int priority);
- * @platformSpecific LINUX SDL_system.h:176 #ifdef SDL_PLATFORM_LINUX
+ * @from SDL_system.h:196 bool SDL_SetLinuxThreadPriority(Sint64 threadID, int priority);
+ * @platformSpecific LINUX SDL_system.h:180 #ifdef SDL_PLATFORM_LINUX
  */
 export function setLinuxThreadPriority(threadID: bigint, priority: number): boolean {
   if (!lib.symbols.SDL_SetLinuxThreadPriority) throw new Error(`SDL_SetLinuxThreadPriority is unavailable in this platform`);
@@ -157,10 +163,12 @@ export function setLinuxThreadPriority(threadID: bigint, priority: number): bool
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:206 bool SDL_SetLinuxThreadPriorityAndPolicy(Sint64 threadID, int sdlPriority, int schedPolicy);
- * @platformSpecific LINUX SDL_system.h:176 #ifdef SDL_PLATFORM_LINUX
+ * @from SDL_system.h:214 bool SDL_SetLinuxThreadPriorityAndPolicy(Sint64 threadID, int sdlPriority, int schedPolicy);
+ * @platformSpecific LINUX SDL_system.h:180 #ifdef SDL_PLATFORM_LINUX
  */
 export function setLinuxThreadPriorityAndPolicy(threadID: bigint, sdlPriority: number, schedPolicy: number): boolean {
   if (!lib.symbols.SDL_SetLinuxThreadPriorityAndPolicy) throw new Error(`SDL_SetLinuxThreadPriorityAndPolicy is unavailable in this platform`);
@@ -200,12 +208,14 @@ export function setLinuxThreadPriorityAndPolicy(threadID: bigint, sdlPriority: n
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_SetiOSEventPump
  *
- * @from SDL_system.h:270 bool SDL_SetiOSAnimationCallback(SDL_Window *window, int interval, SDL_iOSAnimationCallback callback, void *callbackParam);
- * @platformSpecific IOS SDL_system.h:213 #ifdef SDL_PLATFORM_IOS
+ * @from SDL_system.h:280 bool SDL_SetiOSAnimationCallback(SDL_Window *window, int interval, SDL_iOSAnimationCallback callback, void *callbackParam);
+ * @platformSpecific IOS SDL_system.h:221 #ifdef SDL_PLATFORM_IOS
  */
 export function setiOsAnimationCallback(
     window: Deno.PointerValue<"SDL_Window">,
@@ -224,12 +234,14 @@ export function setiOsAnimationCallback(
  *
  * @param enabled true to enable the event pump, false to disable it.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_SetiOSAnimationCallback
  *
- * @from SDL_system.h:283 void SDL_SetiOSEventPump(bool enabled);
- * @platformSpecific IOS SDL_system.h:213 #ifdef SDL_PLATFORM_IOS
+ * @from SDL_system.h:295 void SDL_SetiOSEventPump(bool enabled);
+ * @platformSpecific IOS SDL_system.h:221 #ifdef SDL_PLATFORM_IOS
  */
 export function setiOsEventPump(enabled: boolean): void {
   if (!lib.symbols.SDL_SetiOSEventPump) throw new Error(`SDL_SetiOSEventPump is unavailable in this platform`);
@@ -256,8 +268,8 @@ export function setiOsEventPump(enabled: boolean): void {
  *
  * @sa SDL_GetAndroidActivity
  *
- * @from SDL_system.h:313 void * SDL_GetAndroidJNIEnv(void);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:325 void * SDL_GetAndroidJNIEnv(void);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 export function getAndroidJniEnv(): Deno.PointerValue {
   if (!lib.symbols.SDL_GetAndroidJNIEnv) throw new Error(`SDL_GetAndroidJNIEnv is unavailable in this platform`);
@@ -287,8 +299,8 @@ export function getAndroidJniEnv(): Deno.PointerValue {
  *
  * @sa SDL_GetAndroidJNIEnv
  *
- * @from SDL_system.h:338 void * SDL_GetAndroidActivity(void);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:350 void * SDL_GetAndroidActivity(void);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 export function getAndroidActivity(): Deno.PointerValue {
   if (!lib.symbols.SDL_GetAndroidActivity) throw new Error(`SDL_GetAndroidActivity is unavailable in this platform`);
@@ -327,10 +339,12 @@ export function getAndroidActivity(): Deno.PointerValue {
  *
  * @returns the Android API level.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:374 int SDL_GetAndroidSDKVersion(void);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:388 int SDL_GetAndroidSDKVersion(void);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 export function getAndroidSdkVersion(): number {
   if (!lib.symbols.SDL_GetAndroidSDKVersion) throw new Error(`SDL_GetAndroidSDKVersion is unavailable in this platform`);
@@ -342,10 +356,12 @@ export function getAndroidSdkVersion(): number {
  *
  * @returns true if this is a Chromebook, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:383 bool SDL_IsChromebook(void);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:399 bool SDL_IsChromebook(void);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 export function isChromebook(): boolean {
   if (!lib.symbols.SDL_IsChromebook) throw new Error(`SDL_IsChromebook is unavailable in this platform`);
@@ -357,10 +373,12 @@ export function isChromebook(): boolean {
  *
  * @returns true if this is a DeX docking station, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:392 bool SDL_IsDeXMode(void);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:410 bool SDL_IsDeXMode(void);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 export function isDeXMode(): boolean {
   if (!lib.symbols.SDL_IsDeXMode) throw new Error(`SDL_IsDeXMode is unavailable in this platform`);
@@ -374,8 +392,8 @@ export function isDeXMode(): boolean {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:401 void SDL_SendAndroidBackButton(void);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:419 void SDL_SendAndroidBackButton(void);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 export function sendAndroidBackButton(): void {
   if (!lib.symbols.SDL_SendAndroidBackButton) throw new Error(`SDL_SendAndroidBackButton is unavailable in this platform`);
@@ -403,8 +421,8 @@ export function sendAndroidBackButton(): void {
  * @sa SDL_GetAndroidExternalStoragePath
  * @sa SDL_GetAndroidCachePath
  *
- * @from SDL_system.h:440 const char * SDL_GetAndroidInternalStoragePath(void);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:458 const char * SDL_GetAndroidInternalStoragePath(void);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 export function getAndroidInternalStoragePath(): string {
   if (!lib.symbols.SDL_GetAndroidInternalStoragePath) throw new Error(`SDL_GetAndroidInternalStoragePath is unavailable in this platform`);
@@ -426,8 +444,8 @@ export function getAndroidInternalStoragePath(): string {
  *
  * @sa SDL_GetAndroidExternalStoragePath
  *
- * @from SDL_system.h:457 Uint32 SDL_GetAndroidExternalStorageState(void);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:475 Uint32 SDL_GetAndroidExternalStorageState(void);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 export function getAndroidExternalStorageState(): number {
   if (!lib.symbols.SDL_GetAndroidExternalStorageState) throw new Error(`SDL_GetAndroidExternalStorageState is unavailable in this platform`);
@@ -456,8 +474,8 @@ export function getAndroidExternalStorageState(): number {
  * @sa SDL_GetAndroidInternalStoragePath
  * @sa SDL_GetAndroidCachePath
  *
- * @from SDL_system.h:481 const char * SDL_GetAndroidExternalStoragePath(void);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:499 const char * SDL_GetAndroidExternalStoragePath(void);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 export function getAndroidExternalStoragePath(): string {
   if (!lib.symbols.SDL_GetAndroidExternalStoragePath) throw new Error(`SDL_GetAndroidExternalStoragePath is unavailable in this platform`);
@@ -484,8 +502,8 @@ export function getAndroidExternalStoragePath(): string {
  * @sa SDL_GetAndroidInternalStoragePath
  * @sa SDL_GetAndroidExternalStoragePath
  *
- * @from SDL_system.h:503 const char * SDL_GetAndroidCachePath(void);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:521 const char * SDL_GetAndroidCachePath(void);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 export function getAndroidCachePath(): string {
   if (!lib.symbols.SDL_GetAndroidCachePath) throw new Error(`SDL_GetAndroidCachePath is unavailable in this platform`);
@@ -526,8 +544,8 @@ export function getAndroidCachePath(): string {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:552 bool SDL_RequestAndroidPermission(const char *permission, SDL_RequestAndroidPermissionCallback cb, void *userdata);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:570 bool SDL_RequestAndroidPermission(const char *permission, SDL_RequestAndroidPermissionCallback cb, void *userdata);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 export function requestAndroidPermission(permission: string, cb: Deno.PointerValue, userdata: Deno.PointerValue): boolean {
   if (!lib.symbols.SDL_RequestAndroidPermission) throw new Error(`SDL_RequestAndroidPermission is unavailable in this platform`);
@@ -560,8 +578,8 @@ export function requestAndroidPermission(permission: string, cb: Deno.PointerVal
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:580 bool SDL_ShowAndroidToast(const char *message, int duration, int gravity, int xoffset, int yoffset);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:598 bool SDL_ShowAndroidToast(const char *message, int duration, int gravity, int xoffset, int yoffset);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 export function showAndroidToast(
     message: string,
@@ -588,8 +606,8 @@ export function showAndroidToast(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:596 bool SDL_SendAndroidMessage(Uint32 command, int param);
- * @platformSpecific ANDROID SDL_system.h:291 #ifdef SDL_PLATFORM_ANDROID
+ * @from SDL_system.h:614 bool SDL_SendAndroidMessage(Uint32 command, int param);
+ * @platformSpecific ANDROID SDL_system.h:303 #ifdef SDL_PLATFORM_ANDROID
  */
 export function sendAndroidMessage(command: number, param: number): boolean {
   if (!lib.symbols.SDL_SendAndroidMessage) throw new Error(`SDL_SendAndroidMessage is unavailable in this platform`);
@@ -603,9 +621,11 @@ export function sendAndroidMessage(command: number, param: number): boolean {
  *
  * @returns true if the device is a tablet, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:609 bool SDL_IsTablet(void);
+ * @from SDL_system.h:629 bool SDL_IsTablet(void);
  */
 export function isTablet(): boolean {
   return lib.symbols.SDL_IsTablet();
@@ -618,9 +638,11 @@ export function isTablet(): boolean {
  *
  * @returns true if the device is a TV, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:620 bool SDL_IsTV(void);
+ * @from SDL_system.h:642 bool SDL_IsTV(void);
  */
 export function isTv(): boolean {
   return lib.symbols.SDL_IsTV();
@@ -634,7 +656,7 @@ export function isTv(): boolean {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:644 SDL_Sandbox SDL_GetSandbox(void);
+ * @from SDL_system.h:666 SDL_Sandbox SDL_GetSandbox(void);
  */
 export function getSandbox(): number {
   return lib.symbols.SDL_GetSandbox();
@@ -655,7 +677,7 @@ export function getSandbox(): number {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:664 void SDL_OnApplicationWillTerminate(void);
+ * @from SDL_system.h:686 void SDL_OnApplicationWillTerminate(void);
  */
 export function onApplicationWillTerminate(): void {
   return lib.symbols.SDL_OnApplicationWillTerminate();
@@ -676,7 +698,7 @@ export function onApplicationWillTerminate(): void {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:681 void SDL_OnApplicationDidReceiveMemoryWarning(void);
+ * @from SDL_system.h:703 void SDL_OnApplicationDidReceiveMemoryWarning(void);
  */
 export function onApplicationDidReceiveMemoryWarning(): void {
   return lib.symbols.SDL_OnApplicationDidReceiveMemoryWarning();
@@ -697,7 +719,7 @@ export function onApplicationDidReceiveMemoryWarning(): void {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:698 void SDL_OnApplicationWillEnterBackground(void);
+ * @from SDL_system.h:720 void SDL_OnApplicationWillEnterBackground(void);
  */
 export function onApplicationWillEnterBackground(): void {
   return lib.symbols.SDL_OnApplicationWillEnterBackground();
@@ -718,7 +740,7 @@ export function onApplicationWillEnterBackground(): void {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:715 void SDL_OnApplicationDidEnterBackground(void);
+ * @from SDL_system.h:737 void SDL_OnApplicationDidEnterBackground(void);
  */
 export function onApplicationDidEnterBackground(): void {
   return lib.symbols.SDL_OnApplicationDidEnterBackground();
@@ -739,7 +761,7 @@ export function onApplicationDidEnterBackground(): void {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:732 void SDL_OnApplicationWillEnterForeground(void);
+ * @from SDL_system.h:754 void SDL_OnApplicationWillEnterForeground(void);
  */
 export function onApplicationWillEnterForeground(): void {
   return lib.symbols.SDL_OnApplicationWillEnterForeground();
@@ -760,7 +782,7 @@ export function onApplicationWillEnterForeground(): void {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:749 void SDL_OnApplicationDidEnterForeground(void);
+ * @from SDL_system.h:771 void SDL_OnApplicationDidEnterForeground(void);
  */
 export function onApplicationDidEnterForeground(): void {
   return lib.symbols.SDL_OnApplicationDidEnterForeground();
@@ -781,8 +803,8 @@ export function onApplicationDidEnterForeground(): void {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:768 void SDL_OnApplicationDidChangeStatusBarOrientation(void);
- * @platformSpecific IOS SDL_system.h:751 #ifdef SDL_PLATFORM_IOS
+ * @from SDL_system.h:790 void SDL_OnApplicationDidChangeStatusBarOrientation(void);
+ * @platformSpecific IOS SDL_system.h:773 #ifdef SDL_PLATFORM_IOS
  */
 export function onApplicationDidChangeStatusBarOrientation(): void {
   if (!lib.symbols.SDL_OnApplicationDidChangeStatusBarOrientation) throw new Error(`SDL_OnApplicationDidChangeStatusBarOrientation is unavailable in this platform`);
@@ -803,8 +825,8 @@ export function onApplicationDidChangeStatusBarOrientation(): void {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:792 bool SDL_GetGDKTaskQueue(XTaskQueueHandle *outTaskQueue);
- * @platformSpecific GDK SDL_system.h:774 #ifdef SDL_PLATFORM_GDK
+ * @from SDL_system.h:814 bool SDL_GetGDKTaskQueue(XTaskQueueHandle *outTaskQueue);
+ * @platformSpecific GDK SDL_system.h:796 #ifdef SDL_PLATFORM_GDK
  */
 export function getGdkTaskQueue(outTaskQueue: Deno.PointerValue): boolean {
   if (!lib.symbols.SDL_GetGDKTaskQueue) throw new Error(`SDL_GetGDKTaskQueue is unavailable in this platform`);
@@ -824,8 +846,8 @@ export function getGdkTaskQueue(outTaskQueue: Deno.PointerValue): boolean {
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @from SDL_system.h:807 bool SDL_GetGDKDefaultUser(XUserHandle *outUserHandle);
- * @platformSpecific GDK SDL_system.h:774 #ifdef SDL_PLATFORM_GDK
+ * @from SDL_system.h:829 bool SDL_GetGDKDefaultUser(XUserHandle *outUserHandle);
+ * @platformSpecific GDK SDL_system.h:796 #ifdef SDL_PLATFORM_GDK
  */
 export function getGdkDefaultUser(outUserHandle: Deno.PointerValue): boolean {
   if (!lib.symbols.SDL_GetGDKDefaultUser) throw new Error(`SDL_GetGDKDefaultUser is unavailable in this platform`);
